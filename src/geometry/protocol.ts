@@ -34,5 +34,6 @@ export function transferables(out: GeneratorOutput): ArrayBuffer[] {
     add(s.geometry)
     bufs.add(s.matrices.buffer as ArrayBuffer)
   }
+  for (const l of out.levels) if (l.heightfield) bufs.add(l.heightfield.heights.buffer as ArrayBuffer)
   return [...bufs]
 }

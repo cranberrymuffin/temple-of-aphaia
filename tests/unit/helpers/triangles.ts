@@ -163,3 +163,27 @@ export function findCoplanarOverlaps(tris: Tri[], minArea = 1e-6, limit = 20): C
   }
   return hits
 }
+
+/** NaN, attribute-size, degenerate-triangle and winding-vs-normal problems per group ([] when clean). */
+export function meshProblems(groups: GeneratorOutput['groups']): string[] {
+  const problems: string[] = []
+  for (const g of groups) {
+    if (!g.positions.every(Number.isFinite) || !g.normals.every(Number.isFinite)) problems.push(`${g.name}: NaN`)
+    if (g.positions.length / 3 !== g.uvs.length / 2 || g.color.length !== g.positions.length) problems.push(`${g.name}: attribute sizes`)
+    let degenerate = 0
+    let flipped = 0
+    const P = g.positions
+    const N = g.normals
+    for (let i = 0; i < g.indices.length; i += 3) {
+      const [a, b, c] = [g.indices[i], g.indices[i + 1], g.indices[i + 2]]
+      const e1: Vec3 = [P[3 * b] - P[3 * a], P[3 * b + 1] - P[3 * a + 1], P[3 * b + 2] - P[3 * a + 2]]
+      const e2: Vec3 = [P[3 * c] - P[3 * a], P[3 * c + 1] - P[3 * a + 1], P[3 * c + 2] - P[3 * a + 2]]
+      const n = cross(e1, e2)
+      if (Math.hypot(...n) / 2 <= 1e-10) degenerate++
+      for (const k of [a, b, c]) if (n[0] * N[3 * k] + n[1] * N[3 * k + 1] + n[2] * N[3 * k + 2] <= 0) flipped++
+    }
+    if (degenerate) problems.push(`${g.name}: ${degenerate} degenerate triangles`)
+    if (flipped) problems.push(`${g.name}: ${flipped} vertex normals opposite to the winding`)
+  }
+  return problems
+}

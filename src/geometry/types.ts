@@ -43,9 +43,24 @@ export interface InstanceSet {
 export type Collider =
   | { kind: 'circle'; name: string; x: number; z: number; r: number; y0: number; y1: number }
   | { kind: 'box'; name: string; minX: number; maxX: number; minZ: number; maxZ: number; y0: number; y1: number }
+  /** Oriented box: centre, half extents along its local x/z, rotation about +y (radians, same sense as instance matrices). */
+  | { kind: 'obb'; name: string; cx: number; cz: number; halfX: number; halfZ: number; rotY: number; y0: number; y1: number }
 
-/** Walkable surface. Flat unless `slopeX` is set (dy/dx, y = `y` at x = minX). */
+/** Regular height grid in the temple frame: heights[iz * nx + ix] at (originX + ix*cell, originZ + iz*cell); NaN = no data. */
+export interface Heightfield {
+  nx: number
+  nz: number
+  cell: number
+  originX: number
+  originZ: number
+  heights: Float32Array
+}
+
+/** Walkable surface. Flat unless `slopeX` is set (dy/dx, y = `y` at x = minX) or `heightfield` is given (terrain). */
 export interface Level {
+  heightfield?: Heightfield
+  /** Rotation of the box about its centre (radians, same sense as instance matrices); 0 when absent. */
+  rotY?: number
   name: string
   y: number
   minX: number
