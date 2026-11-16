@@ -42,13 +42,13 @@ describe('schemas', () => {
 describe('schemas reject bad data', () => {
   it('unverified dimension with a page number', () => {
     const d = clone(dimensions) as { dimensions: Record<string, Record<string, unknown>> }
-    d.dimensions.columnHeight.page = '12'
+    d.dimensions.echinusHeight.page = '12'
     expect(validate('dimensions', d)).not.toEqual([])
   })
 
   it('provisional dimension marked verified', () => {
     const d = clone(dimensions) as { dimensions: Record<string, Record<string, unknown>> }
-    d.dimensions.columnHeight.verified = true
+    d.dimensions.echinusHeight.verified = true
     expect(validate('dimensions', d)).not.toEqual([])
   })
 
@@ -73,7 +73,9 @@ describe('schemas reject bad data', () => {
 
   it('unverified source with a page number', () => {
     const s = clone(sources) as { sources: Array<Record<string, unknown>> }
-    s.sources[0].page = 'p. 1'
+    const unverified = s.sources.find((x) => x.verified === false)
+    expect(unverified).toBeDefined()
+    unverified!.page = 'p. 1'
     expect(validate('sources', s)).not.toEqual([])
   })
 
@@ -122,5 +124,21 @@ describe('verification flags', () => {
       .filter(([, e]) => 'provisional' in e && e.provisional && e.verified)
       .map(([k]) => k)
     expect(bad).toEqual([])
+  })
+})
+
+describe('merged published values', () => {
+  it('verified published dimensions cite a page and url, or explain why the page is not pinned', () => {
+    const bad = Object.entries(dimensions.dimensions)
+      .filter(([, e]) => e.verified && e.source === 'published')
+      .filter(([, e]) => !('url' in e) || (!('page' in e) && !/page not pinned/.test(e.note ?? '')))
+      .map(([k]) => k)
+    expect(bad).toEqual([])
+  })
+
+  it('provisional entablature split sums to the verified entablature height', () => {
+    const d = dimensions.dimensions
+    const sum = d.architraveHeight.value + d.friezeHeight.value + d.corniceHeight.value
+    expect(sum).toBeCloseTo(d.entablatureHeight.value, 6)
   })
 })

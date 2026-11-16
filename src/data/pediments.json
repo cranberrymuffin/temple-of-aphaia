@@ -1,30 +1,313 @@
 {
   "meta": {
-    "status": "provisional",
-    "note": "Skeleton only. Step 4 fills the figures (west ~13 with central Athena and the painted archer; both east options)."
+    "status": "merged",
+    "note": "Compositions per Furtwängler et al. 1906 (west 13 figures, pp. 195, 312; later east 11 figures, p. 312). Figure order, facing and x are inferred (choices.pediment-figure-order); x positions are provisional for Step 4."
   },
   "west": {
     "id": "west",
-    "label": "West pediment: Trojan War, Athena central",
-    "sourceIds": ["glyptothek-aegina-pediments"],
-    "confidence": "analogy",
-    "figures": []
+    "label": "West pediment: the (second) Trojan War, Athena central, six figures each side in two groups of three",
+    "sourceIds": [
+      "furtwangler-1906",
+      "glyptothek-aegina-pediments"
+    ],
+    "confidence": "attested",
+    "note": "Thirteen figures lettered A-N without J (pp. 195, 197, 312): three victors and three vanquished on each side. Count and grouping are attested in the 1906 reconstruction; the current Glyptothek (Ohly) arrangement was not retrieved.",
+    "figures": [
+      {
+        "id": "west-a",
+        "pose": "fallen",
+        "x": -0.92,
+        "facing": "right",
+        "sourceIds": [
+          "furtwangler-1906"
+        ],
+        "confidence": "interpretive",
+        "note": "Figure A: fallen warrior in the corner. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+      },
+      {
+        "id": "west-b",
+        "pose": "lunging",
+        "x": -0.767,
+        "facing": "left",
+        "sourceIds": [
+          "furtwangler-1906"
+        ],
+        "confidence": "interpretive",
+        "note": "Figure B: crouching spearman, facing the corner. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+      },
+      {
+        "id": "west-c",
+        "pose": "kneeling-archer",
+        "x": -0.613,
+        "facing": "left",
+        "sourceIds": [
+          "furtwangler-1906"
+        ],
+        "confidence": "interpretive",
+        "note": "Figure C: archer, facing the corner. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+      },
+      {
+        "id": "west-d",
+        "pose": "striding",
+        "x": -0.46,
+        "facing": "right",
+        "sourceIds": [
+          "furtwangler-1906"
+        ],
+        "confidence": "interpretive",
+        "note": "Figure D: fighter over the wounded man. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+      },
+      {
+        "id": "west-e",
+        "pose": "fallen",
+        "x": -0.307,
+        "facing": "left",
+        "sourceIds": [
+          "furtwangler-1906"
+        ],
+        "confidence": "interpretive",
+        "note": "Figure E: wounded man, sword drawn, shield still raised (pp. 310-311). Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+      },
+      {
+        "id": "west-f",
+        "pose": "striding",
+        "x": -0.153,
+        "facing": "left",
+        "sourceIds": [
+          "furtwangler-1906"
+        ],
+        "confidence": "interpretive",
+        "note": "Figure F: fighter over the wounded man, turned away from Athena. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+      },
+      {
+        "id": "west-g",
+        "pose": "standing",
+        "x": 0,
+        "facing": "front",
+        "nameId": "athena",
+        "sourceIds": [
+          "furtwangler-1906"
+        ],
+        "confidence": "interpretive",
+        "note": "Figure G: Athena, centre (pp. 195, 310). Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+      },
+      {
+        "id": "west-h",
+        "pose": "striding",
+        "x": 0.153,
+        "facing": "right",
+        "sourceIds": [
+          "furtwangler-1906"
+        ],
+        "confidence": "interpretive",
+        "note": "Figure H: fighter over the wounded man, turned away from Athena. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+      },
+      {
+        "id": "west-i",
+        "pose": "fallen",
+        "x": 0.307,
+        "facing": "right",
+        "sourceIds": [
+          "furtwangler-1906"
+        ],
+        "confidence": "interpretive",
+        "note": "Figure I: wounded man (counterpart of E). Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+      },
+      {
+        "id": "west-k",
+        "pose": "striding",
+        "x": 0.46,
+        "facing": "left",
+        "sourceIds": [
+          "furtwangler-1906"
+        ],
+        "confidence": "interpretive",
+        "note": "Figure K: fighter over the wounded man. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+      },
+      {
+        "id": "west-l",
+        "pose": "kneeling-archer",
+        "x": 0.613,
+        "facing": "right",
+        "nameId": "trojan-archer",
+        "sourceIds": [
+          "furtwangler-1906",
+          "harvard-gazette-2007"
+        ],
+        "confidence": "interpretive",
+        "note": "Figure L: archer, facing the corner; shown as the painted Gods in Color archer (his side is unverified). Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+      },
+      {
+        "id": "west-m",
+        "pose": "lunging",
+        "x": 0.767,
+        "facing": "right",
+        "sourceIds": [
+          "furtwangler-1906"
+        ],
+        "confidence": "interpretive",
+        "note": "Figure M: crouching spearman, facing the corner. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+      },
+      {
+        "id": "west-n",
+        "pose": "fallen",
+        "x": 0.92,
+        "facing": "left",
+        "sourceIds": [
+          "furtwangler-1906"
+        ],
+        "confidence": "interpretive",
+        "note": "Figure N: fallen warrior in the corner. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+      }
+    ]
   },
   "eastOptions": [
     {
       "id": "east-earlier",
-      "label": "Earlier east pediment (fragmentary)",
-      "sourceIds": ["glyptothek-aegina-pediments"],
+      "label": "Earlier east pediment (replaced; known only indirectly)",
+      "sourceIds": [
+        "wikipedia-temple-of-aphaia",
+        "bankel-1993"
+      ],
       "confidence": "conjectural",
+      "note": "Known only from cornice blocks with sockets that do not fit the final east front (Wikipedia citing Bankel and Eschbach; unverified). Figure count, subject and layout not found.",
       "figures": []
     },
     {
       "id": "east-later",
-      "label": "Later east pediment: Herakles as kneeling archer",
+      "label": "Later east pediment: the first Trojan War, Herakles and Telamon against Laomedon, Athena central",
       "date": "c. 480 BC",
-      "sourceIds": ["glyptothek-aegina-pediments"],
-      "confidence": "interpretive",
-      "figures": []
+      "sourceIds": [
+        "furtwangler-1906",
+        "glyptothek-aegina-pediments"
+      ],
+      "confidence": "attested",
+      "note": "Eleven figures, five each side of Athena (p. 312). Displaying it on a c. 500 BC temple is interpretive (choices.east-pediment-displayed).",
+      "figures": [
+        {
+          "id": "east-a",
+          "pose": "fallen",
+          "x": -0.92,
+          "facing": "right",
+          "sourceIds": [
+            "furtwangler-1906"
+          ],
+          "confidence": "interpretive",
+          "note": "Figure A: fallen man in the corner, torso and head turned to the centre. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+        },
+        {
+          "id": "east-b",
+          "pose": "kneeling-archer",
+          "x": -0.736,
+          "facing": "left",
+          "sourceIds": [
+            "furtwangler-1906"
+          ],
+          "confidence": "interpretive",
+          "note": "Figure B: archer. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+        },
+        {
+          "id": "east-c",
+          "pose": "standing",
+          "x": -0.552,
+          "facing": "right",
+          "sourceIds": [
+            "furtwangler-1906"
+          ],
+          "confidence": "interpretive",
+          "note": "Figure C: squire (unarmed, youthful) of D. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+        },
+        {
+          "id": "east-d",
+          "pose": "fallen",
+          "x": -0.368,
+          "facing": "right",
+          "sourceIds": [
+            "furtwangler-1906"
+          ],
+          "confidence": "interpretive",
+          "note": "Figure D: warrior sinking back. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+        },
+        {
+          "id": "east-e",
+          "pose": "striding",
+          "x": -0.184,
+          "facing": "left",
+          "sourceIds": [
+            "furtwangler-1906"
+          ],
+          "confidence": "interpretive",
+          "note": "Figure E: fighter, turned away from Athena. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+        },
+        {
+          "id": "east-f",
+          "pose": "standing",
+          "x": 0,
+          "facing": "front",
+          "nameId": "athena",
+          "sourceIds": [
+            "furtwangler-1906"
+          ],
+          "confidence": "interpretive",
+          "note": "Figure F: Athena, centre. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+        },
+        {
+          "id": "east-g",
+          "pose": "striding",
+          "x": 0.184,
+          "facing": "right",
+          "sourceIds": [
+            "furtwangler-1906"
+          ],
+          "confidence": "interpretive",
+          "note": "Figure G: fighter, turned away from Athena. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+        },
+        {
+          "id": "east-h",
+          "pose": "fallen",
+          "x": 0.368,
+          "facing": "left",
+          "sourceIds": [
+            "furtwangler-1906"
+          ],
+          "confidence": "interpretive",
+          "note": "Figure H: warrior sinking back. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+        },
+        {
+          "id": "east-i",
+          "pose": "standing",
+          "x": 0.552,
+          "facing": "left",
+          "sourceIds": [
+            "furtwangler-1906"
+          ],
+          "confidence": "interpretive",
+          "note": "Figure I: squire (unarmed, youthful) of H. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+        },
+        {
+          "id": "east-k",
+          "pose": "kneeling-archer",
+          "x": 0.736,
+          "facing": "right",
+          "nameId": "herakles",
+          "sourceIds": [
+            "furtwangler-1906"
+          ],
+          "confidence": "interpretive",
+          "note": "Figure K: archer with a lion-skin helmet front: Herakles (pp. 308-310); his side is unverified. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+        },
+        {
+          "id": "east-l",
+          "pose": "fallen",
+          "x": 0.92,
+          "facing": "left",
+          "sourceIds": [
+            "furtwangler-1906"
+          ],
+          "confidence": "interpretive",
+          "note": "Figure L: fallen man in the corner, torso and head turned to the centre. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+        }
+      ]
     }
   ],
   "eastDisplayed": "east-later"

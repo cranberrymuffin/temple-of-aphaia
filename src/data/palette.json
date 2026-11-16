@@ -1,18 +1,38 @@
 {
   "meta": {
-    "status": "provisional",
-    "note": "PROVISIONAL colors for scaffolding. Step 4 replaces them with sourced Gods in Color values."
+    "status": "merged",
+    "note": "Architectural colours from the 1906 excavators' observations on Aphaia (Furtwängler et al. 1906, pp. 30, 35, 46-49). Hex values are rendering choices; confidence describes the evidence for the colour, not the exact hue. verified:true = the colour statement was read in the source."
   },
   "colors": {
-    "marble": { "color": "#e9e2d0", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "conjectural", "verified": false },
-    "triglyph-blue": { "color": "#1e2c55", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "analogy", "verified": false },
-    "regula-mutule-blue": { "color": "#2b4a8b", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "analogy", "verified": false },
-    "taenia-red": { "color": "#a2302a", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "analogy", "verified": false },
-    "cornice-hawksbeak": { "color": "#a2302a", "pattern": "hawksbeak", "sourceIds": ["gods-in-color"], "confidence": "conjectural", "verified": false },
-    "sima-meander": { "color": "#a2302a", "pattern": "meander", "sourceIds": ["gods-in-color", "furtwangler-1906"], "confidence": "conjectural", "verified": false },
-    "cyma-egg-and-dart": { "color": "#2b4a8b", "pattern": "egg-and-dart", "sourceIds": ["gods-in-color"], "confidence": "conjectural", "verified": false },
-    "tympanum-blue": { "color": "#3a5f9e", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "analogy", "verified": false },
-    "metope": { "color": "#e9e2d0", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "conjectural", "verified": false },
-    "roof-tile": { "color": "#b5653d", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "conjectural", "verified": false }
+    "marble": { "color": "#ece6d8", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "conjectural", "verified": false, "note": "Generic unpainted marble (tiles, sima ground, sculpture plinths)." },
+    "step-limestone": { "color": "#c8bea4", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "attested", "verified": true, "note": "Steps and peristasis floor unpainted, no stucco: natural yellowish-grey limestone (p. 46)." },
+    "shaft-stucco": { "color": "#dccfae", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "conjectural", "verified": true, "note": "Fine stucco coat attested; its colour 'nicht mehr zu ermitteln', most probably yellowish like the stone (p. 46)." },
+    "capital-stucco": { "color": "#cdb98f", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "conjectural", "verified": true, "note": "Thin stucco attested; Garnier saw a dark brown-yellow tone; no ornament found on capitals (p. 46)." },
+    "architrave": { "color": "#dccfae", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "conjectural", "verified": true, "note": "Conflict: Garnier red (doubted by the 1906 authors), Klenze yellowish ground (p. 47)." },
+    "taenia-red": { "color": "#a3302a", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "attested", "verified": true, "note": "Several found pieces (p. 47)." },
+    "regula": { "color": "#1c1c1c", "pattern": "plain", "sourceIds": ["furtwangler-1906", "cockerell-1860"], "confidence": "conjectural", "verified": true, "note": "Not seen on the peristasis; 1906 authors conjecture black; Cockerell blue from an opisthodomos fragment (p. 47)." },
+    "triglyph-black": { "color": "#161616", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "attested", "verified": true, "note": "Two fragments with distinct black; Cockerell's blue rejected (p. 47)." },
+    "mutule-black": { "color": "#161616", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "attested", "verified": true, "note": "Black directly on stone, no stucco ground; 32 consistent splinters (p. 47)." },
+    "guttae-white": { "color": "#f3f0e7", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "attested", "verified": true, "note": "White fine stucco (p. 47)." },
+    "cornice-soffit-red": { "color": "#a3302a", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "attested", "verified": true, "note": "Viae and underside red, applied directly on stone (p. 47)." },
+    "corona-white": { "color": "#f3f0e7", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "attested", "verified": true, "note": "Scotia and corona white stucco (p. 47)." },
+    "cornice-hawksbeak": { "color": "#a3302a", "pattern": "hawksbeak", "sourceIds": ["furtwangler-1906"], "confidence": "attested", "verified": true, "note": "Flank cornice cymatium: red and blue leaves, outlines lightly incised, ornament axes about 5.2 cm (p. 47)." },
+    "raking-cymatium": { "color": "#2f5aa8", "pattern": "hawksbeak", "sourceIds": ["furtwangler-1906"], "confidence": "attested", "verified": true, "note": "Cymatium under the raking cornice: blue and red, axes about 19.5 cm (p. 48). Leaf form assumed." },
+    "raking-corona-soffit": { "color": "#a3302a", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "conjectural", "verified": true, "note": "Underside of the raking corona probably red (p. 48)." },
+    "tympanum-blue": { "color": "#2f5aa8", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "attested", "verified": true, "note": "'Kräftig blau' (pp. 30, 47-48); Cockerell: clear light blue." },
+    "metope": { "color": "#d9cdb2", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "conjectural", "verified": true, "note": "Metopes never found; a thin inserted slab, probably painted wood (pp. 28-29). Colour unknown." },
+    "sima-palmette": { "color": "#a3302a", "pattern": "palmette", "sourceIds": ["furtwangler-1906"], "confidence": "analogy", "verified": true, "note": "One fragment keeps a definite red; blue-and-red palmettes by Athenian analogy; Cockerell's gilding rejected (p. 48)." },
+    "antefix-palmette": { "color": "#2f5aa8", "pattern": "palmette", "sourceIds": ["furtwangler-1906"], "confidence": "analogy", "verified": true, "note": "Anthemia visible as smooth patches; probably coloured (pp. 46, 48)." },
+    "acroterion": { "color": "#b4432f", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "conjectural", "verified": true, "note": "Colour undeterminable; Klenze saw clear red traces on the ridge acroteria (p. 48, footnote)." },
+    "roof-tile": { "color": "#ece6d8", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "conjectural", "verified": true, "note": "Marble tiles (p. 31); left unpainted." },
+    "pronaos-floor-red": { "color": "#9c3a2c", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "attested", "verified": true, "note": "Red hard stucco, still preserved (pp. 35, 48)." },
+    "cella-floor-red": { "color": "#9c3a2c", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "conjectural", "verified": true, "note": "Red stucco, worse preserved (p. 48)." },
+    "cella-wall-dado-red": { "color": "#9c3a2c", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "conjectural", "verified": true, "note": "Red behind the door (Garnier, Klenze): perhaps red to about 1 m (p. 48)." },
+    "cella-wall-upper": { "color": "#e4dcc7", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "conjectural", "verified": true, "note": "Light wall above the red dado (p. 48)." },
+    "interior-crown-meander": { "color": "#a3302a", "pattern": "meander", "sourceIds": ["furtwangler-1906", "cockerell-1860"], "confidence": "conjectural", "verified": true, "note": "Interior crowning band seen only by Cockerell and Haller, colours differ; the meander Blouet drew belongs here, not on the corona (pp. 47, 49)." },
+    "archer-diamond-pattern": { "color": "#c8a232", "pattern": "plain", "sourceIds": ["harvard-gazette-2007", "gods-in-color"], "confidence": "attested", "verified": true, "note": "West-pediment archer: shirt and leggings with a red, yellow, blue and green diamond pattern (layout attested by UV and raking light; exact pigments by analogy)." },
+    "archer-vest-yellow": { "color": "#e2b62c", "pattern": "plain", "sourceIds": ["harvard-gazette-2007", "gods-in-color"], "confidence": "attested", "verified": true, "note": "Bright yellow vest with lions and griffins; tall yellow hat with a flower pattern." },
+    "figure-flesh": { "color": "#c58e6c", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "conjectural", "verified": false, "note": "Stand-in figure skin tone." },
+    "figure-armour": { "color": "#a88a4a", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "conjectural", "verified": false, "note": "Stand-in bronze armour." }
   }
 }

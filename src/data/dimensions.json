@@ -1,7 +1,7 @@
 {
   "meta": {
-    "status": "provisional",
-    "note": "All values are provisional placeholders (verified:false, no page numbers). Sourced published values are merged by the lead from the research notes; scan values are merged by Step 2 merge_dimensions.py."
+    "status": "merged",
+    "note": "Published values merged from the research brief (Furtwängler et al. 1906, archive.org OCR; printed page numbers). Entries still marked provisional are seed estimates. Scan values are merged by Step 2 merge_dimensions.py."
   },
   "dimensions": {
     "stylobateLength": {
@@ -9,99 +9,131 @@
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "definition": "Stylobate top surface, outer edge to outer edge along the flank (E-W).",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "page": "52",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Upper step (stylobate top), length E-W, outer edge to outer edge.",
+      "note": "Printed \"rund 28.80\" (rounded) in the p. 52 table (87.7 Dörpfeld feet). Web summaries giving 28.50 or 28.81 are not used."
     },
     "stylobateWidth": {
       "value": 13.8,
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "definition": "Stylobate top surface, outer edge to outer edge across the front (N-S).",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "page": "52",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Upper step (stylobate top), width N-S, outer edge to outer edge.",
+      "note": "Printed \"rund 13.80\" (rounded) in the p. 52 table (42.0 Dörpfeld feet)."
+    },
+    "lowestStepLength": {
+      "value": 30.5,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "page": "52",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Lowest crepidoma step, length E-W, outer edge to outer edge.",
+      "note": "Printed \"rund 30.50\" (rounded)."
+    },
+    "lowestStepWidth": {
+      "value": 15.5,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "page": "52",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Lowest crepidoma step, width N-S, outer edge to outer edge.",
+      "note": "Printed \"rund 15.50\" (rounded)."
     },
     "interaxialFront": {
-      "value": 2.6,
+      "value": 2.62,
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "definition": "Normal (non-corner) column axis spacing on the fronts.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "page": "24, 52, 55",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Normal (non-corner) column axis spacing on the fronts."
     },
     "interaxialFlank": {
-      "value": 2.53,
+      "value": 2.57,
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
+      "page": "24, 55",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
       "definition": "Normal (non-corner) column axis spacing on the flanks.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "note": "Conflict: the p. 52 table prints 2.56. Two text statements (pp. 24, 55) give 2.57, which is used."
     },
-    "interaxialCornerFront": {
-      "value": 2.45,
+    "cornerContractionFront": {
+      "value": 0.25,
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "definition": "Contracted corner interaxial on the fronts (corner axis to adjacent axis).",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "page": "29",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Measured corner contraction on the east front: normal front interaxial minus the corner interaxial.",
+      "note": "Conflict: p. 55 prints a garbled \"21½ cm\" for the short fronts; the measured p. 29 value is used."
     },
-    "interaxialCornerFlank": {
-      "value": 2.43,
+    "cornerContractionFlank": {
+      "value": 0.245,
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "definition": "Contracted corner interaxial on the flanks (corner axis to adjacent axis).",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "page": "29",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Measured corner contraction on the south flank: normal flank interaxial minus the corner interaxial.",
+      "note": "Conflict: p. 55 prints 0.26 for the long sides; the measured p. 29 value is used."
     },
     "columnHeight": {
       "value": 5.27,
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "definition": "Peristyle column height, stylobate top to abacus top.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "page": "52",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Peristyle column height (Säulenhöhe) as tabulated; taken as stylobate top to abacus top.",
+      "note": "The source gives column height = 2 × axial spacing = 16 Dörpfeld feet (p. 53). Its exact measuring points are not stated in the brief."
     },
     "lowerDiameter": {
       "value": 0.99,
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "definition": "Peristyle lower column diameter measured at the arrises, just above the base.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "page": "26, 52",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Peristyle lower column diameter as printed.",
+      "note": "The source does not say whether 0.99 is measured at the arrises or at the flute bottoms. Do not label it \"at the arrises\"."
     },
     "upperDiameter": {
-      "value": 0.75,
+      "value": 0.73,
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "definition": "Peristyle upper column diameter at the arrises, below the necking.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "page": "52",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Peristyle upper column diameter as printed (below the necking).",
+      "note": "p. 27: the shaft tapers by about 1/4 of the lower diameter (0.99 × 0.75 = 0.74), consistent with 0.73."
     },
     "fluteCount": {
       "value": 20,
       "unit": "count",
       "source": "published",
       "ref": "furtwangler-1906",
-      "verified": false,
-      "definition": "Number of flutes per peristyle column (Doric, fixed at 20).",
-      "note": "Fixed by the spec (AC3); source citation pending verification."
+      "page": "26",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Flutes per peristyle column: shallow segmental (\"flachbogig\"), with three deep neck rings below the capital.",
+      "note": "Not 24, as some popular summaries say."
     },
     "echinusHeight": {
       "value": 0.25,
@@ -111,7 +143,7 @@
       "verified": false,
       "provisional": true,
       "definition": "Echinus height, necking/annulets top to abacus underside.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "note": "PROVISIONAL seed estimate; not found in the research brief (Furtwängler 1906 text read via archive.org OCR, plates not seen). Replace when a source or the scan supplies it."
     },
     "abacusHeight": {
       "value": 0.22,
@@ -121,7 +153,7 @@
       "verified": false,
       "provisional": true,
       "definition": "Abacus height.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "note": "PROVISIONAL seed estimate; not found in the research brief (Furtwängler 1906 text read via archive.org OCR, plates not seen). Replace when a source or the scan supplies it."
     },
     "abacusWidth": {
       "value": 1.25,
@@ -131,27 +163,38 @@
       "verified": false,
       "provisional": true,
       "definition": "Abacus side length (square).",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "note": "PROVISIONAL seed estimate; not found in the research brief (Furtwängler 1906 text read via archive.org OCR, plates not seen). Replace when a source or the scan supplies it."
+    },
+    "entablatureHeight": {
+      "value": 2.04,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "page": "52",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Total entablature height (Gebälkhöhe) as tabulated.",
+      "note": "Unresolved: the source does not say whether the corona is included, and p. 53 gives \"entablature without corona = 1/3 column height\" (about 1.76 m). The two do not reconcile."
     },
     "architraveHeight": {
+      "value": 0.82,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Architrave height including taenia (taenia itself 0.085 m, p. 28).",
+      "note": "Not given as a number in the text read. Split chosen so architrave + frieze + cornice = entablatureHeight. PROVISIONAL seed estimate; not found in the research brief (Furtwängler 1906 text read via archive.org OCR, plates not seen). Replace when a source or the scan supplies it."
+    },
+    "friezeHeight": {
       "value": 0.88,
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
       "verified": false,
       "provisional": true,
-      "definition": "Architrave height including taenia.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
-    },
-    "friezeHeight": {
-      "value": 0.98,
-      "unit": "m",
-      "source": "published",
-      "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "definition": "Triglyph frieze height.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "definition": "Triglyph frieze height (triglyph head band 0.11 m, p. 28).",
+      "note": "Not given as a number in the text read. Split chosen so architrave + frieze + cornice = entablatureHeight. PROVISIONAL seed estimate; not found in the research brief (Furtwängler 1906 text read via archive.org OCR, plates not seen). Replace when a source or the scan supplies it."
     },
     "corniceHeight": {
       "value": 0.34,
@@ -161,17 +204,17 @@
       "verified": false,
       "provisional": true,
       "definition": "Horizontal (geison) cornice height including mutule soffit.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "note": "Not given as a number in the text read. Split chosen so architrave + frieze + cornice = entablatureHeight. PROVISIONAL seed estimate; not found in the research brief (Furtwängler 1906 text read via archive.org OCR, plates not seen). Replace when a source or the scan supplies it."
     },
     "crepidomaStepCount": {
       "value": 3,
       "unit": "count",
       "source": "published",
       "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "definition": "Number of crepidoma steps including the stylobate course.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "page": "24",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Number of crepidoma steps including the stylobate course (\"dreistufiger Stylobat\")."
     },
     "crepidomaStepRise": {
       "value": 0.26,
@@ -181,17 +224,7 @@
       "verified": false,
       "provisional": true,
       "definition": "Rise of each crepidoma step.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
-    },
-    "crepidomaStepTread": {
-      "value": 0.3,
-      "unit": "m",
-      "source": "published",
-      "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "definition": "Tread depth of each lower crepidoma step.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "note": "PROVISIONAL seed estimate; not found in the research brief (Furtwängler 1906 text read via archive.org OCR, plates not seen). Replace when a source or the scan supplies it."
     },
     "pedimentPitch": {
       "value": 14,
@@ -201,37 +234,59 @@
       "verified": false,
       "provisional": true,
       "definition": "Pediment raking-cornice angle above horizontal.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "note": "Furtwängler p. 143 prints \"1:4 beim neuen Tempel\" but does not say whether that is rise:run or rise:span; 1:4 rise:run is about 14.0°. Needs a plate or Bankel. PROVISIONAL seed estimate; not found in the research brief (Furtwängler 1906 text read via archive.org OCR, plates not seen). Replace when a source or the scan supplies it."
+    },
+    "peristasisDepthEast": {
+      "value": 2.165,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "page": "31",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "East peristasis depth, from the inner edges of the stylobate slabs to the cella wall base."
+    },
+    "peristasisDepthWestFlank": {
+      "value": 1.62,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "page": "31",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "West and flank peristasis depth, from the inner edges of the stylobate slabs to the cella wall base."
     },
     "cellaOuterLength": {
-      "value": 20.6,
+      "value": 22.54,
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "definition": "Cella building (incl. pronaos and opisthodomos antae) outer length, E-W.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "page": "52",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Naos (cella building incl. pronaos and opisthodomos) length without its step, E-W."
     },
     "cellaOuterWidth": {
-      "value": 8,
+      "value": 8.01,
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "definition": "Cella outer width, N-S.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "page": "52",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Naos (cella building) width without its step, N-S."
     },
     "cellaWallThickness": {
-      "value": 0.6,
+      "value": 0.798,
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "definition": "Cella wall thickness.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "page": "32, 33, 37",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Cella side wall thickness.",
+      "note": "Printed as a range 0.78-0.816; the midpoint is stored, with the half-range as uncertainty. Cross walls are 0.89. The brief gives pp. 32, 33, 37 for the cella-wall details as a group.",
+      "uncertainty": 0.018
     },
     "antaWidth": {
       "value": 0.75,
@@ -241,7 +296,18 @@
       "verified": false,
       "provisional": true,
       "definition": "Anta face width.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "note": "PROVISIONAL seed estimate; not found in the research brief (Furtwängler 1906 text read via archive.org OCR, plates not seen). Replace when a source or the scan supplies it."
+    },
+    "antaProjection": {
+      "value": 0.499,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "page": "32, 33, 37",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Outward projection of the antae (49.9 cm).",
+      "note": "The brief gives pp. 32, 33, 37 for the cella-wall details as a group."
     },
     "doorWidth": {
       "value": 2,
@@ -251,17 +317,90 @@
       "verified": false,
       "provisional": true,
       "definition": "Cella east door clear width at the threshold.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "note": "PROVISIONAL seed estimate; not found in the research brief (Furtwängler 1906 text read via archive.org OCR, plates not seen). Replace when a source or the scan supplies it."
+    },
+    "doorThresholdRise": {
+      "value": 0.465,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "page": "36-37",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Height of the cella door threshold step.",
+      "note": "The door opening height is uncertain in the source."
+    },
+    "pronaosColumnsInAntis": {
+      "value": 2,
+      "unit": "count",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "page": "25, 32",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Columns between the antae in the pronaos (east); the opisthodomos (west) matches."
+    },
+    "pronaosLowerDiameter": {
+      "value": 0.84,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "page": "32",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Lower diameter of the pronaos (in antis) columns."
+    },
+    "pronaosStepRise": {
+      "value": 0.23,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "page": "32",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Total rise of the double step under the pronaos columns.",
+      "note": "Printed as a 0.23 m double step; the split between the two steps is not given."
     },
     "interiorColumnsPerSide": {
       "value": 5,
       "unit": "count",
       "source": "published",
       "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "definition": "Interior colonnade columns per side (each of two tiers).",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "page": "38",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Interior colonnade columns per side, in each of two storeys (two colonnades of five)."
+    },
+    "interiorAxialSpacing": {
+      "value": 2.28,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "page": "38",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Axis spacing of the interior colonnade columns."
+    },
+    "interiorCentreAisleWidth": {
+      "value": 3.045,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "page": "38",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Width of the cella centre aisle between the interior step edges.",
+      "note": "Side aisles are about 0.90 m."
+    },
+    "interiorUpperFluteCount": {
+      "value": 16,
+      "unit": "count",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "page": "38",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Flutes per upper-storey interior column."
     },
     "interiorLowerColumnHeight": {
       "value": 3.5,
@@ -270,8 +409,8 @@
       "ref": "furtwangler-1906",
       "verified": false,
       "provisional": true,
-      "definition": "Interior lower-tier column height, cella floor to abacus top.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "definition": "Interior lower-storey column height, cella floor to abacus top.",
+      "note": "PROVISIONAL seed estimate; not found in the research brief (Furtwängler 1906 text read via archive.org OCR, plates not seen). Replace when a source or the scan supplies it."
     },
     "interiorLowerDiameter": {
       "value": 0.6,
@@ -280,8 +419,8 @@
       "ref": "furtwangler-1906",
       "verified": false,
       "provisional": true,
-      "definition": "Interior lower-tier column lower diameter at the arrises.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "definition": "Interior lower-storey column lower diameter.",
+      "note": "PROVISIONAL seed estimate; not found in the research brief (Furtwängler 1906 text read via archive.org OCR, plates not seen). Replace when a source or the scan supplies it."
     },
     "interiorUpperColumnHeight": {
       "value": 2.4,
@@ -290,8 +429,8 @@
       "ref": "furtwangler-1906",
       "verified": false,
       "provisional": true,
-      "definition": "Interior upper-tier column height, epistyle top to abacus top.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "definition": "Interior upper-storey column height.",
+      "note": "The source calls the upper-column height only \"ziemlich bestimmt\" from Haller's measurements. PROVISIONAL seed estimate; not found in the research brief (Furtwängler 1906 text read via archive.org OCR, plates not seen). Replace when a source or the scan supplies it."
     },
     "interiorUpperDiameter": {
       "value": 0.42,
@@ -300,8 +439,18 @@
       "ref": "furtwangler-1906",
       "verified": false,
       "provisional": true,
-      "definition": "Interior upper-tier column lower diameter at the arrises.",
-      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+      "definition": "Interior upper-storey column lower diameter.",
+      "note": "PROVISIONAL seed estimate; not found in the research brief (Furtwängler 1906 text read via archive.org OCR, plates not seen). Replace when a source or the scan supplies it."
+    },
+    "eastRampSlope": {
+      "value": 0.16667,
+      "unit": "ratio",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "East ramp slope, rise:run as printed (\"1:6\").",
+      "note": "Read in section \"II. 1. Der Altar\" (page not pinned, near printed p. 69). Ramp existence: p. 25. It reaches the second step; a half-step bridged to the top step."
     }
   }
 }

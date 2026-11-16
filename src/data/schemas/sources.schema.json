@@ -3,57 +3,131 @@
   "$id": "sources.schema.json",
   "title": "Sources, names and reconstruction choices",
   "type": "object",
-  "required": ["sources", "names", "choices"],
+  "required": [
+    "sources",
+    "names",
+    "choices"
+  ],
   "additionalProperties": false,
   "properties": {
-    "$schema": { "type": "string" },
+    "$schema": {
+      "type": "string"
+    },
     "sources": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["id", "type", "citation", "verified", "licence"],
+        "required": [
+          "id",
+          "type",
+          "citation",
+          "verified",
+          "licence"
+        ],
         "additionalProperties": false,
         "properties": {
-          "id": { "$ref": "common.schema.json#/definitions/id" },
-          "type": { "enum": ["official", "ancient", "archaeological", "polychrome"] },
-          "citation": { "type": "string", "minLength": 1 },
-          "quote": { "type": "string", "minLength": 1 },
-          "url": { "type": "string", "pattern": "^https?://" },
-          "page": { "type": "string", "minLength": 1 },
-          "verified": { "type": "boolean" },
-          "licence": { "type": "string", "minLength": 1 },
-          "note": { "type": "string" }
+          "id": {
+            "$ref": "common.schema.json#/definitions/id"
+          },
+          "type": {
+            "enum": [
+              "official",
+              "ancient",
+              "archaeological",
+              "polychrome"
+            ]
+          },
+          "citation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "quote": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https?://"
+          },
+          "page": {
+            "type": "string",
+            "minLength": 1
+          },
+          "verified": {
+            "type": "boolean"
+          },
+          "licence": {
+            "type": "string",
+            "minLength": 1
+          },
+          "note": {
+            "type": "string"
+          }
         },
-        "allOf": [{ "$ref": "common.schema.json#/definitions/noPageUnlessVerified" }]
+        "allOf": [
+          {
+            "$ref": "common.schema.json#/definitions/noPageUnlessVerified"
+          }
+        ]
       }
     },
     "names": {
       "type": "object",
-      "propertyNames": { "$ref": "common.schema.json#/definitions/id" },
+      "propertyNames": {
+        "$ref": "common.schema.json#/definitions/id"
+      },
       "additionalProperties": {
         "type": "object",
-        "required": ["term", "sourceIds"],
+        "required": [
+          "term",
+          "sourceIds"
+        ],
         "additionalProperties": false,
         "properties": {
-          "term": { "type": "string", "minLength": 1 },
-          "sourceIds": { "$ref": "common.schema.json#/definitions/sourceIds" },
-          "note": { "type": "string" }
+          "term": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceIds": {
+            "$ref": "common.schema.json#/definitions/sourceIds"
+          },
+          "note": {
+            "type": "string"
+          },
+          "confidence": {
+            "$ref": "confidence.schema.json"
+          }
         }
       }
     },
     "choices": {
       "type": "object",
-      "propertyNames": { "$ref": "common.schema.json#/definitions/id" },
+      "propertyNames": {
+        "$ref": "common.schema.json#/definitions/id"
+      },
       "additionalProperties": {
         "type": "object",
-        "required": ["description", "sourceIds", "confidence"],
+        "required": [
+          "description",
+          "sourceIds",
+          "confidence"
+        ],
         "additionalProperties": false,
         "properties": {
-          "description": { "type": "string", "minLength": 1 },
-          "sourceIds": { "$ref": "common.schema.json#/definitions/sourceIds" },
-          "confidence": { "$ref": "confidence.schema.json" },
-          "note": { "type": "string" }
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceIds": {
+            "$ref": "common.schema.json#/definitions/sourceIds"
+          },
+          "confidence": {
+            "$ref": "confidence.schema.json"
+          },
+          "note": {
+            "type": "string"
+          }
         }
       }
     }

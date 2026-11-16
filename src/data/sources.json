@@ -3,18 +3,32 @@
     {
       "id": "moc-odysseus-aphaia",
       "type": "official",
-      "citation": "Hellenic Ministry of Culture, Odysseus portal (odysseus.culture.gr): Sanctuary of Aphaia, Aegina.",
-      "verified": false,
+      "citation": "Hellenic Ministry of Culture and Sports, Odysseus portal: Archaeological site of Aphaia, Aigina (Description).",
+      "quote": "It is situated on the top of a hill covered with pines, in the NE part of the island, and is distinguished by the very good preservation of the Late Archaic temple. The sanctuary was initially dedicated to the cult of Aphaia, a local deity later assimilated by Athena.",
+      "url": "http://odysseus.culture.gr/h/3/eh352.jsp?obj_id=2354",
+      "verified": true,
       "licence": "Short quotation with attribution.",
-      "note": "PROVISIONAL: exact page URL and quotation to be added from research."
+      "note": "Reachable over http:// only (the https host refused connections). Further quotable line: \"At the end of the period, around 500 B.C. and a little later, the sanctuary assumed the monumental form it preserves today.\" The page gives no dimensions and does not describe the pediments."
+    },
+    {
+      "id": "moc-odysseus-aphaia-history",
+      "type": "official",
+      "citation": "Hellenic Ministry of Culture and Sports, Odysseus portal: Archaeological site of Aphaia, Aigina (History).",
+      "quote": "The first systematic archaeological investigation was begun in 1901 by the German Ad. Furtwaengler. Work was resumed in 1966 by the German D. Ohly, who excavated on the site until 1979 and was continued by his collaborators until 1988.",
+      "url": "http://odysseus.culture.gr/h/3/eh351.jsp?obj_id=2354",
+      "verified": true,
+      "licence": "Short quotation with attribution.",
+      "note": "Reachable over http:// only. The same tab records the removal of the pediment sculptures in 1811 and their display in the Glyptothek, Munich."
     },
     {
       "id": "pausanias-2-30-3",
       "type": "ancient",
-      "citation": "Pausanias, Description of Greece 2.30.3, trans. W. H. S. Jones (Loeb Classical Library, 1918).",
-      "verified": false,
-      "licence": "Public domain translation (1918).",
-      "note": "PROVISIONAL: quotation to be added verbatim from the Jones translation."
+      "citation": "Pausanias, Description of Greece 2.30.3, trans. W. H. S. Jones and H. A. Ormerod (Loeb Classical Library; Harvard University Press / Heinemann, 1918), via Perseus.",
+      "quote": "In Aegina, as you go towards the mountain of Zeus, God of all the Greeks, you reach a sanctuary of Aphaea, in whose honor Pindar composed an ode for the Aeginetans.",
+      "url": "http://www.perseus.tufts.edu/hopper/text?doc=Paus.+2.30.3",
+      "verified": true,
+      "licence": "Translation public domain (1918). Perseus encodes it under a Creative Commons licence: confirm the exact licence before shipping.",
+      "note": "Same paragraph: \"Her surname among the Aeginetans is Aphaea; in Crete it is Dictynna (Goddess of Nets).\" Pausanias relates the Britomartis story but says nothing about the architecture or the pediments."
     },
     {
       "id": "pindar-aphaia",
@@ -22,24 +36,34 @@
       "citation": "Pindar, ode composed for the Aeginetans in honour of Aphaia (lost; known through Pausanias 2.30.3).",
       "verified": false,
       "licence": "Citation only.",
-      "note": "PROVISIONAL: confirm fragment reference."
+      "note": "No text of the ode located. Furtwängler 1906 links Pindar's praise of the Aiakidai to the pediment subjects; that is interpretation, not a quotation."
+    },
+    {
+      "id": "antoninus-liberalis-40",
+      "type": "ancient",
+      "citation": "Antoninus Liberalis, Metamorphoses 40 (Britomartis).",
+      "url": "https://www.theoi.com/Georgikos/Britomartis.html",
+      "verified": true,
+      "licence": "The only translation found (F. Celoria, 1992) is copyrighted: paraphrase only, never quote it in the app.",
+      "note": "Britomartis flees Minos to Aegina; escaping a fisherman she vanishes into a grove, and the Aeginetans call her Aphaia. The 'she who disappeared' etymology is secondary and unconfirmed."
     },
     {
       "id": "furtwangler-1906",
       "type": "archaeological",
-      "citation": "Furtwängler, A., with E. R. Fiechter and H. Thiersch. Aegina: Das Heiligtum der Aphaia. Munich, 1906.",
-      "verified": false,
+      "citation": "Furtwängler, A., E. R. Fiechter and H. Thiersch. Aegina: Das Heiligtum der Aphaia. Munich, 1906 (text volume).",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
       "licence": "Public domain (1906); digitised at the Internet Archive.",
-      "note": "Primary source for dimensions (Internet Archive copy). PROVISIONAL: pages for each value still to be located; entries stay verified:false with no page until then.",
-      "url": "https://archive.org/details/aeginadasheiligtunse"
+      "note": "Primary source for dimensions, polychrome observations and pediment compositions. Read as archive.org OCR; page numbers are the printed running heads. Plates not seen; Heidelberg copy not opened (bot-gated)."
     },
     {
       "id": "cockerell-1860",
       "type": "archaeological",
       "citation": "Cockerell, C. R. The Temples of Jupiter Panhellenius at Aegina, and of Apollo Epicurius at Bassae. London, 1860.",
+      "url": "https://archive.org/details/THETEMPLESOFJUPITERPANHELLENIUSATAEGINAANDAPOLLOEPICURIUSATBASSAINEARPHIGALEIAIN",
       "verified": false,
       "licence": "Public domain (1860).",
-      "note": "PROVISIONAL: digitised copy URL to be confirmed."
+      "note": "Image-only PDF, no OCR text; nothing read directly. Cited only via Furtwängler 1906."
     },
     {
       "id": "bankel-1993",
@@ -47,15 +71,52 @@
       "citation": "Bankel, H. Der spätarchaische Tempel der Aphaia auf Aegina. Denkmäler antiker Architektur 19. Berlin, 1993.",
       "verified": false,
       "licence": "Citation only.",
-      "note": "Print-only. Stays verified:false with no page numbers unless the user supplies page scans."
+      "note": "Print-only. Nothing read. Stays verified:false with no page numbers unless the user supplies page scans."
     },
     {
       "id": "gods-in-color",
       "type": "polychrome",
-      "citation": "Brinkmann, V., and U. Koch-Brinkmann, et al. Gods in Color: painted sculpture of classical antiquity (exhibition and catalogue).",
+      "citation": "Brinkmann, V., and U. Koch-Brinkmann. Gods in Color: research and reconstructions of ancient polychromy (Liebieghaus Skulpturensammlung).",
       "verified": false,
       "licence": "Citation only.",
-      "note": "PROVISIONAL: edition, year and pages to be confirmed from research."
+      "note": "Research objects include both Aphaia pediments, the archer in Scythian dress, an Athena and a warrior's head (Wikipedia, secondary). No Brinkmann text on the tympanum colour was read."
+    },
+    {
+      "id": "harvard-gazette-2007",
+      "type": "polychrome",
+      "citation": "Harvard Gazette, \"Scholars give us antiquity, the colorized version\", September 2007.",
+      "quote": "The figure wears a shirt and leggings covered all over with an intricate red, yellow, blue, and green diamond pattern. Over this he wears a bright yellow vest inscribed with lions and griffins.",
+      "url": "https://news.harvard.edu/gazette/story/2007/09/scholars-give-us-antiquity-the-colorized-version",
+      "verified": true,
+      "licence": "Short quotation with attribution.",
+      "note": "On the west-pediment archer. Also: \"A tall yellow hat with a flower pattern completes the costume.\" The curator says he \"probably represents Paris\"."
+    },
+    {
+      "id": "met-archer-variant-c",
+      "type": "polychrome",
+      "citation": "The Metropolitan Museum of Art, Chroma exhibition: Trojan archer, colour reconstruction Variant C.",
+      "url": "https://www.metmuseum.org/art/collection/search/853792",
+      "verified": false,
+      "licence": "Citation only.",
+      "note": "Not read (HTTP 429). Pigment list (Egyptian blue, red ochre with cinnabar, malachite, gold ochre, umber) known only from a search summary."
+    },
+    {
+      "id": "brinkmann-archer-monsites",
+      "type": "polychrome",
+      "citation": "Brinkmann, V., and U. Koch-Brinkmann. \"Polychromy on Greek Sculpture: The Archer on the West-pediment of the Aphaia Temple, Aegina.\" Monumenta Sites.",
+      "url": "https://journals.ub.uni-heidelberg.de/index.php/monsites/article/view/22342",
+      "verified": false,
+      "licence": "Citation only.",
+      "note": "Not read (bot-gated)."
+    },
+    {
+      "id": "liebieghaus-warriors-head",
+      "type": "polychrome",
+      "citation": "Liebieghaus Skulpturensammlung: Warrior's head, Aphaia temple west pediment, colour reconstruction Variant C (S. Kellner, U. Koch-Brinkmann).",
+      "url": "https://liebieghaus.de/de/polychromie/warriors-head-aphaia-temple",
+      "verified": true,
+      "licence": "Citation only.",
+      "note": "Method statement only (UV fluorescence, UV reflectography, microscopy, raking light, UV-VIS spectroscopy)."
     },
     {
       "id": "glyptothek-aegina-pediments",
@@ -63,64 +124,131 @@
       "citation": "Ohly, D. Reconstructions of the Aegina pediments, Glyptothek Munich.",
       "verified": false,
       "licence": "Citation only.",
-      "note": "PROVISIONAL: exact publication and year to be confirmed from research."
+      "note": "The current Glyptothek (Ohly) arrangement was not retrieved."
+    },
+    {
+      "id": "visitgreece-aphaia",
+      "type": "official",
+      "citation": "Greek National Tourism Organisation (visitgreece.gr): Temple of Aphaia.",
+      "url": "https://www.visitgreece.gr/en/experiences/culture/archaeological-sites-monuments/temple-of-aphaia",
+      "verified": true,
+      "licence": "Citation only.",
+      "note": "Tourism board, not the Ministry of Culture (secondary). Gives c. 500-490 BC; east pediment Heracles against Laomedon, west Agamemnon against Priam."
+    },
+    {
+      "id": "wikipedia-temple-of-aphaia",
+      "type": "archaeological",
+      "citation": "Wikipedia, \"Temple of Aphaia\".",
+      "url": "https://en.wikipedia.org/wiki/Temple_of_Aphaia",
+      "verified": true,
+      "licence": "CC BY-SA (citation only).",
+      "note": "Secondary. Verified only as a Wikipedia statement; claims it attributes to Bankel, Ohly or Eschbach are unverified."
     }
   ],
   "names": {
     "aphaia": {
       "term": "Aphaia",
-      "sourceIds": [
-        "pausanias-2-30-3",
-        "moc-odysseus-aphaia"
-      ]
+      "sourceIds": ["pausanias-2-30-3", "moc-odysseus-aphaia"],
+      "confidence": "attested"
     },
     "britomartis": {
       "term": "Britomartis",
-      "sourceIds": [
-        "pausanias-2-30-3"
-      ],
-      "note": "Pausanias relates the Britomartis myth in connection with Aphaia."
+      "sourceIds": ["pausanias-2-30-3", "antoninus-liberalis-40"],
+      "confidence": "attested",
+      "note": "Daughter of Zeus and Carme, fled Minos; worshipped in Aegina as Aphaia."
+    },
+    "dictynna": {
+      "term": "Dictynna",
+      "sourceIds": ["pausanias-2-30-3"],
+      "confidence": "attested",
+      "note": "Her Cretan name (Goddess of Nets)."
     },
     "athena": {
       "term": "Athena",
-      "sourceIds": [
-        "glyptothek-aegina-pediments"
-      ],
-      "note": "Central figure of both pediments."
+      "sourceIds": ["furtwangler-1906", "moc-odysseus-aphaia"],
+      "confidence": "attested",
+      "note": "Central figure of both pediments, unseen by the combatants (Furtwängler 1906, p. 310)."
     },
     "herakles": {
       "term": "Herakles",
-      "sourceIds": [
-        "glyptothek-aegina-pediments"
-      ],
-      "note": "Kneeling archer of the later east pediment."
+      "sourceIds": ["furtwangler-1906"],
+      "confidence": "attested",
+      "note": "Helmeted archer with a lion-skin helmet front in the later east pediment (pp. 308-310). Which side he stands on is unverified."
+    },
+    "telamon": {
+      "term": "Telamon",
+      "sourceIds": ["furtwangler-1906"],
+      "confidence": "interpretive",
+      "note": "With Herakles against Laomedon: the first Trojan War, subject of the later east pediment (pp. 312-314)."
+    },
+    "laomedon": {
+      "term": "Laomedon",
+      "sourceIds": ["furtwangler-1906", "visitgreece-aphaia"],
+      "confidence": "interpretive"
+    },
+    "trojan-archer": {
+      "term": "Trojan archer (identified as Paris by some)",
+      "sourceIds": ["furtwangler-1906", "harvard-gazette-2007"],
+      "confidence": "interpretive",
+      "note": "Conflict: Furtwängler 1906 (p. 308) says the old name Paris rests on false assumptions; the 2007 Gods in Color curators say he probably represents Paris."
     }
   },
   "choices": {
     "polychrome-scheme": {
-      "description": "Architectural polychrome follows the Gods in Color reconstructions; gaps filled from Furtwängler's color observations.",
-      "sourceIds": [
-        "gods-in-color",
-        "furtwangler-1906"
-      ],
+      "description": "Architectural colours follow what the 1906 excavators observed on Aphaia itself; the sculpture follows the Gods in Color reconstructions; gaps are filled by analogy with other Archaic temples.",
+      "sourceIds": ["furtwangler-1906", "harvard-gazette-2007", "gods-in-color"],
       "confidence": "analogy"
     },
-    "east-pediment-displayed": {
-      "description": "The later east pediment (Herakles as kneeling archer) is displayed on a c. 500 BC temple.",
-      "sourceIds": [
-        "glyptothek-aegina-pediments"
-      ],
-      "confidence": "interpretive",
-      "note": "User decision 2026-11-16: show the later Herakles composition."
+    "black-triglyphs-and-mutules": {
+      "description": "Triglyphs and mutules are black, not blue: fragments found on Aphaia show black; Cockerell's blue rests on an opisthodomos piece.",
+      "sourceIds": ["furtwangler-1906", "cockerell-1860"],
+      "confidence": "attested",
+      "note": "Furtwängler 1906, p. 47."
     },
     "dimension-baseline": {
-      "description": "Absolute size is anchored to published dimensions; the scan verifies proportions.",
-      "sourceIds": [
-        "furtwangler-1906",
-        "bankel-1993"
-      ],
+      "description": "Absolute size is anchored to the published dimensions of Furtwängler et al. 1906; the scan verifies proportions.",
+      "sourceIds": ["furtwangler-1906"],
       "confidence": "attested",
       "note": "User decision 2026-11-16 (no tape-measured reference)."
+    },
+    "flank-interaxial-2-57": {
+      "description": "Flank interaxial 2.57 m (two text statements, pp. 24 and 55) is used over 2.56 m (p. 52 table).",
+      "sourceIds": ["furtwangler-1906"],
+      "confidence": "attested"
+    },
+    "corner-contraction-p29": {
+      "description": "Corner contraction uses the measured values on p. 29 (east 0.25 m, south 0.245 m) over the garbled p. 55 figures.",
+      "sourceIds": ["furtwangler-1906"],
+      "confidence": "attested"
+    },
+    "no-curvature": {
+      "description": "The stylobate is built level, with no curvature (\"Somit ist eine Kurvatur nicht vorhanden\").",
+      "sourceIds": ["furtwangler-1906"],
+      "confidence": "attested",
+      "note": "p. 51."
+    },
+    "east-ramp": {
+      "description": "A stone ramp on the east front, slope 1:6, reaching the second step and leading on to the altar.",
+      "sourceIds": ["furtwangler-1906"],
+      "confidence": "attested",
+      "note": "Ramp p. 25; slope in section II.1 (page not pinned)."
+    },
+    "east-pediment-displayed": {
+      "description": "The later east pediment (c. 480 BC, Herakles and Telamon against Laomedon) is displayed on a c. 500 BC temple.",
+      "sourceIds": ["furtwangler-1906", "glyptothek-aegina-pediments"],
+      "confidence": "interpretive",
+      "note": "User decision 2026-11-16. The earlier east pediment is known only indirectly."
+    },
+    "pediment-figure-order": {
+      "description": "Left-to-right figure order (west A-N, east A-L) inferred from Furtwängler's group descriptions and lettering; no single page gives it.",
+      "sourceIds": ["furtwangler-1906"],
+      "confidence": "interpretive",
+      "note": "pp. 195, 197, 312."
+    },
+    "archer-identity": {
+      "description": "The painted west-pediment archer is labelled \"Trojan archer (identified as Paris by some)\".",
+      "sourceIds": ["furtwangler-1906", "harvard-gazette-2007"],
+      "confidence": "interpretive"
     }
   }
 }

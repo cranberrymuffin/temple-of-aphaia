@@ -37,10 +37,12 @@
       "required": [
         "stylobateLength",
         "stylobateWidth",
+        "lowestStepLength",
+        "lowestStepWidth",
         "interaxialFront",
         "interaxialFlank",
-        "interaxialCornerFront",
-        "interaxialCornerFlank",
+        "cornerContractionFront",
+        "cornerContractionFlank",
         "columnHeight",
         "lowerDiameter",
         "upperDiameter",
@@ -48,23 +50,34 @@
         "echinusHeight",
         "abacusHeight",
         "abacusWidth",
+        "entablatureHeight",
         "architraveHeight",
         "friezeHeight",
         "corniceHeight",
         "crepidomaStepCount",
         "crepidomaStepRise",
-        "crepidomaStepTread",
         "pedimentPitch",
+        "peristasisDepthEast",
+        "peristasisDepthWestFlank",
         "cellaOuterLength",
         "cellaOuterWidth",
         "cellaWallThickness",
         "antaWidth",
+        "antaProjection",
         "doorWidth",
+        "doorThresholdRise",
+        "pronaosColumnsInAntis",
+        "pronaosLowerDiameter",
+        "pronaosStepRise",
         "interiorColumnsPerSide",
+        "interiorAxialSpacing",
+        "interiorCentreAisleWidth",
+        "interiorUpperFluteCount",
         "interiorLowerColumnHeight",
         "interiorLowerDiameter",
         "interiorUpperColumnHeight",
-        "interiorUpperDiameter"
+        "interiorUpperDiameter",
+        "eastRampSlope"
       ],
       "properties": {
         "stylobateLength": {
@@ -73,16 +86,22 @@
         "stylobateWidth": {
           "$ref": "#/definitions/entry"
         },
+        "lowestStepLength": {
+          "$ref": "#/definitions/entry"
+        },
+        "lowestStepWidth": {
+          "$ref": "#/definitions/entry"
+        },
         "interaxialFront": {
           "$ref": "#/definitions/entry"
         },
         "interaxialFlank": {
           "$ref": "#/definitions/entry"
         },
-        "interaxialCornerFront": {
+        "cornerContractionFront": {
           "$ref": "#/definitions/entry"
         },
-        "interaxialCornerFlank": {
+        "cornerContractionFlank": {
           "$ref": "#/definitions/entry"
         },
         "columnHeight": {
@@ -106,6 +125,9 @@
         "abacusWidth": {
           "$ref": "#/definitions/entry"
         },
+        "entablatureHeight": {
+          "$ref": "#/definitions/entry"
+        },
         "architraveHeight": {
           "$ref": "#/definitions/entry"
         },
@@ -121,10 +143,13 @@
         "crepidomaStepRise": {
           "$ref": "#/definitions/entry"
         },
-        "crepidomaStepTread": {
+        "pedimentPitch": {
           "$ref": "#/definitions/entry"
         },
-        "pedimentPitch": {
+        "peristasisDepthEast": {
+          "$ref": "#/definitions/entry"
+        },
+        "peristasisDepthWestFlank": {
           "$ref": "#/definitions/entry"
         },
         "cellaOuterLength": {
@@ -139,10 +164,34 @@
         "antaWidth": {
           "$ref": "#/definitions/entry"
         },
+        "antaProjection": {
+          "$ref": "#/definitions/entry"
+        },
         "doorWidth": {
           "$ref": "#/definitions/entry"
         },
+        "doorThresholdRise": {
+          "$ref": "#/definitions/entry"
+        },
+        "pronaosColumnsInAntis": {
+          "$ref": "#/definitions/entry"
+        },
+        "pronaosLowerDiameter": {
+          "$ref": "#/definitions/entry"
+        },
+        "pronaosStepRise": {
+          "$ref": "#/definitions/entry"
+        },
         "interiorColumnsPerSide": {
+          "$ref": "#/definitions/entry"
+        },
+        "interiorAxialSpacing": {
+          "$ref": "#/definitions/entry"
+        },
+        "interiorCentreAisleWidth": {
+          "$ref": "#/definitions/entry"
+        },
+        "interiorUpperFluteCount": {
           "$ref": "#/definitions/entry"
         },
         "interiorLowerColumnHeight": {
@@ -155,6 +204,9 @@
           "$ref": "#/definitions/entry"
         },
         "interiorUpperDiameter": {
+          "$ref": "#/definitions/entry"
+        },
+        "eastRampSlope": {
           "$ref": "#/definitions/entry"
         }
       }
@@ -181,7 +233,8 @@
           "enum": [
             "m",
             "deg",
-            "count"
+            "count",
+            "ratio"
           ]
         },
         "source": {

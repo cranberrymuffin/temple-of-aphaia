@@ -7,7 +7,7 @@ export type DimensionKey = keyof (typeof dimensionsJson)['dimensions']
 
 export interface DimensionEntry {
   value: number
-  unit: 'm' | 'deg' | 'count'
+  unit: 'm' | 'deg' | 'count' | 'ratio'
   source: 'scan' | 'published'
   ref: string
   page?: string
