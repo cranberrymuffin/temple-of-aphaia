@@ -1,5 +1,5 @@
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
   font-family: system-ui, sans-serif;
 }
 
@@ -7,10 +7,26 @@ html,
 body {
   margin: 0;
   height: 100%;
+  overflow: hidden;
+  background: #bfd3e6;
 }
 
 #app {
+  position: fixed;
+  inset: 0;
+}
+
+#app canvas {
+  display: block;
+  touch-action: none;
+}
+
+#status {
+  position: fixed;
+  inset: 0;
   display: grid;
   place-items: center;
-  height: 100%;
+  color: #2b3440;
+  font-size: 1rem;
+  pointer-events: none;
 }
