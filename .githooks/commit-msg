@@ -1,0 +1,12 @@
+#!/bin/sh
+# Reject commit messages that carry Claude/Anthropic attribution.
+# Patterns live in .githooks/attribution-patterns (case-insensitive, extended regex).
+patterns="$(git rev-parse --show-toplevel)/.githooks/attribution-patterns"
+msg_file="$1"
+
+if grep -v '^#' "$msg_file" | grep -Eiq -f "$patterns"; then
+  echo "commit-msg: rejected. The message contains a Claude/Anthropic attribution line:" >&2
+  grep -v '^#' "$msg_file" | grep -Ei -f "$patterns" | sed 's/^/  /' >&2
+  exit 1
+fi
+exit 0
