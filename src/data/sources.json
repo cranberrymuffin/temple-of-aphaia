@@ -29,8 +29,9 @@
       "type": "archaeological",
       "citation": "Furtwängler, A., with E. R. Fiechter and H. Thiersch. Aegina: Das Heiligtum der Aphaia. Munich, 1906.",
       "verified": false,
-      "licence": "Public domain (1906); digitised at Heidelberg University Library.",
-      "note": "PROVISIONAL: digitised copy at digi.ub.uni-heidelberg.de; exact URL and pages to be confirmed."
+      "licence": "Public domain (1906); digitised at the Internet Archive.",
+      "note": "Primary source for dimensions (Internet Archive copy). PROVISIONAL: pages for each value still to be located; entries stay verified:false with no page until then.",
+      "url": "https://archive.org/details/aeginadasheiligtunse"
     },
     {
       "id": "cockerell-1860",
@@ -68,39 +69,56 @@
   "names": {
     "aphaia": {
       "term": "Aphaia",
-      "sourceIds": ["pausanias-2-30-3", "moc-odysseus-aphaia"]
+      "sourceIds": [
+        "pausanias-2-30-3",
+        "moc-odysseus-aphaia"
+      ]
     },
     "britomartis": {
       "term": "Britomartis",
-      "sourceIds": ["pausanias-2-30-3"],
+      "sourceIds": [
+        "pausanias-2-30-3"
+      ],
       "note": "Pausanias relates the Britomartis myth in connection with Aphaia."
     },
     "athena": {
       "term": "Athena",
-      "sourceIds": ["glyptothek-aegina-pediments"],
+      "sourceIds": [
+        "glyptothek-aegina-pediments"
+      ],
       "note": "Central figure of both pediments."
     },
     "herakles": {
       "term": "Herakles",
-      "sourceIds": ["glyptothek-aegina-pediments"],
+      "sourceIds": [
+        "glyptothek-aegina-pediments"
+      ],
       "note": "Kneeling archer of the later east pediment."
     }
   },
   "choices": {
     "polychrome-scheme": {
       "description": "Architectural polychrome follows the Gods in Color reconstructions; gaps filled from Furtwängler's color observations.",
-      "sourceIds": ["gods-in-color", "furtwangler-1906"],
+      "sourceIds": [
+        "gods-in-color",
+        "furtwangler-1906"
+      ],
       "confidence": "analogy"
     },
     "east-pediment-displayed": {
       "description": "The later east pediment (Herakles as kneeling archer) is displayed on a c. 500 BC temple.",
-      "sourceIds": ["glyptothek-aegina-pediments"],
+      "sourceIds": [
+        "glyptothek-aegina-pediments"
+      ],
       "confidence": "interpretive",
       "note": "User decision 2026-11-16: show the later Herakles composition."
     },
     "dimension-baseline": {
       "description": "Absolute size is anchored to published dimensions; the scan verifies proportions.",
-      "sourceIds": ["furtwangler-1906", "bankel-1993"],
+      "sourceIds": [
+        "furtwangler-1906",
+        "bankel-1993"
+      ],
       "confidence": "attested",
       "note": "User decision 2026-11-16 (no tape-measured reference)."
     }
