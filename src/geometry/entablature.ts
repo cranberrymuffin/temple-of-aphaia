@@ -11,15 +11,16 @@ interface Side {
   front: boolean
   sign: 1 | -1
   back: Face
+  out: Face
   alongNeg: Face
   alongPos: Face
 }
 
 const SIDES: Side[] = [
-  { name: 'east', front: true, sign: 1, back: '-x', alongNeg: '-z', alongPos: '+z' },
-  { name: 'west', front: true, sign: -1, back: '+x', alongNeg: '-z', alongPos: '+z' },
-  { name: 'south', front: false, sign: 1, back: '-z', alongNeg: '-x', alongPos: '+x' },
-  { name: 'north', front: false, sign: -1, back: '+z', alongNeg: '-x', alongPos: '+x' },
+  { name: 'east', front: true, sign: 1, back: '-x', out: '+x', alongNeg: '-z', alongPos: '+z' },
+  { name: 'west', front: true, sign: -1, back: '+x', out: '-x', alongNeg: '-z', alongPos: '+z' },
+  { name: 'south', front: false, sign: 1, back: '-z', out: '+z', alongNeg: '-x', alongPos: '+x' },
+  { name: 'north', front: false, sign: -1, back: '+z', out: '-z', alongNeg: '-x', alongPos: '+x' },
 ]
 
 /** Box in side coordinates: along [a0,a1], outward offset [o0,o1] from the origin, height [y0,y1]. */
@@ -35,6 +36,32 @@ function sideQuad(b: MeshBuilder, s: Side, a0: number, a1: number, o: number, y0
   const p = (a: number, y: number): Vec3 => (s.front ? [s.sign * o, y, a] : [a, y, s.sign * o])
   const dir: Vec3 = s.front ? [s.sign, 0, 0] : [0, 0, s.sign]
   b.polygonFacing([p(a0, y0), p(a1, y0), p(a1, y1), p(a0, y1)], dir)
+}
+
+/** Point in side coordinates (along a, outward offset o, height y). */
+const sidePoint = (s: Side, a: number, o: number, y: number): Vec3 => (s.front ? [s.sign * o, y, a] : [a, y, s.sign * o])
+const alongDir = (s: Side, sign: number): Vec3 => (s.front ? [0, 0, sign] : [sign, 0, 0])
+const outDir = (s: Side): Vec3 => (s.front ? [s.sign, 0, 0] : [0, 0, s.sign])
+
+/**
+ * Triglyph front at offset o between a0 and a1: a full-width head band above yh and, below it, bars
+ * separated by recessed glyph grooves (each [g0, g1] along the side, recessed by depth).
+ */
+function triglyphFront(b: MeshBuilder, s: Side, a0: number, a1: number, o: number, y0: number, yh: number, y1: number, grooves: [number, number][], depth: number) {
+  const P = (a: number, oo: number, y: number) => sidePoint(s, a, oo, y)
+  const quadOut = (u0: number, u1: number, oo: number, v0: number, v1: number) =>
+    b.polygonFacing([P(u0, oo, v0), P(u1, oo, v0), P(u1, oo, v1), P(u0, oo, v1)], outDir(s))
+  quadOut(a0, a1, o, yh, y1)
+  let cur = a0
+  for (const [g0, g1] of grooves) {
+    quadOut(cur, g0, o, y0, yh)
+    quadOut(g0, g1, o - depth, y0, yh)
+    b.polygonFacing([P(g0, o - depth, y0), P(g0, o, y0), P(g0, o, yh), P(g0, o - depth, yh)], alongDir(s, 1))
+    b.polygonFacing([P(g1, o - depth, y0), P(g1, o, y0), P(g1, o, yh), P(g1, o - depth, yh)], alongDir(s, -1))
+    b.polygonFacing([P(g0, o - depth, yh), P(g1, o - depth, yh), P(g1, o, yh), P(g0, o, yh)], [0, -1, 0])
+    cur = g1
+  }
+  quadOut(cur, a1, o, y0, yh)
 }
 
 /** Small downward-hanging guttae (frusta) below y, centred at (x, z). Top caps omitted. */
@@ -107,7 +134,7 @@ export function entablature(r: Resolved, tier: Tier, col: Collector): Omit<Gener
         // Corner triglyphs: the fronts' blocks wrap the corner; the flanks' end faces abut them.
         let a0t = el.start
         let a1t = el.end
-        const omit: Face[] = [s.back, '+y', '-y']
+        const omit: Face[] = [s.back, s.out, '+y', '-y']
         const omitReg: Face[] = [s.back, '+y']
         if (isCorner && s.front) {
           if (i === 0) a0t -= tp
@@ -118,6 +145,9 @@ export function entablature(r: Resolved, tier: Tier, col: Collector): Omit<Gener
           omitReg.push(i === 0 ? s.alongNeg : s.alongPos)
         }
         sideBox(triglyphs, s, a0t, a1t, face, face + tp, f0, f1, omit)
+        const gw = E.frieze.glyphWidth
+        const grooves: [number, number][] = [1, 2].map((k) => [el.start + (k * t) / 3 - gw / 2, el.start + (k * t) / 3 + gw / 2])
+        triglyphFront(triglyphs, s, a0t, a1t, face + tp, f0, E.frieze.headY, f1, grooves, E.frieze.glyphDepth)
         // Regula under the taenia, below the triglyph.
         let r0 = el.start
         let r1 = el.end

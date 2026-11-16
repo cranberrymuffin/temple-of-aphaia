@@ -73,6 +73,14 @@ describe('frieze', () => {
     expect(r.log.some((l) => l.kind === 'frieze' && Math.abs((l.value ?? NaN) - s.cornerMetopeDelta) < 1e-12)).toBe(true)
   })
 
+  it('triglyph glyphs: head band inside the frieze, grooves shallower than the projection', () => {
+    const F = r.entablature.frieze
+    expect(F.headY).toBeGreaterThan(F.y0)
+    expect(F.headY).toBeLessThan(F.y1)
+    expect(F.glyphDepth).toBeLessThan(F.triglyphProjection)
+    expect(2 * F.glyphWidth).toBeLessThan(F.triglyphWidth)
+  })
+
   it('frieze length equals the column-axis span plus the face offset on both ends', () => {
     const E = r.entablature
     expect(E.frieze.front.length).toBeCloseTo(2 * E.faceZ, 9)
@@ -197,7 +205,11 @@ describe('crepidoma, cella, ramp, errors', () => {
     const I = r.interior
     expect(I.xs).toHaveLength(base.interiorColumnsPerSide.value)
     expect(I.xs[1] - I.xs[0]).toBeCloseTo(base.interiorAxialSpacing.value, 9)
-    expect(2 * (I.zs[1] - I.lower.lowerRadius)).toBeCloseTo(base.interiorCentreAisleWidth.value, 9)
+    // Centre aisle between the interior step edges; the steps carry the lower columns.
+    expect(2 * (I.zs[1] - I.step.width / 2)).toBeCloseTo(base.interiorCentreAisleWidth.value, 9)
+    expect(I.step.width).toBeGreaterThanOrEqual(2 * I.lower.lowerRadius)
+    expect(I.step.y1 + I.lower.height - I.floorY).toBeCloseTo(base.interiorLowerColumnHeight.value, 9)
+    expect(r.levels.filter((l) => l.name.startsWith('interior-step'))).toHaveLength(2)
     expect(I.upper.flutes).toBe(base.interiorUpperFluteCount.value)
     expect(I.epistyle.y1 + I.upper.height).toBeLessThan(r.ceilingY)
   })

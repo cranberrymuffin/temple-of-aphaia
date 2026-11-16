@@ -40,6 +40,7 @@ export const ELEMENT_PALETTE: Record<string, string> = {
   'porch-entablature': 'architrave',
   'cella-floor': 'cella-floor-red',
   threshold: 'marble',
+  'interior-step': 'cella-floor-red',
   'interior-columns-lower': 'shaft-stucco',
   'interior-epistyle': 'architrave',
   'interior-columns-upper': 'shaft-stucco',

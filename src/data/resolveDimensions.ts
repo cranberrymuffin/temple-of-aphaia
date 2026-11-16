@@ -20,6 +20,20 @@ export const CONVENTIONS = {
   entasisRatio: 0.012,
   /** Height (fraction of shaft) of the entasis maximum. */
   entasisPeak: 0.4,
+  /** Neck rings incised in the shaft below the echinus (fluteCount note, p. 26: "three deep neck rings"). */
+  neckRings: 3,
+  /** Neck-ring groove height, pitch, top offset below the shaft top, and depth, as fractions of the lower diameter. */
+  neckRingHeightRatio: 0.012,
+  neckRingPitchRatio: 0.03,
+  neckRingTopRatio: 0.1,
+  neckRingDepthRatio: 0.01,
+  /** Triglyph head band / frieze height (friezeHeight note, p. 28: band 0.11 m). Two glyph grooves below it. */
+  triglyphHeadRatio: 0.125,
+  /** Glyph groove width / triglyph width, and depth / triglyph projection. */
+  glyphWidthRatio: 1 / 6,
+  glyphDepthRatio: 0.6,
+  /** Interior colonnade step: rise / pronaos step rise; width = interior lower abacus width (centred on the axes). */
+  interiorStepRiseRatio: 0.5,
   /** Flute sagitta as a fraction of the flute chord. */
   fluteDepthRatio: 0.14,
   /** Echinus top radius as a fraction of the abacus half-width. */
@@ -86,6 +100,9 @@ export interface ColumnSpec {
   entasisPeak: number
   flutes: number
   fluteDepthRatio: number
+  /** Incised neck-ring grooves: distance of the groove top below the shaft top, and groove height. */
+  neckRings: { top: number; height: number }[]
+  neckRingDepth: number
   echinusHeight: number
   echinusTopRadius: number
   abacusHeight: number
@@ -145,6 +162,10 @@ export interface Resolved {
       triglyphWidth: number
       metopeWidth: number
       triglyphProjection: number
+      /** Bottom of the triglyph head band; glyph grooves run from the frieze bottom up to it. */
+      headY: number
+      glyphWidth: number
+      glyphDepth: number
       front: FriezeSide
       flank: FriezeSide
     }
@@ -194,6 +215,8 @@ export interface Resolved {
     xs: number[]
     zs: number[]
     floorY: number
+    /** Interior steps under the colonnades (one per row, centred on zs). */
+    step: { y0: number; y1: number; width: number }
     epistyle: { y0: number; y1: number; width: number }
   }
   /** Wedge from minX (top, at the lowest step face) down to maxX; `fills` close the gap over the lower treads up to the ramp top. */
@@ -260,6 +283,11 @@ export function resolveDimensions(
       entasisPeak: C.entasisPeak,
       flutes: nFlutes,
       fluteDepthRatio: C.fluteDepthRatio,
+      neckRings: Array.from({ length: C.neckRings }, (_, i) => ({
+        top: (C.neckRingTopRatio + i * C.neckRingPitchRatio) * lowerD,
+        height: C.neckRingHeightRatio * lowerD,
+      })),
+      neckRingDepth: C.neckRingDepthRatio * lowerD,
       echinusHeight,
       echinusTopRadius: (C.echinusTopRatio * abacusWidth) / 2,
       abacusHeight,
@@ -470,7 +498,9 @@ export function resolveDimensions(
 
   // ---- interior two-tier colonnade ----------------------------------------------------------
   const nInt = v('interiorColumnsPerSide')
-  const lowerInt = makeColumn(v('interiorLowerColumnHeight'), v('interiorLowerDiameter'), flutes)
+  // The lower columns stand on the interior step; their height is still cella floor to abacus top.
+  const intStepRise = C.interiorStepRiseRatio * v('pronaosStepRise')
+  const lowerInt = makeColumn(v('interiorLowerColumnHeight') - intStepRise, v('interiorLowerDiameter'), flutes)
   const upperInt = makeColumn(v('interiorUpperColumnHeight'), v('interiorUpperDiameter'), v('interiorUpperFluteCount'))
   const naosMid = (eastWallX[0] + westWallX[1]) / 2
   const spacing = v('interiorAxialSpacing')
@@ -478,12 +508,12 @@ export function resolveDimensions(
   if (xs[nInt - 1] + lowerInt.abacusWidth / 2 >= eastWallX[0] || xs[0] - lowerInt.abacusWidth / 2 <= westWallX[1])
     throw new ResolveError('interior colonnade longer than the naos')
   const innerHalfW = cHalfZ - wall
-  // Column axes: centre aisle half-width (between the interior step edges) plus the lower radius.
-  const zRow = v('interiorCentreAisleWidth') / 2 + lowerInt.lowerRadius
-  conv('interior column axes at centre-aisle half-width + lower radius (interior step not modelled)', zRow)
+  // Column axes centred on the interior steps, whose inner edges bound the centre aisle.
+  const zRow = v('interiorCentreAisleWidth') / 2 + lowerInt.abacusWidth / 2
+  conv(`interior step width = lower abacus width, rise = ${C.interiorStepRiseRatio} x pronaosStepRise`, intStepRise)
   if (zRow + lowerInt.abacusWidth / 2 >= innerHalfW) throw new ResolveError('interior colonnade hits the cella wall')
   const epH = C.interiorEpistyleRatio * v('interiorLowerDiameter')
-  const ep0 = floorY + lowerInt.height
+  const ep0 = floorY + intStepRise + lowerInt.height
   const interiorTop = ep0 + epH + upperInt.height
   if (interiorTop >= c1) throw new ResolveError('interior colonnade taller than the ceiling')
   if (zRow - lowerInt.abacusWidth / 2 <= 0) throw new ResolveError('interior colonnades overlap')
@@ -525,6 +555,11 @@ export function resolveDimensions(
       y: thresholdY,
       box: { minX: eastWallX[0], maxX: eastWallX[1], minZ: -doorW / 2, maxZ: doorW / 2 },
     },
+    ...[-zRow, zRow].map((z, i) => ({
+      name: `interior-step-${i === 0 ? 'n' : 's'}`,
+      y: floorY + intStepRise,
+      box: { minX: westWallX[1], maxX: eastWallX[0], minZ: z - lowerInt.abacusWidth / 2, maxZ: z + lowerInt.abacusWidth / 2 },
+    })),
     {
       name: 'naos-floor',
       y: floorY,
@@ -550,7 +585,18 @@ export function resolveDimensions(
       architrave: { y0: a0, y1: a1 },
       taenia: { height: taeniaH, projection: taeniaP },
       regula: { height: C.regulaRatio * ha, projection: taeniaP, guttae: C.guttaePerRow },
-      frieze: { y0: a1, y1: f1, triglyphWidth: t, metopeWidth: m, triglyphProjection: tp, front, flank },
+      frieze: {
+        y0: a1,
+        y1: f1,
+        triglyphWidth: t,
+        metopeWidth: m,
+        triglyphProjection: tp,
+        headY: f1 - C.triglyphHeadRatio * hf,
+        glyphWidth: C.glyphWidthRatio * t,
+        glyphDepth: C.glyphDepthRatio * tp,
+        front,
+        flank,
+      },
       cornice: { y0: f1, y1: c1, halfX: corHalfX, halfZ: corHalfZ, overhang, projectionX: projX, projectionZ: projZ },
       mutules: {
         thickness: mutuleT,
@@ -601,6 +647,7 @@ export function resolveDimensions(
       xs,
       zs: [-zRow, zRow],
       floorY,
+      step: { y0: floorY, y1: floorY + intStepRise, width: lowerInt.abacusWidth },
       epistyle: { y0: ep0, y1: ep0 + epH, width: lowerInt.abacusWidth },
     },
     ramp,

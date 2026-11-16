@@ -78,6 +78,11 @@ describe.each(TIERS)('%s tier', (tier) => {
       byY.set(k, Math.max(byY.get(k) ?? 0, rad))
     }
     expect(arrisAngles.size).toBe(dims.fluteCount.value)
+    // Incised neck rings: one up-facing ledge height per groove, all below the echinus.
+    const ledges = new Set<string>()
+    for (const v of verts) if (g.normals[3 * v + 1] > 0.99) ledges.add(g.positions[3 * v + 1].toFixed(5))
+    expect(ledges.size).toBe(r.column.neckRings.length)
+    for (const y of ledges) expect(Number(y)).toBeLessThan(r.column.shaftHeight)
     // Entasis: the arris envelope bulges beyond the straight line from base to top.
     const ys = [...byY.keys()].map(Number).sort((a, b) => a - b)
     const h = ys[ys.length - 1]
@@ -101,6 +106,16 @@ describe.each(TIERS)('%s tier', (tier) => {
     ])
       expect(names, n).toContain(n)
     if (tier !== 'low') expect(names).toContain('guttae')
+    expect(names).toContain('interior-step')
+  })
+
+  it('triglyphs carry two glyph grooves each (downward groove tops)', () => {
+    const g = group(tier, 'triglyphs')
+    const F = r.entablature.frieze
+    let down = 0
+    for (let i = 0; i < g.indices.length; i += 3) if (g.normals[3 * g.indices[i] + 1] < -0.99) down++
+    const n = 2 * (F.front.triglyphs + F.flank.triglyphs)
+    expect(down).toBe(n * 2 * 2) // 2 grooves x 2 triangles per triglyph
   })
 
   it('no NaN, no degenerate triangles, winding agrees with the normals', () => {
@@ -141,8 +156,8 @@ describe.each(TIERS)('%s tier', (tier) => {
         const z = g.positions[3 * v + 2]
         const radial = x * g.normals[3 * v] + z * g.normals[3 * v + 2]
         const ny = g.normals[3 * v + 1]
-        // The flute cover faces down; everything else faces away from the axis.
-        if (!(ny < -0.99)) expect(radial, name).toBeGreaterThan(0)
+        // The flute cover and the neck-ring ledges are horizontal; everything else faces away from the axis.
+        if (!(Math.abs(ny) > 0.99)) expect(radial, name).toBeGreaterThan(0)
       }
     }
     // Box-like elements: area-weighted normals point away from the group centroid.

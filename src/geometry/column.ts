@@ -57,37 +57,72 @@ export function fluteProfile(R: number, flutes: number, k: number, segs: number,
   return { pts, nrm }
 }
 
-/** Emits the fluted shaft into `b`. */
+/** Profile stations along the shaft: height, and the scale applied to the fluted section (grooves < 1). */
+export function shaftStations(c: ColumnSpec, tier: Tier): { y: number; scale: number }[] {
+  const rings = SHAFT_RINGS[tier]
+  const st: { y: number; scale: number }[] = []
+  const grooves = c.neckRings.map((g) => ({ y0: c.shaftHeight - g.top - g.height, y1: c.shaftHeight - g.top }))
+  const inGroove = (y: number) => grooves.some((g) => y > g.y0 + 1e-9 && y < g.y1 - 1e-9)
+  for (let i = 0; i <= rings; i++) {
+    const y = (i / rings) * c.shaftHeight
+    if (!inGroove(y) && !grooves.some((g) => Math.abs(y - g.y0) < 1e-9 || Math.abs(y - g.y1) < 1e-9)) st.push({ y, scale: 1 })
+  }
+  const k = 1 - c.neckRingDepth / arrisRadius(c, 1)
+  for (const g of grooves) st.push({ y: g.y0, scale: 1 }, { y: g.y0, scale: k }, { y: g.y1, scale: k }, { y: g.y1, scale: 1 })
+  // Stable order: by height; at a step the ring order (outer->inner or inner->outer) is kept from the push order.
+  return st.map((x, i) => ({ ...x, i })).sort((a, b) => a.y - b.y || a.i - b.i).map(({ y, scale }) => ({ y, scale }))
+}
+
+/** Emits the fluted shaft (with incised neck rings) into `b`. */
 export function addShaft(b: MeshBuilder, c: ColumnSpec, tier: Tier) {
   const segs = SEGMENTS_PER_FLUTE[tier]
-  const rings = SHAFT_RINGS[tier]
-  for (let k = 0; k < c.flutes; k++) {
-    const base = b.vertexCount
-    for (let i = 0; i <= rings; i++) {
-      const u = i / rings
-      const y = u * c.shaftHeight
-      const R = arrisRadius(c, u)
-      const slope = arrisSlope(c, u)
-      const { pts, nrm } = fluteProfile(R, c.flutes, k, segs, c.fluteDepthRatio)
-      for (let j = 0; j <= segs; j++) {
-        const [px, pz] = pts[j]
-        const [nx, nz] = nrm[j]
-        // Tilt the normal up by the taper: n_y = -dR/dh * (n . radial).
-        const rl = Math.hypot(px, pz)
-        const radial = (nx * px + nz * pz) / rl
-        const n: Vec3 = norm([nx, -slope * radial, nz])
-        const arc = Math.atan2(pz, px) * c.lowerRadius
-        b.vertex([px, y, pz], n, [arc, y])
-      }
+  const stations = shaftStations(c, tier)
+  // Split into runs of lateral surface separated by horizontal steps (same y, different scale).
+  const bands: { from: number; to: number; step: boolean }[] = []
+  let runStart = 0
+  for (let i = 1; i < stations.length; i++) {
+    if (Math.abs(stations[i].y - stations[i - 1].y) < 1e-9) {
+      if (i - 1 > runStart) bands.push({ from: runStart, to: i - 1, step: false })
+      bands.push({ from: i - 1, to: i, step: true })
+      runStart = i
     }
-    const row = segs + 1
-    for (let i = 0; i < rings; i++)
-      for (let j = 0; j < segs; j++) {
-        const a = base + i * row + j
-        const up = a + row
-        b.tri(a, up, a + 1)
-        b.tri(up, up + 1, a + 1)
+  }
+  if (stations.length - 1 > runStart) bands.push({ from: runStart, to: stations.length - 1, step: false })
+
+  for (let k = 0; k < c.flutes; k++) {
+    for (const band of bands) {
+      const base = b.vertexCount
+      for (let i = band.from; i <= band.to; i++) {
+        const { y, scale } = stations[i]
+        const u = y / c.shaftHeight
+        const R = arrisRadius(c, u) * scale
+        const slope = arrisSlope(c, u) * scale
+        const { pts, nrm } = fluteProfile(R, c.flutes, k, segs, c.fluteDepthRatio)
+        const stepUp = band.step && stations[band.from].scale > stations[band.to].scale
+        for (let j = 0; j <= segs; j++) {
+          const [px, pz] = pts[j]
+          const [nx, nz] = nrm[j]
+          let n: Vec3
+          if (band.step) n = [0, stepUp ? 1 : -1, 0]
+          else {
+            // Tilt the normal up by the taper: n_y = -dR/dh * (n . radial).
+            const rl = Math.hypot(px, pz)
+            const radial = (nx * px + nz * pz) / rl
+            n = norm([nx, -slope * radial, nz])
+          }
+          const arc = Math.atan2(pz, px) * c.lowerRadius
+          b.vertex([px, y, pz], n, [arc, band.step ? Math.hypot(px, pz) : y])
+        }
       }
+      const row = segs + 1
+      for (let i = 0; i < band.to - band.from; i++)
+        for (let j = 0; j < segs; j++) {
+          const a = base + i * row + j
+          const up = a + row
+          b.tri(a, up, a + 1)
+          b.tri(up, up + 1, a + 1)
+        }
+    }
   }
 }
 

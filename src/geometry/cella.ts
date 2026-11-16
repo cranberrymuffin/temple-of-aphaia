@@ -121,18 +121,21 @@ export function cella(r: Resolved, tier: Tier, col: Collector): Omit<GeneratorOu
   const lowerOut = col.get('interior-columns-lower')
   const upperOut = col.get('interior-columns-upper')
   const ep = col.get('interior-epistyle')
+  const steps = col.get('interior-step')
   for (const z of I.zs) {
+    const sw = I.step.width / 2
+    steps.box([wx1, I.step.y0, z - sw], [ex0, I.step.y1, z + sw], ['-y', '+x', '-x'])
     for (const x of I.xs) {
-      lowerOut.append(lower, composeMatrix([x, I.floorY, z], 0))
+      lowerOut.append(lower, composeMatrix([x, I.step.y1, z], 0))
       upperOut.append(upper, composeMatrix([x, I.epistyle.y1, z], 0))
-      colliders.push({ kind: 'circle', name: 'interior-column', x, z, r: I.lower.lowerRadius, y0: I.floorY, y1: I.epistyle.y0 })
+      colliders.push({ kind: 'circle', name: 'interior-column', x, z, r: I.lower.lowerRadius, y0: I.step.y1, y1: I.epistyle.y0 })
     }
     const hw = I.epistyle.width / 2
     ep.box([wx1, I.epistyle.y0, z - hw], [ex0, I.epistyle.y1, z + hw], ['+x', '-x'])
   }
 
   const levels: Level[] = r.levels
-    .filter((l) => ['threshold', 'naos-floor', 'pronaos-floor', 'opisthodomos-floor'].includes(l.name))
+    .filter((l) => ['threshold', 'naos-floor', 'pronaos-floor', 'opisthodomos-floor'].includes(l.name) || l.name.startsWith('interior-step'))
     .map((l) => ({ name: l.name, y: l.y, ...l.box }))
   return { instances: [], colliders, levels }
 }
