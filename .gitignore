@@ -34,3 +34,6 @@ tools/measure/.venv
 # Test output
 test-results/
 playwright-report/
+
+# OMC operational state
+.omc/

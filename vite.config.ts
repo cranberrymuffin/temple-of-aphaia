@@ -1,8 +1,9 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite'
 
-// BASE_PATH: "/" for Vercel (default), "/temple-of-aphaia/" for GitHub Pages.
-const base = process.env.BASE_PATH ?? '/'
+// BASE_PATH: relative './' by default (local dev/preview); the GitHub Pages
+// workflow sets '/temple-of-aphaia/'.
+const base = process.env.BASE_PATH ?? './'
 
 export default defineConfig({
   base,
