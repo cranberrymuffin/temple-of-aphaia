@@ -1,0 +1,520 @@
+{
+ "coords": "frame",
+ "convention": "Frame: up-aligned (frame.json), x along the temple's long axis with +x = east (ramp end), +y = north. Labels (row,col): row 0..5 across the width from north (0) to south (5); col 0..11 along the flank from the east front (0) to the west (11). Perimeter only. status: standing (shaft to capital), stump (partial shaft / drums), missing, unresolved. complete = whole shaft and capital visible, used for the height.",
+ "crop": [
+  [
+   -22.253145164591025,
+   5.9836242534441
+  ],
+  [
+   9.741644631639506,
+   5.991226248700563
+  ],
+  [
+   9.745786320070632,
+   -9.00873902169716
+  ],
+  [
+   -22.248451251035753,
+   -11.016336386339985
+  ]
+ ],
+ "cellaExclude": [
+  [
+   -17.352976583075964,
+   2.4847964125416118
+  ],
+  [
+   5.843246019191174,
+   2.4903078591025487
+  ],
+  [
+   5.845565364712602,
+   -5.909672692320177
+  ],
+  [
+   -17.3501602349428,
+   -7.715179971328839
+  ]
+ ],
+ "columns": [
+  {
+   "label": [
+    0,
+    0
+   ],
+   "status": "stump",
+   "complete": false,
+   "seed": [
+    7.542472224504183,
+    4.290707547548276
+   ]
+  },
+  {
+   "label": [
+    0,
+    1
+   ],
+   "status": "stump",
+   "complete": false,
+   "seed": [
+    5.242846707900114,
+    4.290161154139216
+   ]
+  },
+  {
+   "label": [
+    0,
+    2
+   ],
+   "status": "missing",
+   "complete": false,
+   "note": "no shaft in the slice views",
+   "seed": null
+  },
+  {
+   "label": [
+    0,
+    3
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    0.24367460786719713,
+    4.238973458145734
+   ]
+  },
+  {
+   "label": [
+    0,
+    4
+   ],
+   "status": "stump",
+   "complete": false,
+   "seed": [
+    -2.2559321505914167,
+    4.288379436500984
+   ]
+  },
+  {
+   "label": [
+    0,
+    5
+   ],
+   "status": "stump",
+   "complete": false,
+   "seed": [
+    -4.805516962478538,
+    4.287773652503983
+   ]
+  },
+  {
+   "label": [
+    0,
+    6
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    -7.255076639368128,
+    4.137191972038181
+   ]
+  },
+  {
+   "label": [
+    0,
+    7
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    -9.804675256883352,
+    4.186586072275841
+   ]
+  },
+  {
+   "label": [
+    0,
+    8
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    -12.404224316570875,
+    4.085968641691936
+   ]
+  },
+  {
+   "label": [
+    0,
+    9
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    -14.90383107502949,
+    4.135374620047186
+   ]
+  },
+  {
+   "label": [
+    0,
+    10
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    -17.503435357229424,
+    4.2347567264019155
+   ]
+  },
+  {
+   "label": [
+    0,
+    11
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    -19.903044591946717,
+    4.234186576757679
+   ]
+  },
+  {
+   "label": [
+    1,
+    0
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    7.543079672140748,
+    2.0907126412232744
+   ]
+  },
+  {
+   "label": [
+    1,
+    11
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    -20.052385110223774,
+    1.9341562676105983
+   ]
+  },
+  {
+   "label": [
+    2,
+    0
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    7.643739866031052,
+    -0.35925793003984374
+   ]
+  },
+  {
+   "label": [
+    2,
+    11
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    -20.201656600360312,
+    -0.6158734627097786
+   ]
+  },
+  {
+   "label": [
+    3,
+    0
+   ],
+   "status": "missing",
+   "complete": false,
+   "note": "no shaft in the slice views",
+   "seed": null
+  },
+  {
+   "label": [
+    3,
+    11
+   ],
+   "status": "standing",
+   "complete": false,
+   "note": "faint, sparsely reconstructed",
+   "seed": [
+    -20.35088667361254,
+    -3.3159028457341346
+   ]
+  },
+  {
+   "label": [
+    4,
+    0
+   ],
+   "status": "unresolved",
+   "complete": false,
+   "note": "low square block, not a shaft: excluded",
+   "seed": [
+    7.995049636609597,
+    -5.309163322447974
+   ]
+  },
+  {
+   "label": [
+    4,
+    11
+   ],
+   "status": "standing",
+   "complete": false,
+   "note": "faint, sparsely reconstructed",
+   "seed": [
+    -20.450152499064366,
+    -5.915920582171584
+   ]
+  },
+  {
+   "label": [
+    5,
+    0
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    8.095640802359382,
+    -7.509134472537798
+   ]
+  },
+  {
+   "label": [
+    5,
+    1
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    5.946046085437558,
+    -7.709644768532727
+   ]
+  },
+  {
+   "label": [
+    5,
+    2
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    3.4465083551194615,
+    -7.910238211350775
+   ]
+  },
+  {
+   "label": [
+    5,
+    3
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    0.9969762894860803,
+    -8.160819660285894
+   ]
+  },
+  {
+   "label": [
+    5,
+    4
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    -1.3525996692902882,
+    -8.311377584516517
+   ]
+  },
+  {
+   "label": [
+    5,
+    5
+   ],
+   "status": "stump",
+   "complete": false,
+   "seed": [
+    -3.952093506465397,
+    -8.611994552039059
+   ]
+  },
+  {
+   "label": [
+    5,
+    6
+   ],
+   "status": "stump",
+   "complete": false,
+   "seed": [
+    -6.351619907414065,
+    -8.912564007091248
+   ]
+  },
+  {
+   "label": [
+    5,
+    7
+   ],
+   "status": "stump",
+   "complete": false,
+   "seed": [
+    -8.851130026475952,
+    -9.213157218378612
+   ]
+  },
+  {
+   "label": [
+    5,
+    8
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    -11.050688991198179,
+    -9.51367916096045
+   ]
+  },
+  {
+   "label": [
+    5,
+    9
+   ],
+   "status": "standing",
+   "complete": true,
+   "seed": [
+    -13.350217868405524,
+    -9.86422474401212
+   ]
+  },
+  {
+   "label": [
+    5,
+    10
+   ],
+   "status": "unresolved",
+   "complete": false,
+   "note": "faint arc at (-18.1,-9.1); its position is inconsistent with both the south-row pitch and the west-row corner (scan distortion in the SW quadrant), so it is not used",
+   "seed": [
+    -18.149643422261658,
+    -9.115366779780706
+   ]
+  },
+  {
+   "label": [
+    5,
+    11
+   ],
+   "status": "standing",
+   "complete": false,
+   "note": "faint, sparsely reconstructed; shared corner of the west row",
+   "seed": [
+    -20.649415848257515,
+    -8.465962190609547
+   ]
+  }
+ ],
+ "stylobateEdges": {
+  "north": [
+   [
+    -15.054041347877085,
+    4.985337017683621
+   ],
+   [
+    -5.055683342183145,
+    5.037712525435927
+   ],
+   [
+    4.942674663510793,
+    5.090088033188232
+   ]
+  ],
+  "south": [
+   [
+    4.946402183098805,
+    -8.40988071016972
+   ],
+   [
+    -3.052101987165376,
+    -9.111779588269062
+   ],
+   [
+    -11.050495712404725,
+    -10.213677540245678
+   ]
+  ],
+  "east": [
+   [
+    8.692643929136917,
+    2.9909837541516673
+   ],
+   [
+    8.743740238441827,
+    -1.008995106503471
+   ],
+   [
+    8.795112660308812,
+    -6.00897165185179
+   ]
+  ],
+  "west": [
+   [
+    -20.702569196149884,
+    2.9839994210097887
+   ],
+   [
+    -20.95114792862256,
+    -2.0160483930440547
+   ],
+   [
+    -21.149734802038626,
+    -7.016084328980318
+   ]
+  ]
+ },
+ "interior": [
+  {
+   "label": "pronaos-N",
+   "group": "pronaos",
+   "seed": [
+    5.094182665400139,
+    -0.4598634825061616
+   ]
+  },
+  {
+   "label": "pronaos-S",
+   "group": "pronaos",
+   "seed": [
+    5.144864805861937,
+    -2.9598458161215273
+   ]
+  },
+  {
+   "label": "opisthodomos-N",
+   "group": "opisthodomos",
+   "seed": [
+    -16.952144344796338,
+    -0.7651010377705205
+   ]
+  },
+  {
+   "label": "opisthodomos-S",
+   "group": "opisthodomos",
+   "seed": [
+    -17.00137689430724,
+    -3.5151065487943605
+   ]
+  }
+ ],
+ "authoredFrom": "executor reading measurements/views/*.png (topdown_slice z 2.6-3.6, row elevations); re-projected after the consensus frame"
+}

@@ -12,7 +12,14 @@
     "lint": "eslint .",
     "prepare": "git config core.hooksPath .githooks",
     "copy-scan": "sh tools/measure/copy_scan.sh",
-    "bake": "vite-node tools/bake/bake.ts --"
+    "bake": "vite-node tools/bake/bake.ts --",
+    "measure:venv": "python3 -m venv tools/measure/.venv && tools/measure/.venv/bin/pip install -r tools/measure/requirements.txt",
+    "measure:test": "tools/measure/.venv/bin/python -m pytest tools/measure/tests",
+    "measure:up": "tools/measure/.venv/bin/python -I tools/measure/up.py scan/aigina.ply",
+    "measure:views": "tools/measure/.venv/bin/python -I tools/measure/render_views.py scan/aigina.ply --crop=-24,12,-13,8 --res 0.04 --slice 2.6,3.6 --rows \"north:y:3.3:5.3;south:y:-10.5:-7;west:x:-21.5:-19.3;east:x:7:9\"",
+    "measure:picks": "tools/measure/.venv/bin/python -I tools/measure/save_picks.py scan/aigina.ply",
+    "measure:run": "tools/measure/.venv/bin/python -I tools/measure/measure_from_picks.py scan/aigina.ply --bootstrap 1000",
+    "measure:merge": "tools/measure/.venv/bin/python -I tools/measure/merge_dimensions.py"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

@@ -1,0 +1,575 @@
+{
+  "coords": "raw",
+  "frameHash": "ed0f78a01c25d8ea96474d5715388642d8f148e2a7d5d4b6cc92d82c530a3c0c",
+  "convention": "Frame: up-aligned (frame.json), x along the temple's long axis with +x = east (ramp end), +y = north. Labels (row,col): row 0..5 across the width from north (0) to south (5); col 0..11 along the flank from the east front (0) to the west (11). Perimeter only. status: standing (shaft to capital), stump (partial shaft / drums), missing, unresolved. complete = whole shaft and capital visible, used for the height.",
+  "crop": [
+    [
+      -23.46719139343434,
+      4.378649506887788,
+      -6.893968464292496
+    ],
+    [
+      0.31098971992129976,
+      4.25766143783115,
+      14.512808423470757
+    ],
+    [
+      10.347613331058007,
+      4.307979731851619,
+      3.3654935080102932
+    ],
+    [
+      -12.092351300812743,
+      4.435676906777653,
+      -19.52759203514769
+    ]
+  ],
+  "cellaExclude": [
+    [
+      -17.484278567853195,
+      4.371864144084933,
+      -6.217095900294523
+    ],
+    [
+      -0.24509726067035462,
+      4.28414779401887,
+      9.302817343333839
+    ],
+    [
+      5.3754119615662,
+      4.312326038670333,
+      3.0603209906759767
+    ],
+    [
+      -10.659374512280234,
+      4.406080584018852,
+      -13.797270042807636
+    ]
+  ],
+  "columns": [
+    {
+      "label": [
+        0,
+        0
+      ],
+      "status": "stump",
+      "complete": false,
+      "seed": [
+        -0.1862762223597434,
+        4.271682107567781,
+        11.777730155351517
+      ]
+    },
+    {
+      "label": [
+        0,
+        1
+      ],
+      "status": "stump",
+      "complete": false,
+      "seed": [
+        -1.8953329898821787,
+        4.280378125031225,
+        10.239118066543531
+      ]
+    },
+    {
+      "label": [
+        0,
+        2
+      ],
+      "status": "missing",
+      "complete": false,
+      "note": "no shaft in the slice views",
+      "seed": null
+    },
+    {
+      "label": [
+        0,
+        3
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        -5.577218376806875,
+        4.299450238468061,
+        6.857151461445654
+      ]
+    },
+    {
+      "label": [
+        0,
+        4
+      ],
+      "status": "stump",
+      "complete": false,
+      "seed": [
+        -7.468344188324908,
+        4.308734703716375,
+        5.22190473347402
+      ]
+    },
+    {
+      "label": [
+        0,
+        5
+      ],
+      "status": "stump",
+      "complete": false,
+      "seed": [
+        -9.363167995795434,
+        4.318375940469327,
+        3.516052200230384
+      ]
+    },
+    {
+      "label": [
+        0,
+        6
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        -11.083318751175359,
+        4.32814227244668,
+        1.765622695606404
+      ]
+    },
+    {
+      "label": [
+        0,
+        7
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        -13.011597970683006,
+        4.337615781552896,
+        0.0969278787476382
+      ]
+    },
+    {
+      "label": [
+        0,
+        8
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        -14.876664362068908,
+        4.347781517457217,
+        -1.7166881761528607
+      ]
+    },
+    {
+      "label": [
+        0,
+        9
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        -16.767790173586942,
+        4.3570659827055325,
+        -3.351934904124497
+      ]
+    },
+    {
+      "label": [
+        0,
+        10
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        -18.76667821312133,
+        4.366560808022915,
+        -5.016920093485524
+      ]
+    },
+    {
+      "label": [
+        0,
+        11
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        -20.550041796623002,
+        4.375634913202163,
+        -6.622428360067771
+      ]
+    },
+    {
+      "label": [
+        1,
+        0
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        1.285761907273641,
+        4.279062124024115,
+        10.142790634417313
+      ]
+    },
+    {
+      "label": [
+        1,
+        11
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        -19.12255306688423,
+        4.383917516525671,
+        -8.432027580433097
+      ]
+    },
+    {
+      "label": [
+        2,
+        0
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        2.999383913071873,
+        4.286902690998323,
+        8.38895870933303
+      ]
+    },
+    {
+      "label": [
+        2,
+        11
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        -17.527787276959845,
+        4.393038758082854,
+        -10.427415382722765
+      ]
+    },
+    {
+      "label": [
+        3,
+        0
+      ],
+      "status": "missing",
+      "complete": false,
+      "note": "no shaft in the slice views",
+      "seed": null
+    },
+    {
+      "label": [
+        3,
+        11
+      ],
+      "status": "standing",
+      "complete": false,
+      "note": "faint, sparsely reconstructed",
+      "seed": [
+        -15.83265525092409,
+        4.402663182580241,
+        -12.53427633416704
+      ]
+    },
+    {
+      "label": [
+        4,
+        0
+      ],
+      "status": "unresolved",
+      "complete": false,
+      "note": "low square block, not a shaft: excluded",
+      "seed": [
+        6.571543560674313,
+        4.3021844210197715,
+        4.944481409440989
+      ]
+    },
+    {
+      "label": [
+        4,
+        11
+      ],
+      "status": "standing",
+      "complete": false,
+      "note": "faint, sparsely reconstructed",
+      "seed": [
+        -14.167280640972965,
+        4.411763107926258,
+        -14.533373763954447
+      ]
+    },
+    {
+      "label": [
+        5,
+        0
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        8.117888506286935,
+        4.309186349760305,
+        3.376438066281048
+      ]
+    },
+    {
+      "label": [
+        5,
+        1
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        6.654113610881842,
+        4.317986146236987,
+        1.789539378594982
+      ]
+    },
+    {
+      "label": [
+        5,
+        2
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        4.930264859549421,
+        4.328109249718977,
+        -0.03149593130099637
+      ]
+    },
+    {
+      "label": [
+        5,
+        3
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        3.277024928243742,
+        4.3382110369898,
+        -1.8562408686947118
+      ]
+    },
+    {
+      "label": [
+        5,
+        4
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        1.631180988843054,
+        4.347599281251352,
+        -3.53977419554443
+      ]
+    },
+    {
+      "label": [
+        5,
+        5
+      ],
+      "status": "stump",
+      "complete": false,
+      "seed": [
+        -0.10006375439435766,
+        4.3584359277426135,
+        -5.5020211159844035
+      ]
+    },
+    {
+      "label": [
+        5,
+        6
+      ],
+      "status": "stump",
+      "complete": false,
+      "seed": [
+        -1.6826948656732976,
+        4.36851639880227,
+        -7.330475680875857
+      ]
+    },
+    {
+      "label": [
+        5,
+        7
+      ],
+      "status": "stump",
+      "complete": false,
+      "seed": [
+        -3.3396327929314733,
+        4.3789749575777295,
+        -9.22582642354157
+      ]
+    },
+    {
+      "label": [
+        5,
+        8
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        -4.773650272251938,
+        4.3882992532057825,
+        -10.920488632884503
+      ]
+    },
+    {
+      "label": [
+        5,
+        9
+      ],
+      "status": "standing",
+      "complete": true,
+      "seed": [
+        -6.24851915551452,
+        4.398169364196373,
+        -12.719204736386564
+      ]
+    },
+    {
+      "label": [
+        5,
+        10
+      ],
+      "status": "unresolved",
+      "complete": false,
+      "note": "faint arc at (-18.1,-9.1); its position is inconsistent with both the south-row pitch and the west-row corner (scan distortion in the SW quadrant), so it is not used",
+      "seed": [
+        -10.3170775030747,
+        4.413801659853845,
+        -15.37285552377803
+      ]
+    },
+    {
+      "label": [
+        5,
+        11
+      ],
+      "status": "standing",
+      "complete": false,
+      "note": "faint, sparsely reconstructed; shared corner of the west row",
+      "seed": [
+        -12.609668259038198,
+        4.4210733933413415,
+        -16.562209655131245
+      ]
+    }
+  ],
+  "stylobateEdges": {
+    "north": [
+      [
+        -17.447992402186873,
+        4.354781744284742,
+        -2.8205979922431315
+      ],
+      [
+        -10.050766216300358,
+        4.316805245057808,
+        3.906177501567756
+      ],
+      [
+        -2.6535400304138457,
+        4.278828745830873,
+        10.632952995378643
+      ]
+    ],
+    "south": [
+      [
+        6.37942121960919,
+        4.324115210449295,
+        0.6003695714642234
+      ],
+      [
+        0.9032517097899929,
+        4.356710414767744,
+        -5.271532679864745
+      ],
+      [
+        -4.305274503732224,
+        4.3906474402600715,
+        -11.440696662272657
+      ]
+    ],
+    "east": [
+      [
+        1.538092874366658,
+        4.271695017651164,
+        11.580935573748935
+      ],
+      [
+        4.2516792453260654,
+        4.284924185532055,
+        8.641766351846606
+      ],
+      [
+        7.634373857027917,
+        4.301507906347644,
+        4.959442802246915
+      ]
+    ],
+    "west": [
+      [
+        -20.30811102352883,
+        4.382852806096951,
+        -8.086540691883558
+      ],
+      [
+        -17.148336859764694,
+        4.400570790059946,
+        -11.969552774806026
+      ],
+      [
+        -13.951409288010927,
+        4.418099730165039,
+        -15.819116768841369
+      ]
+    ]
+  },
+  "interior": [
+    {
+      "label": "pronaos-N",
+      "group": "pronaos",
+      "seed": [
+        1.171470929675591,
+        4.296879383044744,
+        6.60879074331966
+      ]
+    },
+    {
+      "label": "pronaos-S",
+      "group": "pronaos",
+      "seed": [
+        2.8813949395213267,
+        4.305076721523588,
+        4.784353012963379
+      ]
+    },
+    {
+      "label": "opisthodomos-N",
+      "group": "opisthodomos",
+      "seed": [
+        -15.012449521523296,
+        4.381254090259493,
+        -8.364762754213913
+      ]
+    },
+    {
+      "label": "opisthodomos-S",
+      "group": "opisthodomos",
+      "seed": [
+        -13.209555267471181,
+        4.3906681546878135,
+        -10.441885244268796
+      ]
+    }
+  ],
+  "authoredFrom": "executor reading measurements/views/*.png (topdown_slice z 2.6-3.6, row elevations); re-projected after the consensus frame"
+}
