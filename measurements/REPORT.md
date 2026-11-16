@@ -96,3 +96,14 @@ The synthetic scan has 25 fluted columns, 7 missing, 3 restored architraves, an 
 - the abacus height within 1%, with exactly the 3 restored columns flagged.
 
 `test_picks.py` covers the frameHash refusal (exit 2), duplicate, missing and interior labels, and the raw<->frame round trip to 1e-6. `test_merge.py` covers every downgrade path and confirms that approvedBy is never set.
+
+## Sanctuary and terrain (Step 3b)
+
+- **Coverage.** The opaque splats reach only about 8 m beyond the crepidoma (frame x −27..15, y −18..7; see `views/site_topdown.png`). The nominal 82 × 88 m extent is sparse floaters.
+- **Sanctuary.** None of the features in the research brief is visible: the altar (about 22.5 m E), the propylon (about 10 m S of the SE corner), the terrace walls, the cistern and the north base all fall outside the data. The sanctuary section of `picks.json` is therefore empty, with that note, and positions must come from Furtwaengler 1906.
+- **Terrain.** `terrain.py` writes `terrain.json`, `terrain.png` (uint16) and `terrain-mask.png`, with a preview in `terrain-preview.png`.
+  - Grid: 0.5 m cells, 180 × 160, on a 90 × 80 m crop around the stylobate, in the temple frame with the stylobate top = 0.
+  - Datum: frame z = 1.66, the median column base level. The base levels themselves spread 0.50 m (10–90%), more distortion.
+  - Heights: −2.6 to +0.4 m. The ground beside the crepidoma is about −0.8 to −1.2 m and falls to the south.
+  - Coverage: about 2.8% of cells measured, 7.4% the refilled temple footprint, 10.3% filled holes; 79.5% has no data and is left for the parametric terrain.
+  - k is not applied (k = 1.007, counted as metric).

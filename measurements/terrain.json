@@ -1,0 +1,86 @@
+{
+  "frameHash": "ed0f78a01c25d8ea96474d5715388642d8f148e2a7d5d4b6cc92d82c530a3c0c",
+  "frame": "measurements/frame.json; x = temple long axis (+x east), y = +north, z up",
+  "origin": {
+    "x": -51,
+    "y": -42,
+    "note": "south-west corner of cell (0,0) in frame units"
+  },
+  "cell": 0.5,
+  "dims": {
+    "nx": 180,
+    "ny": 160
+  },
+  "extent": [
+    -51,
+    39,
+    -42,
+    38
+  ],
+  "stylobateTopFrameZ": 1.6590605757969028,
+  "stylobateTopSpread": 0.5003901960512958,
+  "stylobateCentreXY": [
+    -6.222972780242379,
+    -2.2177894840523598
+  ],
+  "stylobateCornersXY": [
+    [
+      7.799106738318871,
+      5.222422765121428
+    ],
+    [
+      -20.78038292409363,
+      4.54696962448746
+    ],
+    [
+      -20.609284027597482,
+      -10.761374963154624
+    ],
+    [
+      8.698669092402728,
+      -7.8791753626637036
+    ]
+  ],
+  "templeFootprintXY": [
+    [
+      9.141948187768088,
+      6.587712186149185
+    ],
+    [
+      -22.13610699233301,
+      5.957258193960272
+    ],
+    [
+      -21.806639405691325,
+      -12.0425630217069
+    ],
+    [
+      10.199879231997484,
+      -9.205362569661034
+    ]
+  ],
+  "k": 1.0070876499734889,
+  "kApplied": false,
+  "kNote": "scan counted as metric (|k-1| <= 1% and CI contains 1); heights/positions are raw scan units = metres. The scan is non-rigidly distorted (see REPORT.md): expect decimetre-level errors away from the temple.",
+  "coverage": {
+    "measured": 0.02753472222222222,
+    "filledFootprint": 0.07447916666666667,
+    "filledHoles": 0.1028125,
+    "noData": 0.7951736111111111
+  },
+  "cellStats": {
+    "cellsWithData": 2418,
+    "cellsAfterOutlierCut": 793
+  },
+  "method": "per-cell lowest dense 0.3 m layer (median) of splats with opacity > 0.2 and max scale < 1.5 (>= 4), 5x5 median outlier cut 0.5 m, IDW fill of the footprint and of holes within 5.0 m",
+  "zMin": -2.6187999263076245,
+  "zMax": 0.4359202637087505,
+  "encoding": "terrain.png: uint16 grey, 0 = no data, z = zMin + (v-1)/65534*(zMax-zMin); row 0 = north edge (max y), column 0 = west edge (min x)",
+  "mask": "terrain-mask.png (same layout)",
+  "maskLegend": {
+    "0": "no data",
+    "1": "measured",
+    "2": "filled: temple footprint",
+    "3": "filled: hole"
+  }
+}

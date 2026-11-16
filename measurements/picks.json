@@ -571,5 +571,10 @@
       ]
     }
   ],
-  "authoredFrom": "executor reading measurements/views/*.png (topdown_slice z 2.6-3.6, row elevations); re-projected after the consensus frame"
+  "authoredFrom": "executor reading measurements/views/*.png (topdown_slice z 2.6-3.6, row elevations); re-projected after the consensus frame",
+  "sanctuary": {
+    "features": [],
+    "coverage": "opaque splats reach about 8 m beyond the crepidoma (x -27..15, y -18..7 in the frame); see measurements/views/site_topdown.png and terrain-preview.png",
+    "note": "No sanctuary feature is visible in the scan. Checked against the research brief positions: the altar (22.5 m east of the east front, x ~ 31) lies outside the coverage; the propylon (about 10 m south of the SE corner, y ~ -19) and the south terrace wall lie at or beyond the southern edge of the data; the cistern, the north base (12.7 m north of the axis) and the terrace walls (12-17 m from the temple) are all outside. The 82 x 88 m scan extent is made of sparse floaters. Sanctuary positions must come from Furtwaengler 1906, as plan Step 3b says."
+  }
 }
