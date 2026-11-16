@@ -1,0 +1,233 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "sanctuary.schema.json",
+  "title": "Sanctuary features",
+  "description": "Primary values for the sanctuary around the temple (plan Step 3b). Coordinates are metres in the temple frame (x east, z south, origin at the stylobate centre). Sizes are sourced measures with the same rules as dimensions.json. Placement says whether position and footprint come from scan picks or from the published site plan.",
+  "type": "object",
+  "required": ["meta", "features"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "meta": {
+      "type": "object",
+      "required": ["status", "note", "displayYear"],
+      "additionalProperties": false,
+      "properties": {
+        "status": { "enum": ["provisional", "merged"] },
+        "note": { "type": "string" },
+        "displayYear": { "type": "integer", "description": "Year shown (negative = BCE). Features whose phase spans it are shown; the rest are listed but hidden." }
+      }
+    },
+    "features": {
+      "type": "object",
+      "propertyNames": { "$ref": "common.schema.json#/definitions/id" },
+      "additionalProperties": { "$ref": "#/definitions/feature" }
+    }
+  },
+  "definitions": {
+    "measure": {
+      "type": "object",
+      "required": ["value", "unit", "source", "ref", "verified"],
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "number" },
+        "unit": { "enum": ["m", "deg", "count", "ratio"] },
+        "source": { "enum": ["scan", "published"] },
+        "ref": { "$ref": "common.schema.json#/definitions/id" },
+        "page": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "pattern": "^https?://" },
+        "verified": { "type": "boolean" },
+        "provisional": { "type": "boolean" },
+        "residual": { "type": "number", "minimum": 0 },
+        "residualType": { "enum": ["edge_rms", "grid_rms", "slice_sigma", "envelope_rms", "plane_rms"] },
+        "n": { "type": "integer", "minimum": 1 },
+        "note": { "type": "string" }
+      },
+      "allOf": [
+        { "$ref": "common.schema.json#/definitions/noPageUnlessVerified" },
+        {
+          "if": { "properties": { "provisional": { "const": true } }, "required": ["provisional"] },
+          "then": { "properties": { "verified": { "const": false } } }
+        },
+        {
+          "if": { "properties": { "source": { "const": "scan" } } },
+          "then": { "required": ["residual", "residualType", "n"] }
+        }
+      ]
+    },
+    "positive": {
+      "allOf": [{ "$ref": "#/definitions/measure" }, { "properties": { "value": { "exclusiveMinimum": 0 } } }]
+    },
+    "count": {
+      "allOf": [{ "$ref": "#/definitions/measure" }, { "properties": { "value": { "type": "integer", "minimum": 0 }, "unit": { "const": "count" } } }]
+    },
+    "point": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "polyline": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/point" },
+      "minItems": 2
+    },
+    "side": { "enum": ["n", "s", "e", "w"] },
+    "placement": {
+      "type": "object",
+      "required": ["source", "ref", "verified"],
+      "additionalProperties": false,
+      "properties": {
+        "source": { "enum": ["scan", "plan"] },
+        "ref": { "$ref": "common.schema.json#/definitions/id" },
+        "page": { "type": "string", "minLength": 1 },
+        "verified": { "type": "boolean" },
+        "pickId": { "type": "string", "minLength": 1, "description": "Label of the sanctuary pick in measurements/picks.json (scan placement)." },
+        "frameHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "note": { "type": "string" }
+      },
+      "allOf": [
+        { "$ref": "common.schema.json#/definitions/noPageUnlessVerified" },
+        { "if": { "properties": { "source": { "const": "scan" } } }, "then": { "required": ["pickId", "frameHash"] } }
+      ]
+    },
+    "phase": {
+      "type": "object",
+      "required": ["label", "fromYear", "toYear", "confidence", "sourceIds"],
+      "additionalProperties": false,
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "fromYear": { "type": ["integer", "null"], "description": "Negative = BCE; null = unknown/open." },
+        "toYear": { "type": ["integer", "null"] },
+        "confidence": { "$ref": "confidence.schema.json" },
+        "sourceIds": { "$ref": "common.schema.json#/definitions/sourceIds" },
+        "note": { "type": "string" }
+      }
+    },
+    "door": {
+      "type": "object",
+      "required": ["wall", "offset", "width", "height"],
+      "additionalProperties": false,
+      "properties": {
+        "wall": { "$ref": "#/definitions/side" },
+        "offset": { "type": "number", "description": "Door centre along the wall, from the wall midpoint (m, local frame)." },
+        "width": { "$ref": "#/definitions/positive" },
+        "height": { "$ref": "#/definitions/positive" }
+      }
+    },
+    "feature": {
+      "type": "object",
+      "required": ["kind", "name", "phase", "placement", "sourceIds", "confidence"],
+      "properties": {
+        "kind": { "enum": ["altar", "building", "wall", "cistern", "channel"] },
+        "name": { "type": "string", "minLength": 1 },
+        "phase": { "$ref": "#/definitions/phase" },
+        "placement": { "$ref": "#/definitions/placement" },
+        "sourceIds": { "$ref": "common.schema.json#/definitions/sourceIds" },
+        "confidence": { "$ref": "confidence.schema.json" },
+        "note": { "type": "string" },
+        "baseY": { "type": "number", "description": "Optional fixed base level (m); otherwise the base follows the terrain." }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "altar" } } },
+          "then": {
+            "required": ["center", "rotation", "length", "width", "height"],
+            "properties": {
+              "kind": true, "name": true, "phase": true, "placement": true, "sourceIds": true, "confidence": true, "note": true, "baseY": true,
+              "center": { "$ref": "#/definitions/point" },
+              "rotation": { "type": "number", "description": "Degrees about +y, counter-clockwise seen from above." },
+              "length": { "$ref": "#/definitions/positive" },
+              "width": { "$ref": "#/definitions/positive" },
+              "height": { "$ref": "#/definitions/positive" },
+              "steps": {
+                "type": "object",
+                "required": ["count", "rise", "tread", "side"],
+                "additionalProperties": false,
+                "properties": {
+                  "count": { "$ref": "#/definitions/count" },
+                  "rise": { "$ref": "#/definitions/positive" },
+                  "tread": { "$ref": "#/definitions/positive" },
+                  "side": { "$ref": "#/definitions/side" }
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "building" } } },
+          "then": {
+            "required": ["role", "center", "rotation", "length", "width", "wallHeight", "wallThickness", "doors"],
+            "properties": {
+              "kind": true, "name": true, "phase": true, "placement": true, "sourceIds": true, "confidence": true, "note": true, "baseY": true,
+              "role": { "enum": ["propylon", "house", "ancillary", "other"] },
+              "center": { "$ref": "#/definitions/point" },
+              "rotation": { "type": "number" },
+              "length": { "$ref": "#/definitions/positive" },
+              "width": { "$ref": "#/definitions/positive" },
+              "wallHeight": { "$ref": "#/definitions/positive" },
+              "wallThickness": { "$ref": "#/definitions/positive" },
+              "doors": { "type": "array", "items": { "$ref": "#/definitions/door" } },
+              "openSides": { "type": "array", "items": { "$ref": "#/definitions/side" }, "uniqueItems": true, "description": "Sides without a wall (e.g. a propylon's porches)." }
+            },
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "wall" } } },
+          "then": {
+            "required": ["role", "polyline", "thickness", "height"],
+            "properties": {
+              "kind": true, "name": true, "phase": true, "placement": true, "sourceIds": true, "confidence": true, "note": true, "baseY": true,
+              "role": { "enum": ["terrace", "peribolos", "other"] },
+              "polyline": { "$ref": "#/definitions/polyline" },
+              "closed": { "type": "boolean" },
+              "thickness": { "$ref": "#/definitions/positive" },
+              "height": { "$ref": "#/definitions/positive" },
+              "top": { "enum": ["level", "follow"], "description": "level: horizontal top at the highest base + height; follow: top follows the base." }
+            },
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "cistern" } } },
+          "then": {
+            "required": ["shape", "center", "rotation", "depth", "rimHeight", "rimWidth"],
+            "properties": {
+              "kind": true, "name": true, "phase": true, "placement": true, "sourceIds": true, "confidence": true, "note": true, "baseY": true,
+              "shape": { "enum": ["rect", "circle"] },
+              "center": { "$ref": "#/definitions/point" },
+              "rotation": { "type": "number" },
+              "length": { "$ref": "#/definitions/positive" },
+              "width": { "$ref": "#/definitions/positive" },
+              "diameter": { "$ref": "#/definitions/positive" },
+              "depth": { "$ref": "#/definitions/positive" },
+              "rimHeight": { "$ref": "#/definitions/measure" },
+              "rimWidth": { "$ref": "#/definitions/positive" }
+            },
+            "additionalProperties": false,
+            "allOf": [
+              { "if": { "properties": { "shape": { "const": "rect" } } }, "then": { "required": ["length", "width"] } },
+              { "if": { "properties": { "shape": { "const": "circle" } } }, "then": { "required": ["diameter"] } }
+            ]
+          }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "channel" } } },
+          "then": {
+            "required": ["polyline", "width", "depth"],
+            "properties": {
+              "kind": true, "name": true, "phase": true, "placement": true, "sourceIds": true, "confidence": true, "note": true, "baseY": true,
+              "polyline": { "$ref": "#/definitions/polyline" },
+              "width": { "$ref": "#/definitions/positive" },
+              "depth": { "$ref": "#/definitions/positive" },
+              "feeds": { "$ref": "common.schema.json#/definitions/id", "description": "Id of the cistern this channel drains into." }
+            },
+            "additionalProperties": false
+          }
+        }
+      ]
+    }
+  }
+}

@@ -7,8 +7,9 @@ import paletteSchema from './schemas/palette.schema.json'
 import sourcesSchema from './schemas/sources.schema.json'
 import pedimentsSchema from './schemas/pediments.schema.json'
 import deviationsSchema from './schemas/approved-deviations.schema.json'
+import sanctuarySchema from './schemas/sanctuary.schema.json'
 
-export type ContractName = 'dimensions' | 'palette' | 'sources' | 'pediments' | 'approved-deviations'
+export type ContractName = 'dimensions' | 'palette' | 'sources' | 'pediments' | 'approved-deviations' | 'sanctuary'
 
 const ajv = new Ajv({ allErrors: true, strict: true, strictTypes: false, strictRequired: false })
 ajv.addSchema([commonSchema, confidenceSchema])
@@ -18,6 +19,7 @@ const validators = {
   sources: ajv.compile(sourcesSchema),
   pediments: ajv.compile(pedimentsSchema),
   'approved-deviations': ajv.compile(deviationsSchema),
+  sanctuary: ajv.compile(sanctuarySchema),
 } satisfies Record<ContractName, unknown>
 
 /** Validates `data` against the named contract. Returns [] when valid. */
