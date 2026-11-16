@@ -110,3 +110,14 @@ def test_measure_from_picks_exits_nonzero_on_hash_mismatch(tmp_path):
     assert proc.returncode != 0
     assert "REFUSING" in proc.stderr
     assert not (tmp_path / "out" / "scan-report.json").exists()
+
+
+def test_sanctuary_features_round_trip():
+    fr = random_frame()
+    pf = authoring_picks()
+    pf["sanctuary"] = {"features": [{"id": "wall-s", "kind": "terrace wall", "points": [[1.0, 2.0], [5.0, 2.5]], "confidence": "uncertain"}], "note": "n"}
+    raw = frame_to_raw(pf, fr)
+    assert len(raw["sanctuary"]["features"][0]["points"][0]) == 3
+    back = raw_to_frame(raw, fr)
+    assert np.abs(np.subtract(back["sanctuary"]["features"][0]["points"], pf["sanctuary"]["features"][0]["points"])).max() < 1e-6
+    assert back["sanctuary"]["features"][0]["confidence"] == "uncertain"

@@ -58,6 +58,16 @@ def frame_to_raw(picks_frame, frame):
     for k in ("note", "authoredFrom"):
         if k in picks_frame:
             out[k] = picks_frame[k]
+    if "sanctuary" in picks_frame:
+        out["sanctuary"] = _map_sanctuary(picks_frame["sanctuary"], lambda xy: _lift(M, xy).tolist())
+    return out
+
+
+def _map_sanctuary(sec, conv):
+    """Sanctuary features: {features: [{id, kind, points: [[x,y],...], confidence, note}], ...}."""
+    out = copy.deepcopy(sec)
+    for f in out.get("features", []):
+        f["points"] = conv(f["points"])
     return out
 
 
@@ -80,6 +90,8 @@ def raw_to_frame(picks_raw, frame):
             c["seed"] = proj(c["seed"])[0].tolist()
     for c in out.get("interior", []):
         c["seed"] = proj(c["seed"])[0].tolist()
+    if "sanctuary" in picks_raw:
+        out["sanctuary"] = _map_sanctuary(picks_raw["sanctuary"], lambda v: proj(v).tolist())
     return out
 
 
