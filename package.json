@@ -20,7 +20,8 @@
     "measure:picks": "tools/measure/.venv/bin/python -I tools/measure/save_picks.py scan/aigina.ply",
     "measure:run": "tools/measure/.venv/bin/python -I tools/measure/measure_from_picks.py scan/aigina.ply --bootstrap 1000",
     "measure:merge": "tools/measure/.venv/bin/python -I tools/measure/merge_dimensions.py",
-    "measure:terrain": "tools/measure/.venv/bin/python -I tools/measure/terrain.py scan/aigina.ply"
+    "measure:terrain": "tools/measure/.venv/bin/python -I tools/measure/terrain.py scan/aigina.ply",
+    "measure:sanctuary": "tools/measure/.venv/bin/python -I tools/measure/sanctuary_plan.py refs/incoming/Plan_Aphaia_sanctuary-en.svg"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
