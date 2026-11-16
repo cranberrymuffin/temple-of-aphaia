@@ -1,5 +1,6 @@
 // Types and pure helpers for the sanctuary contract (src/data/schemas/sanctuary.schema.json).
 // Coordinates: metres in the temple frame (x east, z south, origin at the stylobate centre). No `three`.
+import { isSimple, pointInPolygon, triangulate } from './polygon'
 import type { Confidence } from './types'
 
 export type Point2 = [number, number]
@@ -8,26 +9,40 @@ export type Side = 'n' | 's' | 'e' | 'w'
 export interface Measure {
   value: number
   unit: 'm' | 'deg' | 'count' | 'ratio'
-  source: 'scan' | 'published'
+  source: 'published'
   ref: string
   page?: string
   url?: string
   verified: boolean
   provisional?: boolean
-  residual?: number
-  residualType?: string
-  n?: number
   note?: string
 }
 
+/** The scan covers only the temple: every sanctuary feature is placed from the published site plan. */
 export interface Placement {
-  source: 'scan' | 'plan'
+  source: 'plan'
   ref: string
   page?: string
   verified: boolean
-  pickId?: string
-  frameHash?: string
+  confidence: Confidence
   note?: string
+}
+
+export interface Terrace {
+  polygon: Point2[]
+  /** Surface level relative to the stylobate top (m). */
+  level: Measure
+  note?: string
+}
+
+/** Sparse, conjectural terrain: terraces + retaining walls (wall features, role terrace) + hilltop falloff. */
+export interface TerrainDesc {
+  confidence: 'conjectural'
+  sourceIds: string[]
+  note?: string
+  terraces: Record<string, Terrace>
+  falloff: { slope: Measure; radius: Measure }
+  dem?: { file: string; ref: string; verified: boolean; note?: string }
 }
 
 export interface Phase {
@@ -116,6 +131,7 @@ export type SanctuaryFeature = AltarFeature | BuildingFeature | WallFeature | Ci
 
 export interface SanctuaryDoc {
   meta: { status: 'provisional' | 'merged'; note: string; displayYear: number }
+  terrain: TerrainDesc
   features: Record<string, SanctuaryFeature>
 }
 
@@ -152,9 +168,28 @@ export function sanctuaryRefErrors(doc: SanctuaryDoc, sourceIds: Set<string>): s
         if (d.height.value >= f.wallHeight.value) errs.push(`${id}: door taller than the wall`)
         if (f.openSides?.includes(d.wall)) errs.push(`${id}: door on an open side`)
       }
+    if (f.kind === 'altar' || f.kind === 'building' || f.kind === 'cistern') {
+      const c = f.center
+      if (!Object.values(doc.terrain.terraces).some((t) => pointInPolygon(t.polygon, c))) errs.push(`${id}: not on a terrace`)
+    }
     if ((f.kind === 'wall' || f.kind === 'channel') && f.polyline.some((p, i) => i > 0 && Math.hypot(p[0] - f.polyline[i - 1][0], p[1] - f.polyline[i - 1][1]) < 1e-6))
       errs.push(`${id}: repeated polyline point`)
   }
+  const T = doc.terrain
+  for (const s of T.sourceIds) if (!sourceIds.has(s)) errs.push(`terrain: unknown source ${s}`)
+  for (const m of [T.falloff.slope, T.falloff.radius]) if (!sourceIds.has(m.ref)) errs.push(`terrain.falloff: unknown source ${m.ref}`)
+  if (T.dem && !sourceIds.has(T.dem.ref)) errs.push(`terrain.dem: unknown source ${T.dem.ref}`)
+  const terraces = Object.entries(T.terraces)
+  for (const [id, t] of terraces) {
+    if (!sourceIds.has(t.level.ref)) errs.push(`terrace ${id}: unknown source ${t.level.ref}`)
+    if (!isSimple(t.polygon)) errs.push(`terrace ${id}: polygon is not simple`)
+  }
+  // Terraces may share edges but must not overlap.
+  const tris = terraces.filter(([, t]) => isSimple(t.polygon)).map(([id, t]) => [id, triangulate(t.polygon)] as const)
+  for (let i = 0; i < tris.length; i++)
+    for (let j = i + 1; j < tris.length; j++)
+      if (tris[i][1].some((a) => tris[j][1].some((b) => convexOverlap(a, b, 1e-6))))
+        errs.push(`terraces ${tris[i][0]} and ${tris[j][0]} overlap`)
   return errs
 }
 
