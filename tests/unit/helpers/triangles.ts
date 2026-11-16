@@ -92,6 +92,9 @@ export interface CoplanarHit {
   b: string
   area: number
   at: Vec3
+  /** Triangle indices into the input soup. */
+  i: number
+  j: number
 }
 
 /**
@@ -154,8 +157,10 @@ export function findCoplanarOverlaps(tris: Tri[], minArea = 1e-6, limit = 20): C
           const dist = Math.max(...[u.a, u.b, u.c].map((p) => Math.abs(dot(t.n, sub(p, t.a)))))
           if (dist >= 0.0005) continue
           const area = overlapArea(t, u)
-          if (area > minArea) {
-            hits.push({ a: t.group, b: u.group, area, at: t.a })
+          // Ignore Float32 rounding slivers along shared edges: the overlap must also be wider than 0.1 mm.
+          const edge = (q: Tri) => Math.max(Math.hypot(...sub(q.b, q.a)), Math.hypot(...sub(q.c, q.b)), Math.hypot(...sub(q.a, q.c)))
+          if (area > minArea && area / Math.min(edge(t), edge(u)) > 1e-4) {
+            hits.push({ a: t.group, b: u.group, area, at: t.a, i: x.i, j })
             if (hits.length >= limit) return hits
           }
         }

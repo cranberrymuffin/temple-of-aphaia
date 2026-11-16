@@ -16,8 +16,11 @@ import {
 } from '../../src/data/sanctuary'
 import type { Dimensions } from '../../src/data/types'
 import { validate } from '../../src/data/validate'
-import { buildSanctuary, buildTerrain, groundFromHeightfield, terrainCuts } from '../../src/geometry/sanctuary'
+import { buildSite, buildTerrain, terrainCuts } from '../../src/geometry/sanctuary'
+import { falloffDrop, outsideCuts, terrainBounds, terrainHeightFn, WALK_CELL } from '../../src/geometry/sanctuary/terraces'
+import { signedArea, triangulate } from '../../src/data/polygon'
 import { insideConvex, offsetPolyline } from '../../src/geometry/sanctuary/common'
+import { pointInPolygon as pip } from '../../src/data/polygon'
 import { decodeHeightfield, encodeHeightfield, sampleHeight, subtractConvex } from '../../src/geometry/sanctuary/terrain'
 import { TIERS, mergeOutputs, type Heightfield } from '../../src/geometry/types'
 import fixture from '../fixtures/sanctuary.synthetic.json'
@@ -42,7 +45,7 @@ function synthTerrain(): Heightfield {
   return hf
 }
 const hf = synthTerrain()
-const ground = groundFromHeightfield(hf)
+const S = resolveDimensions(dimensions.dimensions as unknown as Dimensions).stylobate.top
 
 describe('sanctuary schema and references', () => {
   it('the synthetic fixture validates and its references resolve', () => {
@@ -50,16 +53,35 @@ describe('sanctuary schema and references', () => {
     expect(sanctuaryRefErrors(doc, sourceIds)).toEqual([])
   })
 
-  it('rejects scan placement without a frame-bound pick, and pages on unverified values', () => {
-    const d = clone(doc)
-    d.features['altar-a'].placement = { source: 'scan', ref: 'furtwangler-1906', verified: false }
+  it('placement is always the site plan with a confidence; the terrain is conjectural; no pages on unverified values', () => {
+    const d = clone(doc) as unknown as { features: Record<string, { placement: Record<string, unknown> }> }
+    d.features['altar-a'].placement.source = 'scan'
     expect(validate('sanctuary', d).length).toBeGreaterThan(0)
-    const e = clone(doc)
-    e.features['altar-a'].placement = { source: 'scan', ref: 'furtwangler-1906', verified: false, pickId: 'altar', frameHash: 'a'.repeat(64) }
-    expect(validate('sanctuary', e)).toEqual([])
+    const e = clone(doc) as unknown as { features: Record<string, { placement: Record<string, unknown> }> }
+    delete e.features['altar-a'].placement.confidence
+    expect(validate('sanctuary', e).length).toBeGreaterThan(0)
+    const t = clone(doc) as unknown as { terrain: Record<string, unknown> }
+    t.terrain.confidence = 'attested'
+    expect(validate('sanctuary', t).length).toBeGreaterThan(0)
+    const m = clone(doc) as unknown as { features: Record<string, { length: Record<string, unknown> }> }
+    m.features['altar-a'].length.source = 'scan'
+    expect(validate('sanctuary', m).length).toBeGreaterThan(0)
     const p = clone(doc) as unknown as { features: Record<string, { length: Record<string, unknown> }> }
     p.features['altar-a'].length.page = '25'
     expect(validate('sanctuary', p).length).toBeGreaterThan(0)
+  })
+
+  it('terrace checks: simple polygons, no overlaps, solid features on a terrace', () => {
+    const d = clone(doc)
+    d.terrain.terraces['east-terrace'].polygon = [[39, -30], [55, -30], [55, 10], [39, 10]]
+    expect(sanctuaryRefErrors(d, sourceIds).some((e) => e.includes('overlap'))).toBe(true)
+    const b = clone(doc)
+    b.terrain.terraces['east-terrace'].polygon = [[40, -30], [55, 10], [55, -30], [40, 10]]
+    expect(sanctuaryRefErrors(b, sourceIds).some((e) => e.includes('not simple'))).toBe(true)
+    const f = clone(doc)
+    const a = f.features['altar-a']
+    if (a.kind === 'altar') a.center = [70, 0]
+    expect(sanctuaryRefErrors(f, sourceIds).some((e) => e.includes('altar-a: not on a terrace'))).toBe(true)
   })
 
   it('rejects kind-specific omissions and unknown fields', () => {
@@ -125,9 +147,13 @@ describe('footprints', () => {
         if (a < b) for (const fa of footprints(doc.features[a])) for (const fb of footprints(doc.features[b])) expect(convexOverlap(fa, fb), `${a} x ${b}`).toBe(false)
   })
 
-  it('terrain exists under every shown footprint', () => {
-    for (const id of shown)
-      for (const fp of footprints(doc.features[id])) for (const p of fp) expect(Number.isFinite(sampleHeight(hf, p[0], p[1])), id).toBe(true)
+  it('every shown solid footprint lies on one terrace', () => {
+    const ts = Object.values(doc.terrain.terraces)
+    for (const id of shown) {
+      const f = doc.features[id]
+      if (!['altar', 'building', 'cistern'].includes(f.kind)) continue
+      for (const fp of footprints(f)) expect(ts.some((t) => fp.every((p) => insideConvex(t.polygon, p) || pip(t.polygon, p))), id).toBe(true)
+    }
   })
 
   it('altar steps footprint sits on the step side only', () => {
@@ -203,15 +229,18 @@ describe('terrain', () => {
   })
 })
 
-describe.each(TIERS)('sanctuary generators on synthetic terrain (%s)', (tier) => {
-  const s = buildSanctuary(doc, tier, palette.colors, ground)
-  const t = buildTerrain(hf, tier, palette.colors, s.cuts)
+describe.each(TIERS)('sanctuary generators on the sparse terrain (%s)', (tier) => {
+  const site = buildSite(doc, S, tier, palette.colors)
+  const s = site.sanctuary
+  const t = site.terrain
+  const ground = site.ground
 
   it('builds every shown feature and reports placement for all of them', () => {
     const names = new Set(s.output.groups.map((g) => g.name))
     for (const n of ['altar', 'sanctuary-building', 'sanctuary-floor', 'sanctuary-wall', 'cistern', 'channel']) expect(names, n).toContain(n)
     expect(s.report).toHaveLength(Object.keys(doc.features).length)
     expect(s.report.find((x) => x.id === 'stoa-late')).toMatchObject({ shown: false, placement: 'plan' })
+    expect(s.report.every((x) => x.placement === 'plan')).toBe(true)
     expect(s.output.colliders.some((c) => c.name.startsWith('stoa-late'))).toBe(false)
   })
 
@@ -250,11 +279,94 @@ describe.each(TIERS)('sanctuary generators on synthetic terrain (%s)', (tier) =>
     expect(s.output.colliders.find((c) => c.name === 'cistern-b-cistern')?.kind).toBe('circle')
     const walls = s.output.colliders.filter((c) => c.name.startsWith('terrace-a-') || c.name.startsWith('peribolos-a-'))
     expect(walls).toHaveLength(2 + 4)
+    // The retaining wall holds the upper terrace: top above it, skirt below the lower one.
+    const rw = s.output.colliders.filter((c) => c.name.startsWith('terrace-a-'))
+    const levelOf = (id: string) => S + doc.terrain.terraces[id].level.value
+    for (const c of rw) {
+      expect(c.y1).toBeGreaterThan(levelOf('temple-terrace'))
+      expect(c.y0).toBeLessThan(levelOf('south-terrace'))
+    }
   })
 
   it('triangle budget (sanctuary + terrain)', () => {
     const n = [...s.output.groups, ...t.groups].reduce((a, g) => a + g.indices.length / 3, 0)
     expect(n).toBeLessThan(tier === 'low' ? 30_000 : 150_000)
+  })
+
+  it('DEM path: the same features on a heightfield (future)', () => {
+    const dem = buildSite(doc, S, tier, palette.colors, { dem: hf })
+    expect(dem.terrain.levels.find((l) => l.name === 'terrain')?.heightfield).toBe(hf)
+    expect(meshProblems([...dem.sanctuary.output.groups, ...dem.terrain.groups])).toEqual([])
+  })
+})
+
+describe('sparse terrain (terraces + retaining walls + hilltop falloff)', () => {
+  const T = doc.terrain
+  const fn = terrainHeightFn(T, S)
+  const level = (id: string) => S + T.terraces[id].level.value
+
+  it('height: terrace levels relative to the stylobate inside, hilltop falloff outside', () => {
+    expect(fn(0, 0)).toBeCloseTo(level('temple-terrace'), 9)
+    expect(fn(0, 30)).toBeCloseTo(level('south-terrace'), 9)
+    expect(fn(50, -20)).toBeCloseTo(level('east-terrace'), 9)
+    for (const d of [0.5, 5, 20]) expect(fn(0, -30 - d)).toBeCloseTo(level('temple-terrace') - falloffDrop(T, d), 9)
+    // Continuous at an outer edge; slope doubles by the radius.
+    expect(fn(0, -30 - 1e-6)).toBeCloseTo(level('temple-terrace'), 5)
+    const r = T.falloff.radius.value
+    expect((falloffDrop(T, r + 1e-4) - falloffDrop(T, r)) / 1e-4).toBeCloseTo(2 * T.falloff.slope.value, 3)
+  })
+
+  it('skirt clipping: segment parts inside footprints are dropped, boundary-coincident parts too', () => {
+    const sq = rotatedRect([5, 0], 2, 2, 0)
+    const r = outsideCuts([0, 0], [10, 0], [sq])
+    expect(r).toHaveLength(2)
+    expect(r[0][1]).toBeCloseTo(0.4, 6)
+    expect(r[1][0]).toBeCloseTo(0.6, 6)
+    expect(outsideCuts([4, 1], [6, 1], [sq])).toEqual([]) // lies on the footprint's edge
+    expect(outsideCuts([0, 5], [10, 5], [sq])).toEqual([[0, 1]])
+  })
+
+  it('non-convex terraces triangulate to their exact area', () => {
+    const poly = T.terraces['east-terrace'].polygon
+    const tris = triangulate(poly)
+    expect(tris.reduce((a, t) => a + Math.abs(signedArea(t)), 0)).toBeCloseTo(Math.abs(signedArea(poly)), 9)
+  })
+
+  it.each(TIERS)('mesh (%s): flat terrace tops, riser to the lower terrace only, walk heightfield and terrace levels', (tier) => {
+    const site = buildSite(doc, S, tier, palette.colors)
+    const g = site.terrain.groups[0]
+    expect(meshProblems(site.terrain.groups)).toEqual([])
+    // Vertical faces on the shared edge x = 40 (east terrace 0.5 m higher than the temple terrace).
+    let facingWest = 0
+    let facingEast = 0
+    for (let i = 0; i < g.indices.length; i += 3) {
+      const v = [0, 1, 2].map((k) => g.indices[i + k])
+      const nx = g.normals[3 * v[0]]
+      const onEdge = v.every((k) => Math.abs(g.positions[3 * k] - 40) < 1e-6 && g.positions[3 * k + 2] > -30 && g.positions[3 * k + 2] < 10)
+      if (!onEdge) continue
+      if (nx < -0.99) facingWest++
+      if (nx > 0.99) facingEast++
+    }
+    expect(facingWest).toBeGreaterThan(0)
+    expect(facingEast).toBe(0)
+    // The retaining wall's footprint covers the whole temple/south edge: no exposed riser at z = 25.
+    let southRiser = 0
+    for (let i = 0; i < g.indices.length; i += 3) {
+      const v = [0, 1, 2].map((k) => g.indices[i + k])
+      if (v.every((k) => Math.abs(g.positions[3 * k + 2] - 25) < 1e-6) && g.normals[3 * v[0] + 2] > 0.99) southRiser++
+    }
+    expect(southRiser).toBe(0)
+    const lv = site.terrain.levels
+    for (const id of Object.keys(T.terraces)) {
+      const l = lv.find((x) => x.name === `terrace-${id}`)!
+      expect(l.y).toBeCloseTo(level(id), 9)
+      expect(l.polygon).toEqual(T.terraces[id].polygon)
+    }
+    const walk = lv.find((x) => x.name === 'terrain')!.heightfield!
+    expect(walk.cell).toBe(WALK_CELL)
+    const b = terrainBounds(T)
+    expect(walk.originX).toBe(b.minX)
+    expect(sampleHeight(walk, -20, -35)).toBeCloseTo(fn(-20, -35), 1)
   })
 })
 

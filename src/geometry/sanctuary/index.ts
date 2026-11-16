@@ -12,6 +12,7 @@ import { cistern, cisternLoops } from './cistern'
 import type { GroundFn, SanctuaryContext } from './common'
 import { sampleHeight, terrain } from './terrain'
 import { channel, wallRun } from './wall'
+import { sparseTerrain, terrainHeightFn } from './terraces'
 
 export interface FeatureReport {
   id: string
@@ -73,4 +74,26 @@ export function buildTerrain(hf: Heightfield, tier: Tier, palette: PaletteLike, 
   return { ...t, groups: col.build(palette) }
 }
 
+/**
+ * Terrain for the sanctuary document: the sparse, conjectural description (default), or a DEM heightfield
+ * when one is supplied (future). Returns the mesh output and the ground function features must sit on.
+ */
+export function sanctuaryTerrain(doc: SanctuaryDoc, stylobateTop: number, tier: Tier, palette: PaletteLike, cuts: Point2[][], dem?: Heightfield) {
+  if (dem) return { output: buildTerrain(dem, tier, palette, cuts), ground: groundFromHeightfield(dem) }
+  const col = new Collector()
+  const t = sparseTerrain(doc.terrain, stylobateTop, tier, col, cuts)
+  return { output: { ...t, groups: col.build(palette) }, ground: terrainHeightFn(doc.terrain, stylobateTop) }
+}
+
 export const groundFromHeightfield = (hf: Heightfield): GroundFn => (x, z) => sampleHeight(hf, x, z)
+
+/**
+ * Whole site: ground function first (sparse terrain, or a DEM), then the features sitting on it, then the
+ * terrain cut by their footprints plus any extra outlines (e.g. the temple krepis when it is not on a terrace).
+ */
+export function buildSite(doc: SanctuaryDoc, stylobateTop: number, tier: Tier, palette: PaletteLike, opts: { dem?: Heightfield; extraCuts?: Point2[][] } = {}) {
+  const ground = opts.dem ? groundFromHeightfield(opts.dem) : terrainHeightFn(doc.terrain, stylobateTop)
+  const sanctuary = buildSanctuary(doc, tier, palette, ground)
+  const terrainOut = sanctuaryTerrain(doc, stylobateTop, tier, palette, [...sanctuary.cuts, ...(opts.extraCuts ?? [])], opts.dem).output
+  return { sanctuary, terrain: terrainOut, ground }
+}

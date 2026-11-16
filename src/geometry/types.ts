@@ -61,6 +61,8 @@ export interface Level {
   heightfield?: Heightfield
   /** Rotation of the box about its centre (radians, same sense as instance matrices); 0 when absent. */
   rotY?: number
+  /** Exact walkable outline (plan x, z) when the surface is not a box, e.g. a terrace. */
+  polygon?: [number, number][]
   name: string
   y: number
   minX: number
