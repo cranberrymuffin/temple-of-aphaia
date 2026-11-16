@@ -1,0 +1,108 @@
+{
+  "sources": [
+    {
+      "id": "moc-odysseus-aphaia",
+      "type": "official",
+      "citation": "Hellenic Ministry of Culture, Odysseus portal (odysseus.culture.gr): Sanctuary of Aphaia, Aegina.",
+      "verified": false,
+      "licence": "Short quotation with attribution.",
+      "note": "PROVISIONAL: exact page URL and quotation to be added from research."
+    },
+    {
+      "id": "pausanias-2-30-3",
+      "type": "ancient",
+      "citation": "Pausanias, Description of Greece 2.30.3, trans. W. H. S. Jones (Loeb Classical Library, 1918).",
+      "verified": false,
+      "licence": "Public domain translation (1918).",
+      "note": "PROVISIONAL: quotation to be added verbatim from the Jones translation."
+    },
+    {
+      "id": "pindar-aphaia",
+      "type": "ancient",
+      "citation": "Pindar, ode composed for the Aeginetans in honour of Aphaia (lost; known through Pausanias 2.30.3).",
+      "verified": false,
+      "licence": "Citation only.",
+      "note": "PROVISIONAL: confirm fragment reference."
+    },
+    {
+      "id": "furtwangler-1906",
+      "type": "archaeological",
+      "citation": "Furtwängler, A., with E. R. Fiechter and H. Thiersch. Aegina: Das Heiligtum der Aphaia. Munich, 1906.",
+      "verified": false,
+      "licence": "Public domain (1906); digitised at Heidelberg University Library.",
+      "note": "PROVISIONAL: digitised copy at digi.ub.uni-heidelberg.de; exact URL and pages to be confirmed."
+    },
+    {
+      "id": "cockerell-1860",
+      "type": "archaeological",
+      "citation": "Cockerell, C. R. The Temples of Jupiter Panhellenius at Aegina, and of Apollo Epicurius at Bassae. London, 1860.",
+      "verified": false,
+      "licence": "Public domain (1860).",
+      "note": "PROVISIONAL: digitised copy URL to be confirmed."
+    },
+    {
+      "id": "bankel-1993",
+      "type": "archaeological",
+      "citation": "Bankel, H. Der spätarchaische Tempel der Aphaia auf Aegina. Denkmäler antiker Architektur 19. Berlin, 1993.",
+      "verified": false,
+      "licence": "Citation only.",
+      "note": "Print-only. Stays verified:false with no page numbers unless the user supplies page scans."
+    },
+    {
+      "id": "gods-in-color",
+      "type": "polychrome",
+      "citation": "Brinkmann, V., and U. Koch-Brinkmann, et al. Gods in Color: painted sculpture of classical antiquity (exhibition and catalogue).",
+      "verified": false,
+      "licence": "Citation only.",
+      "note": "PROVISIONAL: edition, year and pages to be confirmed from research."
+    },
+    {
+      "id": "glyptothek-aegina-pediments",
+      "type": "archaeological",
+      "citation": "Ohly, D. Reconstructions of the Aegina pediments, Glyptothek Munich.",
+      "verified": false,
+      "licence": "Citation only.",
+      "note": "PROVISIONAL: exact publication and year to be confirmed from research."
+    }
+  ],
+  "names": {
+    "aphaia": {
+      "term": "Aphaia",
+      "sourceIds": ["pausanias-2-30-3", "moc-odysseus-aphaia"]
+    },
+    "britomartis": {
+      "term": "Britomartis",
+      "sourceIds": ["pausanias-2-30-3"],
+      "note": "Pausanias relates the Britomartis myth in connection with Aphaia."
+    },
+    "athena": {
+      "term": "Athena",
+      "sourceIds": ["glyptothek-aegina-pediments"],
+      "note": "Central figure of both pediments."
+    },
+    "herakles": {
+      "term": "Herakles",
+      "sourceIds": ["glyptothek-aegina-pediments"],
+      "note": "Kneeling archer of the later east pediment."
+    }
+  },
+  "choices": {
+    "polychrome-scheme": {
+      "description": "Architectural polychrome follows the Gods in Color reconstructions; gaps filled from Furtwängler's color observations.",
+      "sourceIds": ["gods-in-color", "furtwangler-1906"],
+      "confidence": "analogy"
+    },
+    "east-pediment-displayed": {
+      "description": "The later east pediment (Herakles as kneeling archer) is displayed on a c. 500 BC temple.",
+      "sourceIds": ["glyptothek-aegina-pediments"],
+      "confidence": "interpretive",
+      "note": "User decision 2026-11-16: show the later Herakles composition."
+    },
+    "dimension-baseline": {
+      "description": "Absolute size is anchored to published dimensions; the scan verifies proportions.",
+      "sourceIds": ["furtwangler-1906", "bankel-1993"],
+      "confidence": "attested",
+      "note": "User decision 2026-11-16 (no tape-measured reference)."
+    }
+  }
+}

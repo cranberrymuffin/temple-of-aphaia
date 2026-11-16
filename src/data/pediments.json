@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "status": "provisional",
+    "note": "Skeleton only. Step 4 fills the figures (west ~13 with central Athena and the painted archer; both east options)."
+  },
+  "west": {
+    "id": "west",
+    "label": "West pediment: Trojan War, Athena central",
+    "sourceIds": ["glyptothek-aegina-pediments"],
+    "confidence": "analogy",
+    "figures": []
+  },
+  "eastOptions": [
+    {
+      "id": "east-earlier",
+      "label": "Earlier east pediment (fragmentary)",
+      "sourceIds": ["glyptothek-aegina-pediments"],
+      "confidence": "conjectural",
+      "figures": []
+    },
+    {
+      "id": "east-later",
+      "label": "Later east pediment: Herakles as kneeling archer",
+      "date": "c. 480 BC",
+      "sourceIds": ["glyptothek-aegina-pediments"],
+      "confidence": "interpretive",
+      "figures": []
+    }
+  ],
+  "eastDisplayed": "east-later"
+}

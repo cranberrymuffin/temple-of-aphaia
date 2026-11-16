@@ -1,0 +1,307 @@
+{
+  "meta": {
+    "status": "provisional",
+    "note": "All values are provisional placeholders (verified:false, no page numbers). Sourced published values are merged by the lead from the research notes; scan values are merged by Step 2 merge_dimensions.py."
+  },
+  "dimensions": {
+    "stylobateLength": {
+      "value": 28.8,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Stylobate top surface, outer edge to outer edge along the flank (E-W).",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "stylobateWidth": {
+      "value": 13.8,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Stylobate top surface, outer edge to outer edge across the front (N-S).",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "interaxialFront": {
+      "value": 2.6,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Normal (non-corner) column axis spacing on the fronts.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "interaxialFlank": {
+      "value": 2.53,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Normal (non-corner) column axis spacing on the flanks.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "interaxialCornerFront": {
+      "value": 2.45,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Contracted corner interaxial on the fronts (corner axis to adjacent axis).",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "interaxialCornerFlank": {
+      "value": 2.43,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Contracted corner interaxial on the flanks (corner axis to adjacent axis).",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "columnHeight": {
+      "value": 5.27,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Peristyle column height, stylobate top to abacus top.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "lowerDiameter": {
+      "value": 0.99,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Peristyle lower column diameter measured at the arrises, just above the base.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "upperDiameter": {
+      "value": 0.75,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Peristyle upper column diameter at the arrises, below the necking.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "fluteCount": {
+      "value": 20,
+      "unit": "count",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "definition": "Number of flutes per peristyle column (Doric, fixed at 20).",
+      "note": "Fixed by the spec (AC3); source citation pending verification."
+    },
+    "echinusHeight": {
+      "value": 0.25,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Echinus height, necking/annulets top to abacus underside.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "abacusHeight": {
+      "value": 0.22,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Abacus height.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "abacusWidth": {
+      "value": 1.25,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Abacus side length (square).",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "architraveHeight": {
+      "value": 0.88,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Architrave height including taenia.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "friezeHeight": {
+      "value": 0.98,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Triglyph frieze height.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "corniceHeight": {
+      "value": 0.34,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Horizontal (geison) cornice height including mutule soffit.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "crepidomaStepCount": {
+      "value": 3,
+      "unit": "count",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Number of crepidoma steps including the stylobate course.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "crepidomaStepRise": {
+      "value": 0.26,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Rise of each crepidoma step.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "crepidomaStepTread": {
+      "value": 0.3,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Tread depth of each lower crepidoma step.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "pedimentPitch": {
+      "value": 14,
+      "unit": "deg",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Pediment raking-cornice angle above horizontal.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "cellaOuterLength": {
+      "value": 20.6,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Cella building (incl. pronaos and opisthodomos antae) outer length, E-W.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "cellaOuterWidth": {
+      "value": 8,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Cella outer width, N-S.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "cellaWallThickness": {
+      "value": 0.6,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Cella wall thickness.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "antaWidth": {
+      "value": 0.75,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Anta face width.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "doorWidth": {
+      "value": 2,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Cella east door clear width at the threshold.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "interiorColumnsPerSide": {
+      "value": 5,
+      "unit": "count",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Interior colonnade columns per side (each of two tiers).",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "interiorLowerColumnHeight": {
+      "value": 3.5,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Interior lower-tier column height, cella floor to abacus top.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "interiorLowerDiameter": {
+      "value": 0.6,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Interior lower-tier column lower diameter at the arrises.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "interiorUpperColumnHeight": {
+      "value": 2.4,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Interior upper-tier column height, epistyle top to abacus top.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    },
+    "interiorUpperDiameter": {
+      "value": 0.42,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "definition": "Interior upper-tier column lower diameter at the arrises.",
+      "note": "PROVISIONAL seed estimate for scaffolding only; not located in the cited source. Replace with a sourced value (lead merge) or the scan-derived value (Step 2)."
+    }
+  }
+}

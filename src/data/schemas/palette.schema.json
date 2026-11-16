@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "palette.schema.json",
+  "title": "Polychrome palette",
+  "type": "object",
+  "required": ["meta", "colors"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "meta": { "type": "object", "required": ["status", "note"] },
+    "colors": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "$ref": "common.schema.json#/definitions/id" },
+      "additionalProperties": {
+        "type": "object",
+        "required": ["color", "sourceIds", "confidence", "verified"],
+        "additionalProperties": false,
+        "properties": {
+          "color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" },
+          "pattern": { "enum": ["plain", "meander", "egg-and-dart", "hawksbeak", "palmette"] },
+          "sourceIds": { "$ref": "common.schema.json#/definitions/sourceIds" },
+          "confidence": { "$ref": "confidence.schema.json" },
+          "verified": { "type": "boolean" },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  }
+}

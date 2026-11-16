@@ -1,0 +1,8 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "confidence.schema.json",
+  "title": "Confidence",
+  "description": "Shared confidence enum for every sourced value, color, figure, name and choice.",
+  "type": "string",
+  "enum": ["attested", "analogy", "conjectural", "interpretive"]
+}

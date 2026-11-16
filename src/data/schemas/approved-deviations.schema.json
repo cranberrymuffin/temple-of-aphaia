@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "approved-deviations.schema.json",
+  "title": "Proposed and user-approved deviations",
+  "description": "Executors append entries with approvedBy:null and date:null. Only the user signs, in their own message.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["key", "reason", "scanScaled", "usedValue", "approvedBy", "date"],
+    "additionalProperties": false,
+    "properties": {
+      "key": { "type": "string", "minLength": 1 },
+      "reason": { "type": "string", "minLength": 1 },
+      "scanScaled": { "type": ["number", "null"] },
+      "usedValue": { "type": ["number", "null"] },
+      "approvedBy": { "type": ["string", "null"], "minLength": 1 },
+      "date": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" }
+    },
+    "if": { "properties": { "approvedBy": { "type": "string" } } },
+    "then": { "properties": { "date": { "type": "string" } } },
+    "else": { "properties": { "date": { "type": "null" } } }
+  }
+}

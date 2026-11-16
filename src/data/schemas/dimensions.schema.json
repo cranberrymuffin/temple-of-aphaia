@@ -1,0 +1,298 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "dimensions.schema.json",
+  "title": "Primary dimensions",
+  "description": "Primary values only. Derived values are computed by resolveDimensions() and never stored here.",
+  "type": "object",
+  "required": [
+    "meta",
+    "dimensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "meta": {
+      "type": "object",
+      "required": [
+        "status",
+        "note"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "provisional",
+            "merged"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stylobateLength",
+        "stylobateWidth",
+        "interaxialFront",
+        "interaxialFlank",
+        "interaxialCornerFront",
+        "interaxialCornerFlank",
+        "columnHeight",
+        "lowerDiameter",
+        "upperDiameter",
+        "fluteCount",
+        "echinusHeight",
+        "abacusHeight",
+        "abacusWidth",
+        "architraveHeight",
+        "friezeHeight",
+        "corniceHeight",
+        "crepidomaStepCount",
+        "crepidomaStepRise",
+        "crepidomaStepTread",
+        "pedimentPitch",
+        "cellaOuterLength",
+        "cellaOuterWidth",
+        "cellaWallThickness",
+        "antaWidth",
+        "doorWidth",
+        "interiorColumnsPerSide",
+        "interiorLowerColumnHeight",
+        "interiorLowerDiameter",
+        "interiorUpperColumnHeight",
+        "interiorUpperDiameter"
+      ],
+      "properties": {
+        "stylobateLength": {
+          "$ref": "#/definitions/entry"
+        },
+        "stylobateWidth": {
+          "$ref": "#/definitions/entry"
+        },
+        "interaxialFront": {
+          "$ref": "#/definitions/entry"
+        },
+        "interaxialFlank": {
+          "$ref": "#/definitions/entry"
+        },
+        "interaxialCornerFront": {
+          "$ref": "#/definitions/entry"
+        },
+        "interaxialCornerFlank": {
+          "$ref": "#/definitions/entry"
+        },
+        "columnHeight": {
+          "$ref": "#/definitions/entry"
+        },
+        "lowerDiameter": {
+          "$ref": "#/definitions/entry"
+        },
+        "upperDiameter": {
+          "$ref": "#/definitions/entry"
+        },
+        "fluteCount": {
+          "$ref": "#/definitions/entry"
+        },
+        "echinusHeight": {
+          "$ref": "#/definitions/entry"
+        },
+        "abacusHeight": {
+          "$ref": "#/definitions/entry"
+        },
+        "abacusWidth": {
+          "$ref": "#/definitions/entry"
+        },
+        "architraveHeight": {
+          "$ref": "#/definitions/entry"
+        },
+        "friezeHeight": {
+          "$ref": "#/definitions/entry"
+        },
+        "corniceHeight": {
+          "$ref": "#/definitions/entry"
+        },
+        "crepidomaStepCount": {
+          "$ref": "#/definitions/entry"
+        },
+        "crepidomaStepRise": {
+          "$ref": "#/definitions/entry"
+        },
+        "crepidomaStepTread": {
+          "$ref": "#/definitions/entry"
+        },
+        "pedimentPitch": {
+          "$ref": "#/definitions/entry"
+        },
+        "cellaOuterLength": {
+          "$ref": "#/definitions/entry"
+        },
+        "cellaOuterWidth": {
+          "$ref": "#/definitions/entry"
+        },
+        "cellaWallThickness": {
+          "$ref": "#/definitions/entry"
+        },
+        "antaWidth": {
+          "$ref": "#/definitions/entry"
+        },
+        "doorWidth": {
+          "$ref": "#/definitions/entry"
+        },
+        "interiorColumnsPerSide": {
+          "$ref": "#/definitions/entry"
+        },
+        "interiorLowerColumnHeight": {
+          "$ref": "#/definitions/entry"
+        },
+        "interiorLowerDiameter": {
+          "$ref": "#/definitions/entry"
+        },
+        "interiorUpperColumnHeight": {
+          "$ref": "#/definitions/entry"
+        },
+        "interiorUpperDiameter": {
+          "$ref": "#/definitions/entry"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "entry": {
+      "type": "object",
+      "required": [
+        "value",
+        "unit",
+        "source",
+        "ref",
+        "verified",
+        "definition"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit": {
+          "enum": [
+            "m",
+            "deg",
+            "count"
+          ]
+        },
+        "source": {
+          "enum": [
+            "scan",
+            "published"
+          ]
+        },
+        "ref": {
+          "$ref": "common.schema.json#/definitions/id"
+        },
+        "page": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^https?://"
+        },
+        "verified": {
+          "type": "boolean"
+        },
+        "provisional": {
+          "type": "boolean",
+          "description": "true = seed/placeholder value not yet located in its source. Must be verified:false."
+        },
+        "residual": {
+          "type": "number",
+          "minimum": 0
+        },
+        "residualType": {
+          "enum": [
+            "edge_rms",
+            "flute_fit_rms",
+            "slice_sigma",
+            "grid_rms",
+            "envelope_rms"
+          ]
+        },
+        "uncertainty": {
+          "type": "number",
+          "minimum": 0
+        },
+        "n": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "common.schema.json#/definitions/noPageUnlessVerified"
+        },
+        {
+          "if": {
+            "properties": {
+              "provisional": {
+                "const": true
+              }
+            },
+            "required": [
+              "provisional"
+            ]
+          },
+          "then": {
+            "properties": {
+              "verified": {
+                "const": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "const": "scan"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "residual",
+              "residualType",
+              "n"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "unit": {
+                "const": "count"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

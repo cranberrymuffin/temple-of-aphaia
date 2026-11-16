@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "status": "provisional",
+    "note": "PROVISIONAL colors for scaffolding. Step 4 replaces them with sourced Gods in Color values."
+  },
+  "colors": {
+    "marble": { "color": "#e9e2d0", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "conjectural", "verified": false },
+    "triglyph-blue": { "color": "#1e2c55", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "analogy", "verified": false },
+    "regula-mutule-blue": { "color": "#2b4a8b", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "analogy", "verified": false },
+    "taenia-red": { "color": "#a2302a", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "analogy", "verified": false },
+    "cornice-hawksbeak": { "color": "#a2302a", "pattern": "hawksbeak", "sourceIds": ["gods-in-color"], "confidence": "conjectural", "verified": false },
+    "sima-meander": { "color": "#a2302a", "pattern": "meander", "sourceIds": ["gods-in-color", "furtwangler-1906"], "confidence": "conjectural", "verified": false },
+    "cyma-egg-and-dart": { "color": "#2b4a8b", "pattern": "egg-and-dart", "sourceIds": ["gods-in-color"], "confidence": "conjectural", "verified": false },
+    "tympanum-blue": { "color": "#3a5f9e", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "analogy", "verified": false },
+    "metope": { "color": "#e9e2d0", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "conjectural", "verified": false },
+    "roof-tile": { "color": "#b5653d", "pattern": "plain", "sourceIds": ["furtwangler-1906"], "confidence": "conjectural", "verified": false }
+  }
+}
