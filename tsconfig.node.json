@@ -1,7 +1,15 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": ["node", "vite/client"]
+    "types": [
+      "node",
+      "vite/client"
+    ]
   },
-  "include": ["tests", "vite.config.ts", "playwright.config.ts"]
+  "include": [
+    "tests",
+    "vite.config.ts",
+    "playwright.config.ts",
+    "tools/bake"
+  ]
 }
