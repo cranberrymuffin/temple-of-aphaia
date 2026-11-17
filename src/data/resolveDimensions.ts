@@ -69,7 +69,7 @@ export const CONVENTIONS = {
   porchStepTreadRatio: 0.5,
   /** Door clear height / cella wall height. PROMOTE (research: opening height uncertain). */
   doorHeightRatio: 0.6,
-  /** Interior epistyle height / interior lower diameter. */
+  /** Interior epistyle height / the diameter of the storey it rests on (mid epistyle: lower diameter; upper epistyle: upper diameter). */
   interiorEpistyleRatio: 0.55,
   /** Minimum stylobate-edge-to-column-face margin before the resolver grows the stylobate (m). */
   minMargin: 0.005,
@@ -218,6 +218,8 @@ export interface Resolved {
     /** Interior steps under the colonnades (one per row, centred on zs). */
     step: { y0: number; y1: number; width: number }
     epistyle: { y0: number; y1: number; width: number }
+    /** Upper epistyle on the upper columns; its top is the ceiling. */
+    upperEpistyle: { y0: number; y1: number; width: number }
   }
   /** Wedge from minX (top, at the lowest step face) down to maxX; `fills` close the gap over the lower treads up to the ramp top. */
   ramp: null | { minX: number; maxX: number; halfZ: number; topY: number; fills: { minX: number; maxX: number; y0: number }[] }
@@ -507,7 +509,7 @@ export function resolveDimensions(
   // The lower columns stand on the interior step; their height is still cella floor to abacus top.
   const intStepRise = C.interiorStepRiseRatio * v('pronaosStepRise')
   const lowerInt = makeColumn(v('interiorLowerColumnHeight') - intStepRise, v('interiorLowerDiameter'), flutes)
-  const upperInt = makeColumn(v('interiorUpperColumnHeight'), v('interiorUpperDiameter'), v('interiorUpperFluteCount'))
+  // Upper storey: height derived below so its epistyle meets the ceiling (interiorUpperColumnHeight is only a cross-check).
   const naosMid = (eastWallX[0] + westWallX[1]) / 2
   const spacing = v('interiorAxialSpacing')
   const xs = Array.from({ length: nInt }, (_, i) => naosMid + (i - (nInt - 1) / 2) * spacing)
@@ -519,9 +521,18 @@ export function resolveDimensions(
   conv(`interior step width = lower abacus width, rise = ${C.interiorStepRiseRatio} x pronaosStepRise`, intStepRise)
   if (zRow + lowerInt.abacusWidth / 2 >= innerHalfW) throw new ResolveError('interior colonnade hits the cella wall')
   const epH = C.interiorEpistyleRatio * v('interiorLowerDiameter')
+  // Lower storey: columns stand on the step and carry the mid epistyle directly (no gap).
   const ep0 = floorY + intStepRise + lowerInt.height
-  const interiorTop = ep0 + epH + upperInt.height
-  if (interiorTop >= c1) throw new ResolveError('interior colonnade taller than the ceiling')
+  const upEpH = C.interiorEpistyleRatio * v('interiorUpperDiameter')
+  conv(`interior upper epistyle = ${C.interiorEpistyleRatio} x interiorUpperDiameter, top at the ceiling`, upEpH)
+  const upperH = c1 - upEpH - (ep0 + epH)
+  if (upperH <= 0) throw new ResolveError('no room for the upper interior storey under the ceiling')
+  const upperInt = makeColumn(upperH, v('interiorUpperDiameter'), v('interiorUpperFluteCount'))
+  log.push({
+    kind: 'check',
+    message: `interior upper column height derived ${upperH.toFixed(3)} m (H/D ${(upperH / v('interiorUpperDiameter')).toFixed(2)}); dimensions.json interiorUpperColumnHeight ${v('interiorUpperColumnHeight')} m differs by ${(upperH - v('interiorUpperColumnHeight')).toFixed(3)} m (superseded)`,
+    value: upperH,
+  })
   if (zRow - lowerInt.abacusWidth / 2 <= 0) throw new ResolveError('interior colonnades overlap')
 
   // ---- east ramp (source-gated) ---------------------------------------------------------------
@@ -655,6 +666,7 @@ export function resolveDimensions(
       floorY,
       step: { y0: floorY, y1: floorY + intStepRise, width: lowerInt.abacusWidth },
       epistyle: { y0: ep0, y1: ep0 + epH, width: lowerInt.abacusWidth },
+      upperEpistyle: { y0: c1 - upEpH, y1: c1, width: upperInt.abacusWidth },
     },
     ramp,
     levels,

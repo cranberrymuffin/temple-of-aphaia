@@ -211,7 +211,16 @@ describe('crepidoma, cella, ramp, errors', () => {
     expect(I.step.y1 + I.lower.height - I.floorY).toBeCloseTo(base.interiorLowerColumnHeight.value, 9)
     expect(r.levels.filter((l) => l.name.startsWith('interior-step'))).toHaveLength(2)
     expect(I.upper.flutes).toBe(base.interiorUpperFluteCount.value)
-    expect(I.epistyle.y1 + I.upper.height).toBeLessThan(r.ceilingY)
+    // Both storeys close up: lower columns under the mid epistyle, upper columns under the upper epistyle,
+    // whose top is the ceiling (no floating abacus).
+    expect(I.step.y1 + I.lower.height).toBeCloseTo(I.epistyle.y0, 9)
+    expect(I.epistyle.y1 + I.upper.height).toBeCloseTo(I.upperEpistyle.y0, 9)
+    expect(Math.abs(I.upperEpistyle.y1 - r.ceilingY)).toBeLessThan(0.001)
+    // Derived upper height: a plausible slender Doric storey (4-9 lower diameters), logged.
+    const hd = I.upper.height / (2 * I.upper.lowerRadius)
+    expect(hd).toBeGreaterThan(4)
+    expect(hd).toBeLessThan(9)
+    expect(r.log.some((l) => l.message.startsWith('interior upper column height derived'))).toBe(true)
   })
 
   it('east ramp only when requested; slope from dimensions.json', () => {

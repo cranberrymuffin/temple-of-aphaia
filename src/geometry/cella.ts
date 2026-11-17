@@ -117,7 +117,7 @@ export function cella(r: Resolved, tier: Tier, col: Collector): Omit<GeneratorOu
   // Interior two-tier colonnade.
   const I = r.interior
   const lower = columnMesh('interior-columns-lower', I.lower, tier, false)
-  const upper = columnMesh('interior-columns-upper', I.upper, tier, true)
+  const upper = columnMesh('interior-columns-upper', I.upper, tier, false)
   const lowerOut = col.get('interior-columns-lower')
   const upperOut = col.get('interior-columns-upper')
   const ep = col.get('interior-epistyle')
@@ -132,6 +132,9 @@ export function cella(r: Resolved, tier: Tier, col: Collector): Omit<GeneratorOu
     }
     const hw = I.epistyle.width / 2
     ep.box([wx1, I.epistyle.y0, z - hw], [ex0, I.epistyle.y1, z + hw], ['+x', '-x'])
+    // Upper epistyle: carried by the upper columns, top under the ceiling (contact face omitted).
+    const uw = I.upperEpistyle.width / 2
+    ep.box([wx1, I.upperEpistyle.y0, z - uw], [ex0, I.upperEpistyle.y1, z + uw], ['+x', '-x', '+y'])
   }
 
   const levels: Level[] = r.levels
