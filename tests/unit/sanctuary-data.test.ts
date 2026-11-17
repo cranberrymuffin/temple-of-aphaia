@@ -9,7 +9,7 @@ import { convexOverlap, footprints, partitionByPhase, rotatedRect, sanctuaryRefE
 import { pointInPolygon } from '../../src/data/polygon'
 import type { Dimensions } from '../../src/data/types'
 import { validate } from '../../src/data/validate'
-import { buildSite } from '../../src/geometry/sanctuary'
+import { buildSite, siteGround } from '../../src/geometry/sanctuary'
 import { buildTemple, triangleCount } from '../../src/geometry/temple'
 import { TIERS, mergeOutputs } from '../../src/geometry/types'
 import { findCoplanarOverlaps, meshProblems, worldTriangles } from './helpers/triangles'
@@ -25,13 +25,72 @@ describe('sanctuary.json', () => {
     expect(sanctuaryRefErrors(doc, sourceIds)).toEqual([])
   })
 
-  it('c. 490 BC: earlier and later structures hidden, the votive column and Südbau shown but flagged uncertain', () => {
+  it('c. 490 BC: earlier and later structures hidden; the sphinx column shown and attested; the Südbau kept but hidden', () => {
     expect(doc.meta.displayYear).toBe(-490)
     const { shown, hidden } = partitionByPhase(doc)
     for (const id of ['old-altar-6th', 'old-propylon', 'old-houses', 'old-peribolos-7th', 'remodelling-4th-c']) expect(hidden).toContain(id)
-    for (const id of ['votive-column', 'suedbau-north-wall', 'propylon', 'altar', 'cistern']) expect(shown).toContain(id)
-    expect(doc.features['votive-column'].uncertain).toBeTruthy()
-    expect(doc.features['suedbau-north-wall'].uncertain).toBeTruthy()
+    for (const id of ['votive-column', 'propylon', 'altar', 'cistern']) expect(shown).toContain(id)
+    const col = doc.features['votive-column']
+    expect(col.uncertain).toBeUndefined()
+    expect(col.confidence).toBe('attested')
+    expect(col.sourceIds).toContain('ministry-onsite-boards')
+    for (const id of ['suedbau-north-wall', 'suedbau-south-wall', 'suedbau-cross-wall-1', 'suedbau-cross-wall-2']) {
+      expect(hidden).toContain(id)
+      expect(doc.features[id].hiddenReason).toMatch(/not depicted in the Ministry reconstruction; shape unknown/i)
+    }
+    expect(doc.terrain.terraces['suedbau-terrace'].hiddenReason).toBeTruthy()
+  })
+
+  it('Ministry board findings: enclosure parapet, NE ashlar coping, older east stretch, priests\' houses, altar court, cistern well-head', () => {
+    const f = doc.features
+    const nws = f['terrace-wall-nws']
+    const se = f['terrace-wall-se']
+    const e = f['terrace-wall-e']
+    if (nws.kind !== 'wall' || se.kind !== 'wall' || e.kind !== 'wall') throw new Error('kinds')
+    const p = nws.parapets![0]
+    expect(p.segments).toEqual([0, 1, 2])
+    expect(p.socle.value + p.mudbrick.value + p.coping.value).toBeCloseTo(1.8, 6)
+    expect(p.mudbrick.value).toBeGreaterThan(0)
+    expect(se.masonry).toEqual(['rubble', 'rubble', 'ashlar'])
+    expect(e.masonry).toBe('older')
+    for (const id of ['se-rooms-ii-iv', 'se-room-a', 'se-room-b', 'se-room-i7']) {
+      const h = f[id]
+      if (h.kind !== 'building') throw new Error(id)
+      expect(h.roof?.form, id).toBe('hipped')
+    }
+    const front = f['se-rooms-ii-iv']
+    const rear = f['se-room-a']
+    const wing = f['se-forecourt']
+    if (front.kind !== 'building' || rear.kind !== 'building' || wing.kind !== 'building') throw new Error('kinds')
+    expect(rear.wallHeight.value).toBeGreaterThan(front.wallHeight.value) // taller block behind
+    expect(front.columns?.positions.length).toBeGreaterThan(1) // columned porch
+    expect(front.openSides).toContain('w') // facing the gate side
+    expect(wing.roof?.form).toBe('pent')
+    expect(wing.wallHeight.value).toBeLessThan(front.wallHeight.value)
+    const altar = f.altar
+    if (altar.kind !== 'altar') throw new Error('altar')
+    expect(altar.backScreen).toBeTruthy()
+    const court = Object.keys(f).filter((id) => id.startsWith('court-base-'))
+    expect(court.length).toBeGreaterThanOrEqual(4)
+    for (const id of [...court, 'statue-base-front']) {
+      const b = f[id]
+      if (b.kind !== 'base') throw new Error(id)
+      expect(b.figure, id).toBeTruthy()
+    }
+    const front6 = f['statue-base-front']
+    if (front6.kind !== 'base') throw new Error('base')
+    expect(front6.height.value).toBeGreaterThan(1.5) // the tall base (legend 6)
+    const cis = f.cistern
+    const ch = f['water-channel']
+    if (cis.kind !== 'cistern' || ch.kind !== 'channel') throw new Error('kinds')
+    expect(cis.rimHeight.value).toBeGreaterThanOrEqual(0.5) // a well-head
+    expect(ch.sunk).toBe(true)
+    const prop = f.propylon
+    if (prop.kind !== 'building') throw new Error('propylon')
+    expect(prop.roofOrnament).toBeTruthy()
+    expect(sources.choices['propylon-stairs-south'].note).toMatch(/RESOLVED by the Ministry/)
+    const ministry = sources.sources.find((x) => x.id === 'ministry-onsite-boards')
+    expect(ministry?.licence).toMatch(/Reference only/)
   })
 
   it('placement is always the plan; the terrain is conjectural; terrace level = base of the lowest step', () => {
@@ -99,7 +158,8 @@ describe.each(TIERS)('built site (%s)', (tier) => {
 
   it('walk-mode data: terrace levels, terrain heightfield, colliders for buildings, altar and column', () => {
     const names = all.levels.map((l) => l.name)
-    for (const n of ['terrace-temple-terrace', 'terrace-outer-terrace', 'terrace-suedbau-terrace', 'terrain', 'stylobate']) expect(names).toContain(n)
+    for (const n of ['terrace-temple-terrace', 'terrace-outer-terrace', 'terrace-se-houses-terrace', 'terrain', 'stylobate']) expect(names).toContain(n)
+    expect(names).not.toContain('terrace-suedbau-terrace') // hidden (user decision 2026-11-18)
     const c = all.colliders.map((x) => x.name)
     for (const n of ['altar-altar', 'votive-column-column', 'cistern-cistern']) expect(c).toContain(n)
     expect(c.some((n) => n.startsWith('propylon-'))).toBe(true)
@@ -119,6 +179,52 @@ describe('built site on the real DEM', async () => {
   const landscapeMeta = (await import('../../measurements/landscape.json')).default
   const png = (f: string) => new Uint8Array(readFileSync(res(__dirname, '../../measurements', f)))
   const dem = await loadDem(hilltopMeta as never, png('hilltop.png'), landscapeMeta as never, png('landscape.png'))
+
+  it('the enclosure parapet hides the krepis from the approach (derived height check)', () => {
+    // Eyes 1.6 m above the ground outside the great wall (DEM beyond the terraces, the outer and SE terraces
+    // included); targets along the stylobate's top edge. Every sight line crossing the wall must pass below its top.
+    const r = resolve()
+    const S = r.stylobate.top
+    const ground = siteGround(doc, S, 'high', dem)
+    const wall = doc.features['terrace-wall-nws']
+    if (wall.kind !== 'wall') throw new Error('wall')
+    const p = wall.parapets![0]
+    const terraceY = S + doc.terrain.terraces['temple-terrace'].level.value
+    const wallTop = terraceY + p.socle.value + p.mudbrick.value + p.coping.value
+    const inner = doc.terrain.terraces['temple-terrace'].polygon
+    const { halfX: hx, halfZ: hz } = r.stylobate
+    const targets: [number, number][] = []
+    for (let k = 0; k <= 30; k++) {
+      const x = -hx + (2 * hx * k) / 30
+      const z = -hz + (2 * hz * k) / 30
+      targets.push([x, hz], [x, -hz], [-hx, z], [hx, z])
+    }
+    const segs = wall.polyline.slice(1).map((b, i) => [wall.polyline[i], b] as const)
+    let worst = -Infinity
+    let lines = 0
+    for (let ex = -80; ex <= 60; ex += 2)
+      for (let ez = -70; ez <= 70; ez += 2) {
+        if (pointInPolygon(inner, [ex, ez]) || pointInPolygon(doc.terrain.terraces['ne-knoll'].polygon, [ex, ez])) continue
+        const ey = ground(ex, ez) + 1.6
+        for (const [tx, tz] of targets)
+          for (const [a, b] of segs) {
+            const dx = tx - ex
+            const dz = tz - ez
+            const wx = b[0] - a[0]
+            const wz = b[1] - a[1]
+            const den = dx * wz - dz * wx
+            if (Math.abs(den) < 1e-9) continue
+            const s = ((a[0] - ex) * wz - (a[1] - ez) * wx) / den
+            const u = ((a[0] - ex) * dz - (a[1] - ez) * dx) / den
+            if (s <= 0 || s >= 1 || u < 0 || u > 1) continue
+            lines++
+            worst = Math.max(worst, ey + (S - ey) * s)
+          }
+      }
+    console.log(`[parapet] wall top ${(wallTop - terraceY).toFixed(2)} m above the terrace; highest crossing sight line ${(worst - terraceY).toFixed(2)} m (${lines} lines)`)
+    expect(lines).toBeGreaterThan(1000)
+    expect(worst).toBeLessThan(wallTop)
+  })
 
   describe.each(TIERS)('%s tier', (tier) => {
     const r = resolve()

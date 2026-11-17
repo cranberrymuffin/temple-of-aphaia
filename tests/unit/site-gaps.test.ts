@@ -10,7 +10,7 @@ import sanctuary from '../../src/data/sanctuary.json'
 import hilltopMeta from '../../measurements/hilltop.json'
 import landscapeMeta from '../../measurements/landscape.json'
 import { resolveDimensions } from '../../src/data/resolveDimensions'
-import { isShown, rotatedRect, type SanctuaryDoc } from '../../src/data/sanctuary'
+import { isDisplayed, rotatedRect, type SanctuaryDoc } from '../../src/data/sanctuary'
 import type { Dimensions } from '../../src/data/types'
 import { buildSite, terrainCuts } from '../../src/geometry/sanctuary'
 import { loadDem, type Dem, type DemMeta } from '../../src/geometry/sanctuary/dem'
@@ -31,7 +31,7 @@ function check(tier: Tier, dem?: Dem) {
   const s0 = r.crepidoma.steps[0]
   const outlines = [{ id: 'temple-krepis', poly: rotatedRect([0, 0], 2 * s0.halfX, 2 * s0.halfZ, 0) }]
   for (const [id, f] of Object.entries(doc.features)) {
-    if (!isShown(f.phase, doc.meta.displayYear)) continue
+    if (!isDisplayed(f, doc.meta.displayYear)) continue
     terrainCuts(f, tier).forEach((poly, i) => outlines.push({ id: `${id}#${i}`, poly }))
   }
   return findGaps(tris, outlines)

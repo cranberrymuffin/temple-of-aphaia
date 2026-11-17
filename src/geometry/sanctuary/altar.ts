@@ -46,6 +46,26 @@ export function altar(id: string, f: AltarFeature | BaseFeature, ctx: SanctuaryC
       levels.push({ name: `${id}-step-${k}`, y: y1, minX: c[0] - hw, maxX: c[0] + hw, minZ: c[2] - hd, maxZ: c[2] + hd, rotY: deg(f.rotation) })
     }
   }
+  let topY = base + H
+  if (f.kind === 'altar' && f.backScreen) {
+    // Raised rear on the side opposite the steps (Ministry board), full length of that side.
+    const th = f.backScreen.thickness.value
+    const hh = f.backScreen.height.value
+    const side = f.steps ? ({ e: 'w', w: 'e', n: 's', s: 'n' } as const)[f.steps.side] : 'e'
+    const y0 = base + H
+    const [min, max]: [Vec3, Vec3] =
+      side === 'e' ? [[hx - th, y0, -hz], [hx, y0 + hh, hz]] : side === 'w' ? [[-hx, y0, -hz], [-hx + th, y0 + hh, hz]] : side === 's' ? [[-hx, y0, hz - th], [hx, y0 + hh, hz]] : [[-hx, y0, -hz], [hx, y0 + hh, -hz + th]]
+    b.box(min, max, ['-y'])
+    topY = y0 + hh
+  }
+  if (f.kind === 'base' && f.figure) {
+    // Placeholder statue block, centred on the base top (Step 4 may replace it).
+    const fw = f.figure.width.value / 2
+    const fd = f.figure.depth.value / 2
+    const s = new MeshBuilder('sculpture-placeholder')
+    s.box([-fw, base + H, -fd], [fw, base + H + f.figure.height.value, fd], ['-y'])
+    col.get(s.name).append(s, m)
+  }
   col.get(b.name).append(b, m)
-  return { instances: [], colliders: [obb(`${id}-${f.kind}`, f.center, hx, hz, f.rotation, bottom, base + H)], levels }
+  return { instances: [], colliders: [obb(`${id}-${f.kind}`, f.center, hx, hz, f.rotation, bottom, topY)], levels }
 }

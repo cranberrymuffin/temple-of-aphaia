@@ -171,6 +171,14 @@
       "verified": true,
       "licence": "© OpenStreetMap contributors, ODbL",
       "note": "Temple position and axis bearing for georeferencing the temple frame (measurements/georef.json)."
+    },
+    {
+      "id": "ministry-onsite-boards",
+      "type": "official",
+      "citation": "Ministry of Culture and Sports, Ephorate of Antiquities of Piraeus and Islands: on-site information boards at the Sanctuary of Aphaia, Aegina: (a) 'Heiligtum der Aphaia', drawn reconstruction of the view from the approach c. 490 BC; (b) 'The area in front of the temple about 490 B.C.', aerial perspective from the north-east; (c) 'Structures and remains of buildings', plan legend 1-18. User photographs, 2026-11-18.",
+      "verified": true,
+      "licence": "Copyrighted (Hellenic Ministry of Culture and Sports). Reference only: the photographs are not redistributed, traced or shown; only the facts read from them are used.",
+      "note": "Read from the user's photos (summarised in the research brief, section 21). Supersedes earlier guesses on the enclosure wall (stone socle with a mudbrick superstructure and coping, hiding the krepis from outside), the propylon (two columns in antis, central door, stair rising from the south, roof sculpture), the priests' houses (hipped tiled roofs, taller rear block, lower front block with a columned porch, pent-roof wing, against the outside of the wall), the altar (raised rear on a paved court lined with statue bases, a tall base in front), the paved way, the cistern well-head and the sphinx column (shown, attested). The Südbau is not depicted. Drawn reconstructions, not measurements: proportions taken from them are DERIVED with their own confidence."
     }
   ],
   "names": {
@@ -222,6 +230,18 @@
     }
   },
   "choices": {
+    "enclosure-wall-parapet": {
+      "description": "The great terrace wall rises above the terrace as an enclosure parapet: natural-stone socle 0.70 m, mudbrick 0.95 m and a tiled coping 0.15 m (overhang 0.10 m), 1.80 m in all; the east leg to the NE corner is ashlar with a flush coping; the older east stretch has its own material.",
+      "sourceIds": ["ministry-onsite-boards", "furtwangler-1906", "copernicus-dem-glo30"],
+      "confidence": "interpretive",
+      "note": "Construction from the Ministry board (stone socle + mudbrick + coping). Height DERIVED from the board's statement that the wall hides the krepis from outside: an eye 1.6 m above the highest approach ground outside the wall (DEM up to about 0.16 m above the terrace) needs about 1.6-1.75 m; 1.80 m chosen (tested in sanctuary-data.test.ts). Socle and coping heights conjectural."
+    },
+    "priests-houses-massing": {
+      "description": "The SE (priests') houses outside the boundary wall: hipped tiled roofs; the rooms against the wall form a taller rear block (walls 4.2 m), rooms II-IV a lower front block (3.2 m) with the columned porch open to the west (gate side); the vestibule/forecourt a lower pent-roof wing (2.6 m).",
+      "sourceIds": ["ministry-onsite-boards", "furtwangler-1906", "wikimedia-plan-aphaia-sanctuary"],
+      "confidence": "analogy",
+      "note": "Massing and roof forms from the Ministry board; plan footprints from the digitised plan; heights and pitches DERIVED/conjectural."
+    },
     "site-georeference": {
       "description": "The temple frame is georeferenced for the real terrain: stylobate elevation 178.14 m (DERIVED: Copernicus DEM at the OSM temple centroid minus 1 m, +/-3 m) and axis true bearing 69.1 degrees (DERIVED from the OSM outline, +/-2 degrees).",
       "sourceIds": ["copernicus-dem-glo30", "openstreetmap-temple-outline"],
@@ -241,22 +261,32 @@
       "note": "User decision 2026-11-16 (research section 20)."
     },
     "propylon-stairs-south": {
-      "description": "The propylon's flight of steps rises from the south (outer) side, as the excavator describes it.",
-      "sourceIds": ["furtwangler-1906", "wikimedia-plan-aphaia-sanctuary"],
+      "description": "The propylon's flight of steps rises from the south (outer) side, as the excavator describes it and the Ministry board shows it.",
+      "sourceIds": [
+        "furtwangler-1906",
+        "ministry-onsite-boards",
+        "wikimedia-plan-aphaia-sanctuary"
+      ],
       "confidence": "attested",
-      "note": "Conflict: the 2007 plan draws three step lines on the north (inner) side; Furtwängler pp. 75-77 puts the stair on the outer side, with the gutters draining over it outwards. Text followed (lead decision)."
+      "note": "RESOLVED by the Ministry on-site board (2026-11-18): the steps rise from outside, on the south. The 2007 plan's three step lines on the north (inner) side are not followed; Furtwängler pp. 75-77 (gutters draining over the stair outwards) and the board agree."
     },
     "votive-column-shown": {
-      "description": "The sphinx votive column is always shown, flagged uncertain: it is 6th-century and only 'not impossibly' spared at the rebuilding.",
-      "sourceIds": ["furtwangler-1906"],
-      "confidence": "conjectural",
-      "note": "User decision 2026-11-16."
+      "description": "The sphinx votive column is shown as standing c. 490 BC: a tall single column inside the terrace carrying a marble sphinx.",
+      "sourceIds": [
+        "furtwangler-1906",
+        "ministry-onsite-boards"
+      ],
+      "confidence": "attested",
+      "note": "User decision 2026-11-16 (always shown); no longer flagged uncertain since the Ministry board (2026-11-18) depicts it c. 490 BC. Height (about 10 lower diameters) and the sphinx's form remain derived/by analogy."
     },
     "suedbau-shown": {
-      "description": "The Südbau terrace south of the sanctuary is always shown, flagged uncertain; it is off the plan sheet and placed from the text distances.",
-      "sourceIds": ["furtwangler-1906"],
+      "description": "The Südbau terrace south of the sanctuary is NOT shown: listed as hidden in sanctuary.json.",
+      "sourceIds": [
+        "furtwangler-1906",
+        "ministry-onsite-boards"
+      ],
       "confidence": "conjectural",
-      "note": "User decision 2026-11-16."
+      "note": "User decision 2026-11-18 (supersedes 2026-11-16): not depicted in the Ministry reconstruction; its shape is unknown."
     },
     "sanctuary-terrain": {
       "description": "Terrain around the terraces is a conjectural reconstruction from the text's levels (steep fall east and north, gentle west and south, Südbau about 9 m below the stylobate), not a survey; the scan covers only the temple.",

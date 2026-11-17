@@ -1,7 +1,7 @@
 // Sanctuary assembly: builds every feature shown at the display year, reports placement provenance for
 // every feature (shown or hidden), and returns the outlines the terrain must be cut by.
 import type { Point2, SanctuaryDoc, SanctuaryFeature } from '../../data/sanctuary'
-import { footprints, isShown } from '../../data/sanctuary'
+import { footprints, isDisplayed, isShown } from '../../data/sanctuary'
 import type { PaletteLike } from '../mesh'
 import { Collector } from '../mesh'
 import type { GeneratorOutput, Heightfield, Tier } from '../types'
@@ -75,7 +75,7 @@ export function buildSanctuary(doc: SanctuaryDoc, tier: Tier, palette: PaletteLi
   const report: FeatureReport[] = []
   const cuts: Point2[][] = []
   for (const [id, f] of Object.entries(doc.features)) {
-    const shown = isShown(f.phase, doc.meta.displayYear)
+    const shown = isDisplayed(f, doc.meta.displayYear)
     report.push({
       id,
       kind: f.kind,
@@ -84,7 +84,7 @@ export function buildSanctuary(doc: SanctuaryDoc, tier: Tier, palette: PaletteLi
       phase: f.phase.label,
       placement: f.placement.source,
       uncertain: f.uncertain,
-      hiddenReason: shown ? undefined : `outside the display date (${doc.meta.displayLabel})`,
+      hiddenReason: shown ? undefined : (f.hiddenReason ?? (isShown(f.phase, doc.meta.displayYear) ? undefined : `outside the display date (${doc.meta.displayLabel})`)),
       note: f.placement.note,
     })
     if (!shown) continue

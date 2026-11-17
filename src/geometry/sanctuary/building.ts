@@ -196,7 +196,26 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
     }
   }
 
-  if (f.roof) addRoof(f, roofB, walls, open, top, hx, hz, t)
+  if (f.roof) {
+    const form = f.roof.form ?? 'gabled'
+    if (form === 'hipped') addHippedRoof(f, roofB, top, hx, hz)
+    else if (form === 'pent') addPentRoof(f, roofB, walls, open, top, hx, hz, t)
+    else addRoof(f, roofB, walls, open, top, hx, hz, t)
+  }
+  if (f.roofOrnament) {
+    // Placeholder block astride the ridge at its middle (the gable sculpture of the Ministry board).
+    if (!f.roof || (f.roof.form ?? 'gabled') === 'pent') throw new Error(`${id}: a roof ornament needs a ridge`)
+    const ow = f.roofOrnament.width.value / 2
+    const yr = top + f.roof.ridgeHeight.value + K.roofThickness
+    const r = f.roof.ridgeOffset ?? 0
+    const [cx, cz] = f.roof.ridge === 'x' ? [0, r] : [r, 0]
+    // Sunk by its half-width times the steeper pitch so its base never floats above the slopes.
+    const hv = f.roof.ridge === 'x' ? hz : hx
+    const sink = ow * (f.roof.ridgeHeight.value / Math.max(1e-6, hv - Math.abs(r)))
+    const ob = new MeshBuilder('sculpture-placeholder')
+    ob.box([cx - ow, yr - sink, cz - ow], [cx + ow, yr + f.roofOrnament.height.value, cz + ow], ['-y'])
+    col.get('sculpture-placeholder').append(ob, m)
+  }
 
   col.get('sanctuary-building').append(walls, m)
   col.get('sanctuary-floor').append(floor, m)
@@ -256,5 +275,100 @@ function addRoof(f: BuildingFeature, roofB: MeshBuilder, walls: MeshBuilder, ope
       [s * (hu - t), -s],
     ] as const)
       walls.polygonFacing([P(uu, top, -hv), P(uu, top, hv), P(uu, yr, r)], alongU(dir))
+  }
+}
+
+/**
+ * Hipped roof (four equal pitches) over the wall tops: ridge along the longer axis given by roof.ridge,
+ * eaves all round at one height; each slope's underside passes through the outer wall faces at the wall top.
+ */
+function addHippedRoof(f: BuildingFeature, roofB: MeshBuilder, top: number, hx: number, hz: number) {
+  const R = f.roof!
+  // The ridge runs along the longer side, so all four pitches are equal.
+  const ridgeX = hx >= hz
+  const hu = ridgeX ? hx : hz
+  const hv = ridgeX ? hz : hx
+  const rh = R.ridgeHeight.value
+  const o = R.overhang.value
+  const th = K.roofThickness
+  const tan = rh / hv
+  const yr = top + rh
+  const e = top - o * tan
+  const U = hu + o
+  const V = hv + o
+  const r = Math.max(0, hu - hv) // half ridge length (0: pyramid)
+  const P = (u: number, y: number, v: number): Vec3 => (ridgeX ? [u, y, v] : [v, y, u])
+  const N = (du: number, dv: number): Vec3 => (ridgeX ? [du, 1, dv] : [dv, 1, du])
+  for (const [dy, down] of [
+    [th, false],
+    [0, true],
+  ] as const) {
+    const flip = (n: Vec3): Vec3 => (down ? [-n[0], -n[1], -n[2]] : n)
+    // Long slopes (trapezoids, or triangles for a pyramid) and the hip ends (triangles).
+    roofB.polygonFacing([P(-U, e + dy, -V), P(U, e + dy, -V), P(r, yr + dy, 0), P(-r, yr + dy, 0)], flip(N(0, -tan)))
+    roofB.polygonFacing([P(-U, e + dy, V), P(U, e + dy, V), P(r, yr + dy, 0), P(-r, yr + dy, 0)], flip(N(0, tan)))
+    roofB.polygonFacing([P(U, e + dy, -V), P(U, e + dy, V), P(r, yr + dy, 0)], flip(N(tan, 0)))
+    roofB.polygonFacing([P(-U, e + dy, -V), P(-U, e + dy, V), P(-r, yr + dy, 0)], flip(N(-tan, 0)))
+  }
+  // Eave fascias all round.
+  const c: [number, number][] = [
+    [-U, -V],
+    [U, -V],
+    [U, V],
+    [-U, V],
+  ]
+  for (let i = 0; i < 4; i++) {
+    const [u0, v0] = c[i]
+    const [u1, v1] = c[(i + 1) % 4]
+    const out = P((u0 + u1) / 2, 0, (v0 + v1) / 2)
+    roofB.polygonFacing([P(u0, e, v0), P(u1, e, v1), P(u1, e + th, v1), P(u0, e + th, v0)], [out[0], 0, out[2]])
+  }
+}
+
+/**
+ * Pent (lean-to) roof: one pitch falling from the high side to the opposite eave. The underside passes through
+ * the outer wall faces at the wall top on the low side and ridgeHeight above it on the high side; the side
+ * walls carry triangular infills up to the underside (omitted on open sides).
+ */
+function addPentRoof(f: BuildingFeature, roofB: MeshBuilder, walls: MeshBuilder, open: Set<Side>, top: number, hx: number, hz: number, t: number) {
+  const R = f.roof!
+  const hs = R.highSide
+  if (!hs) throw new Error('pent roof without a high side')
+  const alongX = hs === 'n' || hs === 's' // slope runs across local z when the high side is n or s
+  const sgn = hs === 's' || hs === 'e' ? 1 : -1 // high side at +v or -v
+  const hu = alongX ? hx : hz
+  const hv = alongX ? hz : hx
+  const rh = R.ridgeHeight.value
+  const o = R.overhang.value
+  const th = K.roofThickness
+  const tan = rh / (2 * hv)
+  // Canonical (u along the eaves, v across, +v toward the high side) to local.
+  const P = (u: number, y: number, v: number): Vec3 => (alongX ? [u, y, sgn * v] : [sgn * v, y, u])
+  const D = (du: number, dy: number, dv: number): Vec3 => (alongX ? [du, dy, sgn * dv] : [sgn * dv, dy, du])
+  const y = (v: number) => top + (v + hv) * tan
+  const U = hu + o
+  const v0 = -hv - o
+  const v1 = hv + o
+  roofB.polygonFacing([P(-U, y(v0) + th, v0), P(U, y(v0) + th, v0), P(U, y(v1) + th, v1), P(-U, y(v1) + th, v1)], D(0, 1, -tan))
+  roofB.polygonFacing([P(-U, y(v0), v0), P(U, y(v0), v0), P(U, y(v1), v1), P(-U, y(v1), v1)], D(0, -1, tan))
+  roofB.polygonFacing([P(-U, y(v0), v0), P(U, y(v0), v0), P(U, y(v0) + th, v0), P(-U, y(v0) + th, v0)], D(0, 0, -1))
+  roofB.polygonFacing([P(-U, y(v1), v1), P(U, y(v1), v1), P(U, y(v1) + th, v1), P(-U, y(v1) + th, v1)], D(0, 0, 1))
+  for (const s of [-1, 1]) roofB.polygonFacing([P(s * U, y(v0), v0), P(s * U, y(v1), v1), P(s * U, y(v1) + th, v1), P(s * U, y(v0) + th, v0)], D(s, 0, 0))
+  // High wall: raised by rh (a band above the wall top up to the underside); side walls: triangular infills.
+  const highSide = hs
+  if (!open.has(highSide))
+    for (const [vv, dir] of [
+      [hv, 1],
+      [hv - t, -1],
+    ] as const)
+      walls.polygonFacing([P(-hu, top, vv), P(hu, top, vv), P(hu, y(vv), vv), P(-hu, y(vv), vv)], D(0, 0, dir))
+  const ends: [Side, number][] = alongX ? [['w', -1], ['e', 1]] : [['n', -1], ['s', 1]]
+  for (const [side, s] of ends) {
+    if (open.has(side)) continue
+    for (const [uu, dir] of [
+      [s * hu, s],
+      [s * (hu - t), -s],
+    ] as const)
+      walls.polygonFacing([P(uu, top, -hv), P(uu, top, hv), P(uu, y(hv), hv)], D(dir, 0, 0))
   }
 }

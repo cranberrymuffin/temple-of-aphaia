@@ -426,6 +426,11 @@
               },
               "note": {
                 "type": "string"
+              },
+              "hiddenReason": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Listed but not depicted (user decision): left out of the terrain."
               }
             }
           }
@@ -574,6 +579,11 @@
         "complex": {
           "$ref": "common.schema.json#/definitions/id",
           "description": "Group of adjoining features (e.g. the SE houses) whose footprints may touch."
+        },
+        "hiddenReason": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Listed but not depicted whatever the display date (user decision); shown in the About panel."
         }
       },
       "allOf": [
@@ -643,6 +653,24 @@
                     "$ref": "#/definitions/side"
                   }
                 }
+              },
+              "hiddenReason": true,
+              "backScreen": {
+                "type": "object",
+                "required": [
+                  "height",
+                  "thickness"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "height": {
+                    "$ref": "#/definitions/positive"
+                  },
+                  "thickness": {
+                    "$ref": "#/definitions/positive"
+                  }
+                },
+                "description": "Raised rear screen on the side opposite the steps."
               }
             },
             "additionalProperties": false
@@ -690,6 +718,28 @@
               },
               "height": {
                 "$ref": "#/definitions/positive"
+              },
+              "hiddenReason": true,
+              "figure": {
+                "type": "object",
+                "required": [
+                  "height",
+                  "width",
+                  "depth"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "height": {
+                    "$ref": "#/definitions/positive"
+                  },
+                  "width": {
+                    "$ref": "#/definitions/positive"
+                  },
+                  "depth": {
+                    "$ref": "#/definitions/positive"
+                  }
+                },
+                "description": "Placeholder block for the statue on top."
               }
             },
             "additionalProperties": false
@@ -905,8 +955,37 @@
                   },
                   "note": {
                     "type": "string"
+                  },
+                  "form": {
+                    "enum": [
+                      "gabled",
+                      "hipped",
+                      "pent"
+                    ]
+                  },
+                  "highSide": {
+                    "$ref": "#/definitions/side"
                   }
-                }
+                },
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "form": {
+                          "const": "pent"
+                        }
+                      },
+                      "required": [
+                        "form"
+                      ]
+                    },
+                    "then": {
+                      "required": [
+                        "highSide"
+                      ]
+                    }
+                  }
+                ]
               },
               "steps": {
                 "type": "object",
@@ -931,6 +1010,24 @@
                     "$ref": "#/definitions/side"
                   }
                 }
+              },
+              "hiddenReason": true,
+              "roofOrnament": {
+                "type": "object",
+                "required": [
+                  "width",
+                  "height"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "width": {
+                    "$ref": "#/definitions/positive"
+                  },
+                  "height": {
+                    "$ref": "#/definitions/positive"
+                  }
+                },
+                "description": "Small sculpture on the roof ridge (placeholder block)."
               }
             },
             "additionalProperties": false
@@ -987,6 +1084,68 @@
                   "level",
                   "follow"
                 ]
+              },
+              "hiddenReason": true,
+              "masonry": {
+                "oneOf": [
+                  {
+                    "enum": [
+                      "rubble",
+                      "ashlar",
+                      "older"
+                    ]
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "enum": [
+                        "rubble",
+                        "ashlar",
+                        "older"
+                      ]
+                    },
+                    "minItems": 1
+                  }
+                ],
+                "description": "Masonry of the wall body (one, or one per segment)."
+              },
+              "parapets": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "segments",
+                    "socle",
+                    "mudbrick",
+                    "coping",
+                    "overhang"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "segments": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "minItems": 1,
+                      "uniqueItems": true
+                    },
+                    "socle": {
+                      "$ref": "#/definitions/nonNegative"
+                    },
+                    "mudbrick": {
+                      "$ref": "#/definitions/nonNegative"
+                    },
+                    "coping": {
+                      "$ref": "#/definitions/nonNegative"
+                    },
+                    "overhang": {
+                      "$ref": "#/definitions/nonNegative"
+                    }
+                  }
+                },
+                "description": "Superstructures on the wall top by segment: natural-stone socle, mudbrick, tiled coping."
               }
             },
             "additionalProperties": false
@@ -1053,7 +1212,8 @@
               },
               "rimWidth": {
                 "$ref": "#/definitions/positive"
-              }
+              },
+              "hiddenReason": true
             },
             "additionalProperties": false,
             "allOf": [
@@ -1141,6 +1301,11 @@
               },
               "feeds": {
                 "$ref": "common.schema.json#/definitions/id"
+              },
+              "hiddenReason": true,
+              "sunk": {
+                "type": "boolean",
+                "description": "Cut into the rock: coping flush with the ground."
               }
             },
             "additionalProperties": false
@@ -1180,7 +1345,8 @@
               },
               "thickness": {
                 "$ref": "#/definitions/positive"
-              }
+              },
+              "hiddenReason": true
             },
             "additionalProperties": false
           }
@@ -1277,7 +1443,8 @@
                     "$ref": "#/definitions/positive"
                   }
                 }
-              }
+              },
+              "hiddenReason": true
             },
             "additionalProperties": false
           }

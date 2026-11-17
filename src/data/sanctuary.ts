@@ -52,6 +52,8 @@ export interface Terrace {
   level: Measure
   /** Uniform falloff for this terrace's edges instead of the directional default. */
   falloff?: FalloffOverride
+  /** Listed but not depicted (user decision): left out of the terrain. */
+  hiddenReason?: string
   note?: string
 }
 
@@ -80,6 +82,8 @@ interface FeatureBase {
   uncertain?: string
   /** Adjoining features of one complex may touch. */
   complex?: string
+  /** Listed but not depicted whatever the display date (user decision); the reason goes to the About panel. */
+  hiddenReason?: string
 }
 
 export interface Steps {
@@ -97,6 +101,8 @@ export interface AltarFeature extends FeatureBase {
   width: Measure
   height: Measure
   steps?: Steps
+  /** Raised rear screen on the side opposite the steps, rising above the altar top. */
+  backScreen?: { height: Measure; thickness: Measure }
 }
 
 export interface BaseFeature extends FeatureBase {
@@ -106,6 +112,8 @@ export interface BaseFeature extends FeatureBase {
   length: Measure
   width: Measure
   height: Measure
+  /** Placeholder block for the statue on top (Step 4 may replace it). */
+  figure?: { height: Measure; width: Measure; depth: Measure }
 }
 
 export interface Door {
@@ -125,6 +133,9 @@ export interface CrossWall {
 }
 
 export interface Roof {
+  /** gabled (default): two pitches, gables on the end walls; hipped: four pitches; pent: one pitch, high on highSide. */
+  form?: 'gabled' | 'hipped' | 'pent'
+  highSide?: Side
   ridge: 'x' | 'z'
   ridgeOffset?: number
   ridgeHeight: Measure
@@ -150,6 +161,8 @@ export interface BuildingFeature extends FeatureBase {
   architraves?: { axis: 'x' | 'z'; offset: number; from: number; to: number; depth: Measure; height: Measure }[]
   roof?: Roof
   steps?: Steps
+  /** Small sculpture on the roof ridge (placeholder block). */
+  roofOrnament?: { width: Measure; height: Measure }
 }
 
 export interface WallFeature extends FeatureBase {
@@ -161,6 +174,22 @@ export interface WallFeature extends FeatureBase {
   /** Height above the highest ground under the wall (0 = top flush with the upper terrace). */
   height: Measure
   top?: 'level' | 'follow'
+  /** Masonry of the wall body: one kind, or one per segment (material id for Step 4). Default rubble. */
+  masonry?: Masonry | Masonry[]
+  /** Superstructures on the wall top, by segment: stone socle, mudbrick, coping (any may be 0). */
+  parapets?: Parapet[]
+}
+
+export type Masonry = 'rubble' | 'ashlar' | 'older'
+
+export interface Parapet {
+  /** Segment indices (polyline segment i runs from point i to i + 1). */
+  segments: number[]
+  socle: Measure
+  mudbrick: Measure
+  coping: Measure
+  /** Coping projection beyond each wall face (m). */
+  overhang: Measure
 }
 
 export interface CisternFeature extends FeatureBase {
@@ -183,6 +212,8 @@ export interface ChannelFeature extends FeatureBase {
   width: Measure
   depth: Measure
   feeds?: string
+  /** Cut into the rock: the coping is flush with the ground instead of raised. */
+  sunk?: boolean
 }
 
 export interface PavementFeature extends FeatureBase {
@@ -235,10 +266,15 @@ export function isShown(phase: Phase, year: number): boolean {
   return (phase.fromYear === null || phase.fromYear <= year) && (phase.toYear === null || year <= phase.toYear)
 }
 
+/** Shown in the scene: in phase at the display year and not hidden by decision. */
+export function isDisplayed(f: SanctuaryFeature, year: number): boolean {
+  return !f.hiddenReason && isShown(f.phase, year)
+}
+
 export function partitionByPhase(doc: SanctuaryDoc): { shown: string[]; hidden: string[] } {
   const shown: string[] = []
   const hidden: string[] = []
-  for (const [id, f] of Object.entries(doc.features)) (isShown(f.phase, doc.meta.displayYear) ? shown : hidden).push(id)
+  for (const [id, f] of Object.entries(doc.features)) (isDisplayed(f, doc.meta.displayYear) ? shown : hidden).push(id)
   return { shown, hidden: [...hidden, ...Object.keys(doc.hidden ?? {})] }
 }
 

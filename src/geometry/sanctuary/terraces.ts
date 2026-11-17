@@ -31,7 +31,9 @@ interface T {
 }
 
 function terraces(desc: TerrainDesc, stylobateTop: number): T[] {
-  return Object.entries(desc.terraces).map(([id, t]) => ({
+  return Object.entries(desc.terraces)
+    .filter(([, t]) => !t.hiddenReason)
+    .map(([id, t]) => ({
     id,
     poly: t.polygon,
     ccw: signedArea(t.polygon) < 0 ? [...t.polygon].reverse() : t.polygon,
@@ -106,7 +108,9 @@ export function terrainHeightFn(desc: TerrainDesc, stylobateTop: number): Ground
 }
 
 export function terrainBounds(desc: TerrainDesc, margin = desc.falloff.radius.value) {
-  const pts = Object.values(desc.terraces).flatMap((t) => t.polygon)
+  const pts = Object.values(desc.terraces)
+    .filter((t) => !t.hiddenReason)
+    .flatMap((t) => t.polygon)
   return {
     minX: Math.min(...pts.map((p) => p[0])) - margin,
     maxX: Math.max(...pts.map((p) => p[0])) + margin,

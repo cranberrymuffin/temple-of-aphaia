@@ -22,6 +22,7 @@ WALLS = {w["id"]: w for w in PLAN["walls"]}
 
 FW = "furtwangler-1906"
 WP = "wikimedia-plan-aphaia-sanctuary"
+MIN = "ministry-onsite-boards"  # Ministry on-site boards (user photos 2026-11-18), reference only; research brief section 21
 URL = "https://archive.org/details/aeginadasheiligtunse"
 
 
@@ -50,6 +51,12 @@ def derived(value, unit, note):
 def conj(value, unit, note):
     """Conjecture (nothing printed); kept provisional until a source supplies it."""
     return {"value": value, "unit": unit, "source": "published", "ref": FW, "verified": False, "provisional": True, "note": "CONJECTURAL: " + note}
+
+
+def board(value, unit, note, conf="analogy"):
+    """Read or derived from the Ministry's drawn reconstructions (not a measurement); confidence in the note."""
+    return {"value": value, "unit": unit, "source": "published", "ref": MIN, "verified": False, "provisional": True,
+            "note": f"DERIVED from the Ministry board (confidence: {conf}): {note}"}
 
 
 def plan(value, unit, unc, note=None):
@@ -144,24 +151,45 @@ def east_x(z):
 
 
 SE_CORNER = [east_x(ZS + 0.4), ZS + 0.4]
+# Enclosure parapet on the terrace wall (Ministry board a/c: natural-stone socle + mudbrick superstructure with a
+# coping, hiding the temple's krepis from outside). Total height DERIVED from that constraint: an observer's eye
+# (1.6 m) on the highest approach ground just outside the south wall (DEM: about 0.16 m above the terrace, west of
+# the propylon) sees over anything lower, so the parapet must reach about 1.75 m above the terrace; rounded to
+# 1.80 m (checked in tests/unit/sanctuary-data.test.ts against sight lines from the approach).
+PARAPET_H = 1.80
+SOCLE, COPING = 0.70, 0.15
+PARAPET = {
+    "socle": board(SOCLE, "m", "natural-stone socle below the mudbrick; height not legible on the board", "conjectural"),
+    "mudbrick": board(r3(PARAPET_H - SOCLE - COPING), "m", f"mudbrick superstructure; total parapet {PARAPET_H:.2f} m above the terrace so the wall hides the krepis from the approach (eye 1.6 m on ground up to 0.16 m above the terrace outside the wall)", "analogy"),
+    "coping": board(COPING, "m", "tiled coping course", "conjectural"),
+    "overhang": board(0.10, "m", "coping projection beyond each face", "conjectural"),
+}
+NE_COPING = {
+    "socle": board(0, "m", "no superstructure at the NE corner: tall ashlar retaining wall with a coping", "analogy"),
+    "mudbrick": board(0, "m", "no mudbrick at the NE corner", "analogy"),
+    "coping": board(0.30, "m", "coping course on the ashlar retaining wall", "conjectural"),
+    "overhang": board(0, "m", "coping flush with the wall faces (it sits at terrace level on the inner side)", "conjectural"),
+}
 features["terrace-wall-nws"] = {
-    "kind": "wall", "name": "Great terrace wall (south, west, north)", "role": "terrace",
+    "kind": "wall", "name": "Great terrace and enclosure wall (south, west, north)", "role": "terrace",
     "polyline": [[PX0 + 0.35, r3(ZS)], [r3(XW), r3(ZS)], [r3(XW), r3(ZN)], pt(wn["centreline"][1])],
     "thickness": plan(ww["thickness"], "m", ww["uncertaintyM"], "one thickness for the run; text: north 1.43 m at the top, south 0.83 m upper wall (pp. 85-91)"),
-    "height": derived(0, "m", "top flush with the terrace (pp. 77, 86); no parapet known"),
-    "top": "level",
+    "height": derived(0, "m", "retaining wall top flush with the terrace (pp. 77, 86); the enclosure parapet stands on it"),
+    "top": "level", "masonry": "rubble", "parapets": [dict(PARAPET, segments=[0, 1, 2])],
     "phase": NEW, "placement": placement(None, max(wn["uncertaintyM"], ww["uncertaintyM"], ws["uncertaintyM"]), "attested"),
-    "sourceIds": [FW, WP], "confidence": "attested",
-    "note": "Ends inside the propylon's west side wall; the north wall stops where the rock reaches terrace height (NE knoll, p. 85).",
+    "sourceIds": [FW, WP, MIN], "confidence": "attested",
+    "note": "Ends inside the propylon's west side wall; the north wall stops where the rock reaches terrace height (NE knoll, p. 85). Enclosure parapet (stone socle, mudbrick, tiled coping) after the Ministry board: from outside it hides the krepis.",
 }
 features["terrace-wall-se"] = {
     "kind": "wall", "name": "South terrace wall east of the propylon, orthostate wall and east peribolos (north leg)", "role": "terrace",
     "polyline": [[PX1 - 0.35, r3(ZS)], pt([wse["centreline"][1][0], ZS]), pt(SE_CORNER), pt(E0)],
     "thickness": derived(0.85, "m", "one thickness for the run: south upper wall 0.83 m (p. 91), east wall 0.70-1.0 m (p. 86); the orthostate wall is 0.40 m (p. 91)"),
-    "height": derived(0, "m", "top flush with the terrace"),
-    "top": "level", "phase": NEW, "placement": placement(None, max(wse["uncertaintyM"], we["uncertaintyM"]), "attested"),
-    "sourceIds": [FW, WP], "confidence": "attested",
-    "note": "Turns 9.70 m east of the propylon (p. 91) along the east wall's line; one mitred run so the corners stay clean.",
+    "height": derived(0, "m", "retaining wall top flush with the terrace"),
+    "top": "level", "masonry": ["rubble", "rubble", "ashlar"],
+    "parapets": [dict(PARAPET, segments=[0, 1]), dict(NE_COPING, segments=[2])],
+    "phase": NEW, "placement": placement(None, max(wse["uncertaintyM"], we["uncertaintyM"]), "attested"),
+    "sourceIds": [FW, WP, MIN], "confidence": "attested",
+    "note": "Turns 9.70 m east of the propylon (p. 91) along the east wall's line; one mitred run so the corners stay clean. South legs: enclosure parapet as on the great wall; east leg up to the NE corner: tall ashlar retaining wall with a coping (Ministry board).",
 }
 se_dir = [E1[0] - SE_CORNER[0], E1[1] - SE_CORNER[1]]
 se_len = math.hypot(*se_dir)
@@ -171,8 +199,9 @@ features["terrace-wall-e"] = {
     "polyline": [pt(E_START), pt(E1), pt(E2)],
     "thickness": derived(0.85, "m", "text gives 0.70-1.0 m (p. 86); mid value"),
     "height": derived(0, "m", "top follows the ground it retains; low parapet only conjectured (p. 86)"),
-    "top": "follow", "phase": phase("Middle period, mid-6th c. (reused)", -560, None, "attested", "Older than the other terrace walls; lower courses kept (p. 86)"),
-    "placement": placement(None, we["uncertaintyM"], "attested"), "sourceIds": [FW, WP], "confidence": "attested",
+    "top": "follow", "masonry": "older", "phase": phase("Middle period, mid-6th c. (reused)", -560, None, "attested", "Older than the other terrace walls; lower courses kept (p. 86)"),
+    "placement": placement(None, we["uncertaintyM"], "attested"), "sourceIds": [FW, WP, MIN], "confidence": "attested",
+    "note": "Older masonry, drawn in a different technique on the Ministry board (own material id).",
 }
 features["lower-south-wall"] = {
     "kind": "wall", "name": "Lower south retaining wall of the outer terrace", "role": "terrace",
@@ -219,6 +248,7 @@ terrain = {
                               "falloff": {"edgeDrop": conj(2.5, "m", "east wall's outer corner 'schon ganz tief' (p. 91)"), "slope": conj(0.7, "ratio", "steep fall to the east and south-east (p. 98)")}},
         "suedbau-terrace": {"polygon": sued_poly, "level": text(-9.0, "m", "102", "about 9 m below the stylobat"),
                             "falloff": {"edgeDrop": conj(1.0, "m", "south edge of the Südbau terrace"), "slope": conj(0.3, "ratio", "south slope")},
+                            "hiddenReason": "Südbau terrace: not depicted in the Ministry reconstruction; shape unknown (user decision 2026-11-18).",
                             "note": "Off the plan sheet; x position conjectural; width conjectural."},
     },
     "falloff": {
@@ -259,8 +289,10 @@ features["altar"] = {
     "width": text(13.08, "m", "72-73", "foundation length N-S, 40 ft of 0.327 m"),
     "height": conj(1.2, "m", "superstructure not preserved; height by analogy (p. 73)"),
     "steps": {"count": conj(3, "count", "'eine grosse Freitreppe' (p. 73), number unknown"), "rise": conj(0.3, "m", "step rise"), "tread": conj(0.35, "m", "step tread"), "side": "w"},
+    "backScreen": {"height": board(1.0, "m", "raised rear (back screen) of the long altar block", "analogy"), "thickness": board(0.6, "m", "thickness of the raised rear", "conjectural")},
     "phase": NEW, "placement": placement("altar", conf="attested", note=f"plan centre; text: 22.5 m from the stylobate step (p. 69), plan gives {ac[0]-min(aL,aW)/2-DIMS['stylobateLength']['value']/2:.2f} m"),
-    "sourceIds": [FW, WP], "confidence": "attested", "note": "Form and height conjectural (analogy with Agrigento, p. 73).",
+    "sourceIds": [FW, WP, MIN], "confidence": "attested",
+    "note": "A long raised block with a raised rear on the paved court (Ministry board b, legend 4-5); heights conjectural (analogy with Agrigento, p. 73).",
 }
 altar_west = ac[0] - min(aL, aW) / 2
 steps_w = 3 * 0.35
@@ -272,11 +304,34 @@ features["altar-court"] = {
     "sourceIds": [FW, WP], "confidence": "attested",
 }
 features["paved-way"] = {
-    "kind": "pavement", "name": "Paved way to the altar court",
+    "kind": "pavement", "name": "Paved way from the temple's east ramp to the altar court",
     "polygon": [[17.5, -1.5], [30.0, -1.5], [30.0, 1.5], [17.5, 1.5]],
     "thickness": conj(0.08, "m", "two slab layers on levelled rock (p. 69); thinner than the court so their tops never coincide"),
     "phase": NEW, "placement": placement("ramp_way", conf="attested", note="ten slab rows (p. 69); width from the plan (3.03 m), 3 cm narrower than the ramp so their sides never coincide; starts under the ramp foot, ends inside the court slab"),
-    "sourceIds": [FW, WP], "confidence": "attested",
+    "sourceIds": [FW, WP, MIN], "confidence": "attested",
+    "note": "Paved way joining the ramp to the altar court, as on the Ministry board b (legend 7).",
+}
+# Statue bases lining the court pavement (Ministry board b), placeholder figures; and the tall base in front (legend 6).
+COURT_EAST = altar_west - steps_w + 0.05
+for side, z in (("n", -6.75), ("s", 6.75)):
+    for k, x in enumerate([31.0, 32.9, 34.8]):
+        features[f"court-base-{side}{k + 1}"] = {
+            "kind": "base", "name": f"Statue base on the altar court ({'north' if side == 'n' else 'south'} row, {k + 1})",
+            "center": [x, z], "rotation": 0,
+            "length": board(0.8, "m", "statue plinth", "conjectural"), "width": board(0.8, "m", "statue plinth", "conjectural"),
+            "height": board(1.0, "m", "plinth height against the drawn figures", "conjectural"),
+            "figure": {"height": board(1.7, "m", "standing statue placeholder (life size)", "conjectural"), "width": board(0.5, "m", "placeholder", "conjectural"), "depth": board(0.35, "m", "placeholder", "conjectural")},
+            "phase": NEW, "placement": placement(None, 1.5, "conjectural", note="Ministry board b: statues on bases line the pavement; number and spacing not legible, evenly spaced along the court's edge", ref=MIN, verified=False),
+            "sourceIds": [MIN], "confidence": "conjectural",
+        }
+features["statue-base-front"] = {
+    "kind": "base", "name": "Tall statue base in front of the altar pavement", "center": [29.0, -5.4], "rotation": 0,
+    "length": board(1.2, "m", "base footprint", "conjectural"), "width": board(1.2, "m", "base footprint", "conjectural"),
+    "height": board(2.0, "m", "a tall base (legend 6)", "analogy"),
+    "figure": {"height": board(1.9, "m", "statue placeholder", "conjectural"), "width": board(0.6, "m", "placeholder", "conjectural"), "depth": board(0.4, "m", "placeholder", "conjectural")},
+    "phase": NEW, "placement": placement(None, 3.0, "conjectural", note="Ministry legend 6 'statue base in front of the altar pavement'; position estimated: west of the court, north of the paved way", ref=MIN, verified=False),
+    "sourceIds": [MIN], "confidence": "attested",
+    "note": "Existence attested by the Ministry board (legend 6); position and size conjectural.",
 }
 pc, pL, pW, pang = obb(geom("plinth_way")["points"])
 for i, z in enumerate([pc[1], -pc[1]]):
@@ -311,9 +366,11 @@ cr = cis["geometry"][1]["radius"]
 features["cistern"] = {
     "kind": "cistern", "name": "Cistern (upper shaft)", "shape": "circle", "center": [r3(ccx), r3(ccz)], "rotation": 0,
     "diameter": text(1.2, "m", "88", "upper shaft inner diameter 1.15-1.22 m"), "rimWidth": plan(cr - 0.6, "m", cis["uncertaintyM"], "rim = plan outer radius minus the shaft radius"),
-    "rimHeight": conj(0.1, "m", "rim gone (p. 87)"), "depth": conj(4.0, "m", "depth not stated (Taf. 12,2 not seen); the older 2.5 m shaft below is not modelled"),
+    "rimHeight": board(0.7, "m", "round well-head over the opening next to the sphinx column (legend 14); the rim itself is gone (p. 87)", "analogy"),
+    "depth": conj(4.0, "m", "depth not stated (Taf. 12,2 not seen); the older 2.5 m shaft below is not modelled"),
     "phase": phase("Older shaft, reworked in the new campaign", -650, None, "attested", "lower shaft older; upper shaft and cleft reworked (p. 88); open and in use c. 490"),
-    "placement": placement("cistern", conf="attested"), "sourceIds": [FW, WP], "confidence": "attested",
+    "placement": placement("cistern", conf="attested"), "sourceIds": [FW, WP, MIN], "confidence": "attested",
+    "note": "Shown with a round well-head (Ministry board b).",
 }
 # Settling basin: pear from the bulb (west) to the tip (toward the cistern), shortened until its rim clears the cistern rim.
 bulb, tip = [26.10, -14.15], [29.25, -14.90]
@@ -341,9 +398,10 @@ features["water-channel"] = {
     "kind": "channel", "name": "Water channel along the north steps",
     "polyline": [[-15.65, -8.05], [8.0, -8.05], [25.05, -13.75]],
     "width": plan(0.35, "m", F["water_channel"]["uncertaintyM"]), "depth": conj(0.3, "m", "shallow hollows in large stones (p. 87)"),
-    "feeds": "settling-basin",
+    "feeds": "settling-basin", "sunk": True,
     "phase": NEW, "placement": placement("water_channel", conf="attested", note="from the NW corner at the foot of the steps, turning near the third column from the east toward the basin (p. 87)"),
-    "sourceIds": [FW, WP], "confidence": "attested",
+    "sourceIds": [FW, WP, MIN], "confidence": "attested",
+    "note": "Partly cut into the rock (Ministry legend 15): its coping is flush with the ground; it leads through the settling basin to the cistern.",
 }
 features["votive-column"] = {
     "kind": "column", "name": "Sphinx votive column", "center": [28.15, -16.0],
@@ -353,10 +411,10 @@ features["votive-column"] = {
     "flutes": text(36, "count", "156-157"),
     "capital": {"kind": "ionic", "width": conj(1.9, "m", "volute capital after Cockerell/Haller drawings"), "height": conj(0.6, "m", "capital height")},
     "crowning": {"kind": "sphinx", "height": conj(1.6, "m", "sphinx restored by analogy with the Naxian column at Delphi")},
-    "phase": phase("6th c. dedication", -560, None, "conjectural", "spared at the rebuilding is 'nicht unmöglich' (p. 157)"),
+    "phase": phase("6th c. dedication", -560, None, "attested", "Standing c. 490 BC on the Ministry board b (Furtwängler p. 157 only 'nicht unmöglich')", src=(FW, MIN)),
     "placement": placement("votive_column", conf="analogy", note="moved 0.3 m south of the plan's arc so its base clears the basin (the text says the channel and basin cut its base)"),
-    "sourceIds": [FW, WP], "confidence": "conjectural",
-    "uncertain": "6th-century column; whether it still stood c. 490 BC is only 'not impossible' (Furtwängler p. 157). Height and sphinx by analogy.",
+    "sourceIds": [FW, WP, MIN], "confidence": "attested",
+    "note": "A tall single column, much taller than the propylon, carrying a marble sphinx (Ministry board). Height (about 10 lower diameters) derived; capital and sphinx by analogy.",
 }
 
 # ---- propylon ------------------------------------------------------------------------------------------------------
@@ -381,10 +439,11 @@ features["propylon"] = {
     "roof": {"ridge": "x", "ridgeOffset": r3(door_z - pcz), "ridgeHeight": conj(1.6, "m", "pitch unknown"), "overhang": conj(0.4, "m", "eaves"), "tiled": True,
              "confidence": "analogy", "note": "Ridge E-W over the door wall, eaves N and S, gables on the E and W side walls (pp. 79, 82-83)."},
     "steps": {"count": conj(3, "count", "a free flight on the outer (south) side; 'third step on a grid wall' (pp. 77-78)"), "rise": conj(0.30, "m", "step rise"), "tread": conj(0.35, "m", "step tread"), "side": "s"},
+    "roofOrnament": {"width": board(0.5, "m", "small sculpture on the roof ridge (placeholder block)", "conjectural"), "height": board(0.7, "m", "small sculpture on the roof ridge", "conjectural")},
     "baseLevel": r3(S_REL_BASE),
-    "phase": NEW, "placement": placement("propylon", conf="attested"), "sourceIds": [FW, WP], "confidence": "analogy",
+    "phase": NEW, "placement": placement("propylon", conf="attested"), "sourceIds": [FW, WP, MIN], "confidence": "analogy",
     "complex": "south-gate",
-    "note": "Floor at terrace height (orthostate cover slabs at terrace level, p. 77). Stair on the south side per the text; the plan's north-side step lines are recorded as a conflict (sources.json choices.propylon-stairs-south).",
+    "note": "Matches the Ministry board: the only entrance, two columns between antae on each front, a central door, steps rising from outside (south), a small sculpture on the roof. Floor at terrace height (orthostate cover slabs at terrace level, p. 77). The stair conflict with the plan is resolved by the board (sources.json choices.propylon-stairs-south).",
 }
 
 # ---- south-east houses (rooms = holes of the plan's wall network) ---------------------------------------------------
@@ -475,16 +534,41 @@ features["se-bath"] = house("se-bath", "Small bath (V)", "rect4260#0", 0.27, ph=
                             note="Inserted later than rooms I-IV, within about three decades (p. 99); basins not modelled. Borderline date.")
 features["se-bath"]["complex"] = "south-gate"
 
+# Priests' houses after the Ministry board: built against the outside of the boundary wall on the rock, reached
+# only from outside; HIPPED tiled roofs; a taller block behind (rooms against the wall), a lower block in front with
+# a columned porch facing the gate side (rooms II-IV, porch open west), and a lower pent-roof wing.
+HIP_NOTE = "Hipped tiled roof (Ministry board); pitch conjectural."
+for hid in ("se-rooms-ii-iv", "se-room-a", "se-room-b", "se-room-i7"):
+    h = features[hid]
+    h["roof"]["form"] = "hipped"
+    h["roof"]["confidence"] = "analogy"
+    h["roof"]["note"] = HIP_NOTE + " Tile fragments found (p. 99)."
+    h["sourceIds"] = [FW, WP, MIN]
+for hid in ("se-room-a", "se-room-b", "se-room-i7"):
+    features[hid]["wallHeight"] = board(4.2, "m", "taller rear block of the priests' houses (massing against the front block)", "analogy")
+    features[hid]["name"] = features[hid]["name"].replace("SE houses:", "Priests' houses, taller rear block:")
+features["se-rooms-ii-iv"]["name"] = "Priests' houses, lower front block: rooms II-IV with the columned porch (Vorhalle) facing the gate side"
+features["se-rooms-ii-iv"]["wallHeight"] = board(3.2, "m", "lower front block with the columned porch", "analogy")
+features["se-forecourt"]["wallHeight"] = board(2.6, "m", "lower pent-roof wing", "analogy")
+features["se-forecourt"]["roof"] = {"form": "pent", "highSide": "n", "ridge": "x", "ridgeHeight": board(0.8, "m", "pent roof rising toward the taller block", "conjectural"),
+                                    "overhang": conj(0.3, "m", "eaves"), "tiled": True, "confidence": "analogy", "note": "Pent-roof wing (Ministry board), high side toward the rear block (east)."}
+features["se-forecourt"]["name"] = "Priests' houses, pent-roof wing: vestibule and forecourt I 2/I 3"
+features["se-forecourt"]["sourceIds"] = [FW, WP, MIN]
+features["se-room-i1"]["roof"] = {"form": "pent", "highSide": "n", "ridge": "x", "ridgeHeight": conj(0.6, "m", "lean roof against the terrace wall"), "overhang": conj(0.2, "m", "eaves"),
+                                  "tiled": True, "confidence": "conjectural", "note": "Lean roof against the terrace wall; Fiechter: perhaps an open pen for animals (p. 92)."}
+
 # ---- Südbau (off the sheet; text placement) -------------------------------------------------------------------------
 SUED_UNC = "Off the plan sheet: about 33 m south of the peribolos and about 9 m below the stylobat (p. 102); x and width conjectural."
 sued_ph = phase("New period", -510, None, "attested", "p. 160")
 sued_place = placement(None, 5.0, "conjectural", note=SUED_UNC, ref=FW, verified=False)
+SUED_HIDDEN = "Not depicted in the Ministry reconstruction; shape unknown (user decision 2026-11-18)."
 zN, zS2 = SUED["z0"], SUED["z0"] + SUED["w"]
 features["suedbau-north-wall"] = {
     "kind": "wall", "name": "Südbau north wall", "role": "terrace", "polyline": [[SUED["x0"], zN], [SUED["x1"], zN]],
     "thickness": conj(0.7, "m", "not stated"), "height": derived(0, "m", "top flush with the slope above; restored about 1.80 m above the Südbau floor (p. 103)"),
-    "top": "level", "phase": sued_ph, "placement": sued_place, "sourceIds": [FW], "confidence": "conjectural",
-    "uncertain": "Südbau: placed from text distances only; a terrace structure (rest or camp area), not a roofed building (pp. 102-104).",
+    "top": "level", "phase": sued_ph, "placement": sued_place, "sourceIds": [FW, MIN], "confidence": "conjectural",
+    "hiddenReason": SUED_HIDDEN,
+    "note": "Südbau: placed from text distances only; a terrace structure (rest or camp area), not a roofed building (pp. 102-104). Kept in the data, hidden.",
 }
 features["suedbau-south-wall"] = dict(features["suedbau-north-wall"], name="Südbau south wall", polyline=[[SUED["x0"], zS2], [SUED["x1"], zS2]],
                                       height=derived(0, "m", "top flush with the Südbau terrace"))

@@ -329,6 +329,7 @@
       "note": "CONJECTURAL: south slope"
      }
     },
+    "hiddenReason": "Südbau terrace: not depicted in the Ministry reconstruction; shape unknown (user decision 2026-11-18).",
     "note": "Off the plan sheet; x position conjectural; width conjectural."
    }
   },
@@ -429,7 +430,7 @@
  "features": {
   "terrace-wall-nws": {
    "kind": "wall",
-   "name": "Great terrace wall (south, west, north)",
+   "name": "Great terrace and enclosure wall (south, west, north)",
    "role": "terrace",
    "polyline": [
     [
@@ -464,9 +465,55 @@
     "ref": "furtwangler-1906",
     "verified": false,
     "provisional": true,
-    "note": "DERIVED: top flush with the terrace (pp. 77, 86); no parapet known"
+    "note": "DERIVED: retaining wall top flush with the terrace (pp. 77, 86); the enclosure parapet stands on it"
    },
    "top": "level",
+   "masonry": "rubble",
+   "parapets": [
+    {
+     "socle": {
+      "value": 0.7,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): natural-stone socle below the mudbrick; height not legible on the board"
+     },
+     "mudbrick": {
+      "value": 0.95,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: analogy): mudbrick superstructure; total parapet 1.80 m above the terrace so the wall hides the krepis from the approach (eye 1.6 m on ground up to 0.16 m above the terrace outside the wall)"
+     },
+     "coping": {
+      "value": 0.15,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): tiled coping course"
+     },
+     "overhang": {
+      "value": 0.1,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): coping projection beyond each face"
+     },
+     "segments": [
+      0,
+      1,
+      2
+     ]
+    }
+   ],
    "phase": {
     "label": "Late Archaic new layout",
     "fromYear": -510,
@@ -486,10 +533,11 @@
    },
    "sourceIds": [
     "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
    ],
    "confidence": "attested",
-   "note": "Ends inside the propylon's west side wall; the north wall stops where the rock reaches terrace height (NE knoll, p. 85)."
+   "note": "Ends inside the propylon's west side wall; the north wall stops where the rock reaches terrace height (NE knoll, p. 85). Enclosure parapet (stone socle, mudbrick, tiled coping) after the Ministry board: from outside it hides the krepis."
   },
   "terrace-wall-se": {
    "kind": "wall",
@@ -529,9 +577,99 @@
     "ref": "furtwangler-1906",
     "verified": false,
     "provisional": true,
-    "note": "DERIVED: top flush with the terrace"
+    "note": "DERIVED: retaining wall top flush with the terrace"
    },
    "top": "level",
+   "masonry": [
+    "rubble",
+    "rubble",
+    "ashlar"
+   ],
+   "parapets": [
+    {
+     "socle": {
+      "value": 0.7,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): natural-stone socle below the mudbrick; height not legible on the board"
+     },
+     "mudbrick": {
+      "value": 0.95,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: analogy): mudbrick superstructure; total parapet 1.80 m above the terrace so the wall hides the krepis from the approach (eye 1.6 m on ground up to 0.16 m above the terrace outside the wall)"
+     },
+     "coping": {
+      "value": 0.15,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): tiled coping course"
+     },
+     "overhang": {
+      "value": 0.1,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): coping projection beyond each face"
+     },
+     "segments": [
+      0,
+      1
+     ]
+    },
+    {
+     "socle": {
+      "value": 0,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: analogy): no superstructure at the NE corner: tall ashlar retaining wall with a coping"
+     },
+     "mudbrick": {
+      "value": 0,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: analogy): no mudbrick at the NE corner"
+     },
+     "coping": {
+      "value": 0.3,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): coping course on the ashlar retaining wall"
+     },
+     "overhang": {
+      "value": 0,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): coping flush with the wall faces (it sits at terrace level on the inner side)"
+     },
+     "segments": [
+      2
+     ]
+    }
+   ],
    "phase": {
     "label": "Late Archaic new layout",
     "fromYear": -510,
@@ -551,10 +689,11 @@
    },
    "sourceIds": [
     "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
    ],
    "confidence": "attested",
-   "note": "Turns 9.70 m east of the propylon (p. 91) along the east wall's line; one mitred run so the corners stay clean."
+   "note": "Turns 9.70 m east of the propylon (p. 91) along the east wall's line; one mitred run so the corners stay clean. South legs: enclosure parapet as on the great wall; east leg up to the NE corner: tall ashlar retaining wall with a coping (Ministry board)."
   },
   "terrace-wall-e": {
    "kind": "wall",
@@ -593,6 +732,7 @@
     "note": "DERIVED: top follows the ground it retains; low parapet only conjectured (p. 86)"
    },
    "top": "follow",
+   "masonry": "older",
    "phase": {
     "label": "Middle period, mid-6th c. (reused)",
     "fromYear": -560,
@@ -612,9 +752,11 @@
    },
    "sourceIds": [
     "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
    ],
-   "confidence": "attested"
+   "confidence": "attested",
+   "note": "Older masonry, drawn in a different technique on the Ministry board (own material id)."
   },
   "lower-south-wall": {
    "kind": "wall",
@@ -795,6 +937,26 @@
     },
     "side": "w"
    },
+   "backScreen": {
+    "height": {
+     "value": 1.0,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: analogy): raised rear (back screen) of the long altar block"
+    },
+    "thickness": {
+     "value": 0.6,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): thickness of the raised rear"
+    }
+   },
    "phase": {
     "label": "Late Archaic new layout",
     "fromYear": -510,
@@ -815,10 +977,11 @@
    },
    "sourceIds": [
     "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
    ],
    "confidence": "attested",
-   "note": "Form and height conjectural (analogy with Agrigento, p. 73)."
+   "note": "A long raised block with a raised rear on the paved court (Ministry board b, legend 4-5); heights conjectural (analogy with Agrigento, p. 73)."
   },
   "altar-court": {
    "kind": "pavement",
@@ -876,7 +1039,7 @@
   },
   "paved-way": {
    "kind": "pavement",
-   "name": "Paved way to the altar court",
+   "name": "Paved way from the temple's east ramp to the altar court",
    "polygon": [
     [
      17.5,
@@ -924,9 +1087,621 @@
    },
    "sourceIds": [
     "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
    ],
-   "confidence": "attested"
+   "confidence": "attested",
+   "note": "Paved way joining the ramp to the altar court, as on the Ministry board b (legend 7)."
+  },
+  "court-base-n1": {
+   "kind": "base",
+   "name": "Statue base on the altar court (north row, 1)",
+   "center": [
+    31.0,
+    -6.75
+   ],
+   "rotation": 0,
+   "length": {
+    "value": 0.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): statue plinth"
+   },
+   "width": {
+    "value": 0.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): statue plinth"
+   },
+   "height": {
+    "value": 1.0,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): plinth height against the drawn figures"
+   },
+   "figure": {
+    "height": {
+     "value": 1.7,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): standing statue placeholder (life size)"
+    },
+    "width": {
+     "value": 0.5,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): placeholder"
+    },
+    "depth": {
+     "value": 0.35,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): placeholder"
+    }
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "confidence": "conjectural",
+    "uncertaintyM": 1.5,
+    "note": "Ministry board b: statues on bases line the pavement; number and spacing not legible, evenly spaced along the court's edge"
+   },
+   "sourceIds": [
+    "ministry-onsite-boards"
+   ],
+   "confidence": "conjectural"
+  },
+  "court-base-n2": {
+   "kind": "base",
+   "name": "Statue base on the altar court (north row, 2)",
+   "center": [
+    32.9,
+    -6.75
+   ],
+   "rotation": 0,
+   "length": {
+    "value": 0.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): statue plinth"
+   },
+   "width": {
+    "value": 0.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): statue plinth"
+   },
+   "height": {
+    "value": 1.0,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): plinth height against the drawn figures"
+   },
+   "figure": {
+    "height": {
+     "value": 1.7,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): standing statue placeholder (life size)"
+    },
+    "width": {
+     "value": 0.5,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): placeholder"
+    },
+    "depth": {
+     "value": 0.35,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): placeholder"
+    }
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "confidence": "conjectural",
+    "uncertaintyM": 1.5,
+    "note": "Ministry board b: statues on bases line the pavement; number and spacing not legible, evenly spaced along the court's edge"
+   },
+   "sourceIds": [
+    "ministry-onsite-boards"
+   ],
+   "confidence": "conjectural"
+  },
+  "court-base-n3": {
+   "kind": "base",
+   "name": "Statue base on the altar court (north row, 3)",
+   "center": [
+    34.8,
+    -6.75
+   ],
+   "rotation": 0,
+   "length": {
+    "value": 0.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): statue plinth"
+   },
+   "width": {
+    "value": 0.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): statue plinth"
+   },
+   "height": {
+    "value": 1.0,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): plinth height against the drawn figures"
+   },
+   "figure": {
+    "height": {
+     "value": 1.7,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): standing statue placeholder (life size)"
+    },
+    "width": {
+     "value": 0.5,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): placeholder"
+    },
+    "depth": {
+     "value": 0.35,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): placeholder"
+    }
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "confidence": "conjectural",
+    "uncertaintyM": 1.5,
+    "note": "Ministry board b: statues on bases line the pavement; number and spacing not legible, evenly spaced along the court's edge"
+   },
+   "sourceIds": [
+    "ministry-onsite-boards"
+   ],
+   "confidence": "conjectural"
+  },
+  "court-base-s1": {
+   "kind": "base",
+   "name": "Statue base on the altar court (south row, 1)",
+   "center": [
+    31.0,
+    6.75
+   ],
+   "rotation": 0,
+   "length": {
+    "value": 0.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): statue plinth"
+   },
+   "width": {
+    "value": 0.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): statue plinth"
+   },
+   "height": {
+    "value": 1.0,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): plinth height against the drawn figures"
+   },
+   "figure": {
+    "height": {
+     "value": 1.7,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): standing statue placeholder (life size)"
+    },
+    "width": {
+     "value": 0.5,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): placeholder"
+    },
+    "depth": {
+     "value": 0.35,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): placeholder"
+    }
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "confidence": "conjectural",
+    "uncertaintyM": 1.5,
+    "note": "Ministry board b: statues on bases line the pavement; number and spacing not legible, evenly spaced along the court's edge"
+   },
+   "sourceIds": [
+    "ministry-onsite-boards"
+   ],
+   "confidence": "conjectural"
+  },
+  "court-base-s2": {
+   "kind": "base",
+   "name": "Statue base on the altar court (south row, 2)",
+   "center": [
+    32.9,
+    6.75
+   ],
+   "rotation": 0,
+   "length": {
+    "value": 0.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): statue plinth"
+   },
+   "width": {
+    "value": 0.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): statue plinth"
+   },
+   "height": {
+    "value": 1.0,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): plinth height against the drawn figures"
+   },
+   "figure": {
+    "height": {
+     "value": 1.7,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): standing statue placeholder (life size)"
+    },
+    "width": {
+     "value": 0.5,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): placeholder"
+    },
+    "depth": {
+     "value": 0.35,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): placeholder"
+    }
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "confidence": "conjectural",
+    "uncertaintyM": 1.5,
+    "note": "Ministry board b: statues on bases line the pavement; number and spacing not legible, evenly spaced along the court's edge"
+   },
+   "sourceIds": [
+    "ministry-onsite-boards"
+   ],
+   "confidence": "conjectural"
+  },
+  "court-base-s3": {
+   "kind": "base",
+   "name": "Statue base on the altar court (south row, 3)",
+   "center": [
+    34.8,
+    6.75
+   ],
+   "rotation": 0,
+   "length": {
+    "value": 0.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): statue plinth"
+   },
+   "width": {
+    "value": 0.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): statue plinth"
+   },
+   "height": {
+    "value": 1.0,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): plinth height against the drawn figures"
+   },
+   "figure": {
+    "height": {
+     "value": 1.7,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): standing statue placeholder (life size)"
+    },
+    "width": {
+     "value": 0.5,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): placeholder"
+    },
+    "depth": {
+     "value": 0.35,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): placeholder"
+    }
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "confidence": "conjectural",
+    "uncertaintyM": 1.5,
+    "note": "Ministry board b: statues on bases line the pavement; number and spacing not legible, evenly spaced along the court's edge"
+   },
+   "sourceIds": [
+    "ministry-onsite-boards"
+   ],
+   "confidence": "conjectural"
+  },
+  "statue-base-front": {
+   "kind": "base",
+   "name": "Tall statue base in front of the altar pavement",
+   "center": [
+    29.0,
+    -5.4
+   ],
+   "rotation": 0,
+   "length": {
+    "value": 1.2,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): base footprint"
+   },
+   "width": {
+    "value": 1.2,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): base footprint"
+   },
+   "height": {
+    "value": 2.0,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: analogy): a tall base (legend 6)"
+   },
+   "figure": {
+    "height": {
+     "value": 1.9,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): statue placeholder"
+    },
+    "width": {
+     "value": 0.6,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): placeholder"
+    },
+    "depth": {
+     "value": 0.4,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): placeholder"
+    }
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "confidence": "conjectural",
+    "uncertaintyM": 3.0,
+    "note": "Ministry legend 6 'statue base in front of the altar pavement'; position estimated: west of the court, north of the paved way"
+   },
+   "sourceIds": [
+    "ministry-onsite-boards"
+   ],
+   "confidence": "attested",
+   "note": "Existence attested by the Ministry board (legend 6); position and size conjectural."
   },
   "plinth-n": {
    "kind": "base",
@@ -1188,13 +1963,13 @@
     "note": "plan measurement, +/-0.78 m; rim = plan outer radius minus the shaft radius"
    },
    "rimHeight": {
-    "value": 0.1,
+    "value": 0.7,
     "unit": "m",
     "source": "published",
-    "ref": "furtwangler-1906",
+    "ref": "ministry-onsite-boards",
     "verified": false,
     "provisional": true,
-    "note": "CONJECTURAL: rim gone (p. 87)"
+    "note": "DERIVED from the Ministry board (confidence: analogy): round well-head over the opening next to the sphinx column (legend 14); the rim itself is gone (p. 87)"
    },
    "depth": {
     "value": 4.0,
@@ -1224,9 +1999,11 @@
    },
    "sourceIds": [
     "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
    ],
-   "confidence": "attested"
+   "confidence": "attested",
+   "note": "Shown with a round well-head (Ministry board b)."
   },
   "settling-basin": {
    "kind": "cistern",
@@ -1348,6 +2125,7 @@
     "note": "CONJECTURAL: shallow hollows in large stones (p. 87)"
    },
    "feeds": "settling-basin",
+   "sunk": true,
    "phase": {
     "label": "Late Archaic new layout",
     "fromYear": -510,
@@ -1368,9 +2146,11 @@
    },
    "sourceIds": [
     "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
    ],
-   "confidence": "attested"
+   "confidence": "attested",
+   "note": "Partly cut into the rock (Ministry legend 15): its coping is flush with the ground; it leads through the settling basin to the cistern."
   },
   "votive-column": {
    "kind": "column",
@@ -1473,11 +2253,12 @@
     "label": "6th c. dedication",
     "fromYear": -560,
     "toYear": null,
-    "confidence": "conjectural",
+    "confidence": "attested",
     "sourceIds": [
-     "furtwangler-1906"
+     "furtwangler-1906",
+     "ministry-onsite-boards"
     ],
-    "note": "spared at the rebuilding is 'nicht unmöglich' (p. 157)"
+    "note": "Standing c. 490 BC on the Ministry board b (Furtwängler p. 157 only 'nicht unmöglich')"
    },
    "placement": {
     "source": "plan",
@@ -1489,10 +2270,11 @@
    },
    "sourceIds": [
     "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
    ],
-   "confidence": "conjectural",
-   "uncertain": "6th-century column; whether it still stood c. 490 BC is only 'not impossible' (Furtwängler p. 157). Height and sphinx by analogy."
+   "confidence": "attested",
+   "note": "A tall single column, much taller than the propylon, carrying a marble sphinx (Ministry board). Height (about 10 lower diameters) derived; capital and sphinx by analogy."
   },
   "propylon": {
    "kind": "building",
@@ -1719,6 +2501,26 @@
     },
     "side": "s"
    },
+   "roofOrnament": {
+    "width": {
+     "value": 0.5,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): small sculpture on the roof ridge (placeholder block)"
+    },
+    "height": {
+     "value": 0.7,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): small sculpture on the roof ridge"
+    }
+   },
    "baseLevel": -0.78,
    "phase": {
     "label": "Late Archaic new layout",
@@ -1739,16 +2541,17 @@
    },
    "sourceIds": [
     "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
    ],
    "confidence": "analogy",
    "complex": "south-gate",
-   "note": "Floor at terrace height (orthostate cover slabs at terrace level, p. 77). Stair on the south side per the text; the plan's north-side step lines are recorded as a conflict (sources.json choices.propylon-stairs-south)."
+   "note": "Matches the Ministry board: the only entrance, two columns between antae on each front, a central door, steps rising from outside (south), a small sculpture on the roof. Floor at terrace height (orthostate cover slabs at terrace level, p. 77). The stair conflict with the plan is resolved by the board (sources.json choices.propylon-stairs-south)."
   },
   "se-rooms-ii-iv": {
    "kind": "building",
    "role": "house",
-   "name": "SE houses: rooms II-IV with the porch (Vorhalle)",
+   "name": "Priests' houses, lower front block: rooms II-IV with the columned porch (Vorhalle) facing the gate side",
    "center": [
     47.506,
     37.566
@@ -1783,10 +2586,10 @@
     "value": 3.2,
     "unit": "m",
     "source": "published",
-    "ref": "furtwangler-1906",
+    "ref": "ministry-onsite-boards",
     "verified": false,
     "provisional": true,
-    "note": "CONJECTURAL: not preserved above the orthostates"
+    "note": "DERIVED from the Ministry board (confidence: analogy): lower front block with the columned porch"
    },
    "doors": [],
    "openSides": [
@@ -1984,8 +2787,9 @@
      "note": "CONJECTURAL: eaves"
     },
     "tiled": true,
-    "confidence": "conjectural",
-    "note": "Tiled (many tile fragments, p. 99); form generic."
+    "confidence": "analogy",
+    "note": "Hipped tiled roof (Ministry board); pitch conjectural. Tile fragments found (p. 99).",
+    "form": "hipped"
    },
    "phase": {
     "label": "Late Archaic new layout",
@@ -2007,7 +2811,8 @@
    },
    "sourceIds": [
     "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
    ],
    "confidence": "analogy",
    "complex": "se-houses",
@@ -2016,7 +2821,7 @@
   "se-room-i7": {
    "kind": "building",
    "role": "house",
-   "name": "SE houses: narrow room I 7 along the east wall",
+   "name": "Priests' houses, taller rear block: narrow room I 7 along the east wall",
    "center": [
     48.445,
     24.425
@@ -2048,13 +2853,13 @@
     "note": "CONJECTURAL: within the plan's wall band"
    },
    "wallHeight": {
-    "value": 3.0,
+    "value": 4.2,
     "unit": "m",
     "source": "published",
-    "ref": "furtwangler-1906",
+    "ref": "ministry-onsite-boards",
     "verified": false,
     "provisional": true,
-    "note": "CONJECTURAL: walls above the orthostates not preserved (p. 99)"
+    "note": "DERIVED from the Ministry board (confidence: analogy): taller rear block of the priests' houses (massing against the front block)"
    },
    "doors": [
     {
@@ -2101,8 +2906,9 @@
      "note": "CONJECTURAL: eaves"
     },
     "tiled": true,
-    "confidence": "conjectural",
-    "note": "Many tile fragments found (p. 99); form generic (Abb. 61: 'da alle Einzelheiten fehlen')."
+    "confidence": "analogy",
+    "note": "Hipped tiled roof (Ministry board); pitch conjectural. Tile fragments found (p. 99).",
+    "form": "hipped"
    },
    "phase": {
     "label": "Late Archaic new layout",
@@ -2123,7 +2929,8 @@
    },
    "sourceIds": [
     "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
    ],
    "confidence": "conjectural",
    "complex": "se-houses"
@@ -2131,7 +2938,7 @@
   "se-room-a": {
    "kind": "building",
    "role": "house",
-   "name": "SE houses: room (I 4/I 5 group)",
+   "name": "Priests' houses, taller rear block: room (I 4/I 5 group)",
    "center": [
     45.071,
     27.188
@@ -2163,13 +2970,13 @@
     "note": "CONJECTURAL: within the plan's wall band"
    },
    "wallHeight": {
-    "value": 3.0,
+    "value": 4.2,
     "unit": "m",
     "source": "published",
-    "ref": "furtwangler-1906",
+    "ref": "ministry-onsite-boards",
     "verified": false,
     "provisional": true,
-    "note": "CONJECTURAL: walls above the orthostates not preserved (p. 99)"
+    "note": "DERIVED from the Ministry board (confidence: analogy): taller rear block of the priests' houses (massing against the front block)"
    },
    "doors": [
     {
@@ -2216,8 +3023,9 @@
      "note": "CONJECTURAL: eaves"
     },
     "tiled": true,
-    "confidence": "conjectural",
-    "note": "Many tile fragments found (p. 99); form generic (Abb. 61: 'da alle Einzelheiten fehlen')."
+    "confidence": "analogy",
+    "note": "Hipped tiled roof (Ministry board); pitch conjectural. Tile fragments found (p. 99).",
+    "form": "hipped"
    },
    "phase": {
     "label": "Late Archaic new layout",
@@ -2238,7 +3046,8 @@
    },
    "sourceIds": [
     "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
    ],
    "confidence": "conjectural",
    "complex": "se-houses"
@@ -2246,7 +3055,7 @@
   "se-room-b": {
    "kind": "building",
    "role": "house",
-   "name": "SE houses: room (I 4/I 5 group)",
+   "name": "Priests' houses, taller rear block: room (I 4/I 5 group)",
    "center": [
     44.04,
     23.346
@@ -2278,13 +3087,13 @@
     "note": "CONJECTURAL: within the plan's wall band"
    },
    "wallHeight": {
-    "value": 3.0,
+    "value": 4.2,
     "unit": "m",
     "source": "published",
-    "ref": "furtwangler-1906",
+    "ref": "ministry-onsite-boards",
     "verified": false,
     "provisional": true,
-    "note": "CONJECTURAL: walls above the orthostates not preserved (p. 99)"
+    "note": "DERIVED from the Ministry board (confidence: analogy): taller rear block of the priests' houses (massing against the front block)"
    },
    "doors": [
     {
@@ -2331,8 +3140,9 @@
      "note": "CONJECTURAL: eaves"
     },
     "tiled": true,
-    "confidence": "conjectural",
-    "note": "Many tile fragments found (p. 99); form generic (Abb. 61: 'da alle Einzelheiten fehlen')."
+    "confidence": "analogy",
+    "note": "Hipped tiled roof (Ministry board); pitch conjectural. Tile fragments found (p. 99).",
+    "form": "hipped"
    },
    "phase": {
     "label": "Late Archaic new layout",
@@ -2353,7 +3163,8 @@
    },
    "sourceIds": [
     "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
    ],
    "confidence": "conjectural",
    "complex": "se-houses"
@@ -2361,7 +3172,7 @@
   "se-forecourt": {
    "kind": "building",
    "role": "house",
-   "name": "SE houses: vestibule and forecourt I 2/I 3",
+   "name": "Priests' houses, pent-roof wing: vestibule and forecourt I 2/I 3",
    "center": [
     40.151,
     26.479
@@ -2393,13 +3204,13 @@
     "note": "CONJECTURAL: within the plan's wall band"
    },
    "wallHeight": {
-    "value": 3.0,
+    "value": 2.6,
     "unit": "m",
     "source": "published",
-    "ref": "furtwangler-1906",
+    "ref": "ministry-onsite-boards",
     "verified": false,
     "provisional": true,
-    "note": "CONJECTURAL: walls above the orthostates not preserved (p. 99)"
+    "note": "DERIVED from the Ministry board (confidence: analogy): lower pent-roof wing"
    },
    "doors": [
     {
@@ -2426,15 +3237,17 @@
     }
    ],
    "roof": {
+    "form": "pent",
+    "highSide": "n",
     "ridge": "x",
     "ridgeHeight": {
-     "value": 1.2,
+     "value": 0.8,
      "unit": "m",
      "source": "published",
-     "ref": "furtwangler-1906",
+     "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "CONJECTURAL: pitch unknown"
+     "note": "DERIVED from the Ministry board (confidence: conjectural): pent roof rising toward the taller block"
     },
     "overhang": {
      "value": 0.3,
@@ -2446,8 +3259,8 @@
      "note": "CONJECTURAL: eaves"
     },
     "tiled": true,
-    "confidence": "conjectural",
-    "note": "Many tile fragments found (p. 99); form generic (Abb. 61: 'da alle Einzelheiten fehlen')."
+    "confidence": "analogy",
+    "note": "Pent-roof wing (Ministry board), high side toward the rear block (east)."
    },
    "phase": {
     "label": "c. 490-480 BC (borderline)",
@@ -2468,7 +3281,8 @@
    },
    "sourceIds": [
     "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
    ],
    "confidence": "conjectural",
    "complex": "se-houses",
@@ -2548,18 +3362,20 @@
     "w"
    ],
    "roof": {
+    "form": "pent",
+    "highSide": "n",
     "ridge": "x",
     "ridgeHeight": {
-     "value": 0.9,
+     "value": 0.6,
      "unit": "m",
      "source": "published",
      "ref": "furtwangler-1906",
      "verified": false,
      "provisional": true,
-     "note": "CONJECTURAL: lean roof"
+     "note": "CONJECTURAL: lean roof against the terrace wall"
     },
     "overhang": {
-     "value": 0.3,
+     "value": 0.2,
      "unit": "m",
      "source": "published",
      "ref": "furtwangler-1906",
@@ -2569,7 +3385,7 @@
     },
     "tiled": true,
     "confidence": "conjectural",
-    "note": "Fiechter: perhaps an open pen for animals (p. 92)."
+    "note": "Lean roof against the terrace wall; Fiechter: perhaps an open pen for animals (p. 92)."
    },
    "phase": {
     "label": "Late Archaic new layout",
@@ -2764,10 +3580,12 @@
     "note": "Off the plan sheet: about 33 m south of the peribolos and about 9 m below the stylobat (p. 102); x and width conjectural."
    },
    "sourceIds": [
-    "furtwangler-1906"
+    "furtwangler-1906",
+    "ministry-onsite-boards"
    ],
    "confidence": "conjectural",
-   "uncertain": "Südbau: placed from text distances only; a terrace structure (rest or camp area), not a roofed building (pp. 102-104)."
+   "hiddenReason": "Not depicted in the Ministry reconstruction; shape unknown (user decision 2026-11-18).",
+   "note": "Südbau: placed from text distances only; a terrace structure (rest or camp area), not a roofed building (pp. 102-104). Kept in the data, hidden."
   },
   "suedbau-south-wall": {
    "kind": "wall",
@@ -2821,10 +3639,12 @@
     "note": "Off the plan sheet: about 33 m south of the peribolos and about 9 m below the stylobat (p. 102); x and width conjectural."
    },
    "sourceIds": [
-    "furtwangler-1906"
+    "furtwangler-1906",
+    "ministry-onsite-boards"
    ],
    "confidence": "conjectural",
-   "uncertain": "Südbau: placed from text distances only; a terrace structure (rest or camp area), not a roofed building (pp. 102-104)."
+   "hiddenReason": "Not depicted in the Ministry reconstruction; shape unknown (user decision 2026-11-18).",
+   "note": "Südbau: placed from text distances only; a terrace structure (rest or camp area), not a roofed building (pp. 102-104). Kept in the data, hidden."
   },
   "suedbau-cross-wall-1": {
    "kind": "wall",
@@ -2879,10 +3699,12 @@
     "note": "Off the plan sheet: about 33 m south of the peribolos and about 9 m below the stylobat (p. 102); x and width conjectural."
    },
    "sourceIds": [
-    "furtwangler-1906"
+    "furtwangler-1906",
+    "ministry-onsite-boards"
    ],
    "confidence": "conjectural",
-   "uncertain": "Südbau: placed from text distances only; a terrace structure (rest or camp area), not a roofed building (pp. 102-104).",
+   "hiddenReason": "Not depicted in the Ministry reconstruction; shape unknown (user decision 2026-11-18).",
+   "note": "Südbau: placed from text distances only; a terrace structure (rest or camp area), not a roofed building (pp. 102-104). Kept in the data, hidden.",
    "baseLevel": -9.0
   },
   "suedbau-cross-wall-2": {
@@ -2938,10 +3760,12 @@
     "note": "Off the plan sheet: about 33 m south of the peribolos and about 9 m below the stylobat (p. 102); x and width conjectural."
    },
    "sourceIds": [
-    "furtwangler-1906"
+    "furtwangler-1906",
+    "ministry-onsite-boards"
    ],
    "confidence": "conjectural",
-   "uncertain": "Südbau: placed from text distances only; a terrace structure (rest or camp area), not a roofed building (pp. 102-104).",
+   "hiddenReason": "Not depicted in the Ministry reconstruction; shape unknown (user decision 2026-11-18).",
+   "note": "Südbau: placed from text distances only; a terrace structure (rest or camp area), not a roofed building (pp. 102-104). Kept in the data, hidden.",
    "baseLevel": -9.0
   }
  },

@@ -33,6 +33,9 @@
     "archer-diamond-pattern": { "color": "#c8a232", "pattern": "plain", "sourceIds": ["harvard-gazette-2007", "gods-in-color"], "confidence": "attested", "verified": true, "note": "West-pediment archer: shirt and leggings with a red, yellow, blue and green diamond pattern (layout attested by UV and raking light; exact pigments by analogy)." },
     "archer-vest-yellow": { "color": "#e2b62c", "pattern": "plain", "sourceIds": ["harvard-gazette-2007", "gods-in-color"], "confidence": "attested", "verified": true, "note": "Bright yellow vest with lions and griffins; tall yellow hat with a flower pattern." },
     "figure-flesh": { "color": "#c58e6c", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "conjectural", "verified": false, "note": "Stand-in figure skin tone." },
-    "figure-armour": { "color": "#a88a4a", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "conjectural", "verified": false, "note": "Stand-in bronze armour." }
+    "figure-armour": { "color": "#a88a4a", "pattern": "plain", "sourceIds": ["gods-in-color"], "confidence": "conjectural", "verified": false, "note": "Stand-in bronze armour." },
+    "rubble-stone": { "color": "#b3aa94", "pattern": "plain", "sourceIds": ["ministry-onsite-boards", "furtwangler-1906"], "confidence": "conjectural", "verified": false, "note": "Natural-stone body and parapet socle of the terrace/enclosure wall (Ministry board). Colour generic; Step 4 refines." },
+    "older-masonry": { "color": "#a49a84", "pattern": "plain", "sourceIds": ["ministry-onsite-boards", "furtwangler-1906"], "confidence": "conjectural", "verified": false, "note": "Older (mid-6th-c.) masonry of the east stretch, a different technique on the Ministry board (p. 86). Colour generic." },
+    "mudbrick": { "color": "#b39470", "pattern": "plain", "sourceIds": ["ministry-onsite-boards"], "confidence": "conjectural", "verified": false, "note": "Mudbrick superstructure (Ziegelaufbau) of the enclosure wall (Ministry board). Colour generic (sun-dried clay); Step 4 refines." }
   }
 }
