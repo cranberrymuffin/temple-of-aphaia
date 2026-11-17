@@ -46,7 +46,10 @@ function encodePng16(w: number, h: number, data: Uint16Array, filter: number): U
   const stride = w * 2
   const raw = new Uint8Array(h * (stride + 1))
   const bytes = new Uint8Array(h * stride)
-  data.forEach((v, i) => ((bytes[2 * i] = v >> 8), (bytes[2 * i + 1] = v & 255)))
+  data.forEach((v, i) => {
+    bytes[2 * i] = v >> 8
+    bytes[2 * i + 1] = v & 255
+  })
   for (let y = 0; y < h; y++) {
     raw[y * (stride + 1)] = filter
     for (let i = 0; i < stride; i++) {
@@ -72,7 +75,10 @@ function encodePng16(w: number, h: number, data: Uint16Array, filter: number): U
   const parts = [sig, chunk('IHDR', ihdr), chunk('IDAT', new Uint8Array(deflateSync(raw))), chunk('IEND', new Uint8Array(0))]
   const out = new Uint8Array(parts.reduce((s, p) => s + p.length, 0))
   let o = 0
-  for (const p of parts) (out.set(p, o), (o += p.length))
+  for (const p of parts) {
+    out.set(p, o)
+    o += p.length
+  }
   return out
 }
 
