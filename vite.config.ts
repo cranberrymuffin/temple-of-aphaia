@@ -10,5 +10,7 @@ export default defineConfig({
   test: {
     include: ['tests/unit/**/*.test.ts'],
     environment: 'node',
+    // Geometry/coplanarity checks run several times slower on 2-core CI runners than locally.
+    testTimeout: 60_000,
   },
 })
