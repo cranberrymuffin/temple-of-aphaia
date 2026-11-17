@@ -110,3 +110,49 @@ describe.each(TIERS)('built site (%s)', (tier) => {
     expect(n).toBeLessThan(tier === 'low' ? 300_000 : 1_500_000)
   })
 })
+
+describe('built site on the real DEM', async () => {
+  const { readFileSync } = await import('node:fs')
+  const { resolve: res } = await import('node:path')
+  const { loadDem } = await import('../../src/geometry/sanctuary/dem')
+  const hilltopMeta = (await import('../../measurements/hilltop.json')).default
+  const landscapeMeta = (await import('../../measurements/landscape.json')).default
+  const png = (f: string) => new Uint8Array(readFileSync(res(__dirname, '../../measurements', f)))
+  const dem = await loadDem(hilltopMeta as never, png('hilltop.png'), landscapeMeta as never, png('landscape.png'))
+
+  describe.each(TIERS)('%s tier', (tier) => {
+    const r = resolve()
+    const temple = buildTemple(r, tier, palette.colors, { ground: false })
+    const site = buildSite(doc, r.stylobate.top, tier, palette.colors, { dem })
+    const all = mergeOutputs([temple, site.sanctuary.output, site.terrain])
+
+    it('clean meshes, a sea plane at the DEM sea level, mismatches logged', () => {
+      expect(meshProblems(all.groups)).toEqual([])
+      const sea = site.terrain.groups.find((g) => g.name === 'sea')!
+      expect(sea.positions[1]).toBeCloseTo(dem.seaLevelY, 3)
+      for (const m of site.mismatches) {
+        expect(m.maxAbove).toBeGreaterThan(0)
+        expect(m.maxAbove).toBeLessThan(5) // the DEM agrees with the terrace within a few metres (georef.json)
+      }
+      console.log(`[dem ${tier}] mismatches ${JSON.stringify(site.mismatches.map((m) => ({ ...m, maxAbove: +m.maxAbove.toFixed(2), length: +m.length.toFixed(1) })))}`)
+    })
+
+    it('no coplanar overlaps across temple, sanctuary, DEM terrain and sea', () => {
+      // Every building and terrace lies inside the hilltop window; beyond it there is only the single,
+      // non-overlapping terrain grid, whose one possible coplanar partner is the sea plane (checked below).
+      const W = 170
+      const inside = (t: { a: number[]; b: number[]; c: number[] }) => [t.a, t.b, t.c].every((p) => Math.abs(p[0]) <= W && Math.abs(p[2]) <= W)
+      const tris = worldTriangles(all).filter((t) => t.group === 'sea' || inside(t))
+      const terrain = site.terrain.groups.find((g) => g.name === 'terrain')!
+      for (let i = 1; i < terrain.positions.length; i += 3) expect(Math.abs(terrain.positions[i] - dem.seaLevelY)).toBeGreaterThan(0.001)
+      const hits = findCoplanarOverlaps(tris)
+      expect(hits.map((h) => `${h.a} x ${h.b} @ ${h.at.map((v) => v.toFixed(2))} (${(h.area * 1e4).toFixed(1)} cm2)`)).toEqual([])
+    }, 240_000)
+
+    it('triangle budget', () => {
+      const n = triangleCount(all)
+      console.log(`[dem ${tier}] triangles total ${n}, terrain ${site.terrain.groups.reduce((a, g) => a + g.indices.length / 3, 0)}`)
+      expect(n).toBeLessThan(tier === 'low' ? 300_000 : 1_500_000)
+    })
+  })
+})

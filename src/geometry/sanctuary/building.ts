@@ -108,6 +108,37 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
     const a1 = alongX ? (open.has('e') ? hx : hx - t) : open.has('s') ? hz : hz - t
     const inner: Face = alongX ? (sign > 0 ? '-z' : '+z') : sign > 0 ? '-x' : '+x'
     const outerF: Face = alongX ? (sign > 0 ? '+z' : '-z') : sign > 0 ? '+x' : '-x'
+    // Where a side wall stands, it continues beside the flight as a cheek wall (the orthostate walls flanking
+    // the stair) from the skirt up to the floor, so the steps' ends abut it and the footprint is filled.
+    const cheekLo = alongX ? !open.has('w') : !open.has('n')
+    const cheekHi = alongX ? !open.has('e') : !open.has('s')
+    const endLo: Face = alongX ? '-x' : '-z'
+    const endHi: Face = alongX ? '+x' : '+z'
+    const run = n * tr
+    for (const [has, w0, w1, face] of [
+      [cheekLo, alongX ? -hx : -hz, a0, endHi],
+      [cheekHi, a1, alongX ? hx : hz, endLo],
+    ] as const) {
+      if (!has) continue
+      const [c0, c1] = sign > 0 ? [base, base + run] : [-base - run, -base]
+      const min: Vec3 = alongX ? [w0, bottom, c0] : [c0, bottom, w0]
+      const max: Vec3 = alongX ? [w1, floorY, c1] : [c1, floorY, w1]
+      // Faces toward the flight are split per step above each tread (below it the step end abuts).
+      floor.box(min, max, ['-y', inner, face])
+      const wf = face === endHi ? w1 : w0
+      for (let j = 1; j <= n; j++) {
+        const o0 = sign * (base + (j - 1) * tr)
+        const o1 = sign * (base + j * tr)
+        const yTop = floorY - j * rise
+        const q: Vec3[] = alongX
+          ? [[wf, yTop, o0], [wf, yTop, o1], [wf, floorY, o1], [wf, floorY, o0]]
+          : [[o0, yTop, wf], [o1, yTop, wf], [o1, floorY, wf], [o0, floorY, wf]]
+        const dir: Vec3 = alongX ? [face === endHi ? 1 : -1, 0, 0] : [0, 0, face === endHi ? 1 : -1]
+        floor.polygonFacing(q, dir)
+      }
+      const c = transformPoint(m, [(min[0] + max[0]) / 2, 0, (min[2] + max[2]) / 2])
+      colliders.push({ kind: 'obb', name: `${id}-cheek`, cx: c[0], cz: c[2], halfX: (max[0] - min[0]) / 2, halfZ: (max[2] - min[2]) / 2, rotY: deg(f.rotation), y0: bottom, y1: floorY })
+    }
     for (let j = 1; j <= n; j++) {
       const o0 = base + (j - 1) * tr
       const o1 = base + j * tr
@@ -115,7 +146,7 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
       const [c0, c1] = sign > 0 ? [o0, o1] : [-o1, -o0]
       const min: Vec3 = alongX ? [a0, bottom, c0] : [c0, bottom, a0]
       const max: Vec3 = alongX ? [a1, yTop, c1] : [c1, yTop, a1]
-      floor.box(min, max, ['-y', inner, ...(j < n ? [outerF] : [])])
+      floor.box(min, max, ['-y', inner, ...(j < n ? [outerF] : []), ...(cheekLo ? [endLo] : []), ...(cheekHi ? [endHi] : [])])
       const yPrev = floorY - (j - 1) * rise
       // Riser above the previous step's top at this step's inner edge (the part not shared with step j-1).
       const oi = sign * o0

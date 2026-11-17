@@ -10,13 +10,12 @@ import { altar } from './altar'
 import { building } from './building'
 import { cistern, cisternLoops } from './cistern'
 import { pavement } from './pavement'
-import { votiveColumn } from './votive'
+import { BASE_SIDES, votiveColumn } from './votive'
 import type { GroundFn, SanctuaryContext } from './common'
 import { sampleHeight, terrain } from './terrain'
 import { channel, wallRun } from './wall'
 import { demGrid, demGround, type Dem } from './dem'
-import { pointInPolygon } from '../../data/polygon'
-import { sparseTerrain, terrainHeightFn, type TerrainMismatch } from './terraces'
+import { meshedGround, sparseTerrain, type TerrainMismatch } from './terraces'
 
 export interface FeatureReport {
   id: string
@@ -33,7 +32,14 @@ export interface FeatureReport {
 
 /** Outlines a feature cuts out of the terrain (convex polygons). */
 export function terrainCuts(f: SanctuaryFeature, tier: Tier): Point2[][] {
-  return f.kind === 'cistern' ? [cisternLoops(f, tier).outer] : footprints(f)
+  if (f.kind === 'cistern') return [cisternLoops(f, tier).outer]
+  if (f.kind === 'column') {
+    // Exactly the tessellated base disc of this tier (no uncovered slivers between it and a finer polygon).
+    const n = BASE_SIDES[tier]
+    const R = f.baseDiameter.value / 2
+    return [Array.from({ length: n }, (_, i): Point2 => [f.center[0] + R * Math.cos((2 * Math.PI * i) / n), f.center[1] + R * Math.sin((2 * Math.PI * i) / n)])]
+  }
+  return footprints(f)
 }
 
 export function buildFeature(id: string, f: SanctuaryFeature, ctx: SanctuaryContext, col: Collector): Omit<GeneratorOutput, 'groups'> {
@@ -135,21 +141,15 @@ export function sanctuaryTerrain(doc: SanctuaryDoc, stylobateTop: number, tier: 
   const { mismatches, ...rest } = t
   return {
     output: { ...rest, groups: col.build(palette) },
-    ground: siteGround(doc, stylobateTop, dem),
+    ground: siteGround(doc, stylobateTop, tier, dem),
     mismatches,
     seaLevelY: dem?.seaLevelY,
   }
 }
 
-/** The surface features sit on: terrace level inside a terrace, natural ground outside. */
-export function siteGround(doc: SanctuaryDoc, stylobateTop: number, dem?: Dem): GroundFn {
-  if (!dem) return terrainHeightFn(doc.terrain, stylobateTop)
-  const g = demGround(dem)
-  const ts = Object.values(doc.terrain.terraces).map((t) => ({ poly: t.polygon, y: stylobateTop + t.level.value }))
-  return (x, z) => {
-    for (const t of ts) if (pointInPolygon(t.poly, [x, z])) return t.y
-    return g(x, z)
-  }
+/** The surface features sit on, exactly as the terrain meshes it: terrace level inside a terrace, else the meshed natural ground. */
+export function siteGround(doc: SanctuaryDoc, stylobateTop: number, tier: Tier, dem?: Dem): GroundFn {
+  return meshedGround(doc.terrain, stylobateTop, tier, dem ? { ground: demGround(dem), grid: demGrid(dem, tier) } : {})
 }
 
 /**
@@ -157,7 +157,7 @@ export function siteGround(doc: SanctuaryDoc, stylobateTop: number, dem?: Dem): 
  * footprints plus any extra outlines.
  */
 export function buildSite(doc: SanctuaryDoc, stylobateTop: number, tier: Tier, palette: PaletteLike, opts: { dem?: Dem; extraCuts?: Point2[][] } = {}) {
-  const ground = siteGround(doc, stylobateTop, opts.dem)
+  const ground = siteGround(doc, stylobateTop, tier, opts.dem)
   const sanctuary = buildSanctuary(doc, tier, palette, ground, stylobateTop)
   const t = sanctuaryTerrain(doc, stylobateTop, tier, palette, [...sanctuary.cuts, ...(opts.extraCuts ?? [])], opts.dem)
   return { sanctuary, terrain: t.output, ground, mismatches: t.mismatches, seaLevelY: t.seaLevelY }

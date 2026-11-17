@@ -9,7 +9,7 @@ import type { GeneratorOutput } from '../types'
 import { SANCTUARY_CONVENTIONS as K, groundRange, type SanctuaryContext } from './common'
 import { footprints } from '../../data/sanctuary'
 
-const BASE_SIDES = { low: 16, med: 24, high: 32 } as const
+export const BASE_SIDES = { low: 16, med: 24, high: 32 } as const
 
 export function votiveColumn(id: string, f: ColumnFeature, ctx: SanctuaryContext, col: Collector): Omit<GeneratorOutput, 'groups'> {
   const range = groundRange(ctx.ground, footprints(f)[0])

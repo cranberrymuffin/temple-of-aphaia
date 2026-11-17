@@ -176,7 +176,7 @@ export interface TerrainMismatch {
 }
 
 /** Piecewise-linear height of the meshed grid (same triangulation as terrain(): (00,01,11) and (00,11,10)). */
-function meshHeight(hf: Heightfield & { xs: Float64Array; zs: Float64Array }) {
+function meshHeight(hf: MeshGrid) {
   const find = (a: Float64Array, v: number) => {
     let lo = 0
     let hi = a.length - 2
@@ -203,6 +203,41 @@ function meshHeight(hf: Heightfield & { xs: Float64Array; zs: Float64Array }) {
   }
 }
 
+type MeshGrid = Heightfield & { xs: Float64Array; zs: Float64Array }
+
+/** The natural-ground grid the terrain is meshed on (the DEM grid, or a uniform tier grid for the falloff). */
+function naturalGrid(desc: TerrainDesc, stylobateTop: number, tier: Tier, opts: SparseTerrainOptions): MeshGrid {
+  const g = opts.ground ?? naturalGroundFn(desc, stylobateTop)
+  let grid = opts.grid
+  if (!grid) {
+    const b = terrainBounds(desc)
+    const cell = SPARSE_CELL[tier]
+    const axis = (lo: number, hi: number) => {
+      const n = Math.ceil((hi - lo) / cell)
+      return new Float64Array(Array.from({ length: n + 1 }, (_, k) => lo + k * cell))
+    }
+    grid = { xs: axis(b.minX, b.maxX), zs: axis(b.minZ, b.maxZ) }
+  }
+  const nx = grid.xs.length
+  const nz = grid.zs.length
+  const heights = new Float32Array(nx * nz)
+  for (let j = 0; j < nz; j++) for (let i = 0; i < nx; i++) heights[j * nx + i] = g(grid.xs[i], grid.zs[j])
+  return { nx, nz, cell: 0, originX: grid.xs[0], originZ: grid.zs[0], heights, xs: grid.xs, zs: grid.zs }
+}
+
+/**
+ * The surface exactly as meshed: terrace level inside a terrace, else the piecewise-linear natural-ground
+ * mesh (not the smooth function it samples), so feature skirts and bases meet the terrain that is drawn.
+ */
+export function meshedGround(desc: TerrainDesc, stylobateTop: number, tier: Tier, opts: SparseTerrainOptions = {}): GroundFn {
+  const ts = terraces(desc, stylobateTop)
+  const mh = meshHeight(naturalGrid(desc, stylobateTop, tier, opts))
+  return (x, z) => {
+    for (const t of ts) if (pointInPolygon(t.poly, [x, z])) return t.y
+    return mh(x, z)
+  }
+}
+
 /** Terrain mesh (group 'terrain'): exact terrace tops, the natural ground grid around them, edge faces. */
 export function sparseTerrain(
   desc: TerrainDesc,
@@ -221,21 +256,10 @@ export function sparseTerrain(
   }
 
   // Natural ground grid (rectilinear), minus terraces and features.
-  let grid = opts.grid
-  if (!grid) {
-    const b = terrainBounds(desc)
-    const cell = SPARSE_CELL[tier]
-    const axis = (lo: number, hi: number) => {
-      const n = Math.ceil((hi - lo) / cell)
-      return new Float64Array(Array.from({ length: n + 1 }, (_, k) => lo + k * cell))
-    }
-    grid = { xs: axis(b.minX, b.maxX), zs: axis(b.minZ, b.maxZ) }
-  }
-  const nx = grid.xs.length
-  const nz = grid.zs.length
-  const heights = new Float32Array(nx * nz)
-  for (let j = 0; j < nz; j++) for (let i = 0; i < nx; i++) heights[j * nx + i] = g(grid.xs[i], grid.zs[j])
-  const hf = { nx, nz, cell: 0, originX: grid.xs[0], originZ: grid.zs[0], heights, xs: grid.xs, zs: grid.zs }
+  const hf = naturalGrid(desc, stylobateTop, tier, opts)
+  const grid = { xs: hf.xs, zs: hf.zs }
+  const nx = hf.nx
+  const nz = hf.nz
   terrain(hf, 'high', col, [...cuts, ...tris.flat()])
   const mh = meshHeight(hf)
   const b = col.get('terrain')
