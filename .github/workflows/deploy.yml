@@ -1,7 +1,9 @@
 name: Deploy to GitHub Pages
 
-# Manual dispatch only: deploys need the user's explicit approval.
+# Deploys on every push to main (user decision 2026-11-17) and can also be started by hand.
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
