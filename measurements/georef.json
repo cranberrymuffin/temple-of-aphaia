@@ -1,0 +1,103 @@
+{
+  "crs": {
+    "planar": "UTM zone 34N (EPSG:32634)",
+    "geographic": "WGS84 (EPSG:4326)",
+    "vertical": "EGM2008 (Copernicus DEM)"
+  },
+  "origin": {
+    "utmE": 723166.108,
+    "utmN": 4181578.51,
+    "lon": 23.5331956,
+    "lat": 37.7543193,
+    "elevation": 178.14
+  },
+  "axisBearing": {
+    "grid": 67.548,
+    "true": 69.099,
+    "meaning": "bearing of the frame +x axis (toward the east front), degrees clockwise from north"
+  },
+  "frameToUtm": {
+    "E": "utmE + x*ex[0] + z*ez[0]",
+    "N": "utmN + x*ex[1] + z*ez[1]",
+    "ex": [
+      0.924197013,
+      0.381916066
+    ],
+    "ez": [
+      0.381916066,
+      -0.924197013
+    ]
+  },
+  "source": {
+    "outline": "OpenStreetMap way 613801136 (building=temple, ruins=yes, wikidata Q596988) via the Overpass API; \u00a9 OpenStreetMap contributors, ODbL",
+    "outlineSize": {
+      "length": 30.33,
+      "width": 14.49,
+      "note": "close to the lowest step (30.5 x 15.5 m), so its centroid is taken as the stylobate centre"
+    },
+    "stylobateElevation": "derived: Copernicus GLO-30 (bicubic) at the OSM temple centroid (179.14 m) minus 1.0 m; no primary absolute level found in Furtwaengler 1906 text or the research briefs (Wikipedia: hill about 160 m, secondary)",
+    "crossCheck": "expected about 37.754 N, 23.533 E and an east-facing front: met. The OSM archaeological-site polygon (way 273253076) has its long edge at grid bearing 66.5 deg, agreeing with the temple outline. The 1911 sanctuary plan's north arrow is schematic: it implies a near due-east axis (about 20 deg off), so the plan was registered to the temple only and its arrow is not used."
+  },
+  "uncertainty": {
+    "originM": 3.0,
+    "bearingDeg": 2.0,
+    "stylobateElevationM": 3.0,
+    "note": "OSM outlines are traced from imagery (metres); DSM at 30 m posting with tree/ruin bias (metres)"
+  },
+  "demAtCentroid": 179.14,
+  "landscapeWindow": {
+    "sizeM": 6000.0,
+    "heightRange": [
+      -182.89,
+      135.45
+    ],
+    "absoluteRange": [
+      -4.75,
+      313.6
+    ],
+    "seaFraction": 0.332
+  },
+  "hilltopWindow": {
+    "sizeM": 300.0,
+    "heightRange": [
+      -68.82,
+      1.53
+    ]
+  },
+  "terraceVsDem": {
+    "terraceY": -0.78,
+    "byWall": {
+      "terrace_wall_n": {
+        "mean": -1.03,
+        "min": -2.72,
+        "max": 0.49
+      },
+      "terrace_wall_w": {
+        "mean": -0.77,
+        "min": -2.8,
+        "max": -0.04
+      },
+      "terrace_wall_s": {
+        "mean": 0.21,
+        "min": -1.31,
+        "max": 1.02
+      },
+      "terrace_wall_s_east": {
+        "mean": 0.8,
+        "min": 0.56,
+        "max": 0.97
+      },
+      "terrace_wall_e": {
+        "mean": -0.31,
+        "min": -1.94,
+        "max": 1.08
+      }
+    },
+    "note": "DEM minus the ancient terrace level (foot of the lowest step) along the 1911-plan wall centre lines; positive = DEM above the terrace"
+  },
+  "files": {
+    "landscape": 102371,
+    "hilltop": 31820
+  },
+  "attribution": "produced using Copernicus WorldDEM-30 \u00a9 DLR e.V. 2010-2014 and \u00a9 Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved"
+}

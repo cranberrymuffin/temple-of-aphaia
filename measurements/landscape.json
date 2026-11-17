@@ -1,0 +1,25 @@
+{
+  "frame": "temple frame: origin stylobate centre, x toward the east front (temple axis), z temple south, y up; see georef.json",
+  "datum": "y = 0 at the stylobate top; heights are EGM2008 (about MSL) minus the stylobate elevation",
+  "stylobateElevation": 178.14,
+  "seaLevelY": -178.14,
+  "source": "Copernicus DEM GLO-30 (COP-DEM-GLO-30-F), tile Copernicus_DSM_COG_10_N37_00_E023_00_DEM, a DSM (vegetation and buildings included)",
+  "licence": "https://documentation.dataspace.copernicus.eu/APIs/SentinelHub/Data/DEM/resources/license/License-COPDEM-30.pdf",
+  "attribution": "produced using Copernicus WorldDEM-30 \u00a9 DLR e.V. 2010-2014 and \u00a9 Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
+  "liability": "The organisations in charge of the Copernicus programme by law or by delegation do not incur any liability for any use of the Copernicus WorldDEM-30",
+  "resampling": "bicubic (scipy map_coordinates order 3) at cell centres via frame -> UTM 34N -> WGS84",
+  "encoding": "uint16 grey, z = zMin + v/65535*(zMax-zMin); row i at z = z0 + (i+0.5)*cell (row 0 = temple north), column j at x = x0 + (j+0.5)*cell (column 0 = temple west)",
+  "png": "landscape.png",
+  "origin": {
+    "x0": -3000.0,
+    "z0": -3000.0
+  },
+  "cell": 20.0,
+  "dims": {
+    "nx": 300,
+    "nz": 300
+  },
+  "zMin": -182.889667548254,
+  "zMax": 135.4549839070611,
+  "quantisation": 0.004857628007252843
+}
