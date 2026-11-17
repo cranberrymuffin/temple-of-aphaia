@@ -1,0 +1,112 @@
+{
+  "imagery": {
+    "source": "Hellenic Cadastre (Ktimatologio) orthophoto basemap, open WMS http://gis.ktimanet.gr/wms/wmsopen/wmsserver.aspx layer BASEMAP, EPSG:2100",
+    "date": "not stated by the service",
+    "nativeResolutionM": 0.5,
+    "nativeResolutionNote": "estimated from the block size of a 5 cm/px request (about 10 px blocks); requested at 0.1 m/px",
+    "terms": "http://gis.ktimanet.gr/cachenascommon/oroi.pdf",
+    "termsSummary": "No distribution policy announced yet; any commercial use or exploitation of the viewing service is expressly forbidden; otherwise ktimatologio.gr terms apply. A watermark ('Ktimatologio') is burnt into the tiles. Imagery and overlay kept in refs/ortho/ (gitignored), not redistributed.",
+    "bboxEgsa87": [
+      458654.6,
+      4178296.3,
+      458804.6,
+      4178446.3
+    ],
+    "pixelM": [
+      0.1,
+      0.1
+    ]
+  },
+  "temple": {
+    "axisBearingModelEgsaGrid": 69.385,
+    "northColonnadeLine": {
+      "angleVsModelDeg": 0.42,
+      "pointFrame": [
+        -8.63,
+        -7.94
+      ],
+      "nPixels": 1175,
+      "rmsM": 0.33,
+      "note": "dark band of the north colonnade bases (ground level); + = the photo axis is turned toward temple north (counter-clockwise) relative to the model"
+    },
+    "westEdgeX": -14.75,
+    "westEdgeModelX": -15.25,
+    "southEdgeZ": 8.79,
+    "southEdgeModelZ": 7.75,
+    "edgeNote": "half-max of the non-gravel fraction (grey < 240); north edge hidden by the colonnade shadows, east edge merged with the ramp foundations, so only west and south are usable; the south edge may be pushed out by fallen drums"
+  },
+  "terraceWalls": {
+    "terrace south (west of propylon)": {
+      "offsetFromInnerFaceM": -0.36,
+      "angleDeg": 4.84,
+      "rmsM": 0.43,
+      "stations": 52,
+      "of": 74
+    },
+    "terrace west": {
+      "offsetFromInnerFaceM": -0.77,
+      "angleDeg": 1.28,
+      "rmsM": 0.37,
+      "stations": 29,
+      "of": 35
+    },
+    "terrace north": {
+      "offsetFromInnerFaceM": -0.25,
+      "angleDeg": 1.2,
+      "rmsM": 0.15,
+      "stations": 80,
+      "of": 83
+    },
+    "east peribolos (oblique)": {
+      "offsetFromInnerFaceM": -0.57,
+      "angleDeg": 1.01,
+      "rmsM": 1.71,
+      "stations": 64,
+      "of": 65
+    }
+  },
+  "terraceWallsNote": "photo edge = strongest bright-gravel -> dark step across each model wall; offset is measured from the model's inner face at mid-length (+ = photo edge further out), angle = photo edge vs model wall (+ = turned counter-clockwise seen from above)",
+  "features": [],
+  "notIdentified": {
+    "altar": "foundation not separable from the ruin field east of the ramp at 0.5 m GSD (several candidate gray bands, none clearly 13 x 2.6 m)",
+    "altar-court": "no clear outline",
+    "paved-way": "no clear edges (gravel and blocks)",
+    "propylon": "south of the terrace edge the ruins are dense; a wall angle near the model's south-wall turn is visible but cannot be matched to the propylon walls with confidence",
+    "terrace-wall-se": "the east part of the south wall: a wall angle near frame (36-41, 17-21) is visible but ambiguous",
+    "se-rooms-ii-iv": "walls visible with the model's orientation (NW-SE), overlap within about 2-3 m, but individual rooms are not resolvable",
+    "se-bath": "not resolvable",
+    "cistern": "not visible (small shaft, ruins and trees around)",
+    "settling-basin": "not visible",
+    "water-channel": "not visible",
+    "votive-column": "not visible",
+    "base-north": "not separable",
+    "base-south": "not separable",
+    "lower-south-wall": "under tree canopy",
+    "suedbau-north-wall": "under tree canopy / outside the clear area",
+    "fence-wall": "not visible"
+  },
+  "summary": {
+    "templeAlongAxisOffsetM": 0.5,
+    "templeAlongAxisNote": "photo west krepis edge minus the model's (+ = photo further east); the east edge is merged with the ramp",
+    "templeAcrossAxisOffsetM": 1.04,
+    "templeAcrossAxisNote": "photo south krepis edge minus the model's (+ = further south); probably widened by fallen drums; the north band sits 1.6 m outside the model column row, so the across-axis centre agrees within about 1 m",
+    "rotationEstimatesDeg": [
+      {
+        "from": "temple north colonnade",
+        "deg": 0.42
+      },
+      {
+        "from": "terrace west",
+        "deg": 1.28
+      },
+      {
+        "from": "terrace north",
+        "deg": 1.2
+      }
+    ],
+    "rotationWeightedMeanDeg": 1.09,
+    "rotationNote": "+ = photo turned counter-clockwise from above relative to the model, i.e. the true axis bearing would be this much smaller; the terrace walls come from the 1911 plan registered to the temple, so they test plan + georef together",
+    "bearingImpliedTrueDeg": 68.01,
+    "bearingFromTempleOnlyTrueDeg": 68.68
+  }
+}

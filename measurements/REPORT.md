@@ -107,3 +107,30 @@ The synthetic scan has 25 fluted columns, 7 missing, 3 restored architraves, an 
   - Heights: −2.6 to +0.4 m. The ground beside the crepidoma is about −0.8 to −1.2 m and falls to the south.
   - Coverage: about 2.8% of cells measured, 7.4% the refilled temple footprint, 10.3% filled holes; 79.5% has no data and is left for the parametric terrain.
   - k is not applied (k = 1.007, counted as metric).
+
+## Orthophoto check (Hellenic Cadastre)
+
+- **Imagery.**
+  - Source: Ktimatologio open WMS, `http://gis.ktimanet.gr/wms/wmsopen/wmsserver.aspx`, layer BASEMAP, EPSG:2100.
+  - Native resolution: about 0.5 m, estimated from the pixel blocks in a 5 cm/px request.
+  - Capture date: not stated by the service.
+  - Terms (`gis.ktimanet.gr/cachenascommon/oroi.pdf`): no distribution policy has been announced, and any commercial use or exploitation of the viewing service is expressly forbidden. The tiles also carry a watermark. The image and its overlay therefore stay in `refs/ortho/` (gitignored); only the numbers in `ortho-check.json` are committed.
+- **Temple.**
+  - Rotation: the dark band along the north colonnade bases runs +0.42 deg counter-clockwise of the model axis (rms 0.33 m), which implies a true bearing of 68.7 deg against our 69.1 deg.
+  - Along the axis: the west krepis edge is 0.5 m east of the model's.
+  - Across the axis: the south edge sits 1.0 m outside, probably widened by fallen drums, while the north band sits 1.6 m outside the model column row, so the across-axis centre agrees to within about 1 m. The north side is otherwise hidden by colonnade shadows, and the east end merges with the ramp foundations.
+  - Verdict: position and bearing agree within the recorded georef uncertainty (3 m, 2 deg).
+- **Terrace (white gravel edge against the model's inner wall faces):**
+
+  | wall | offset | angle | rms |
+  |---|---|---|---|
+  | north | -0.25 m | +1.2 deg | 0.15 m |
+  | west | -0.77 m | +1.3 deg | 0.37 m |
+  | south | -0.36 m | (+4.8 deg) | 0.43 m |
+  | east peribolos | (-0.57 m) | | 1.7 m |
+
+  The south angle and the east figures are less reliable: the south edge is ragged, and the east line is noisy.
+  - North and west lie within the plan's +-0.85 m.
+  - The consistent +1.2 deg on north and west, together with the temple's +0.4 deg, gives a weighted mean of +1.1 deg. This suggests the plan + georef sits slightly clockwise of reality, still inside the 2 deg tolerance.
+- **Not identifiable at this resolution:** altar, court, way, propylon, SE rooms (they overlap within about 2-3 m but individual rooms can't be resolved), bath, cistern, channel, sphinx column, bases, lower south wall, Suedbau. Reasons are listed per feature in `ortho-check.json`.
+- **No correction is required.** An optional change: set the georef bearing to 68.7 deg true (temple-only) or 68.0 deg (with the terrace), and rotate sanctuary.json with it.
