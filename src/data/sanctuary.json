@@ -1,0 +1,3206 @@
+{
+ "meta": {
+  "status": "provisional",
+  "note": "Built by tools/sanctuary/build_sanctuary.py from the research brief (Furtwängler 1906, text) and measurements/sanctuary-plan.json (Wikimedia plan, digitised). Verified text numbers win on numbers; the plan places and shapes; CONJECTURAL entries are labelled and provisional.",
+  "displayYear": -490,
+  "displayLabel": "c. 490 BC, Late Archaic sanctuary as completed"
+ },
+ "temple": {
+  "foundationDepth": {
+   "value": 3.0,
+   "unit": "m",
+   "source": "published",
+   "ref": "furtwangler-1906",
+   "verified": false,
+   "provisional": true,
+   "note": "DERIVED: west end of the terrace built up about 2.5-3 m (7 foundation courses, pp. 21-23); the skirt hides any gap to the terrain"
+  },
+  "rampWidth": {
+   "value": 3.03,
+   "unit": "m",
+   "source": "plan",
+   "ref": "wikimedia-plan-aphaia-sanctuary",
+   "verified": true,
+   "note": "plan measurement, +/-0.68 m; the text gives no width"
+  },
+  "note": "Ramp: slope 1:6 and 4.80 m long to the second step (pp. 25, 69) - with the provisional step rise the resolver's ramp is shorter (see dimensions.json)."
+ },
+ "terrain": {
+  "confidence": "conjectural",
+  "sourceIds": [
+   "furtwangler-1906",
+   "wikimedia-plan-aphaia-sanctuary"
+  ],
+  "note": "Natural ground from the text (p. 21: steep fall east and north, gentler west and south; NE knoll at terrace height with a rock face to the cave; Südbau about 9 m below the stylobate, pp. 102-103); terrace surface at the base of the lowest step (pp. 69, 77). The scan covers only the temple (today's excavated ground) and is not used.",
+  "terraces": {
+   "temple-terrace": {
+    "polygon": [
+     [
+      -31.753,
+      -20.57
+     ],
+     [
+      15.275,
+      -20.531
+     ],
+     [
+      29.75,
+      -20.57
+     ],
+     [
+      33.3,
+      -18.63
+     ],
+     [
+      38.864,
+      -15.73
+     ],
+     [
+      49.271,
+      20.983
+     ],
+     [
+      36.436,
+      20.583
+     ],
+     [
+      -31.753,
+      20.583
+     ]
+    ],
+    "level": {
+     "value": -0.78,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED: base of the lowest krepis step = -(crepidomaStepCount x crepidomaStepRise); surface 'in der Höhe der Unterstufe' (p. 69)"
+    },
+    "note": "Edges on the terrace walls' centre lines (plan)."
+   },
+   "ne-knoll": {
+    "polygon": [
+     [
+      15.275,
+      -20.531
+     ],
+     [
+      29.75,
+      -20.57
+     ],
+     [
+      33.3,
+      -18.63
+     ],
+     [
+      38.864,
+      -15.73
+     ],
+     [
+      40.8,
+      -20.5
+     ],
+     [
+      34.0,
+      -25.5
+     ],
+     [
+      18.0,
+      -24.5
+     ]
+    ],
+    "level": {
+     "value": -0.78,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED: rock rises to terrace height at the NE corner (p. 85)"
+    },
+    "falloff": {
+     "edgeDrop": {
+      "value": 3.2,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: vertical rock face down to the cave entrance (cave 1.5-1.8 m high, p. 88)"
+     },
+     "slope": {
+      "value": 0.8,
+      "unit": "ratio",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: steep east and north"
+     }
+    },
+    "note": "Outline beyond the plan's dashed (no-wall) north edge is conjectural."
+   },
+   "outer-terrace": {
+    "polygon": [
+     [
+      15.0,
+      20.583
+     ],
+     [
+      36.436,
+      20.583
+     ],
+     [
+      36.6,
+      30.0
+     ],
+     [
+      31.3,
+      43.0
+     ],
+     [
+      11.4,
+      41.6
+     ],
+     [
+      11.67,
+      39.71
+     ],
+     [
+      12.85,
+      36.84
+     ],
+     [
+      14.47,
+      34.65
+     ],
+     [
+      15.65,
+      33.31
+     ],
+     [
+      15.07,
+      23.25
+     ]
+    ],
+    "level": {
+     "value": -1.68,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: plaza before the gate; three steps of about 0.30 m up to the propylon floor at terrace height"
+    },
+    "falloff": {
+     "edgeDrop": {
+      "value": 2.0,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: lower south wall: three courses on rock, 1.20 m fill (p. 101)"
+     },
+     "slope": {
+      "value": 0.35,
+      "unit": "ratio",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: rock slope to the south"
+     }
+    },
+    "note": "Rock 'rises evenly' toward the propylon (p. 100); modelled flat."
+   },
+   "se-houses-terrace": {
+    "polygon": [
+     [
+      36.436,
+      20.583
+     ],
+     [
+      49.271,
+      20.983
+     ],
+     [
+      51.165,
+      27.666
+     ],
+     [
+      54.4,
+      41.5
+     ],
+     [
+      55.4,
+      47.2
+     ],
+     [
+      42.9,
+      47.2
+     ],
+     [
+      31.3,
+      43.0
+     ],
+     [
+      36.6,
+      30.0
+     ]
+    ],
+    "level": {
+     "value": -2.33,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: rock ridge falling SE under the houses (p. 91); one level for the group"
+    },
+    "falloff": {
+     "edgeDrop": {
+      "value": 2.5,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: east wall's outer corner 'schon ganz tief' (p. 91)"
+     },
+     "slope": {
+      "value": 0.7,
+      "unit": "ratio",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: steep fall to the east and south-east (p. 98)"
+     }
+    }
+   },
+   "suedbau-terrace": {
+    "polygon": [
+     [
+      -5.0,
+      53.583
+     ],
+     [
+      20.0,
+      53.583
+     ],
+     [
+      20.0,
+      59.583
+     ],
+     [
+      -5.0,
+      59.583
+     ]
+    ],
+    "level": {
+     "value": -9.0,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "page": "102",
+     "url": "https://archive.org/details/aeginadasheiligtunse",
+     "verified": true,
+     "note": "about 9 m below the stylobat"
+    },
+    "falloff": {
+     "edgeDrop": {
+      "value": 1.0,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: south edge of the Südbau terrace"
+     },
+     "slope": {
+      "value": 0.3,
+      "unit": "ratio",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: south slope"
+     }
+    },
+    "note": "Off the plan sheet; x position conjectural; width conjectural."
+   }
+  },
+  "falloff": {
+   "edgeDrop": {
+    "n": {
+     "value": 2.9,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED: seven exposed courses of 0.41 m on the north wall (p. 88)"
+    },
+    "e": {
+     "value": 2.5,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED: made ground about 1.90 m deep behind the east wall at the altar (p. 72) plus the steep east slope"
+    },
+    "s": {
+     "value": 2.0,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED: south wall outside ground rising toward the propylon (pp. 90-91, 100)"
+    },
+    "w": {
+     "value": 2.75,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED: west end built up about 2.5-3 m over the rock (7 foundation courses, pp. 21-23)"
+    }
+   },
+   "slope": {
+    "n": {
+     "value": 0.6,
+     "unit": "ratio",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: 'fällt steil' to the north (p. 21)"
+    },
+    "e": {
+     "value": 0.7,
+     "unit": "ratio",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: steep east slope ('steile Osthalde')"
+    },
+    "s": {
+     "value": 0.28,
+     "unit": "ratio",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: about 15 degrees, set so the ground is about 1.8 m above the Südbau at its north wall"
+    },
+    "w": {
+     "value": 0.25,
+     "unit": "ratio",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: 'fällt gleichmässig' to the west (p. 21)"
+    }
+   },
+   "radius": {
+    "value": 60,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: extent of the modelled hilltop"
+   }
+  }
+ },
+ "features": {
+  "terrace-wall-nws": {
+   "kind": "wall",
+   "name": "Great terrace wall (south, west, north)",
+   "role": "terrace",
+   "polyline": [
+    [
+     19.0,
+     20.583
+    ],
+    [
+     -31.753,
+     20.583
+    ],
+    [
+     -31.753,
+     -20.57
+    ],
+    [
+     15.275,
+     -20.531
+    ]
+   ],
+   "thickness": {
+    "value": 1.149,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-0.85 m; one thickness for the run; text: north 1.43 m at the top, south 0.83 m upper wall (pp. 85-91)"
+   },
+   "height": {
+    "value": 0,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED: top flush with the terrace (pp. 77, 86); no parapet known"
+   },
+   "top": "level",
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 0.858
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "attested",
+   "note": "Ends inside the propylon's west side wall; the north wall stops where the rock reaches terrace height (NE knoll, p. 85)."
+  },
+  "terrace-wall-se": {
+   "kind": "wall",
+   "name": "South terrace wall east of the propylon, orthostate wall and east peribolos (north leg)",
+   "role": "terrace",
+   "polyline": [
+    [
+     27.619999999999997,
+     20.583
+    ],
+    [
+     36.436,
+     20.583
+    ],
+    [
+     49.271,
+     20.983
+    ],
+    [
+     38.864,
+     -15.73
+    ]
+   ],
+   "thickness": {
+    "value": 0.85,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED: one thickness for the run: south upper wall 0.83 m (p. 91), east wall 0.70-1.0 m (p. 86); the orthostate wall is 0.40 m (p. 91)"
+   },
+   "height": {
+    "value": 0,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED: top flush with the terrace"
+   },
+   "top": "level",
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 1.522
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "attested",
+   "note": "Turns 9.70 m east of the propylon (p. 91) along the east wall's line; one mitred run so the corners stay clean."
+  },
+  "terrace-wall-e": {
+   "kind": "wall",
+   "name": "East peribolos wall south of the terrace (older)",
+   "role": "terrace",
+   "polyline": [
+    [
+     49.516,
+     21.849
+    ],
+    [
+     51.165,
+     27.666
+    ],
+    [
+     55.008,
+     44.865
+    ]
+   ],
+   "thickness": {
+    "value": 0.85,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED: text gives 0.70-1.0 m (p. 86); mid value"
+   },
+   "height": {
+    "value": 0,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED: top follows the ground it retains; low parapet only conjectured (p. 86)"
+   },
+   "top": "follow",
+   "phase": {
+    "label": "Middle period, mid-6th c. (reused)",
+    "fromYear": -560,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Older than the other terrace walls; lower courses kept (p. 86)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 1.522
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "attested"
+  },
+  "lower-south-wall": {
+   "kind": "wall",
+   "name": "Lower south retaining wall of the outer terrace",
+   "role": "terrace",
+   "polyline": [
+    [
+     11.41,
+     41.6
+    ],
+    [
+     31.32,
+     43.25
+    ]
+   ],
+   "thickness": {
+    "value": 0.65,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-1.17 m"
+   },
+   "height": {
+    "value": 0,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED: top flush with the outer terrace; 1.20 m stone fill behind (p. 101)"
+   },
+   "top": "level",
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 1.167
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "attested",
+   "note": "About 20 m south of the propylon, about 15 m continuous (p. 101). Side gate (0.95 m) at its east end not modelled."
+  },
+  "fence-wall": {
+   "kind": "wall",
+   "name": "Fence wall west of the propylon",
+   "role": "fence",
+   "polyline": [
+    [
+     15.07,
+     23.25
+    ],
+    [
+     15.65,
+     33.31
+    ]
+   ],
+   "thickness": {
+    "value": 0.3,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "page": "101",
+    "url": "https://archive.org/details/aeginadasheiligtunse",
+    "verified": true
+   },
+   "height": {
+    "value": 0.7,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "page": "101",
+    "url": "https://archive.org/details/aeginadasheiligtunse",
+    "verified": true,
+    "note": "slabs about 0.7 m high"
+   },
+   "top": "follow",
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "analogy",
+    "uncertaintyM": 0.83,
+    "note": "south part dashed (reconstructed) on the plan"
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "analogy"
+  },
+  "altar": {
+   "kind": "altar",
+   "name": "Great altar",
+   "center": [
+    38.439,
+    0.115
+   ],
+   "rotation": 0,
+   "length": {
+    "value": 2.606,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-0.90 m; E-W; the text restores 10 ft = 3.27 m (p. 73), not verified"
+   },
+   "width": {
+    "value": 13.08,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "page": "72-73",
+    "url": "https://archive.org/details/aeginadasheiligtunse",
+    "verified": true,
+    "note": "foundation length N-S, 40 ft of 0.327 m"
+   },
+   "height": {
+    "value": 1.2,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: superstructure not preserved; height by analogy (p. 73)"
+   },
+   "steps": {
+    "count": {
+     "value": 3,
+     "unit": "count",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: 'eine grosse Freitreppe' (p. 73), number unknown"
+    },
+    "rise": {
+     "value": 0.3,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: step rise"
+    },
+    "tread": {
+     "value": 0.35,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: step tread"
+    },
+    "side": "w"
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 0.899,
+    "note": "plan centre; text: 22.5 m from the stylobate step (p. 69), plan gives 22.74 m"
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "attested",
+   "note": "Form and height conjectural (analogy with Agrigento, p. 73)."
+  },
+  "altar-court": {
+   "kind": "pavement",
+   "name": "Altar court",
+   "polygon": [
+    [
+     29.95,
+     -7.45
+    ],
+    [
+     36.135,
+     -7.45
+    ],
+    [
+     36.135,
+     7.45
+    ],
+    [
+     29.95,
+     7.45
+    ]
+   ],
+   "thickness": {
+    "value": 0.1,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: slabs on a 0.40 m rammed bed (p. 71)"
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 0.829,
+    "note": "width 14.90 m (+/-7.45 m, text p. 71); west edge at row 1 (plan detail lines); east edge under the altar steps"
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "attested"
+  },
+  "paved-way": {
+   "kind": "pavement",
+   "name": "Paved way to the altar court",
+   "polygon": [
+    [
+     17.5,
+     -1.5
+    ],
+    [
+     30.0,
+     -1.5
+    ],
+    [
+     30.0,
+     1.5
+    ],
+    [
+     17.5,
+     1.5
+    ]
+   ],
+   "thickness": {
+    "value": 0.08,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: two slab layers on levelled rock (p. 69); thinner than the court so their tops never coincide"
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 0.683,
+    "note": "ten slab rows (p. 69); width from the plan (3.03 m), 3 cm narrower than the ramp so their sides never coincide; starts under the ramp foot, ends inside the court slab"
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "attested"
+  },
+  "plinth-n": {
+   "kind": "base",
+   "name": "Plinth beside the head of the way (north)",
+   "center": [
+    27.445,
+    -3.917
+   ],
+   "rotation": 0,
+   "length": {
+    "value": 0.706,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-0.66 m"
+   },
+   "width": {
+    "value": 0.777,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-0.66 m"
+   },
+   "height": {
+    "value": 0.6,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: only 4 cm sockets survive (p. 71)"
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 0.661
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "analogy"
+  },
+  "plinth-s": {
+   "kind": "base",
+   "name": "Plinth beside the head of the way (south)",
+   "center": [
+    27.445,
+    3.917
+   ],
+   "rotation": 0,
+   "length": {
+    "value": 0.706,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-0.66 m"
+   },
+   "width": {
+    "value": 0.777,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-0.66 m"
+   },
+   "height": {
+    "value": 0.6,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: only 4 cm sockets survive (p. 71)"
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "analogy",
+    "uncertaintyM": 0.661,
+    "note": "mirrored: the north side is symmetric (p. 71)"
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "analogy"
+  },
+  "base-north": {
+   "kind": "base",
+   "name": "North base beside the altar court",
+   "center": [
+    33.41,
+    -12.7
+   ],
+   "rotation": 0,
+   "length": {
+    "value": 6.25,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "page": "74",
+    "url": "https://archive.org/details/aeginadasheiligtunse",
+    "verified": true,
+    "note": "superstructure; foundation 6.30 m"
+   },
+   "width": {
+    "value": 0.75,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "page": "74",
+    "url": "https://archive.org/details/aeginadasheiligtunse",
+    "verified": true
+   },
+   "height": {
+    "value": 1.0,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: superstructure height unknown"
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 0.871,
+    "note": "12.70 m north of the axis (p. 74); x from the plan"
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "attested"
+  },
+  "base-south": {
+   "kind": "base",
+   "name": "South base by the propylon",
+   "center": [
+    30.012,
+    14.082
+   ],
+   "rotation": 0,
+   "length": {
+    "value": 2.22,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "page": "74-75",
+    "url": "https://archive.org/details/aeginadasheiligtunse",
+    "verified": true,
+    "note": "plinth length"
+   },
+   "width": {
+    "value": 1.7,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED: plinth width 'about 1.70 m, not recognisable' (pp. 74-75)"
+   },
+   "height": {
+    "value": 0.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: unknown"
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 0.793
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "attested"
+  },
+  "cistern": {
+   "kind": "cistern",
+   "name": "Cistern (upper shaft)",
+   "shape": "circle",
+   "center": [
+    29.838,
+    -15.28
+   ],
+   "rotation": 0,
+   "diameter": {
+    "value": 1.2,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "page": "88",
+    "url": "https://archive.org/details/aeginadasheiligtunse",
+    "verified": true,
+    "note": "upper shaft inner diameter 1.15-1.22 m"
+   },
+   "rimWidth": {
+    "value": 0.18,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-0.78 m; rim = plan outer radius minus the shaft radius"
+   },
+   "rimHeight": {
+    "value": 0.1,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: rim gone (p. 87)"
+   },
+   "depth": {
+    "value": 4.0,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: depth not stated (Taf. 12,2 not seen); the older 2.5 m shaft below is not modelled"
+   },
+   "phase": {
+    "label": "Older shaft, reworked in the new campaign",
+    "fromYear": -650,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "lower shaft older; upper shaft and cleft reworked (p. 88); open and in use c. 490"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 0.779
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "attested"
+  },
+  "settling-basin": {
+   "kind": "cistern",
+   "name": "Settling basin (pear-shaped)",
+   "shape": "pear",
+   "center": [
+    27.231,
+    -14.382
+   ],
+   "rotation": 13.392,
+   "length": {
+    "value": 3.6,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-0.75 m; shortened so its rim stops short of the cistern rim"
+   },
+   "diameter": {
+    "value": 1.6,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-0.75 m"
+   },
+   "smallDiameter": {
+    "value": 0.3,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: outflow end"
+   },
+   "depth": {
+    "value": 1.0,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: not stated"
+   },
+   "rimHeight": {
+    "value": 0.08,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: not stated"
+   },
+   "rimWidth": {
+    "value": 0.12,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: mortared rim"
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 0.75,
+    "note": "'birnenförmiges Becken' (pp. 87-88)"
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "attested"
+  },
+  "water-channel": {
+   "kind": "channel",
+   "name": "Water channel along the north steps",
+   "polyline": [
+    [
+     -15.65,
+     -8.05
+    ],
+    [
+     8.0,
+     -8.05
+    ],
+    [
+     25.05,
+     -13.75
+    ]
+   ],
+   "width": {
+    "value": 0.35,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-0.68 m"
+   },
+   "depth": {
+    "value": 0.3,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: shallow hollows in large stones (p. 87)"
+   },
+   "feeds": "settling-basin",
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 0.678,
+    "note": "from the NW corner at the foot of the steps, turning near the third column from the east toward the basin (p. 87)"
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "attested"
+  },
+  "votive-column": {
+   "kind": "column",
+   "name": "Sphinx votive column",
+   "center": [
+    28.15,
+    -16.0
+   ],
+   "baseDiameter": {
+    "value": 1.45,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "page": "156-157",
+    "url": "https://archive.org/details/aeginadasheiligtunse",
+    "verified": true,
+    "note": "scribed circle on the base slabs"
+   },
+   "baseHeight": {
+    "value": 0.4,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: base slab height"
+   },
+   "lowerDiameter": {
+    "value": 1.19,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "page": "156-157",
+    "url": "https://archive.org/details/aeginadasheiligtunse",
+    "verified": true,
+    "note": "lowest drum"
+   },
+   "upperDiameter": {
+    "value": 0.91,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "page": "156-157",
+    "url": "https://archive.org/details/aeginadasheiligtunse",
+    "verified": true,
+    "note": "top drum 0.90-0.92 m"
+   },
+   "height": {
+    "value": 11.9,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED: about 10 lower diameters (p. 157); Wikipedia's 14 m is unverified"
+   },
+   "flutes": {
+    "value": 36,
+    "unit": "count",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "page": "156-157",
+    "url": "https://archive.org/details/aeginadasheiligtunse",
+    "verified": true
+   },
+   "capital": {
+    "kind": "ionic",
+    "width": {
+     "value": 1.9,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: volute capital after Cockerell/Haller drawings"
+    },
+    "height": {
+     "value": 0.6,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: capital height"
+    }
+   },
+   "crowning": {
+    "kind": "sphinx",
+    "height": {
+     "value": 1.6,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: sphinx restored by analogy with the Naxian column at Delphi"
+    }
+   },
+   "phase": {
+    "label": "6th c. dedication",
+    "fromYear": -560,
+    "toYear": null,
+    "confidence": "conjectural",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "spared at the rebuilding is 'nicht unmöglich' (p. 157)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "analogy",
+    "uncertaintyM": 0.765,
+    "note": "moved 0.3 m south of the plan's arc so its base clears the basin (the text says the channel and basin cut its base)"
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "conjectural",
+   "uncertain": "6th-century column; whether it still stood c. 490 BC is only 'not impossible' (Furtwängler p. 157). Height and sphinx by analogy."
+  },
+  "propylon": {
+   "kind": "building",
+   "role": "propylon",
+   "name": "Propylon (gate building)",
+   "center": [
+    23.31,
+    18.95
+   ],
+   "rotation": 0,
+   "length": {
+    "value": 9.32,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-0.83 m; E-W over the side walls"
+   },
+   "width": {
+    "value": 12.48,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-0.83 m; N-S, front to back"
+   },
+   "wallThickness": {
+    "value": 0.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "page": "76",
+    "url": "https://archive.org/details/aeginadasheiligtunse",
+    "verified": true,
+    "note": "side walls 0.80 m below, 0.785 m above the ledge"
+   },
+   "wallHeight": {
+    "value": 4.4,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: columns assumed 6 and 5.5 lower diameters tall (p. 78) plus a timber architrave"
+   },
+   "doors": [],
+   "openSides": [
+    "n",
+    "s"
+   ],
+   "crossWalls": [
+    {
+     "axis": "x",
+     "offset": 1.87,
+     "from": -3.86,
+     "to": 3.86,
+     "thickness": {
+      "value": 0.6,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "page": "76",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "note": "door wall"
+     },
+     "doors": [
+      {
+       "offset": 0.115,
+       "width": {
+        "value": 3.01,
+        "unit": "m",
+        "source": "published",
+        "ref": "furtwangler-1906",
+        "page": "79",
+        "url": "https://archive.org/details/aeginadasheiligtunse",
+        "verified": true,
+        "note": "opening without the (reconstructed) timber frame; 2.25 m inside it"
+       },
+       "height": {
+        "value": 3.6,
+        "unit": "m",
+        "source": "published",
+        "ref": "furtwangler-1906",
+        "verified": false,
+        "provisional": true,
+        "note": "CONJECTURAL: door height not preserved"
+       }
+      }
+     ]
+    }
+   ],
+   "columns": {
+    "shape": "octagonal",
+    "diameter": {
+     "value": 0.674,
+     "unit": "m",
+     "source": "plan",
+     "ref": "wikimedia-plan-aphaia-sanctuary",
+     "verified": true,
+     "note": "plan measurement, +/-0.83 m; text: octagonal, lower diameters only in Abb. 26-27 (not read)"
+    },
+    "positions": [
+     [
+      1.67,
+      5.224
+     ],
+     [
+      1.75,
+      -0.482
+     ],
+     [
+      -1.424,
+      5.241
+     ],
+     [
+      -1.559,
+      -0.461
+     ]
+    ]
+   },
+   "architraves": [
+    {
+     "axis": "x",
+     "offset": -0.45,
+     "from": -3.86,
+     "to": 3.86,
+     "depth": {
+      "value": 0.4,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: timber architrave (p. 79)"
+     },
+     "height": {
+      "value": 0.35,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: timber architrave"
+     }
+    },
+    {
+     "axis": "x",
+     "offset": 5.25,
+     "from": -3.86,
+     "to": 3.86,
+     "depth": {
+      "value": 0.4,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: timber architrave (p. 79)"
+     },
+     "height": {
+      "value": 0.35,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: timber architrave"
+     }
+    }
+   ],
+   "roof": {
+    "ridge": "x",
+    "ridgeOffset": 1.87,
+    "ridgeHeight": {
+     "value": 1.6,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: pitch unknown"
+    },
+    "overhang": {
+     "value": 0.4,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: eaves"
+    },
+    "tiled": true,
+    "confidence": "analogy",
+    "note": "Ridge E-W over the door wall, eaves N and S, gables on the E and W side walls (pp. 79, 82-83)."
+   },
+   "steps": {
+    "count": {
+     "value": 3,
+     "unit": "count",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: a free flight on the outer (south) side; 'third step on a grid wall' (pp. 77-78)"
+    },
+    "rise": {
+     "value": 0.3,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: step rise"
+    },
+    "tread": {
+     "value": 0.35,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: step tread"
+    },
+    "side": "s"
+   },
+   "baseLevel": -0.78,
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 0.832
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "analogy",
+   "complex": "south-gate",
+   "note": "Floor at terrace height (orthostate cover slabs at terrace level, p. 77). Stair on the south side per the text; the plan's north-side step lines are recorded as a conflict (sources.json choices.propylon-stairs-south)."
+  },
+  "se-rooms-ii-iv": {
+   "kind": "building",
+   "role": "house",
+   "name": "SE houses: rooms II-IV with the porch (Vorhalle)",
+   "center": [
+    47.506,
+    37.566
+   ],
+   "rotation": 13.58,
+   "length": {
+    "value": 11.503,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-1.50 m; rooms plus walls plus the 4.30 m porch (p. 99)"
+   },
+   "width": {
+    "value": 17.164,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-1.50 m; three rooms plus walls"
+   },
+   "wallThickness": {
+    "value": 0.6,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: footing courses with orthostates (p. 93)"
+   },
+   "wallHeight": {
+    "value": 3.2,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: not preserved above the orthostates"
+   },
+   "doors": [],
+   "openSides": [
+    "w"
+   ],
+   "crossWalls": [
+    {
+     "axis": "z",
+     "offset": -1.152,
+     "from": -7.982,
+     "to": 7.982,
+     "thickness": {
+      "value": 0.6,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: room fronts"
+     },
+     "doors": [
+      {
+       "offset": -5.539,
+       "width": {
+        "value": 1.36,
+        "unit": "m",
+        "source": "published",
+        "ref": "furtwangler-1906",
+        "page": "92-100",
+        "url": "https://archive.org/details/aeginadasheiligtunse",
+        "verified": true,
+        "note": "door of room II (later narrowed to 1.22 m)"
+       },
+       "height": {
+        "value": 2.2,
+        "unit": "m",
+        "source": "published",
+        "ref": "furtwangler-1906",
+        "verified": false,
+        "provisional": true,
+        "note": "CONJECTURAL: door height"
+       }
+      },
+      {
+       "offset": 0.065,
+       "width": {
+        "value": 1.2,
+        "unit": "m",
+        "source": "published",
+        "ref": "furtwangler-1906",
+        "verified": false,
+        "provisional": true,
+        "note": "CONJECTURAL: doors without bolt cuttings"
+       },
+       "height": {
+        "value": 2.2,
+        "unit": "m",
+        "source": "published",
+        "ref": "furtwangler-1906",
+        "verified": false,
+        "provisional": true,
+        "note": "CONJECTURAL: door height"
+       }
+      },
+      {
+       "offset": 5.54,
+       "width": {
+        "value": 1.2,
+        "unit": "m",
+        "source": "published",
+        "ref": "furtwangler-1906",
+        "verified": false,
+        "provisional": true,
+        "note": "CONJECTURAL: doors without bolt cuttings"
+       },
+       "height": {
+        "value": 2.2,
+        "unit": "m",
+        "source": "published",
+        "ref": "furtwangler-1906",
+        "verified": false,
+        "provisional": true,
+        "note": "CONJECTURAL: door height"
+       }
+      }
+     ]
+    },
+    {
+     "axis": "x",
+     "offset": -2.737,
+     "from": -0.852,
+     "to": 5.152,
+     "thickness": {
+      "value": 0.75,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: plan wall band between rooms"
+     },
+     "doors": []
+    },
+    {
+     "axis": "x",
+     "offset": 2.802,
+     "from": -0.852,
+     "to": 5.152,
+     "thickness": {
+      "value": 0.75,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: plan wall band between rooms"
+     },
+     "doors": []
+    }
+   ],
+   "columns": {
+    "shape": "octagonal",
+    "diameter": {
+     "value": 0.3,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: small octagonal capital, shaft top 0.255 m (p. 99)"
+    },
+    "positions": [
+     [
+      -5.352,
+      -5.987
+     ],
+     [
+      -5.352,
+      -1.996
+     ],
+     [
+      -5.352,
+      1.996
+     ],
+     [
+      -5.352,
+      5.987
+     ]
+    ]
+   },
+   "architraves": [
+    {
+     "axis": "z",
+     "offset": -5.352,
+     "from": -7.982,
+     "to": 7.982,
+     "depth": {
+      "value": 0.3,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: timber beam (p. 99)"
+     },
+     "height": {
+      "value": 0.3,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: timber beam"
+     }
+    }
+   ],
+   "roof": {
+    "ridge": "z",
+    "ridgeHeight": {
+     "value": 1.5,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: pitch unknown"
+    },
+    "overhang": {
+     "value": 0.35,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: eaves"
+    },
+    "tiled": true,
+    "confidence": "conjectural",
+    "note": "Tiled (many tile fragments, p. 99); form generic."
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 1.503,
+    "note": "rooms II-IV = three equal rooms of the plan's wall network"
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "analogy",
+   "complex": "se-houses",
+   "note": "Room II early in the new campaign; III and IV about the temple's completion (p. 99)."
+  },
+  "se-room-i7": {
+   "kind": "building",
+   "role": "house",
+   "name": "SE houses: narrow room I 7 along the east wall",
+   "center": [
+    48.445,
+    24.425
+   ],
+   "rotation": -74.981,
+   "length": {
+    "value": 7.929,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-1.50 m; room interior plus walls"
+   },
+   "width": {
+    "value": 3.142,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-1.50 m; room interior plus walls"
+   },
+   "wallThickness": {
+    "value": 0.27,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: within the plan's wall band"
+   },
+   "wallHeight": {
+    "value": 3.0,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: walls above the orthostates not preserved (p. 99)"
+   },
+   "doors": [
+    {
+     "wall": "n",
+     "offset": 0,
+     "width": {
+      "value": 1.0,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: door width not given"
+     },
+     "height": {
+      "value": 2.1,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: door height"
+     }
+    }
+   ],
+   "roof": {
+    "ridge": "x",
+    "ridgeHeight": {
+     "value": 1.2,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: pitch unknown"
+    },
+    "overhang": {
+     "value": 0.3,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: eaves"
+    },
+    "tiled": true,
+    "confidence": "conjectural",
+    "note": "Many tile fragments found (p. 99); form generic (Abb. 61: 'da alle Einzelheiten fehlen')."
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "analogy",
+    "uncertaintyM": 1.503
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "conjectural",
+   "complex": "se-houses"
+  },
+  "se-room-a": {
+   "kind": "building",
+   "role": "house",
+   "name": "SE houses: room (I 4/I 5 group)",
+   "center": [
+    45.071,
+    27.188
+   ],
+   "rotation": 13.81,
+   "length": {
+    "value": 4.362,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-1.50 m; room interior plus walls"
+   },
+   "width": {
+    "value": 4.12,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-1.50 m; room interior plus walls"
+   },
+   "wallThickness": {
+    "value": 0.27,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: within the plan's wall band"
+   },
+   "wallHeight": {
+    "value": 3.0,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: walls above the orthostates not preserved (p. 99)"
+   },
+   "doors": [
+    {
+     "wall": "w",
+     "offset": 0,
+     "width": {
+      "value": 1.0,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: door width not given"
+     },
+     "height": {
+      "value": 2.1,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: door height"
+     }
+    }
+   ],
+   "roof": {
+    "ridge": "x",
+    "ridgeHeight": {
+     "value": 1.2,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: pitch unknown"
+    },
+    "overhang": {
+     "value": 0.3,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: eaves"
+    },
+    "tiled": true,
+    "confidence": "conjectural",
+    "note": "Many tile fragments found (p. 99); form generic (Abb. 61: 'da alle Einzelheiten fehlen')."
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "analogy",
+    "uncertaintyM": 1.503
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "conjectural",
+   "complex": "se-houses"
+  },
+  "se-room-b": {
+   "kind": "building",
+   "role": "house",
+   "name": "SE houses: room (I 4/I 5 group)",
+   "center": [
+    44.04,
+    23.346
+   ],
+   "rotation": 14.007,
+   "length": {
+    "value": 4.34,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-1.50 m; room interior plus walls"
+   },
+   "width": {
+    "value": 3.658,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-1.50 m; room interior plus walls"
+   },
+   "wallThickness": {
+    "value": 0.27,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: within the plan's wall band"
+   },
+   "wallHeight": {
+    "value": 3.0,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: walls above the orthostates not preserved (p. 99)"
+   },
+   "doors": [
+    {
+     "wall": "w",
+     "offset": 0,
+     "width": {
+      "value": 1.0,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: door width not given"
+     },
+     "height": {
+      "value": 2.1,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: door height"
+     }
+    }
+   ],
+   "roof": {
+    "ridge": "x",
+    "ridgeHeight": {
+     "value": 1.2,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: pitch unknown"
+    },
+    "overhang": {
+     "value": 0.3,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: eaves"
+    },
+    "tiled": true,
+    "confidence": "conjectural",
+    "note": "Many tile fragments found (p. 99); form generic (Abb. 61: 'da alle Einzelheiten fehlen')."
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "analogy",
+    "uncertaintyM": 1.503
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "conjectural",
+   "complex": "se-houses"
+  },
+  "se-forecourt": {
+   "kind": "building",
+   "role": "house",
+   "name": "SE houses: vestibule and forecourt I 2/I 3",
+   "center": [
+    40.151,
+    26.479
+   ],
+   "rotation": -74.962,
+   "length": {
+    "value": 7.93,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-1.50 m; room interior plus walls"
+   },
+   "width": {
+    "value": 4.332,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-1.50 m; room interior plus walls"
+   },
+   "wallThickness": {
+    "value": 0.27,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: within the plan's wall band"
+   },
+   "wallHeight": {
+    "value": 3.0,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: walls above the orthostates not preserved (p. 99)"
+   },
+   "doors": [
+    {
+     "wall": "w",
+     "offset": 0,
+     "width": {
+      "value": 1.0,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: door width not given"
+     },
+     "height": {
+      "value": 2.1,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: door height"
+     }
+    }
+   ],
+   "roof": {
+    "ridge": "x",
+    "ridgeHeight": {
+     "value": 1.2,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: pitch unknown"
+    },
+    "overhang": {
+     "value": 0.3,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: eaves"
+    },
+    "tiled": true,
+    "confidence": "conjectural",
+    "note": "Many tile fragments found (p. 99); form generic (Abb. 61: 'da alle Einzelheiten fehlen')."
+   },
+   "phase": {
+    "label": "c. 490-480 BC (borderline)",
+    "fromYear": -490,
+    "toYear": null,
+    "confidence": "analogy",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Built about the temple's completion or a little later (p. 99)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "analogy",
+    "uncertaintyM": 1.503
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "conjectural",
+   "complex": "se-houses",
+   "note": "Entrance vestibule; 'Wächterzimmer' (p. 100). Borderline date."
+  },
+  "se-room-i1": {
+   "kind": "building",
+   "role": "ancillary",
+   "name": "Room I 1 beside the propylon",
+   "center": [
+    31.115,
+    22.449
+   ],
+   "rotation": 0,
+   "length": {
+    "value": 6.431,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-0.96 m"
+   },
+   "width": {
+    "value": 3.132,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "page": "92",
+    "url": "https://archive.org/details/aeginadasheiligtunse",
+    "verified": true,
+    "note": "depth about 2.3 m inside (plus front wall)"
+   },
+   "wallThickness": {
+    "value": 0.4,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: 'low poor wall' at the front (p. 92)"
+   },
+   "wallHeight": {
+    "value": 2.4,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: low"
+   },
+   "doors": [
+    {
+     "wall": "s",
+     "offset": 0,
+     "width": {
+      "value": 1.3,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: opening in the front wall"
+     },
+     "height": {
+      "value": 2.0,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: door height"
+     }
+    }
+   ],
+   "openSides": [
+    "n",
+    "w"
+   ],
+   "roof": {
+    "ridge": "x",
+    "ridgeHeight": {
+     "value": 0.9,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: lean roof"
+    },
+    "overhang": {
+     "value": 0.3,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: eaves"
+    },
+    "tiled": true,
+    "confidence": "conjectural",
+    "note": "Fiechter: perhaps an open pen for animals (p. 92)."
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 0.957
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "analogy",
+   "complex": "south-gate",
+   "note": "Rear wall is the terrace wall, west wall the propylon's side wall (both shared, so those sides are open here)."
+  },
+  "se-bath": {
+   "kind": "building",
+   "role": "bath",
+   "name": "Small bath (V)",
+   "center": [
+    35.766,
+    24.446
+   ],
+   "rotation": 12.928,
+   "length": {
+    "value": 2.784,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-1.50 m; room interior plus walls"
+   },
+   "width": {
+    "value": 4.805,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-1.50 m; room interior plus walls"
+   },
+   "wallThickness": {
+    "value": 0.27,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: within the plan's wall band"
+   },
+   "wallHeight": {
+    "value": 3.0,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: walls above the orthostates not preserved (p. 99)"
+   },
+   "doors": [
+    {
+     "wall": "w",
+     "offset": 0,
+     "width": {
+      "value": 1.0,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: door width not given"
+     },
+     "height": {
+      "value": 2.1,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: door height"
+     }
+    }
+   ],
+   "roof": {
+    "ridge": "z",
+    "ridgeHeight": {
+     "value": 1.2,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: pitch unknown"
+    },
+    "overhang": {
+     "value": 0.3,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: eaves"
+    },
+    "tiled": true,
+    "confidence": "conjectural",
+    "note": "Many tile fragments found (p. 99); form generic (Abb. 61: 'da alle Einzelheiten fehlen')."
+   },
+   "phase": {
+    "label": "c. 490-480 BC (borderline)",
+    "fromYear": -490,
+    "toYear": null,
+    "confidence": "analogy",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Built about the temple's completion or a little later (p. 99)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "analogy",
+    "uncertaintyM": 1.503
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "confidence": "conjectural",
+   "complex": "south-gate",
+   "note": "Inserted later than rooms I-IV, within about three decades (p. 99); basins not modelled. Borderline date."
+  },
+  "suedbau-north-wall": {
+   "kind": "wall",
+   "name": "Südbau north wall",
+   "role": "terrace",
+   "polyline": [
+    [
+     -5.0,
+     53.583
+    ],
+    [
+     20.0,
+     53.583
+    ]
+   ],
+   "thickness": {
+    "value": 0.7,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: not stated"
+   },
+   "height": {
+    "value": 0,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED: top flush with the slope above; restored about 1.80 m above the Südbau floor (p. 103)"
+   },
+   "top": "level",
+   "phase": {
+    "label": "New period",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "p. 160"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "confidence": "conjectural",
+    "uncertaintyM": 5.0,
+    "note": "Off the plan sheet: about 33 m south of the peribolos and about 9 m below the stylobat (p. 102); x and width conjectural."
+   },
+   "sourceIds": [
+    "furtwangler-1906"
+   ],
+   "confidence": "conjectural",
+   "uncertain": "Südbau: placed from text distances only; a terrace structure (rest or camp area), not a roofed building (pp. 102-104)."
+  },
+  "suedbau-south-wall": {
+   "kind": "wall",
+   "name": "Südbau south wall",
+   "role": "terrace",
+   "polyline": [
+    [
+     -5.0,
+     59.583
+    ],
+    [
+     20.0,
+     59.583
+    ]
+   ],
+   "thickness": {
+    "value": 0.7,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: not stated"
+   },
+   "height": {
+    "value": 0,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED: top flush with the Südbau terrace"
+   },
+   "top": "level",
+   "phase": {
+    "label": "New period",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "p. 160"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "confidence": "conjectural",
+    "uncertaintyM": 5.0,
+    "note": "Off the plan sheet: about 33 m south of the peribolos and about 9 m below the stylobat (p. 102); x and width conjectural."
+   },
+   "sourceIds": [
+    "furtwangler-1906"
+   ],
+   "confidence": "conjectural",
+   "uncertain": "Südbau: placed from text distances only; a terrace structure (rest or camp area), not a roofed building (pp. 102-104)."
+  },
+  "suedbau-cross-wall-1": {
+   "kind": "wall",
+   "name": "Südbau cross wall 1",
+   "role": "other",
+   "polyline": [
+    [
+     3.333,
+     53.783
+    ],
+    [
+     3.333,
+     59.383
+    ]
+   ],
+   "thickness": {
+    "value": 0.6,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: not stated"
+   },
+   "height": {
+    "value": 1.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "page": "103",
+    "url": "https://archive.org/details/aeginadasheiligtunse",
+    "verified": true,
+    "note": "restored wall height"
+   },
+   "top": "level",
+   "phase": {
+    "label": "New period",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "p. 160"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "confidence": "conjectural",
+    "uncertaintyM": 5.0,
+    "note": "Off the plan sheet: about 33 m south of the peribolos and about 9 m below the stylobat (p. 102); x and width conjectural."
+   },
+   "sourceIds": [
+    "furtwangler-1906"
+   ],
+   "confidence": "conjectural",
+   "uncertain": "Südbau: placed from text distances only; a terrace structure (rest or camp area), not a roofed building (pp. 102-104).",
+   "baseLevel": -9.0
+  },
+  "suedbau-cross-wall-2": {
+   "kind": "wall",
+   "name": "Südbau cross wall 2",
+   "role": "other",
+   "polyline": [
+    [
+     11.667,
+     53.783
+    ],
+    [
+     11.667,
+     59.383
+    ]
+   ],
+   "thickness": {
+    "value": 0.6,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: not stated"
+   },
+   "height": {
+    "value": 1.8,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "page": "103",
+    "url": "https://archive.org/details/aeginadasheiligtunse",
+    "verified": true,
+    "note": "restored wall height"
+   },
+   "top": "level",
+   "phase": {
+    "label": "New period",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "p. 160"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "confidence": "conjectural",
+    "uncertaintyM": 5.0,
+    "note": "Off the plan sheet: about 33 m south of the peribolos and about 9 m below the stylobat (p. 102); x and width conjectural."
+   },
+   "sourceIds": [
+    "furtwangler-1906"
+   ],
+   "confidence": "conjectural",
+   "uncertain": "Südbau: placed from text distances only; a terrace structure (rest or camp area), not a roofed building (pp. 102-104).",
+   "baseLevel": -9.0
+  }
+ },
+ "hidden": {
+  "old-altar-6th": {
+   "name": "Altar of the 6th c.",
+   "phase": {
+    "label": "Middle period",
+    "fromYear": -580,
+    "toYear": -510,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906",
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Earlier: buried under the altar court (p. 155)"
+  },
+  "old-altar-7th": {
+   "name": "Altar of the 7th c. (oldest)",
+   "phase": {
+    "label": "Oldest period",
+    "fromYear": -700,
+    "toYear": -560,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906",
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Earlier: one course on rock next to the ramp (pp. 154-155)"
+  },
+  "old-propylon": {
+   "name": "Older propylon",
+   "phase": {
+    "label": "6th c.",
+    "fromYear": -580,
+    "toYear": -510,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906",
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Earlier: under the south part of the altar court (pp. 151-154)"
+  },
+  "old-houses": {
+   "name": "Older priests' houses",
+   "phase": {
+    "label": "Oldest period",
+    "fromYear": -700,
+    "toYear": -510,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906",
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Earlier: buried under the terrace (pp. 151-154)"
+  },
+  "old-peribolos-7th": {
+   "name": "Peribolos of the 7th c.",
+   "phase": {
+    "label": "Oldest period",
+    "fromYear": -700,
+    "toYear": -560,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906",
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Earlier (plan, blue)"
+  },
+  "old-peribolos-6th": {
+   "name": "Peribolos of the 6th c.",
+   "phase": {
+    "label": "Middle period",
+    "fromYear": -580,
+    "toYear": -510,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906",
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Earlier (plan, green)"
+  },
+  "old-structure-7th": {
+   "name": "7th-c. foundation near the north base",
+   "phase": {
+    "label": "Oldest period",
+    "fromYear": -700,
+    "toYear": -560,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906",
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Earlier (plan, blue)"
+  },
+  "circular-substructions": {
+   "name": "Circular substructions (7th c.)",
+   "phase": {
+    "label": "Oldest period",
+    "fromYear": -700,
+    "toYear": -560,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906",
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Earlier (plan, blue)"
+  },
+  "older-temple": {
+   "name": "Older temple",
+   "phase": {
+    "label": "Middle period",
+    "fromYear": -570,
+    "toYear": -510,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906"
+   ],
+   "reason": "Earlier: dismantled; reused in the fill and the Südbau (pp. 116-150)"
+  },
+  "remodelling-4th-c": {
+   "name": "Mid-4th-c. remodelling of the altar and SE buildings",
+   "phase": {
+    "label": "4th c.",
+    "fromYear": -360,
+    "toYear": -300,
+    "confidence": "conjectural",
+    "sourceIds": [
+     "moc-odysseus-aphaia"
+    ]
+   },
+   "sourceIds": [
+    "moc-odysseus-aphaia"
+   ],
+   "reason": "Later; stated by the Ministry text only (conflict with Fiechter)"
+  },
+  "west-buildings": {
+   "name": "West buildings A-C (60-240 m west)",
+   "phase": {
+    "label": "New period",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906"
+   ],
+   "reason": "Outside the modelled site (pp. 105-114)"
+  },
+  "cockerell-base": {
+   "name": "Small base before the north half of the east front",
+   "phase": {
+    "label": "Unknown",
+    "fromYear": null,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906",
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Date unknown (present in 1811, p. 75)"
+  },
+  "walls-south-of-temple": {
+   "name": "Unlabelled wall traces south of the temple",
+   "phase": {
+    "label": "Unknown",
+    "fromYear": null,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906",
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Function unknown; probably building-site walls under the fill (pp. 158-159)"
+  },
+  "se-staircase": {
+   "name": "Staircase I 6 in the SE houses",
+   "phase": {
+    "label": "New period",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906",
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Interior detail not modelled at this scale"
+  },
+  "outer-terrace-structures": {
+   "name": "Unlabelled structures on the outer terrace",
+   "phase": {
+    "label": "Unknown",
+    "fromYear": null,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Function unknown (plan only)"
+  }
+ }
+}

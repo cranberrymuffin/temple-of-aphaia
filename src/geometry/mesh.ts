@@ -138,8 +138,9 @@ export class MeshBuilder {
     for (const p of pts) this.vertex(p, n, [dot(p, tu), dot(p, tv)])
     for (let i = 1; i + 1 < pts.length; i++) {
       const a = pts[0]
-      const area = len(cross(sub(pts[i], a), sub(pts[i + 1], a)))
-      if (area > 1e-12) this.tri(base, base + i, base + i + 1)
+      // Skip slivers and fan triangles whose winding disagrees with the polygon (near-collinear points).
+      const tn = cross(sub(pts[i], a), sub(pts[i + 1], a))
+      if (len(tn) > 1e-9 && dot(tn, n) > 0) this.tri(base, base + i, base + i + 1)
     }
   }
 

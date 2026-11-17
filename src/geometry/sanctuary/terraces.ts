@@ -228,6 +228,7 @@ export function sparseTerrain(desc: TerrainDesc, stylobateTop: number, tier: Tie
         for (const [u0, u1] of outsideCuts(pa, pb, cuts)) {
           const p0: Point2 = [pa[0] + (pb[0] - pa[0]) * u0, pa[1] + (pb[1] - pa[1]) * u0]
           const p1: Point2 = [pa[0] + (pb[0] - pa[0]) * u1, pa[1] + (pb[1] - pa[1]) * u1]
+          if (Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) < 1e-4) continue // sub-millimetre slivers between cuts
           b.polygonFacing(
             [
               [p0[0], y0, p0[1]],

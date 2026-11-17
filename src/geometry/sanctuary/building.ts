@@ -103,6 +103,9 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
     const sign = s === 'e' || s === 's' ? 1 : -1
     const alongX = s === 'n' || s === 's' // the flight spans local x when it is on the n or s side
     const base = alongX ? hz : hx
+    // Between the side walls when they exist (flanked flight), else the full side.
+    const a0 = alongX ? (open.has('w') ? -hx : -hx + t) : open.has('n') ? -hz : -hz + t
+    const a1 = alongX ? (open.has('e') ? hx : hx - t) : open.has('s') ? hz : hz - t
     const inner: Face = alongX ? (sign > 0 ? '-z' : '+z') : sign > 0 ? '-x' : '+x'
     const outerF: Face = alongX ? (sign > 0 ? '+z' : '-z') : sign > 0 ? '+x' : '-x'
     for (let j = 1; j <= n; j++) {
@@ -110,15 +113,15 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
       const o1 = base + j * tr
       const yTop = floorY - j * rise
       const [c0, c1] = sign > 0 ? [o0, o1] : [-o1, -o0]
-      const min: Vec3 = alongX ? [-hx, bottom, c0] : [c0, bottom, -hz]
-      const max: Vec3 = alongX ? [hx, yTop, c1] : [c1, yTop, hz]
+      const min: Vec3 = alongX ? [a0, bottom, c0] : [c0, bottom, a0]
+      const max: Vec3 = alongX ? [a1, yTop, c1] : [c1, yTop, a1]
       floor.box(min, max, ['-y', inner, ...(j < n ? [outerF] : [])])
       const yPrev = floorY - (j - 1) * rise
       // Riser above the previous step's top at this step's inner edge (the part not shared with step j-1).
       const oi = sign * o0
       const riser: Vec3[] = alongX
-        ? [[-hx, yTop, oi], [hx, yTop, oi], [hx, yPrev, oi], [-hx, yPrev, oi]]
-        : [[oi, yTop, -hz], [oi, yTop, hz], [oi, yPrev, hz], [oi, yPrev, -hz]]
+        ? [[a0, yTop, oi], [a1, yTop, oi], [a1, yPrev, oi], [a0, yPrev, oi]]
+        : [[oi, yTop, a0], [oi, yTop, a1], [oi, yPrev, a1], [oi, yPrev, a0]]
       if (j > 1 || open.has(s)) floor.polygonFacing(riser, alongX ? [0, 0, sign] : [sign, 0, 0])
       const c = transformPoint(m, [(min[0] + max[0]) / 2, 0, (min[2] + max[2]) / 2])
       levels.push({ name: `${id}-step-${j}`, y: yTop, minX: c[0] - (max[0] - min[0]) / 2, maxX: c[0] + (max[0] - min[0]) / 2, minZ: c[2] - (max[2] - min[2]) / 2, maxZ: c[2] + (max[2] - min[2]) / 2, rotY: deg(f.rotation) })

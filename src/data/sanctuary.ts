@@ -1,7 +1,7 @@
 // Types and pure helpers for the sanctuary contract (src/data/schemas/sanctuary.schema.json).
 // Coordinates: metres in the temple frame (x east, z south, origin at the stylobate centre).
 // Levels (terrace levels, baseLevel) are metres relative to the stylobate top. No `three`.
-import { isSimple, pointInPolygon, triangulate } from './polygon'
+import { isSimple, offsetPolyline, pointInPolygon, triangulate } from './polygon'
 import type { Confidence } from './types'
 
 export type Point2 = [number, number]
@@ -323,6 +323,12 @@ export function stepsRect(center: Point2, L: number, W: number, rotation: number
   return rotatedRect(T(dx * (L / 2 + out / 2), dz * (W / 2 + out / 2)), dx ? out : L, dz ? out : W, rotation)
 }
 
+/** Circumscribed 32-gon of a circle (covers the tessellated shapes of every tier). */
+export function circlePolygon(c: Point2, r: number, n = 32): Point2[] {
+  const R = r / Math.cos(Math.PI / n)
+  return Array.from({ length: n }, (_, i) => [c[0] + R * Math.cos((2 * Math.PI * i) / n), c[1] + R * Math.sin((2 * Math.PI * i) / n)] as Point2)
+}
+
 /** Convex hull (monotone chain) of points. */
 export function convexHull(pts: Point2[]): Point2[] {
   const p = [...pts].sort((a, b) => a[0] - b[0] || a[1] - b[1])
@@ -370,24 +376,23 @@ export function footprints(f: SanctuaryFeature): Point2[][] {
     }
     case 'cistern': {
       const rw = f.rimWidth.value
-      if (f.shape === 'circle') return [rotatedRect(f.center, f.diameter!.value + 2 * rw, f.diameter!.value + 2 * rw, 0)]
+      if (f.shape === 'circle') return [circlePolygon(f.center, f.diameter!.value / 2 + rw)]
       if (f.shape === 'pear') return [pearOutline(f.center, f.length!.value, f.diameter!.value, f.smallDiameter!.value, f.rotation, 24, rw)]
       return [rotatedRect(f.center, f.length!.value + 2 * rw, f.width!.value + 2 * rw, f.rotation)]
     }
     case 'pavement':
       return [f.polygon]
     case 'column':
-      return [rotatedRect(f.center, f.baseDiameter.value, f.baseDiameter.value, 0)]
+      return [circlePolygon(f.center, f.baseDiameter.value / 2)]
     case 'wall':
     case 'channel': {
+      // The same mitred outline the generators extrude, one quad per segment.
       const w = f.kind === 'wall' ? f.thickness.value : f.width.value * 1.5
-      const pts = f.kind === 'wall' && f.closed ? [...f.polyline, f.polyline[0]] : f.polyline
-      return pts.slice(1).map((b, i) => {
-        const a = pts[i]
-        const L = Math.hypot(b[0] - a[0], b[1] - a[1])
-        const rot = (-Math.atan2(b[1] - a[1], b[0] - a[0]) * 180) / Math.PI
-        return rotatedRect([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], L, w, rot)
-      })
+      const closed = f.kind === 'wall' && !!f.closed
+      const { left, right } = offsetPolyline(f.polyline, w, closed)
+      const L = closed ? [...left, left[0]] : left
+      const R = closed ? [...right, right[0]] : right
+      return L.slice(1).map((_, i) => [L[i], L[i + 1], R[i + 1], R[i]])
     }
   }
 }

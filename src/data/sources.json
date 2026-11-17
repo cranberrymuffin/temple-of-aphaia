@@ -143,6 +143,15 @@
       "verified": true,
       "licence": "CC BY-SA (citation only).",
       "note": "Secondary. Verified only as a Wikipedia statement; claims it attributes to Bankel, Ohly or Eschbach are unverified."
+    },
+    {
+      "id": "wikimedia-plan-aphaia-sanctuary",
+      "type": "archaeological",
+      "citation": "Bibi Saint-Pol, \"Plan of the sanctuary of Aphaia, Aegina\" (Plan_Aphaia_sanctuary-en.svg), Wikimedia Commons, 2007; after Guide Joanne 1911, pl. 172-173, after Furtwängler et al. 1906.",
+      "url": "https://commons.wikimedia.org/wiki/File:Plan_Aphaia_sanctuary-en.svg",
+      "verified": true,
+      "licence": "Public domain (per the Commons file page).",
+      "note": "Secondary redraw; phases by century only. Digitised into the temple frame in measurements/sanctuary-plan.json (32 column dots fit to rms 0.29 m; per-feature uncertainty 0.4-1.5 m). Plan positions place the sanctuary features; verified text values win on numbers."
     }
   ],
   "names": {
@@ -194,6 +203,35 @@
     }
   },
   "choices": {
+    "sanctuary-phase-c490": {
+      "description": "The sanctuary is shown as completed c. 490 BC (Late Archaic layout); older and later structures are listed but hidden.",
+      "sourceIds": ["furtwangler-1906", "wikimedia-plan-aphaia-sanctuary"],
+      "confidence": "interpretive",
+      "note": "User decision 2026-11-16 (research section 20)."
+    },
+    "propylon-stairs-south": {
+      "description": "The propylon's flight of steps rises from the south (outer) side, as the excavator describes it.",
+      "sourceIds": ["furtwangler-1906", "wikimedia-plan-aphaia-sanctuary"],
+      "confidence": "attested",
+      "note": "Conflict: the 2007 plan draws three step lines on the north (inner) side; Furtwängler pp. 75-77 puts the stair on the outer side, with the gutters draining over it outwards. Text followed (lead decision)."
+    },
+    "votive-column-shown": {
+      "description": "The sphinx votive column is always shown, flagged uncertain: it is 6th-century and only 'not impossibly' spared at the rebuilding.",
+      "sourceIds": ["furtwangler-1906"],
+      "confidence": "conjectural",
+      "note": "User decision 2026-11-16."
+    },
+    "suedbau-shown": {
+      "description": "The Südbau terrace south of the sanctuary is always shown, flagged uncertain; it is off the plan sheet and placed from the text distances.",
+      "sourceIds": ["furtwangler-1906"],
+      "confidence": "conjectural",
+      "note": "User decision 2026-11-16."
+    },
+    "sanctuary-terrain": {
+      "description": "Terrain around the terraces is a conjectural reconstruction from the text's levels (steep fall east and north, gentle west and south, Südbau about 9 m below the stylobate), not a survey; the scan covers only the temple.",
+      "sourceIds": ["furtwangler-1906"],
+      "confidence": "conjectural"
+    },
     "polychrome-scheme": {
       "description": "Architectural colours follow what the 1906 excavators observed on Aphaia itself; the sculpture follows the Gods in Color reconstructions; gaps are filled by analogy with other Archaic temples.",
       "sourceIds": ["furtwangler-1906", "harvard-gazette-2007", "gods-in-color"],

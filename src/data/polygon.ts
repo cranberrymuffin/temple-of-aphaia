@@ -54,6 +54,40 @@ export function isSimple(p: P2[]): boolean {
   return true
 }
 
+/**
+ * Offset a polyline by +-w/2 with mitred joints (left = +90 deg from the direction of travel seen from
+ * above with x east and z south). Shared by wall footprints (data) and wall geometry.
+ */
+export function offsetPolyline(pts: P2[], w: number, closed = false): { left: P2[]; right: P2[] } {
+  const n = pts.length
+  const dir = (i: number): P2 => {
+    const a = pts[i]
+    const b = pts[(i + 1) % n]
+    const l = Math.hypot(b[0] - a[0], b[1] - a[1])
+    return [(b[0] - a[0]) / l, (b[1] - a[1]) / l]
+  }
+  const left: P2[] = []
+  const right: P2[] = []
+  for (let i = 0; i < n; i++) {
+    const hasPrev = closed || i > 0
+    const hasNext = closed || i < n - 1
+    const dPrev = hasPrev ? dir((i - 1 + n) % n) : dir(i)
+    const dNext = hasNext ? dir(i) : dPrev
+    const n0: P2 = [dPrev[1], -dPrev[0]]
+    const n1: P2 = [dNext[1], -dNext[0]]
+    let mx = n0[0] + n1[0]
+    let mz = n0[1] + n1[1]
+    const ml = Math.hypot(mx, mz)
+    mx /= ml
+    mz /= ml
+    const scale = w / 2 / Math.max(0.25, mx * n1[0] + mz * n1[1])
+    const p = pts[i]
+    left.push([p[0] + mx * scale, p[1] + mz * scale])
+    right.push([p[0] - mx * scale, p[1] - mz * scale])
+  }
+  return { left, right }
+}
+
 /** Ear-clipping triangulation; triangles keep the counter-clockwise (x, z) orientation. */
 export function triangulate(poly: P2[]): P2[][] {
   const p = signedArea(poly) < 0 ? [...poly].reverse() : [...poly]
