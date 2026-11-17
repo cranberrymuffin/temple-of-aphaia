@@ -418,6 +418,12 @@
     "provisional": true,
     "note": "CONJECTURAL: extent of the modelled hilltop"
    }
+  },
+  "dem": {
+   "file": "measurements/hilltop.json + measurements/landscape.json (PNG16 heightfields in the temple frame)",
+   "ref": "copernicus-dem-glo30",
+   "verified": true,
+   "note": "User decision 2026-11-17: beyond the terraces the real hill and coast from the Copernicus DEM; the directional falloff above is only the fallback when no DEM is supplied."
   }
  },
  "features": {

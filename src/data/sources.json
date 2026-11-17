@@ -152,6 +152,25 @@
       "verified": true,
       "licence": "Public domain (per the Commons file page).",
       "note": "Secondary redraw; phases by century only. Digitised into the temple frame in measurements/sanctuary-plan.json (32 column dots fit to rms 0.29 m; per-feature uncertainty 0.4-1.5 m). Plan positions place the sanctuary features; verified text values win on numbers."
+    },
+    {
+      "id": "copernicus-dem-glo30",
+      "type": "official",
+      "citation": "Copernicus DEM GLO-30 (COP-DEM-GLO-30-F), tile Copernicus_DSM_COG_10_N37_00_E023_00_DEM: produced using Copernicus WorldDEM-30 © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved.",
+      "quote": "The organisations in charge of the Copernicus programme by law or by delegation do not incur any liability for any use of the Copernicus WorldDEM-30",
+      "url": "https://documentation.dataspace.copernicus.eu/APIs/SentinelHub/Data/DEM/resources/license/License-COPDEM-30.pdf",
+      "verified": true,
+      "licence": "Copernicus DEM licence: the attribution in the citation must accompany the terrain wherever it is shown, and the quote (liability disclaimer) must appear in the legal notice. No endorsement is implied.",
+      "note": "Terrain outside the ancient terraces (hill and coast), resampled into the temple frame by worker-2 (measurements/landscape.*, hilltop.*). A DSM: vegetation and buildings are included; the 2 m hilltop grid is interpolated from 30 m data."
+    },
+    {
+      "id": "openstreetmap-temple-outline",
+      "type": "official",
+      "citation": "OpenStreetMap way 613801136 (Temple of Aphaia, building=temple). © OpenStreetMap contributors, ODbL.",
+      "url": "https://www.openstreetmap.org/way/613801136",
+      "verified": true,
+      "licence": "© OpenStreetMap contributors, ODbL",
+      "note": "Temple position and axis bearing for georeferencing the temple frame (measurements/georef.json)."
     }
   ],
   "names": {
@@ -203,6 +222,18 @@
     }
   },
   "choices": {
+    "site-georeference": {
+      "description": "The temple frame is georeferenced for the real terrain: stylobate elevation 178.14 m (DERIVED: Copernicus DEM at the OSM temple centroid minus 1 m, +/-3 m) and axis true bearing 69.1 degrees (DERIVED from the OSM outline, +/-2 degrees).",
+      "sourceIds": ["copernicus-dem-glo30", "openstreetmap-temple-outline"],
+      "confidence": "interpretive",
+      "note": "Both values are derived, not surveyed (measurements/georef.json). The sea level in the frame follows: y = -178.14."
+    },
+    "terrain-real-beyond-terraces": {
+      "description": "Beyond the terrace walls the real hill and coast from the Copernicus DEM are shown; inside, the c. 490 BC terrace surfaces at Furtwängler's levels. Where today's surface rises above an ancient terrace edge, a cut face is built and the mismatch is logged.",
+      "sourceIds": ["copernicus-dem-glo30", "furtwangler-1906"],
+      "confidence": "interpretive",
+      "note": "User decision 2026-11-17."
+    },
     "sanctuary-phase-c490": {
       "description": "The sanctuary is shown as completed c. 490 BC (Late Archaic layout); older and later structures are listed but hidden.",
       "sourceIds": ["furtwangler-1906", "wikimedia-plan-aphaia-sanctuary"],
