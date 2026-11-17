@@ -3,6 +3,11 @@
 import dimensions from '../data/dimensions.json'
 import palette from '../data/palette.json'
 import sources from '../data/sources.json'
+import sanctuary from '../data/sanctuary.json'
+import type { SanctuaryDoc } from '../data/sanctuary'
+import { buildSite } from './sanctuary'
+import { terrainBounds } from './sanctuary/terraces'
+import { mergeOutputs } from './types'
 import { resolveDimensions } from '../data/resolveDimensions'
 import type { Dimensions } from '../data/types'
 import type { GenerateRequest, GenerateResponse, TempleMeta } from './protocol'
@@ -20,8 +25,18 @@ scope.onmessage = (e) => {
   try {
     // The east ramp is built only because sources.json records the reconstruction choice.
     const eastRamp = 'east-ramp' in sources.choices
-    const r = resolveDimensions(dimensions.dimensions as unknown as Dimensions, { eastRamp })
-    const output = buildTemple(r, e.data.tier, palette.colors, { colorIdx: e.data.keepColorIdx })
+    const doc = sanctuary as unknown as SanctuaryDoc
+    const r = resolveDimensions(dimensions.dimensions as unknown as Dimensions, {
+      eastRamp,
+      rampWidth: doc.temple.rampWidth.value,
+      foundationDepth: doc.temple.foundationDepth.value,
+    })
+    // The sanctuary terrain replaces the flat ground plane; the krepis rests on the temple terrace.
+    const temple = buildTemple(r, e.data.tier, palette.colors, { colorIdx: e.data.keepColorIdx, ground: false })
+    const site = buildSite(doc, r.stylobate.top, e.data.tier, palette.colors)
+    const output = mergeOutputs([temple, site.sanctuary.output, site.terrain])
+    if (!e.data.keepColorIdx) for (const g of output.groups) delete g.colorIdx
+    const tb = terrainBounds(doc.terrain)
     const meta: TempleMeta = {
       stylobate: { halfX: r.stylobate.halfX, halfZ: r.stylobate.halfZ, top: r.stylobate.top },
       bounds: {
@@ -36,6 +51,11 @@ scope.onmessage = (e) => {
       peristyle: {
         innerX: r.grid.x[r.grid.x.length - 1] - r.column.lowerRadius,
         innerZ: r.grid.z[r.grid.z.length - 1] - r.column.lowerRadius,
+      },
+      site: {
+        bounds: { minX: tb.minX, maxX: tb.maxX, minZ: tb.minZ, maxZ: tb.maxZ },
+        displayLabel: doc.meta.displayLabel,
+        features: site.sanctuary.report,
       },
       cella: {
         centerX: r.cella.centerX,

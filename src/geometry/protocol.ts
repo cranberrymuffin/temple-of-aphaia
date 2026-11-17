@@ -1,5 +1,6 @@
 // Worker message protocol (pure types + the transferable list).
 import type { LogEntry } from '../data/resolveDimensions'
+import type { FeatureReport } from './sanctuary'
 import type { GeneratorOutput, Tier } from './types'
 
 export interface GenerateRequest {
@@ -16,6 +17,8 @@ export interface TempleMeta {
   ceilingY: number
   /** Inner faces of the peristyle columns (grid edge axis minus the lower radius). */
   peristyle: { innerX: number; innerZ: number }
+  /** Sanctuary: modelled extent (terraces plus the hill falloff) and every feature's shown/hidden/uncertain status. */
+  site: { bounds: { minX: number; maxX: number; minZ: number; maxZ: number }; displayLabel: string; features: FeatureReport[] }
   cella: { centerX: number; halfX: number; halfZ: number; floorY: number; eastWallX: [number, number]; westWallX: [number, number] }
   log: LogEntry[]
 }
