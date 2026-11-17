@@ -2,7 +2,7 @@
 // footprints (convex polygons), a bilinear height sampler for placement and walking, and a compact
 // 16-bit binary encoding for committing the scan-derived grid. Pure (no `three`).
 import type { Point2 } from '../../data/sanctuary'
-import type { Collector, Vec3 } from '../mesh'
+import type { Collector, MeshBuilder, Vec3 } from '../mesh'
 import { norm } from '../mesh'
 import type { GeneratorOutput, Heightfield, Tier } from '../types'
 
@@ -112,6 +112,8 @@ export function terrain(hf: Heightfield, tier: Tier, col: Collector, exclude: Po
   const xs = idx(hf.nx)
   const zs = idx(hf.nz)
   const b = col.get('terrain')
+  const v0 = b.vertexCount
+  const i0 = b.idx.length
   const holes = exclude.map((p) => ({ p, bb: bboxOf(p) }))
   const vmap = new Map<number, number>()
   const P = (ix: number, iz: number): Vec3 => [hf.originX + ix * hf.cell, at(hf, ix, iz), hf.originZ + iz * hf.cell]
@@ -174,12 +176,47 @@ export function terrain(hf: Heightfield, tier: Tier, col: Collector, exclude: Po
         }
       }
     }
+  faceNormals(b, v0, i0)
   const x0 = hf.originX
   const z0 = hf.originZ
   return {
     instances: [],
     colliders: [],
     levels: [{ name: 'terrain', y: minY, minX: x0, maxX: x0 + (hf.nx - 1) * hf.cell, minZ: z0, maxZ: z0 + (hf.nz - 1) * hf.cell, heightfield: hf }],
+  }
+}
+
+/**
+ * Vertex normals from the mesh itself (area-weighted face normals) for vertices added since v0: finite
+ * differences of the field disagree with the triangles on steep folds and at cut edges.
+ */
+function faceNormals(b: MeshBuilder, v0: number, i0: number) {
+  const acc = new Float64Array((b.vertexCount - v0) * 3)
+  const P = b.pos
+  for (let i = i0; i < b.idx.length; i += 3) {
+    const [a, c, d] = [b.idx[i], b.idx[i + 1], b.idx[i + 2]]
+    const e1 = [P[3 * c] - P[3 * a], P[3 * c + 1] - P[3 * a + 1], P[3 * c + 2] - P[3 * a + 2]]
+    const e2 = [P[3 * d] - P[3 * a], P[3 * d + 1] - P[3 * a + 1], P[3 * d + 2] - P[3 * a + 2]]
+    const n = [e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0]]
+    for (const k of [a, c, d]) if (k >= v0) for (let j = 0; j < 3; j++) acc[3 * (k - v0) + j] += n[j]
+  }
+  for (let k = 0; k < acc.length / 3; k++) {
+    const l = Math.hypot(acc[3 * k], acc[3 * k + 1], acc[3 * k + 2])
+    if (l > 0) for (let j = 0; j < 3; j++) b.nor[3 * (v0 + k) + j] = acc[3 * k + j] / l
+  }
+  // On folds sharper than 90 degrees an averaged normal can face away from a triangle: give those triangles
+  // their own flat-shaded vertices.
+  const end = b.idx.length
+  for (let i = i0; i < end; i += 3) {
+    const tri = [b.idx[i], b.idx[i + 1], b.idx[i + 2]]
+    const e1 = [0, 1, 2].map((j) => P[3 * tri[1] + j] - P[3 * tri[0] + j])
+    const e2 = [0, 1, 2].map((j) => P[3 * tri[2] + j] - P[3 * tri[0] + j])
+    const n = [e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0]]
+    if (tri.every((k) => n[0] * b.nor[3 * k] + n[1] * b.nor[3 * k + 1] + n[2] * b.nor[3 * k + 2] > 0)) continue
+    const l = Math.hypot(n[0], n[1], n[2])
+    tri.forEach((k, j) => {
+      b.idx[i + j] = b.vertex([P[3 * k], P[3 * k + 1], P[3 * k + 2]], [n[0] / l, n[1] / l, n[2] / l], [b.uv[2 * k], b.uv[2 * k + 1]])
+    })
   }
 }
 

@@ -1,8 +1,9 @@
-// Rectangular building (house, ancillary room, propylon) with walls, doors and optional open sides.
-// Built in a local frame (x along length, z along width) and rotated into place. No roof: the sources
-// for the sanctuary buildings do not give one yet.
-import type { BuildingFeature, Side } from '../../data/sanctuary'
-import { rotatedRect } from '../../data/sanctuary'
+// Rectangular building (propylon, house, bath, room) in a local frame (x along length, z along width;
+// sides n = -z, s = +z, e = +x, w = -x), rotated into place. Walls with doors, open sides, interior
+// cross walls, columns with timber architraves, an optional gabled roof (ridge offset allowed, gables
+// filled on the end walls) and an outer flight of steps.
+import type { BuildingFeature, Door, Side } from '../../data/sanctuary'
+import { footprints } from '../../data/sanctuary'
 import type { Collector, Face, Vec3 } from '../mesh'
 import { MeshBuilder, composeMatrix, transformPoint } from '../mesh'
 import type { Collider, GeneratorOutput, Level } from '../types'
@@ -14,14 +15,23 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
   const t = f.wallThickness.value
   const H = f.wallHeight.value
   const open = new Set<Side>(f.openSides ?? [])
-  const range = groundRange(ctx.ground, rotatedRect(f.center, L, W, f.rotation))
-  const floorY = f.baseY ?? range.max + K.floorRiseRatio * t
-  const bottom = Math.min(f.baseY ?? range.min, range.min) - K.skirt
+  const ranges = footprints(f).map((p) => groundRange(ctx.ground, p))
+  const gMin = Math.min(...ranges.map((r) => r.min))
+  const gMax = Math.max(...ranges.map((r) => r.max))
+  const fixed = f.baseLevel !== undefined ? ctx.stylobateTop + f.baseLevel : undefined
+  const floorY = fixed ?? gMax + K.floorRiseRatio * t
+  const stepsDrop = f.steps ? f.steps.count.value * f.steps.rise.value : 0
+  const bottom = Math.min(fixed ?? gMin, gMin, floorY - stepsDrop) - K.skirt
   const top = floorY + H
   const m = composeMatrix([f.center[0], 0, f.center[1]], deg(f.rotation))
   const walls = new MeshBuilder('sanctuary-building')
   const floor = new MeshBuilder('sanctuary-floor')
+  const wood = new MeshBuilder('timber')
+  const roofB = new MeshBuilder('sanctuary-roof')
   const colliders: Collider[] = []
+  const levels: Level[] = []
+  const hx = L / 2
+  const hz = W / 2
 
   const collide = (name: string, min: Vec3, max: Vec3) => {
     if (max[0] - min[0] <= 1e-9 || max[2] - min[2] <= 1e-9) return
@@ -30,46 +40,45 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
   }
 
   /**
-   * One wall along its own axis u in [u0, u1] (x for n/s walls, z for e/w walls), across v in [v0, v1],
-   * with its doors. `endOmit` lists the ends that abut another wall.
+   * Straight wall along local axis (x: u = x, v = z; z: u = z, v = x) over u in [u0, u1], v in [v0, v1],
+   * from y0 to top, with door openings (centre u = offset). `ends` = [omit low end, omit high end].
    */
-  const wall = (side: Side, u0: number, u1: number, v0: number, v1: number, endOmit: [boolean, boolean]) => {
-    const alongX = side === 'n' || side === 's'
-    const box = (a0: number, a1: number, y0: number, y1: number, omit: Face[]) => {
-      const min: Vec3 = alongX ? [a0, y0, v0] : [v0, y0, a0]
-      const max: Vec3 = alongX ? [a1, y1, v1] : [v1, y1, a1]
+  const straight = (name: string, axis: 'x' | 'z', u0: number, u1: number, v0: number, v1: number, y0: number, doors: Door[], ends: [boolean, boolean], threshold: boolean) => {
+    const box = (a0: number, a1: number, b0: number, b1: number, omit: Face[]) => {
+      const min: Vec3 = axis === 'x' ? [a0, b0, v0] : [v0, b0, a0]
+      const max: Vec3 = axis === 'x' ? [a1, b1, v1] : [v1, b1, a1]
       walls.box(min, max, omit)
       return [min, max] as const
     }
-    const lo: Face = alongX ? '-x' : '-z'
-    const hi: Face = alongX ? '+x' : '+z'
-    const doors = f.doors
-      .filter((d) => d.wall === side)
-      .map((d) => [d.offset - d.width.value / 2, d.offset + d.width.value / 2, d.height.value] as const)
-      .sort((a, b) => a[0] - b[0])
+    const lo: Face = axis === 'x' ? '-x' : '-z'
+    const hi: Face = axis === 'x' ? '+x' : '+z'
+    const ds = doors.map((d) => [d.offset - d.width.value / 2, d.offset + d.width.value / 2, d.height.value] as const).sort((a, b) => a[0] - b[0])
     let cur = u0
-    doors.forEach(([d0, d1, dh], i) => {
-      const [mn, mx] = box(cur, d0, bottom, top, ['-y', ...(cur === u0 && endOmit[0] ? [lo] : [])])
-      collide(`${side}-wall-${i}`, mn, mx)
+    ds.forEach(([d0, d1, dh], i) => {
+      const [mn, mx] = box(cur, d0, y0, top, ['-y', ...(cur === u0 && ends[0] ? [lo] : [])])
+      collide(`${name}-${i}`, mn, mx)
       const [lmn, lmx] = box(d0, d1, floorY + dh, top, [lo, hi])
-      collide(`${side}-lintel-${i}`, lmn, lmx)
-      box(d0, d1, bottom, floorY, ['-y', lo, hi]) // threshold: its top is the door sill at floor level
+      collide(`${name}-lintel-${i}`, lmn, lmx)
+      if (threshold) box(d0, d1, y0, floorY, ['-y', lo, hi])
       cur = d1
     })
-    const [mn, mx] = box(cur, u1, bottom, top, ['-y', ...(cur === u0 && endOmit[0] ? [lo] : []), ...(endOmit[1] ? [hi] : [])])
-    collide(`${side}-wall-${doors.length}`, mn, mx)
+    const [mn, mx] = box(cur, u1, y0, top, ['-y', ...(cur === u0 && ends[0] ? [lo] : []), ...(ends[1] ? [hi] : [])])
+    collide(`${name}-${ds.length}`, mn, mx)
   }
 
-  const hx = L / 2
-  const hz = W / 2
-  if (!open.has('n')) wall('n', -hx, hx, -hz, -hz + t, [false, false])
-  if (!open.has('s')) wall('s', -hx, hx, hz - t, hz, [false, false])
+  const outer = (s: Side) => f.doors.filter((d) => d.wall === s)
+  if (!open.has('n')) straight('n-wall', 'x', -hx, hx, -hz, -hz + t, bottom, outer('n'), [false, false], true)
+  if (!open.has('s')) straight('s-wall', 'x', -hx, hx, hz - t, hz, bottom, outer('s'), [false, false], true)
   const z0 = open.has('n') ? -hz : -hz + t
   const z1 = open.has('s') ? hz : hz - t
-  if (!open.has('e')) wall('e', z0, z1, hx - t, hx, [!open.has('n'), !open.has('s')])
-  if (!open.has('w')) wall('w', z0, z1, -hx, -hx + t, [!open.has('n'), !open.has('s')])
+  if (!open.has('e')) straight('e-wall', 'z', z0, z1, hx - t, hx, bottom, outer('e'), [!open.has('n'), !open.has('s')], true)
+  if (!open.has('w')) straight('w-wall', 'z', z0, z1, -hx, -hx + t, bottom, outer('w'), [!open.has('n'), !open.has('s')], true)
+  ;(f.crossWalls ?? []).forEach((cw, i) => {
+    const h = cw.thickness.value / 2
+    straight(`cross-${i}`, cw.axis, Math.min(cw.from, cw.to), Math.max(cw.from, cw.to), cw.offset - h, cw.offset + h, floorY, cw.doors, [true, true], false)
+  })
 
-  // Floor (top only where walls enclose it; open sides show the socle edge down to the skirt).
+  // Floor; open sides show the socle edge down to the skirt (unless a flight of steps covers it).
   const x0 = open.has('w') ? -hx : -hx + t
   const x1 = open.has('e') ? hx : hx - t
   floor.polygonFacing([[x0, floorY, z0], [x1, floorY, z0], [x1, floorY, z1], [x0, floorY, z1]], [0, 1, 0])
@@ -80,15 +89,138 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
     w: [[x0, 0, z0], [x0, 0, z1], [-1, 0, 0]],
   }
   for (const side of open) {
+    if (f.steps?.side === side) continue
     const [a, b, dir] = edge[side]
     floor.polygonFacing([[a[0], bottom, a[2]], [b[0], bottom, b[2]], [b[0], floorY, b[2]], [a[0], floorY, a[2]]], dir)
   }
 
+  // Outer flight of steps, descending away from the floor: step j (1..n) top = floor - j * rise.
+  if (f.steps) {
+    const n = f.steps.count.value
+    const rise = f.steps.rise.value
+    const tr = f.steps.tread.value
+    const s = f.steps.side
+    const sign = s === 'e' || s === 's' ? 1 : -1
+    const alongX = s === 'n' || s === 's' // the flight spans local x when it is on the n or s side
+    const base = alongX ? hz : hx
+    const inner: Face = alongX ? (sign > 0 ? '-z' : '+z') : sign > 0 ? '-x' : '+x'
+    const outerF: Face = alongX ? (sign > 0 ? '+z' : '-z') : sign > 0 ? '+x' : '-x'
+    for (let j = 1; j <= n; j++) {
+      const o0 = base + (j - 1) * tr
+      const o1 = base + j * tr
+      const yTop = floorY - j * rise
+      const [c0, c1] = sign > 0 ? [o0, o1] : [-o1, -o0]
+      const min: Vec3 = alongX ? [-hx, bottom, c0] : [c0, bottom, -hz]
+      const max: Vec3 = alongX ? [hx, yTop, c1] : [c1, yTop, hz]
+      floor.box(min, max, ['-y', inner, ...(j < n ? [outerF] : [])])
+      const yPrev = floorY - (j - 1) * rise
+      // Riser above the previous step's top at this step's inner edge (the part not shared with step j-1).
+      const oi = sign * o0
+      const riser: Vec3[] = alongX
+        ? [[-hx, yTop, oi], [hx, yTop, oi], [hx, yPrev, oi], [-hx, yPrev, oi]]
+        : [[oi, yTop, -hz], [oi, yTop, hz], [oi, yPrev, hz], [oi, yPrev, -hz]]
+      if (j > 1 || open.has(s)) floor.polygonFacing(riser, alongX ? [0, 0, sign] : [sign, 0, 0])
+      const c = transformPoint(m, [(min[0] + max[0]) / 2, 0, (min[2] + max[2]) / 2])
+      levels.push({ name: `${id}-step-${j}`, y: yTop, minX: c[0] - (max[0] - min[0]) / 2, maxX: c[0] + (max[0] - min[0]) / 2, minZ: c[2] - (max[2] - min[2]) / 2, maxZ: c[2] + (max[2] - min[2]) / 2, rotY: deg(f.rotation) })
+    }
+  }
+
+  // Timber architraves and columns.
+  const archH = Math.max(0, ...(f.architraves ?? []).map((a) => a.height.value))
+  for (const a of f.architraves ?? []) {
+    const d = a.depth.value / 2
+    const u0 = Math.min(a.from, a.to)
+    const u1 = Math.max(a.from, a.to)
+    const min: Vec3 = a.axis === 'x' ? [u0, top - a.height.value, a.offset - d] : [a.offset - d, top - a.height.value, u0]
+    const max: Vec3 = a.axis === 'x' ? [u1, top, a.offset + d] : [a.offset + d, top, u1]
+    wood.box(min, max, a.axis === 'x' ? ['+x', '-x'] : ['+z', '-z'])
+  }
+  if (f.columns) {
+    const sides = f.columns.shape === 'octagonal' ? 8 : 16
+    const r = f.columns.diameter.value / 2 / Math.cos(Math.PI / sides) // across-flats diameter
+    const colTop = top - archH
+    for (const [cx, cz] of f.columns.positions) {
+      const ring = Array.from({ length: sides }, (_, i) => {
+        const a = (2 * Math.PI * (i + 0.5)) / sides
+        return [cx + r * Math.cos(a), cz + r * Math.sin(a)] as const
+      })
+      for (let i = 0; i < sides; i++) {
+        const p = ring[i]
+        const q = ring[(i + 1) % sides]
+        wood.polygonFacing(
+          [
+            [p[0], floorY, p[1]],
+            [q[0], floorY, q[1]],
+            [q[0], colTop, q[1]],
+            [p[0], colTop, p[1]],
+          ],
+          [(p[0] + q[0]) / 2 - cx, 0, (p[1] + q[1]) / 2 - cz],
+        )
+      }
+      const c = transformPoint(m, [cx, 0, cz])
+      colliders.push({ kind: 'circle', name: `${id}-column`, x: c[0], z: c[2], r: f.columns.diameter.value / 2, y0: floorY, y1: colTop })
+    }
+  }
+
+  if (f.roof) addRoof(f, roofB, walls, open, top, hx, hz, t)
+
   col.get('sanctuary-building').append(walls, m)
   col.get('sanctuary-floor').append(floor, m)
+  if (wood.idx.length) col.get('timber').append(wood, m)
+  if (roofB.idx.length) col.get('sanctuary-roof').append(roofB, m)
   const c = transformPoint(m, [(x0 + x1) / 2, 0, (z0 + z1) / 2])
-  const levels: Level[] = [
-    { name: `${id}-floor`, y: floorY, minX: c[0] - (x1 - x0) / 2, maxX: c[0] + (x1 - x0) / 2, minZ: c[2] - (z1 - z0) / 2, maxZ: c[2] + (z1 - z0) / 2, rotY: deg(f.rotation) },
-  ]
+  levels.push({ name: `${id}-floor`, y: floorY, minX: c[0] - (x1 - x0) / 2, maxX: c[0] + (x1 - x0) / 2, minZ: c[2] - (z1 - z0) / 2, maxZ: c[2] + (z1 - z0) / 2, rotY: deg(f.rotation) })
   return { instances: [], colliders, levels }
+}
+
+/**
+ * Gabled roof over the wall tops (local frame). Canonical frame: ridge along u (local x for ridge 'x',
+ * local z for ridge 'z'), slopes across v. The underside passes through the outer wall faces at the wall
+ * top on both eaves sides (so the ridge may sit off-centre with two pitches); the end walls carry gable
+ * infills whose sloped tops touch the underside and are therefore omitted.
+ */
+function addRoof(f: BuildingFeature, roofB: MeshBuilder, walls: MeshBuilder, open: Set<Side>, top: number, hx: number, hz: number, t: number) {
+  const R = f.roof!
+  const ridgeX = R.ridge === 'x'
+  const hu = ridgeX ? hx : hz // half-length along the ridge
+  const hv = ridgeX ? hz : hx // half-width across
+  const r = R.ridgeOffset ?? 0
+  const rh = R.ridgeHeight.value
+  const o = R.overhang.value
+  const th = K.roofThickness
+  const yr = top + rh
+  const tanA = rh / (r + hv) // low-v side
+  const tanB = rh / (hv - r) // high-v side
+  const eA = top - o * tanA
+  const eB = top - o * tanB
+  // Map canonical (u, y, v) to local (x, y, z).
+  const P = (u: number, y: number, v: number): Vec3 => (ridgeX ? [u, y, v] : [v, y, u])
+  const U = hu + o
+  const vA = -hv - o
+  const vB = hv + o
+  const up = (dirV: number): Vec3 => (ridgeX ? [0, 1, dirV] : [dirV, 1, 0])
+  const alongU = (s: number): Vec3 => (ridgeX ? [s, 0, 0] : [0, 0, s])
+  const alongV = (s: number): Vec3 => (ridgeX ? [0, 0, s] : [s, 0, 0])
+  // Top and underside.
+  roofB.polygonFacing([P(-U, eA + th, vA), P(U, eA + th, vA), P(U, yr + th, r), P(-U, yr + th, r)], up(-tanA))
+  roofB.polygonFacing([P(-U, eB + th, vB), P(U, eB + th, vB), P(U, yr + th, r), P(-U, yr + th, r)], up(tanB))
+  roofB.polygonFacing([P(-U, eA, vA), P(U, eA, vA), P(U, yr, r), P(-U, yr, r)], [-up(-tanA)[0], -1, -up(-tanA)[2]])
+  roofB.polygonFacing([P(-U, eB, vB), P(U, eB, vB), P(U, yr, r), P(-U, yr, r)], [-up(tanB)[0], -1, -up(tanB)[2]])
+  // Eave faces and gable bargeboards.
+  roofB.polygonFacing([P(-U, eA, vA), P(U, eA, vA), P(U, eA + th, vA), P(-U, eA + th, vA)], alongV(-1))
+  roofB.polygonFacing([P(-U, eB, vB), P(U, eB, vB), P(U, eB + th, vB), P(-U, eB + th, vB)], alongV(1))
+  for (const s of [-1, 1]) {
+    roofB.polygonFacing([P(s * U, eA, vA), P(s * U, yr, r), P(s * U, yr + th, r), P(s * U, eA + th, vA)], alongU(s))
+    roofB.polygonFacing([P(s * U, eB, vB), P(s * U, yr, r), P(s * U, yr + th, r), P(s * U, eB + th, vB)], alongU(s))
+  }
+  // Gable infills on the end walls (perpendicular to the ridge) that exist.
+  const endSides: [Side, number][] = ridgeX ? [['w', -1], ['e', 1]] : [['n', -1], ['s', 1]]
+  for (const [side, s] of endSides) {
+    if (open.has(side)) continue
+    for (const [uu, dir] of [
+      [s * hu, s],
+      [s * (hu - t), -s],
+    ] as const)
+      walls.polygonFacing([P(uu, top, -hv), P(uu, top, hv), P(uu, yr, r)], alongU(dir))
+  }
 }

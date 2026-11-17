@@ -228,6 +228,10 @@ export interface Resolved {
 export interface ResolveOptions {
   /** Build the east ramp. Pass true only when sources.json carries `choices['east-ramp']`. */
   eastRamp?: boolean
+  /** Ramp width (m), e.g. from sanctuary.json temple.rampWidth; otherwise the central three intercolumniations. */
+  rampWidth?: number
+  /** Krepis foundation skirt below the lowest step's base (m), e.g. sanctuary.json temple.foundationDepth. */
+  foundationDepth?: number
 }
 
 export class ResolveError extends Error {}
@@ -334,10 +338,12 @@ export function resolveDimensions(
   if (!(treadX > 0 && treadZ > 0)) throw new ResolveError('lowest step must be larger than the stylobate')
   log.push({ kind: 'check', message: `crepidoma treads ${treadX.toFixed(4)} m (E-W), ${treadZ.toFixed(4)} m (N-S)` })
   const tread = (treadX + treadZ) / 2
+  const foundation = opts.foundationDepth ?? 0
+  if (foundation > 0) log.push({ kind: 'check', message: `krepis foundation skirt ${foundation} m below the lowest step`, value: foundation })
   const steps = Array.from({ length: nSteps }, (_, k) => ({
     halfX: halfX + (nSteps - 1 - k) * treadX,
     halfZ: halfZ + (nSteps - 1 - k) * treadZ,
-    y0: k * rise,
+    y0: k === 0 ? -foundation : k * rise,
     y1: (k + 1) * rise,
   }))
   const S = nSteps * rise
@@ -527,7 +533,7 @@ export function resolveDimensions(
     ramp = {
       minX: base.halfX,
       maxX: base.halfX + topY / v('eastRampSlope'),
-      halfZ: gz[nFront - 2],
+      halfZ: opts.rampWidth !== undefined ? opts.rampWidth / 2 : gz[nFront - 2],
       topY,
       fills: steps.slice(0, topStep).map((st, i) => ({ minX: steps[i + 1].halfX, maxX: st.halfX, y0: st.y1 })),
     }

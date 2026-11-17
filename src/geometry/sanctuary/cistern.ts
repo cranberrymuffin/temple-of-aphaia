@@ -1,6 +1,7 @@
 // Open cistern basin (rectangular or circular): coping rim on the ground, inner walls down to the floor,
 // so the water system reads from above. The terrain is cut by the rim's outer outline.
 import type { CisternFeature, Point2 } from '../../data/sanctuary'
+import { pearOutline, signedAreaPts } from './shapes'
 import type { Collector, Vec3 } from '../mesh'
 import type { Collider, GeneratorOutput, Tier } from '../types'
 import { SANCTUARY_CONVENTIONS as K, groundRange, localToWorld, obb, type SanctuaryContext } from './common'
@@ -11,6 +12,13 @@ export const CIRCLE_SEGMENTS: Record<Tier, number> = { low: 16, med: 24, high: 4
 export function cisternLoops(f: CisternFeature, tier: Tier): { inner: Point2[]; outer: Point2[] } {
   const rw = f.rimWidth.value
   const toW = localToWorld(f.center, f.rotation)
+  if (f.shape === 'pear') {
+    // Same vertex count on both loops so the coping quads pair up.
+    const n = CIRCLE_SEGMENTS[tier]
+    const inner = resample(pearOutline(f.center, f.length!.value, f.diameter!.value, f.smallDiameter!.value, f.rotation, n), n)
+    const outer = resample(pearOutline(f.center, f.length!.value, f.diameter!.value, f.smallDiameter!.value, f.rotation, n, rw), n)
+    return { inner: ccw(inner), outer: ccw(outer) }
+  }
   if (f.shape === 'circle') {
     const r = f.diameter!.value / 2
     const n = CIRCLE_SEGMENTS[tier]
@@ -27,7 +35,7 @@ export function cisternLoops(f: CisternFeature, tier: Tier): { inner: Point2[]; 
 export function cistern(id: string, f: CisternFeature, ctx: SanctuaryContext, col: Collector): Omit<GeneratorOutput, 'groups'> {
   const { inner, outer } = cisternLoops(f, ctx.tier)
   const range = groundRange(ctx.ground, outer)
-  const ground = f.baseY ?? range.max
+  const ground = f.baseLevel !== undefined ? ctx.stylobateTop + f.baseLevel : range.max
   const rimTop = ground + Math.max(0, f.rimHeight.value)
   const floorY = ground - f.depth.value
   const bottom = Math.min(ground, range.min) - K.skirt
@@ -51,6 +59,39 @@ export function cistern(id: string, f: CisternFeature, ctx: SanctuaryContext, co
   const collider: Collider =
     f.shape === 'circle'
       ? { kind: 'circle', name: `${id}-cistern`, x: f.center[0], z: f.center[1], r: f.diameter!.value / 2 + f.rimWidth.value, y0: floorY, y1: rimTop }
-      : obb(`${id}-cistern`, f.center, f.length!.value / 2 + f.rimWidth.value, f.width!.value / 2 + f.rimWidth.value, f.rotation, floorY, rimTop)
+      : f.shape === 'pear'
+        ? { kind: 'circle', name: `${id}-cistern`, x: f.center[0], z: f.center[1], r: f.length!.value / 2 + f.rimWidth.value, y0: floorY, y1: rimTop }
+        : obb(`${id}-cistern`, f.center, f.length!.value / 2 + f.rimWidth.value, f.width!.value / 2 + f.rimWidth.value, f.rotation, floorY, rimTop)
   return { instances: [], colliders: [collider], levels: [] }
+}
+
+/** Counter-clockwise when seen from above (negative signed area in (x, z) axes), matching the other loops. */
+function ccw(p: Point2[]): Point2[] {
+  return signedAreaPts(p) > 0 ? [...p].reverse() : p
+}
+
+/** Resample a closed convex polygon to n points by angle around its centroid (keeps inner/outer loops paired). */
+function resample(p: Point2[], n: number): Point2[] {
+  const cx = p.reduce((a, q) => a + q[0], 0) / p.length
+  const cz = p.reduce((a, q) => a + q[1], 0) / p.length
+  const out: Point2[] = []
+  for (let i = 0; i < n; i++) {
+    const a = (-2 * Math.PI * i) / n
+    const d: Point2 = [Math.cos(a), Math.sin(a)]
+    // Ray from the centroid: farthest intersection with the polygon edges.
+    let best = 0
+    for (let k = 0; k < p.length; k++) {
+      const s = p[k]
+      const e = p[(k + 1) % p.length]
+      const ex = e[0] - s[0]
+      const ez = e[1] - s[1]
+      const den = d[0] * ez - d[1] * ex
+      if (Math.abs(den) < 1e-12) continue
+      const tt = ((s[0] - cx) * ez - (s[1] - cz) * ex) / den
+      const u = ((s[0] - cx) * d[1] - (s[1] - cz) * d[0]) / den
+      if (tt > 0 && u >= -1e-9 && u <= 1 + 1e-9) best = Math.max(best, tt)
+    }
+    out.push([cx + d[0] * best, cz + d[1] * best])
+  }
+  return out
 }

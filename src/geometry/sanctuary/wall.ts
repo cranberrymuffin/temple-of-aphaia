@@ -34,15 +34,16 @@ export function wallRun(id: string, f: WallFeature, ctx: SanctuaryContext, col: 
   const R = closed ? [...right, right[0]] : right
   const ranges = segmentRanges(ctx.ground, pts, t)
   const minG = Math.min(...ranges.map((r) => r.min))
-  const bottom = (f.baseY !== undefined ? Math.min(f.baseY, minG) : minG) - K.skirt
+  const fixed = f.baseLevel !== undefined ? ctx.stylobateTop + f.baseLevel : undefined
+  const bottom = (fixed !== undefined ? Math.min(fixed, minG) : minG) - K.skirt
   const level = f.top !== 'follow'
-  const topAll = (f.baseY ?? Math.max(...ranges.map((r) => r.max))) + H
+  const topAll = (fixed ?? Math.max(...ranges.map((r) => r.max))) + H
   // Follow: each vertex takes the highest ground of its adjacent segments.
   const top = pts.map((_, i) => {
     if (level) return topAll
     const adj = [ranges[i - 1], ranges[i]].filter(Boolean).map((r) => r.max)
     if (closed && (i === 0 || i === pts.length - 1)) adj.push(ranges[0].max, ranges[ranges.length - 1].max)
-    return (f.baseY ?? Math.max(...adj)) + H
+    return (fixed ?? Math.max(...adj)) + H
   })
   const b = col.get('sanctuary-wall')
   const colliders: Collider[] = []
@@ -73,7 +74,7 @@ export function channel(_id: string, f: ChannelFeature, ctx: SanctuaryContext, c
   const ranges = segmentRanges(ctx.ground, pts, w + 2 * c)
   const lip = K.channelLipRatio * w
   const top = pts.map((_, i) => Math.max(...[ranges[i - 1], ranges[i]].filter(Boolean).map((r) => r.max)) + lip)
-  const floor = pts.map((p) => (f.baseY ?? ctx.ground(p[0], p[1])) - f.depth.value)
+  const floor = pts.map((p) => (f.baseLevel !== undefined ? ctx.stylobateTop + f.baseLevel : ctx.ground(p[0], p[1])) - f.depth.value)
   // The skirt must reach below both the lowest ground and the trough floor.
   const bottom = Math.min(...ranges.map((r) => r.min), ...floor) - K.skirt
   const b = col.get('channel')

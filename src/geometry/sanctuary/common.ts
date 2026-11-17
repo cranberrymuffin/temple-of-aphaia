@@ -10,6 +10,8 @@ export type GroundFn = (x: number, z: number) => number
 export interface SanctuaryContext {
   ground: GroundFn
   tier: Tier
+  /** Absolute y of the stylobate top: levels in the data are relative to it. */
+  stylobateTop: number
 }
 
 /** Proportional conventions (no measurements). Logged by the caller with the feature report. */
@@ -21,6 +23,8 @@ export const SANCTUARY_CONVENTIONS = {
   /** Channel coping above the highest ground along an edge, and coping width, as fractions of the channel width. */
   channelLipRatio: 0.08,
   channelCopingRatio: 0.25,
+  /** Roof slab vertical thickness (m), hidden detail scale. */
+  roofThickness: 0.18,
   /** Ground sampling step for footprint ranges (m). */
   sampleStep: 0.25,
 } as const

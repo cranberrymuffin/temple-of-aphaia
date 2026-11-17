@@ -2,7 +2,29 @@
  "meta": {
   "status": "provisional",
   "displayYear": -500,
-  "note": "SYNTHETIC test fixture for the Step 3b generators. Not reconstruction data; every value is invented for testing."
+  "note": "SYNTHETIC test fixture for the Step 3b generators. Not reconstruction data; every value is invented for testing.",
+  "displayLabel": "SYNTHETIC c. 500 BC"
+ },
+ "temple": {
+  "foundationDepth": {
+   "value": 3,
+   "unit": "m",
+   "source": "published",
+   "ref": "furtwangler-1906",
+   "verified": false,
+   "provisional": true,
+   "note": "SYNTHETIC test value"
+  },
+  "rampWidth": {
+   "value": 3,
+   "unit": "m",
+   "source": "published",
+   "ref": "furtwangler-1906",
+   "verified": false,
+   "provisional": true,
+   "note": "SYNTHETIC test value"
+  },
+  "note": "SYNTHETIC"
  },
  "terrain": {
   "confidence": "conjectural",
@@ -108,14 +130,81 @@
    }
   },
   "falloff": {
+   "edgeDrop": {
+    "n": {
+     "value": 1.0,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "SYNTHETIC test value"
+    },
+    "e": {
+     "value": 1.5,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "SYNTHETIC test value"
+    },
+    "s": {
+     "value": 0.5,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "SYNTHETIC test value"
+    },
+    "w": {
+     "value": 0.8,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "SYNTHETIC test value"
+    }
+   },
    "slope": {
-    "value": 0.3,
-    "unit": "ratio",
-    "source": "published",
-    "ref": "furtwangler-1906",
-    "verified": false,
-    "provisional": true,
-    "note": "SYNTHETIC test value"
+    "n": {
+     "value": 0.4,
+     "unit": "ratio",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "SYNTHETIC test value"
+    },
+    "e": {
+     "value": 0.5,
+     "unit": "ratio",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "SYNTHETIC test value"
+    },
+    "s": {
+     "value": 0.2,
+     "unit": "ratio",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "SYNTHETIC test value"
+    },
+    "w": {
+     "value": 0.3,
+     "unit": "ratio",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "SYNTHETIC test value"
+    }
    },
    "radius": {
     "value": 20,
@@ -783,6 +872,24 @@
     "note": "SYNTHETIC test value"
    },
    "doors": []
+  }
+ },
+ "hidden": {
+  "older-altar": {
+   "name": "Synthetic older altar",
+   "phase": {
+    "label": "middle",
+    "fromYear": -560,
+    "toYear": -510,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906"
+   ],
+   "reason": "SYNTHETIC: buried under the terrace fill"
   }
  }
 }

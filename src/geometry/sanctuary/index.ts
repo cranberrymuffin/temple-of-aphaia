@@ -9,6 +9,8 @@ import { mergeOutputs } from '../types'
 import { altar } from './altar'
 import { building } from './building'
 import { cistern, cisternLoops } from './cistern'
+import { pavement } from './pavement'
+import { votiveColumn } from './votive'
 import type { GroundFn, SanctuaryContext } from './common'
 import { sampleHeight, terrain } from './terrain'
 import { channel, wallRun } from './wall'
@@ -16,11 +18,14 @@ import { sparseTerrain, terrainHeightFn } from './terraces'
 
 export interface FeatureReport {
   id: string
-  kind: SanctuaryFeature['kind']
+  kind: SanctuaryFeature['kind'] | 'unmodelled'
   name: string
   shown: boolean
   phase: string
-  placement: 'scan' | 'plan'
+  placement: 'plan'
+  /** Shown but uncertain at the display date (About panel), or why a listed feature is hidden. */
+  uncertain?: string
+  hiddenReason?: string
   note?: string
 }
 
@@ -32,7 +37,12 @@ export function terrainCuts(f: SanctuaryFeature, tier: Tier): Point2[][] {
 export function buildFeature(id: string, f: SanctuaryFeature, ctx: SanctuaryContext, col: Collector): Omit<GeneratorOutput, 'groups'> {
   switch (f.kind) {
     case 'altar':
+    case 'base':
       return altar(id, f, ctx, col)
+    case 'pavement':
+      return pavement(id, f, ctx, col)
+    case 'column':
+      return votiveColumn(id, f, ctx, col)
     case 'building':
       return building(id, f, ctx, col)
     case 'wall':
@@ -50,19 +60,31 @@ export interface SanctuaryBuild {
   cuts: Point2[][]
 }
 
-export function buildSanctuary(doc: SanctuaryDoc, tier: Tier, palette: PaletteLike, ground: GroundFn): SanctuaryBuild {
+export function buildSanctuary(doc: SanctuaryDoc, tier: Tier, palette: PaletteLike, ground: GroundFn, stylobateTop: number): SanctuaryBuild {
   const col = new Collector()
-  const ctx: SanctuaryContext = { ground, tier }
+  const ctx: SanctuaryContext = { ground, tier, stylobateTop }
   const parts: Omit<GeneratorOutput, 'groups'>[] = []
   const report: FeatureReport[] = []
   const cuts: Point2[][] = []
   for (const [id, f] of Object.entries(doc.features)) {
     const shown = isShown(f.phase, doc.meta.displayYear)
-    report.push({ id, kind: f.kind, name: f.name, shown, phase: f.phase.label, placement: f.placement.source, note: f.placement.note })
+    report.push({
+      id,
+      kind: f.kind,
+      name: f.name,
+      shown,
+      phase: f.phase.label,
+      placement: f.placement.source,
+      uncertain: f.uncertain,
+      hiddenReason: shown ? undefined : `outside the display date (${doc.meta.displayLabel})`,
+      note: f.placement.note,
+    })
     if (!shown) continue
     parts.push(buildFeature(id, f, ctx, col))
     cuts.push(...terrainCuts(f, tier))
   }
+  for (const [id, h] of Object.entries(doc.hidden ?? {}))
+    report.push({ id, kind: 'unmodelled', name: h.name, shown: false, phase: h.phase.label, placement: 'plan', hiddenReason: h.reason, note: h.note })
   const merged = mergeOutputs(parts.map((p) => ({ ...p, groups: [] })))
   return { output: { ...merged, groups: col.build(palette) }, report, cuts }
 }
@@ -93,7 +115,7 @@ export const groundFromHeightfield = (hf: Heightfield): GroundFn => (x, z) => sa
  */
 export function buildSite(doc: SanctuaryDoc, stylobateTop: number, tier: Tier, palette: PaletteLike, opts: { dem?: Heightfield; extraCuts?: Point2[][] } = {}) {
   const ground = opts.dem ? groundFromHeightfield(opts.dem) : terrainHeightFn(doc.terrain, stylobateTop)
-  const sanctuary = buildSanctuary(doc, tier, palette, ground)
+  const sanctuary = buildSanctuary(doc, tier, palette, ground, stylobateTop)
   const terrainOut = sanctuaryTerrain(doc, stylobateTop, tier, palette, [...sanctuary.cuts, ...(opts.extraCuts ?? [])], opts.dem).output
   return { sanctuary, terrain: terrainOut, ground }
 }

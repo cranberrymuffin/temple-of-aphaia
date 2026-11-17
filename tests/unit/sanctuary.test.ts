@@ -17,7 +17,7 @@ import {
 import type { Dimensions } from '../../src/data/types'
 import { validate } from '../../src/data/validate'
 import { buildSite, buildTerrain, terrainCuts } from '../../src/geometry/sanctuary'
-import { falloffDrop, outsideCuts, terrainBounds, terrainHeightFn, WALK_CELL } from '../../src/geometry/sanctuary/terraces'
+import { falloffDrop, outsideCuts, terrainBounds, terrainHeightFn, WALK_CELL, WALK_MARGIN } from '../../src/geometry/sanctuary/terraces'
 import { signedArea, triangulate } from '../../src/data/polygon'
 import { insideConvex, offsetPolyline } from '../../src/geometry/sanctuary/common'
 import { pointInPolygon as pip } from '../../src/data/polygon'
@@ -114,7 +114,7 @@ describe('sanctuary schema and references', () => {
     expect(isShown({ label: 'x', fromYear: -480, toYear: null, confidence: 'conjectural', sourceIds: ['a'] }, -500)).toBe(false)
     expect(isShown({ label: 'x', fromYear: null, toYear: -510, confidence: 'conjectural', sourceIds: ['a'] }, -500)).toBe(false)
     const { shown, hidden } = partitionByPhase(doc)
-    expect(hidden).toEqual(['stoa-late'])
+    expect(hidden).toEqual(['stoa-late', 'older-altar'])
     expect(shown).toHaveLength(Object.keys(doc.features).length - 1)
   })
 })
@@ -238,7 +238,8 @@ describe.each(TIERS)('sanctuary generators on the sparse terrain (%s)', (tier) =
   it('builds every shown feature and reports placement for all of them', () => {
     const names = new Set(s.output.groups.map((g) => g.name))
     for (const n of ['altar', 'sanctuary-building', 'sanctuary-floor', 'sanctuary-wall', 'cistern', 'channel']) expect(names, n).toContain(n)
-    expect(s.report).toHaveLength(Object.keys(doc.features).length)
+    expect(s.report).toHaveLength(Object.keys(doc.features).length + Object.keys(doc.hidden).length)
+    expect(s.report.find((x) => x.id === 'older-altar')).toMatchObject({ shown: false, kind: 'unmodelled' })
     expect(s.report.find((x) => x.id === 'stoa-late')).toMatchObject({ shown: false, placement: 'plan' })
     expect(s.report.every((x) => x.placement === 'plan')).toBe(true)
     expect(s.output.colliders.some((c) => c.name.startsWith('stoa-late'))).toBe(false)
@@ -259,7 +260,7 @@ describe.each(TIERS)('sanctuary generators on the sparse terrain (%s)', (tier) =
       const fp = footprints(f)[0]
       const lv = s.output.levels.find((l) => l.name === `${id}-floor`)!
       for (const p of fp) expect(lv.y).toBeGreaterThan(ground(p[0], p[1]))
-      const walls = s.output.colliders.filter((c) => c.name.startsWith(`${id}-`) && c.name.includes('wall'))
+      const walls = s.output.colliders.filter((c) => c.name.startsWith(`${id}-`) && c.name.includes('wall') && !c.name.includes('lintel'))
       expect(walls.length).toBeGreaterThan(0)
       for (const w of walls) for (const p of fp) expect(w.y0).toBeLessThan(ground(p[0], p[1]))
     }
@@ -309,11 +310,16 @@ describe('sparse terrain (terraces + retaining walls + hilltop falloff)', () => 
     expect(fn(0, 0)).toBeCloseTo(level('temple-terrace'), 9)
     expect(fn(0, 30)).toBeCloseTo(level('south-terrace'), 9)
     expect(fn(50, -20)).toBeCloseTo(level('east-terrace'), 9)
-    for (const d of [0.5, 5, 20]) expect(fn(0, -30 - d)).toBeCloseTo(level('temple-terrace') - falloffDrop(T, d), 9)
-    // Continuous at an outer edge; slope doubles by the radius.
-    expect(fn(0, -30 - 1e-6)).toBeCloseTo(level('temple-terrace'), 5)
-    const r = T.falloff.radius.value
-    expect((falloffDrop(T, r + 1e-4) - falloffDrop(T, r)) / 1e-4).toBeCloseTo(2 * T.falloff.slope.value, 3)
+    // North of the temple terrace: the north edge drop and slope apply.
+    const N = T.falloff
+    for (const d of [0.5, 5, 20])
+      expect(fn(0, -30 - d)).toBeCloseTo(level('temple-terrace') - N.edgeDrop.n.value - N.slope.n.value * d - (N.slope.n.value * d * d) / (2 * N.radius.value), 9)
+    // West: the west values; blended in between.
+    expect(fn(-45, 0)).toBeCloseTo(level('temple-terrace') - falloffDrop(T, 5, [-1, 0]), 9)
+    expect(falloffDrop(T, 0, [-Math.SQRT1_2, -Math.SQRT1_2])).toBeCloseTo((N.edgeDrop.n.value + N.edgeDrop.w.value) / 2, 9)
+    // The slope doubles by the radius.
+    const r = N.radius.value
+    expect((falloffDrop(T, r + 1e-4, [0, -1]) - falloffDrop(T, r, [0, -1])) / 1e-4).toBeCloseTo(2 * N.slope.n.value, 3)
   })
 
   it('skirt clipping: segment parts inside footprints are dropped, boundary-coincident parts too', () => {
@@ -364,7 +370,7 @@ describe('sparse terrain (terraces + retaining walls + hilltop falloff)', () => 
     }
     const walk = lv.find((x) => x.name === 'terrain')!.heightfield!
     expect(walk.cell).toBe(WALK_CELL)
-    const b = terrainBounds(T)
+    const b = terrainBounds(T, WALK_MARGIN)
     expect(walk.originX).toBe(b.minX)
     expect(sampleHeight(walk, -20, -35)).toBeCloseTo(fn(-20, -35), 1)
   })

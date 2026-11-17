@@ -1,5 +1,6 @@
 // Types and pure helpers for the sanctuary contract (src/data/schemas/sanctuary.schema.json).
-// Coordinates: metres in the temple frame (x east, z south, origin at the stylobate centre). No `three`.
+// Coordinates: metres in the temple frame (x east, z south, origin at the stylobate centre).
+// Levels (terrace levels, baseLevel) are metres relative to the stylobate top. No `three`.
 import { isSimple, pointInPolygon, triangulate } from './polygon'
 import type { Confidence } from './types'
 
@@ -9,7 +10,8 @@ export type Side = 'n' | 's' | 'e' | 'w'
 export interface Measure {
   value: number
   unit: 'm' | 'deg' | 'count' | 'ratio'
-  source: 'published'
+  /** published = read in the text; plan = measured on the digitised site plan. */
+  source: 'published' | 'plan'
   ref: string
   page?: string
   url?: string
@@ -25,24 +27,8 @@ export interface Placement {
   page?: string
   verified: boolean
   confidence: Confidence
+  uncertaintyM?: number
   note?: string
-}
-
-export interface Terrace {
-  polygon: Point2[]
-  /** Surface level relative to the stylobate top (m). */
-  level: Measure
-  note?: string
-}
-
-/** Sparse, conjectural terrain: terraces + retaining walls (wall features, role terrace) + hilltop falloff. */
-export interface TerrainDesc {
-  confidence: 'conjectural'
-  sourceIds: string[]
-  note?: string
-  terraces: Record<string, Terrace>
-  falloff: { slope: Measure; radius: Measure }
-  dem?: { file: string; ref: string; verified: boolean; note?: string }
 }
 
 export interface Phase {
@@ -55,6 +41,32 @@ export interface Phase {
   note?: string
 }
 
+export interface FalloffOverride {
+  edgeDrop: Measure
+  slope: Measure
+}
+
+export interface Terrace {
+  polygon: Point2[]
+  /** Surface level relative to the stylobate top (m). */
+  level: Measure
+  /** Uniform falloff for this terrace's edges instead of the directional default. */
+  falloff?: FalloffOverride
+  note?: string
+}
+
+export type Dir<T> = { n: T; e: T; s: T; w: T }
+
+/** Sparse, conjectural terrain: terraces + retaining walls (wall features, role terrace) + directional hill falloff. */
+export interface TerrainDesc {
+  confidence: 'conjectural'
+  sourceIds: string[]
+  note?: string
+  terraces: Record<string, Terrace>
+  falloff: { edgeDrop: Dir<Measure>; slope: Dir<Measure>; radius: Measure }
+  dem?: { file: string; ref: string; verified: boolean; note?: string }
+}
+
 interface FeatureBase {
   name: string
   phase: Phase
@@ -62,8 +74,19 @@ interface FeatureBase {
   sourceIds: string[]
   confidence: Confidence
   note?: string
-  /** Fixed base level; otherwise the base follows the terrain. */
-  baseY?: number
+  /** Fixed base level relative to the stylobate top; otherwise the base follows the terrain. */
+  baseLevel?: number
+  /** Shown, but uncertain at the display date (About panel). */
+  uncertain?: string
+  /** Adjoining features of one complex may touch. */
+  complex?: string
+}
+
+export interface Steps {
+  count: Measure
+  rise: Measure
+  tread: Measure
+  side: Side
 }
 
 export interface AltarFeature extends FeatureBase {
@@ -73,19 +96,47 @@ export interface AltarFeature extends FeatureBase {
   length: Measure
   width: Measure
   height: Measure
-  steps?: { count: Measure; rise: Measure; tread: Measure; side: Side }
+  steps?: Steps
+}
+
+export interface BaseFeature extends FeatureBase {
+  kind: 'base'
+  center: Point2
+  rotation: number
+  length: Measure
+  width: Measure
+  height: Measure
 }
 
 export interface Door {
-  wall: Side
+  wall?: Side
   offset: number
   width: Measure
   height: Measure
 }
 
+export interface CrossWall {
+  axis: 'x' | 'z'
+  offset: number
+  from: number
+  to: number
+  thickness: Measure
+  doors: Door[]
+}
+
+export interface Roof {
+  ridge: 'x' | 'z'
+  ridgeOffset?: number
+  ridgeHeight: Measure
+  overhang: Measure
+  tiled?: boolean
+  confidence: Confidence
+  note?: string
+}
+
 export interface BuildingFeature extends FeatureBase {
   kind: 'building'
-  role: 'propylon' | 'house' | 'ancillary' | 'other'
+  role: 'propylon' | 'house' | 'bath' | 'ancillary' | 'other'
   center: Point2
   rotation: number
   length: Measure
@@ -94,26 +145,33 @@ export interface BuildingFeature extends FeatureBase {
   wallThickness: Measure
   doors: Door[]
   openSides?: Side[]
+  crossWalls?: CrossWall[]
+  columns?: { shape: 'octagonal' | 'round'; diameter: Measure; positions: Point2[] }
+  architraves?: { axis: 'x' | 'z'; offset: number; from: number; to: number; depth: Measure; height: Measure }[]
+  roof?: Roof
+  steps?: Steps
 }
 
 export interface WallFeature extends FeatureBase {
   kind: 'wall'
-  role: 'terrace' | 'peribolos' | 'other'
+  role: 'terrace' | 'peribolos' | 'fence' | 'other'
   polyline: Point2[]
   closed?: boolean
   thickness: Measure
+  /** Height above the highest ground under the wall (0 = top flush with the upper terrace). */
   height: Measure
   top?: 'level' | 'follow'
 }
 
 export interface CisternFeature extends FeatureBase {
   kind: 'cistern'
-  shape: 'rect' | 'circle'
+  shape: 'rect' | 'circle' | 'pear'
   center: Point2
   rotation: number
   length?: Measure
   width?: Measure
   diameter?: Measure
+  smallDiameter?: Measure
   depth: Measure
   rimHeight: Measure
   rimWidth: Measure
@@ -127,12 +185,49 @@ export interface ChannelFeature extends FeatureBase {
   feeds?: string
 }
 
-export type SanctuaryFeature = AltarFeature | BuildingFeature | WallFeature | CisternFeature | ChannelFeature
+export interface PavementFeature extends FeatureBase {
+  kind: 'pavement'
+  polygon: Point2[]
+  thickness: Measure
+}
+
+export interface ColumnFeature extends FeatureBase {
+  kind: 'column'
+  center: Point2
+  baseDiameter: Measure
+  baseHeight: Measure
+  lowerDiameter: Measure
+  upperDiameter: Measure
+  height: Measure
+  flutes: Measure
+  capital: { kind: 'ionic' | 'doric'; width: Measure; height: Measure }
+  crowning?: { kind: 'sphinx'; height: Measure }
+}
+
+export type SanctuaryFeature =
+  | AltarFeature
+  | BaseFeature
+  | BuildingFeature
+  | WallFeature
+  | CisternFeature
+  | ChannelFeature
+  | PavementFeature
+  | ColumnFeature
+
+export interface HiddenFeature {
+  name: string
+  phase: Phase
+  sourceIds: string[]
+  reason: string
+  note?: string
+}
 
 export interface SanctuaryDoc {
-  meta: { status: 'provisional' | 'merged'; note: string; displayYear: number }
+  meta: { status: 'provisional' | 'merged'; note: string; displayYear: number; displayLabel: string }
+  temple: { foundationDepth: Measure; rampWidth: Measure; note?: string }
   terrain: TerrainDesc
   features: Record<string, SanctuaryFeature>
+  hidden: Record<string, HiddenFeature>
 }
 
 /** A feature is shown when its phase spans the display year (open ends count as spanning). */
@@ -144,97 +239,148 @@ export function partitionByPhase(doc: SanctuaryDoc): { shown: string[]; hidden: 
   const shown: string[] = []
   const hidden: string[] = []
   for (const [id, f] of Object.entries(doc.features)) (isShown(f.phase, doc.meta.displayYear) ? shown : hidden).push(id)
-  return { shown, hidden }
+  return { shown, hidden: [...hidden, ...Object.keys(doc.hidden ?? {})] }
 }
 
-/** Reference problems the schema cannot express: unknown source ids, dangling `feeds`, bad geometry. */
+const measuresOf = (o: unknown, path: string, out: [string, Measure][]) => {
+  if (!o || typeof o !== 'object') return
+  if ('unit' in o && 'ref' in o && 'value' in o) {
+    out.push([path, o as Measure])
+    return
+  }
+  for (const [k, v] of Object.entries(o)) measuresOf(v, path ? `${path}.${k}` : k, out)
+}
+
+/** Reference problems the schema cannot express. */
 export function sanctuaryRefErrors(doc: SanctuaryDoc, sourceIds: Set<string>): string[] {
   const errs: string[] = []
-  const measures = (f: SanctuaryFeature): [string, Measure][] => {
-    const out: [string, Measure][] = []
-    for (const [k, v] of Object.entries(f)) if (v && typeof v === 'object' && 'unit' in v) out.push([k, v as Measure])
-    if (f.kind === 'altar' && f.steps) for (const [k, v] of Object.entries(f.steps)) if (typeof v === 'object') out.push([`steps.${k}`, v])
-    if (f.kind === 'building') f.doors.forEach((d, i) => out.push([`doors[${i}].width`, d.width], [`doors[${i}].height`, d.height]))
-    return out
-  }
+  const T = doc.terrain
+  const terraces = Object.entries(T.terraces)
   for (const [id, f] of Object.entries(doc.features)) {
     for (const s of [...f.sourceIds, ...f.phase.sourceIds, f.placement.ref]) if (!sourceIds.has(s)) errs.push(`${id}: unknown source ${s}`)
-    for (const [k, m] of measures(f)) if (!sourceIds.has(m.ref)) errs.push(`${id}.${k}: unknown source ${m.ref}`)
+    const ms: [string, Measure][] = []
+    measuresOf(f, '', ms)
+    for (const [k, m] of ms) if (!sourceIds.has(m.ref)) errs.push(`${id}.${k}: unknown source ${m.ref}`)
     if (f.kind === 'channel' && f.feeds && doc.features[f.feeds]?.kind !== 'cistern') errs.push(`${id}: feeds ${f.feeds} is not a cistern`)
-    if (f.kind === 'building')
+    if (f.kind === 'building') {
       for (const d of f.doors) {
+        if (!d.wall) {
+          errs.push(`${id}: outer door without a wall`)
+          continue
+        }
         const wallLen = d.wall === 'n' || d.wall === 's' ? f.length.value : f.width.value
         if (Math.abs(d.offset) + d.width.value / 2 > wallLen / 2 - f.wallThickness.value) errs.push(`${id}: door on ${d.wall} wall does not fit`)
         if (d.height.value >= f.wallHeight.value) errs.push(`${id}: door taller than the wall`)
         if (f.openSides?.includes(d.wall)) errs.push(`${id}: door on an open side`)
       }
-    if (f.kind === 'altar' || f.kind === 'building' || f.kind === 'cistern') {
-      const c = f.center
-      if (!Object.values(doc.terrain.terraces).some((t) => pointInPolygon(t.polygon, c))) errs.push(`${id}: not on a terrace`)
+      for (const cw of f.crossWalls ?? [])
+        for (const d of cw.doors)
+          if (d.offset - d.width.value / 2 < Math.min(cw.from, cw.to) || d.offset + d.width.value / 2 > Math.max(cw.from, cw.to))
+            errs.push(`${id}: cross-wall door does not fit`)
     }
     if ((f.kind === 'wall' || f.kind === 'channel') && f.polyline.some((p, i) => i > 0 && Math.hypot(p[0] - f.polyline[i - 1][0], p[1] - f.polyline[i - 1][1]) < 1e-6))
       errs.push(`${id}: repeated polyline point`)
+    if (['altar', 'base', 'building', 'cistern', 'column'].includes(f.kind) && f.baseLevel === undefined) {
+      const c = (f as { center: Point2 }).center
+      if (!terraces.some(([, t]) => pointInPolygon(t.polygon, c)) && !f.uncertain) errs.push(`${id}: not on a terrace`)
+    }
   }
-  const T = doc.terrain
+  for (const [id, h] of Object.entries(doc.hidden ?? {}))
+    for (const s of [...h.sourceIds, ...h.phase.sourceIds]) if (!sourceIds.has(s)) errs.push(`hidden ${id}: unknown source ${s}`)
   for (const s of T.sourceIds) if (!sourceIds.has(s)) errs.push(`terrain: unknown source ${s}`)
-  for (const m of [T.falloff.slope, T.falloff.radius]) if (!sourceIds.has(m.ref)) errs.push(`terrain.falloff: unknown source ${m.ref}`)
-  if (T.dem && !sourceIds.has(T.dem.ref)) errs.push(`terrain.dem: unknown source ${T.dem.ref}`)
-  const terraces = Object.entries(T.terraces)
-  for (const [id, t] of terraces) {
-    if (!sourceIds.has(t.level.ref)) errs.push(`terrace ${id}: unknown source ${t.level.ref}`)
-    if (!isSimple(t.polygon)) errs.push(`terrace ${id}: polygon is not simple`)
-  }
-  // Terraces may share edges but must not overlap.
+  const tms: [string, Measure][] = []
+  measuresOf({ falloff: T.falloff, temple: doc.temple }, '', tms)
+  for (const [, t] of terraces) measuresOf(t, '', tms)
+  for (const [k, m] of tms) if (!sourceIds.has(m.ref)) errs.push(`terrain/temple ${k}: unknown source ${m.ref}`)
+  for (const [id, t] of terraces) if (!isSimple(t.polygon)) errs.push(`terrace ${id}: polygon is not simple`)
   const tris = terraces.filter(([, t]) => isSimple(t.polygon)).map(([id, t]) => [id, triangulate(t.polygon)] as const)
   for (let i = 0; i < tris.length; i++)
     for (let j = i + 1; j < tris.length; j++)
-      if (tris[i][1].some((a) => tris[j][1].some((b) => convexOverlap(a, b, 1e-6))))
-        errs.push(`terraces ${tris[i][0]} and ${tris[j][0]} overlap`)
+      if (tris[i][1].some((a) => tris[j][1].some((b) => convexOverlap(a, b, 1e-6)))) errs.push(`terraces ${tris[i][0]} and ${tris[j][0]} overlap`)
   return errs
 }
 
-// ---- footprints (plan polygons, counter-clockwise seen from above in x/z) -------------------
+// ---- footprints (plan polygons) ---------------------------------------------------------------
 
-export function rotatedRect(center: Point2, length: number, width: number, rotationDeg: number): Point2[] {
+/** Local (x along length, z along width) to world; positive rotation turns local x toward north (-z). */
+export function localToWorld2(c: Point2, rotationDeg: number) {
   const a = (rotationDeg * Math.PI) / 180
-  const c = Math.cos(a)
-  const s = Math.sin(a)
-  // Local x along `length`, local z along `width`; rotation about +y (x -> -z for positive angles).
-  return [
-    [-length / 2, -width / 2],
-    [length / 2, -width / 2],
-    [length / 2, width / 2],
-    [-length / 2, width / 2],
-  ].map(([x, z]) => [center[0] + c * x + s * z, center[1] - s * x + c * z] as Point2)
+  const cs = Math.cos(a)
+  const sn = Math.sin(a)
+  return (x: number, z: number): Point2 => [c[0] + cs * x + sn * z, c[1] - sn * x + cs * z]
 }
 
-/** Plan footprint of a feature (walls and channels: the offset polygon of each segment). */
+export function rotatedRect(center: Point2, length: number, width: number, rotationDeg: number): Point2[] {
+  const T = localToWorld2(center, rotationDeg)
+  return [T(-length / 2, -width / 2), T(length / 2, -width / 2), T(length / 2, width / 2), T(-length / 2, width / 2)]
+}
+
+/** Rectangle occupied by a flight of steps against one side of a local L x W block. */
+export function stepsRect(center: Point2, L: number, W: number, rotation: number, s: Steps): Point2[] {
+  const out = s.count.value * s.tread.value
+  const [dx, dz] = { n: [0, -1], s: [0, 1], e: [1, 0], w: [-1, 0] }[s.side]
+  const T = localToWorld2(center, rotation)
+  return rotatedRect(T(dx * (L / 2 + out / 2), dz * (W / 2 + out / 2)), dx ? out : L, dz ? out : W, rotation)
+}
+
+/** Convex hull (monotone chain) of points. */
+export function convexHull(pts: Point2[]): Point2[] {
+  const p = [...pts].sort((a, b) => a[0] - b[0] || a[1] - b[1])
+  const cross = (o: Point2, a: Point2, b: Point2) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+  const lower: Point2[] = []
+  for (const q of p) {
+    while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], q) <= 0) lower.pop()
+    lower.push(q)
+  }
+  const upper: Point2[] = []
+  for (const q of [...p].reverse()) {
+    while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], q) <= 0) upper.pop()
+    upper.push(q)
+  }
+  return [...lower.slice(0, -1), ...upper.slice(0, -1)]
+}
+
+/** Pear outline: convex hull of a large circle (at local -x) and a small one (at local +x), `segs` per circle. */
+export function pearOutline(center: Point2, length: number, diameter: number, small: number, rotation: number, segs = 24, grow = 0): Point2[] {
+  const T = localToWorld2(center, rotation)
+  const R = diameter / 2 + grow
+  const r = small / 2 + grow
+  const c1 = -length / 2 + diameter / 2
+  const c2 = length / 2 - small / 2
+  const pts: Point2[] = []
+  for (let i = 0; i < segs; i++) {
+    const a = (2 * Math.PI * i) / segs
+    pts.push(T(c1 + R * Math.cos(a), R * Math.sin(a)), T(c2 + r * Math.cos(a), r * Math.sin(a)))
+  }
+  return convexHull(pts)
+}
+
+/** Plan footprint of a feature as convex polygons (walls and channels: one per segment). */
 export function footprints(f: SanctuaryFeature): Point2[][] {
   switch (f.kind) {
     case 'altar': {
       const box = rotatedRect(f.center, f.length.value, f.width.value, f.rotation)
-      if (!f.steps || f.steps.count.value === 0) return [box]
-      // The flight of steps occupies a rectangle against one face (local x = length, local z = width).
-      const out = f.steps.count.value * f.steps.tread.value
-      const [dx, dz] = { n: [0, -1], s: [0, 1], e: [1, 0], w: [-1, 0] }[f.steps.side]
-      const lx = dx ? out : f.length.value
-      const lz = dz ? out : f.width.value
-      const ox = dx * (f.length.value / 2 + out / 2)
-      const oz = dz * (f.width.value / 2 + out / 2)
-      const a = (f.rotation * Math.PI) / 180
-      const c: Point2 = [f.center[0] + Math.cos(a) * ox + Math.sin(a) * oz, f.center[1] - Math.sin(a) * ox + Math.cos(a) * oz]
-      return [box, rotatedRect(c, lx, lz, f.rotation)]
+      return f.steps && f.steps.count.value > 0 ? [box, stepsRect(f.center, f.length.value, f.width.value, f.rotation, f.steps)] : [box]
     }
-    case 'building':
+    case 'base':
       return [rotatedRect(f.center, f.length.value, f.width.value, f.rotation)]
-    case 'cistern': {
-      const rim = 2 * f.rimWidth.value
-      if (f.shape === 'circle') return [rotatedRect(f.center, f.diameter!.value + rim, f.diameter!.value + rim, 0)]
-      return [rotatedRect(f.center, f.length!.value + rim, f.width!.value + rim, f.rotation)]
+    case 'building': {
+      const box = rotatedRect(f.center, f.length.value, f.width.value, f.rotation)
+      return f.steps && f.steps.count.value > 0 ? [box, stepsRect(f.center, f.length.value, f.width.value, f.rotation, f.steps)] : [box]
     }
+    case 'cistern': {
+      const rw = f.rimWidth.value
+      if (f.shape === 'circle') return [rotatedRect(f.center, f.diameter!.value + 2 * rw, f.diameter!.value + 2 * rw, 0)]
+      if (f.shape === 'pear') return [pearOutline(f.center, f.length!.value, f.diameter!.value, f.smallDiameter!.value, f.rotation, 24, rw)]
+      return [rotatedRect(f.center, f.length!.value + 2 * rw, f.width!.value + 2 * rw, f.rotation)]
+    }
+    case 'pavement':
+      return [f.polygon]
+    case 'column':
+      return [rotatedRect(f.center, f.baseDiameter.value, f.baseDiameter.value, 0)]
     case 'wall':
     case 'channel': {
-      const w = f.kind === 'wall' ? f.thickness.value : f.width.value
+      const w = f.kind === 'wall' ? f.thickness.value : f.width.value * 1.5
       const pts = f.kind === 'wall' && f.closed ? [...f.polyline, f.polyline[0]] : f.polyline
       return pts.slice(1).map((b, i) => {
         const a = pts[i]

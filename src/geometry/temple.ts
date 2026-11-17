@@ -13,6 +13,8 @@ import type { Collider, GeneratorOutput, InstanceSet, Tier } from './types'
 export interface TempleOptions {
   /** Keep the per-vertex palette index (traceability tests). Default true. */
   colorIdx?: boolean
+  /** Emit the flat ground plane (default true); false when the sanctuary terrain replaces it. */
+  ground?: boolean
 }
 
 function peristyle(r: Resolved, tier: Tier, palette: PaletteLike): { instance: InstanceSet; colliders: Collider[] } {
@@ -33,7 +35,7 @@ function peristyle(r: Resolved, tier: Tier, palette: PaletteLike): { instance: I
 export function buildTemple(r: Resolved, tier: Tier, palette: PaletteLike, opts: TempleOptions = {}): GeneratorOutput {
   const col = new Collector()
   const parts = [
-    ground(r, col),
+    ...(opts.ground === false ? [] : [ground(r, col)]),
     crepidoma(r, col),
     entablature(r, tier, col),
     pediment(r, col),

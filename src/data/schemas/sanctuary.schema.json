@@ -2,12 +2,14 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "sanctuary.schema.json",
   "title": "Sanctuary features",
-  "description": "Primary values for the sanctuary around the temple (plan Step 3b). Coordinates are metres in the temple frame (x east, z south, origin at the stylobate centre). The scan covers only the temple, so every feature is placed from the published site plan (placement.source = plan, with a confidence) and the terrain is a sparse, conjectural description: terrace polygons with levels relative to the stylobate top, retaining walls (wall features with role terrace) and a hilltop falloff beyond the terraces. An optional DEM reference is kept for a future heightfield.",
+  "description": "Primary values for the sanctuary around the temple (plan Step 3b). Coordinates are metres in the temple frame (x east, z south, origin at the stylobate centre). Levels (terrace levels, baseLevel) are metres relative to the stylobate top. The scan covers only the temple, so every feature is placed from the published site plan (placement.source = plan) and the terrain is a sparse, conjectural description: terrace polygons, retaining walls (wall features, role terrace) and a directional hill falloff beyond the terraces.",
   "type": "object",
   "required": [
     "meta",
+    "temple",
     "terrain",
-    "features"
+    "features",
+    "hidden"
   ],
   "additionalProperties": false,
   "properties": {
@@ -19,7 +21,8 @@
       "required": [
         "status",
         "note",
-        "displayYear"
+        "displayYear",
+        "displayLabel"
       ],
       "additionalProperties": false,
       "properties": {
@@ -34,9 +37,36 @@
         },
         "displayYear": {
           "type": "integer",
-          "description": "Year shown (negative = BCE). Features whose phase spans it are shown; the rest are listed but hidden."
+          "description": "Year shown (negative = BCE). Features whose phase spans it are shown."
+        },
+        "displayLabel": {
+          "type": "string",
+          "minLength": 1
         }
       }
+    },
+    "temple": {
+      "type": "object",
+      "required": [
+        "foundationDepth",
+        "rampWidth"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "foundationDepth": {
+          "$ref": "#/definitions/positive",
+          "description": "Depth of the krepis foundation skirt below the lowest step's base (m)."
+        },
+        "rampWidth": {
+          "$ref": "#/definitions/positive"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "terrain": {
+      "$ref": "#/definitions/terrain"
     },
     "features": {
       "type": "object",
@@ -47,8 +77,40 @@
         "$ref": "#/definitions/feature"
       }
     },
-    "terrain": {
-      "$ref": "#/definitions/terrain"
+    "hidden": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "common.schema.json#/definitions/id"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "name",
+          "phase",
+          "sourceIds",
+          "reason"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "phase": {
+            "$ref": "#/definitions/phase"
+          },
+          "sourceIds": {
+            "$ref": "common.schema.json#/definitions/sourceIds"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -76,8 +138,10 @@
         },
         "source": {
           "enum": [
-            "published"
-          ]
+            "published",
+            "plan"
+          ],
+          "description": "published = read in the text; plan = measured on the digitised site plan."
         },
         "ref": {
           "$ref": "common.schema.json#/definitions/id"
@@ -134,6 +198,20 @@
           "properties": {
             "value": {
               "exclusiveMinimum": 0
+            }
+          }
+        }
+      ]
+    },
+    "nonNegative": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/measure"
+        },
+        {
+          "properties": {
+            "value": {
+              "minimum": 0
             }
           }
         }
@@ -207,6 +285,10 @@
         "confidence": {
           "$ref": "confidence.schema.json"
         },
+        "uncertaintyM": {
+          "type": "number",
+          "minimum": 0
+        },
         "note": {
           "type": "string"
         }
@@ -236,8 +318,7 @@
           "type": [
             "integer",
             "null"
-          ],
-          "description": "Negative = BCE; null = unknown/open."
+          ]
         },
         "toYear": {
           "type": [
@@ -259,7 +340,6 @@
     "door": {
       "type": "object",
       "required": [
-        "wall",
         "offset",
         "width",
         "height"
@@ -271,13 +351,172 @@
         },
         "offset": {
           "type": "number",
-          "description": "Door centre along the wall, from the wall midpoint (m, local frame)."
+          "description": "Door centre along the wall from its midpoint (local m)."
         },
         "width": {
           "$ref": "#/definitions/positive"
         },
         "height": {
           "$ref": "#/definitions/positive"
+        }
+      }
+    },
+    "falloffOverride": {
+      "type": "object",
+      "required": [
+        "edgeDrop",
+        "slope"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "edgeDrop": {
+          "$ref": "#/definitions/nonNegative"
+        },
+        "slope": {
+          "$ref": "#/definitions/nonNegative"
+        }
+      }
+    },
+    "terrain": {
+      "type": "object",
+      "required": [
+        "confidence",
+        "sourceIds",
+        "terraces",
+        "falloff"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "const": "conjectural",
+          "description": "The terrain shape is a reconstruction, not a survey."
+        },
+        "sourceIds": {
+          "$ref": "common.schema.json#/definitions/sourceIds"
+        },
+        "note": {
+          "type": "string"
+        },
+        "terraces": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "$ref": "common.schema.json#/definitions/id"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "polygon",
+              "level"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "polygon": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/point"
+                },
+                "minItems": 3
+              },
+              "level": {
+                "$ref": "#/definitions/measure"
+              },
+              "falloff": {
+                "$ref": "#/definitions/falloffOverride"
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "falloff": {
+          "type": "object",
+          "required": [
+            "edgeDrop",
+            "slope",
+            "radius"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "edgeDrop": {
+              "type": "object",
+              "required": [
+                "n",
+                "e",
+                "s",
+                "w"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "n": {
+                  "$ref": "#/definitions/measure"
+                },
+                "e": {
+                  "$ref": "#/definitions/measure"
+                },
+                "s": {
+                  "$ref": "#/definitions/measure"
+                },
+                "w": {
+                  "$ref": "#/definitions/measure"
+                }
+              },
+              "description": "Drop of the natural ground just outside a terrace edge, by outward direction (m)."
+            },
+            "slope": {
+              "type": "object",
+              "required": [
+                "n",
+                "e",
+                "s",
+                "w"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "n": {
+                  "$ref": "#/definitions/measure"
+                },
+                "e": {
+                  "$ref": "#/definitions/measure"
+                },
+                "s": {
+                  "$ref": "#/definitions/measure"
+                },
+                "w": {
+                  "$ref": "#/definitions/measure"
+                }
+              },
+              "description": "Ground slope beyond the edge drop, by outward direction (ratio); it doubles by the radius."
+            },
+            "radius": {
+              "$ref": "#/definitions/positive"
+            }
+          }
+        },
+        "dem": {
+          "type": "object",
+          "required": [
+            "file",
+            "ref",
+            "verified"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "file": {
+              "type": "string",
+              "minLength": 1
+            },
+            "ref": {
+              "$ref": "common.schema.json#/definitions/id"
+            },
+            "verified": {
+              "type": "boolean"
+            },
+            "note": {
+              "type": "string"
+            }
+          }
         }
       }
     },
@@ -295,10 +534,13 @@
         "kind": {
           "enum": [
             "altar",
+            "base",
             "building",
             "wall",
             "cistern",
-            "channel"
+            "channel",
+            "pavement",
+            "column"
           ]
         },
         "name": {
@@ -320,9 +562,18 @@
         "note": {
           "type": "string"
         },
-        "baseY": {
+        "baseLevel": {
           "type": "number",
-          "description": "Optional fixed base level (m); otherwise the base follows the terrain."
+          "description": "Fixed base level relative to the stylobate top (m); otherwise the base follows the terrain."
+        },
+        "uncertain": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Shown, but its existence or form at the display date is uncertain (About panel)."
+        },
+        "complex": {
+          "$ref": "common.schema.json#/definitions/id",
+          "description": "Group of adjoining features (e.g. the SE houses) whose footprints may touch."
         }
       },
       "allOf": [
@@ -350,13 +601,15 @@
               "sourceIds": true,
               "confidence": true,
               "note": true,
-              "baseY": true,
+              "baseLevel": true,
+              "uncertain": true,
+              "complex": true,
               "center": {
                 "$ref": "#/definitions/point"
               },
               "rotation": {
                 "type": "number",
-                "description": "Degrees about +y, counter-clockwise seen from above."
+                "description": "Degrees about +y, counter-clockwise seen from above (local x turns toward north)."
               },
               "length": {
                 "$ref": "#/definitions/positive"
@@ -399,6 +652,53 @@
           "if": {
             "properties": {
               "kind": {
+                "const": "base"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "center",
+              "rotation",
+              "length",
+              "width",
+              "height"
+            ],
+            "properties": {
+              "kind": true,
+              "name": true,
+              "phase": true,
+              "placement": true,
+              "sourceIds": true,
+              "confidence": true,
+              "note": true,
+              "baseLevel": true,
+              "uncertain": true,
+              "complex": true,
+              "center": {
+                "$ref": "#/definitions/point"
+              },
+              "rotation": {
+                "type": "number",
+                "description": "Degrees about +y, counter-clockwise seen from above (local x turns toward north)."
+              },
+              "length": {
+                "$ref": "#/definitions/positive"
+              },
+              "width": {
+                "$ref": "#/definitions/positive"
+              },
+              "height": {
+                "$ref": "#/definitions/positive"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
                 "const": "building"
               }
             }
@@ -422,11 +722,14 @@
               "sourceIds": true,
               "confidence": true,
               "note": true,
-              "baseY": true,
+              "baseLevel": true,
+              "uncertain": true,
+              "complex": true,
               "role": {
                 "enum": [
                   "propylon",
                   "house",
+                  "bath",
                   "ancillary",
                   "other"
                 ]
@@ -460,8 +763,174 @@
                 "items": {
                   "$ref": "#/definitions/side"
                 },
-                "uniqueItems": true,
-                "description": "Sides without a wall (e.g. a propylon's porches)."
+                "uniqueItems": true
+              },
+              "crossWalls": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "axis",
+                    "offset",
+                    "from",
+                    "to",
+                    "thickness",
+                    "doors"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "axis": {
+                      "enum": [
+                        "x",
+                        "z"
+                      ],
+                      "description": "Local axis the wall runs along."
+                    },
+                    "offset": {
+                      "type": "number"
+                    },
+                    "from": {
+                      "type": "number"
+                    },
+                    "to": {
+                      "type": "number"
+                    },
+                    "thickness": {
+                      "$ref": "#/definitions/positive"
+                    },
+                    "doors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/door"
+                      }
+                    }
+                  }
+                }
+              },
+              "columns": {
+                "type": "object",
+                "required": [
+                  "shape",
+                  "diameter",
+                  "positions"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "shape": {
+                    "enum": [
+                      "octagonal",
+                      "round"
+                    ]
+                  },
+                  "diameter": {
+                    "$ref": "#/definitions/positive"
+                  },
+                  "positions": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/point"
+                    },
+                    "minItems": 1
+                  }
+                }
+              },
+              "architraves": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "axis",
+                    "offset",
+                    "from",
+                    "to",
+                    "depth",
+                    "height"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "axis": {
+                      "enum": [
+                        "x",
+                        "z"
+                      ]
+                    },
+                    "offset": {
+                      "type": "number"
+                    },
+                    "from": {
+                      "type": "number"
+                    },
+                    "to": {
+                      "type": "number"
+                    },
+                    "depth": {
+                      "$ref": "#/definitions/positive"
+                    },
+                    "height": {
+                      "$ref": "#/definitions/positive"
+                    }
+                  }
+                }
+              },
+              "roof": {
+                "type": "object",
+                "required": [
+                  "ridge",
+                  "ridgeHeight",
+                  "overhang",
+                  "confidence"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "ridge": {
+                    "enum": [
+                      "x",
+                      "z"
+                    ]
+                  },
+                  "ridgeOffset": {
+                    "type": "number"
+                  },
+                  "ridgeHeight": {
+                    "$ref": "#/definitions/positive"
+                  },
+                  "overhang": {
+                    "$ref": "#/definitions/nonNegative"
+                  },
+                  "tiled": {
+                    "type": "boolean"
+                  },
+                  "confidence": {
+                    "$ref": "confidence.schema.json"
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                }
+              },
+              "steps": {
+                "type": "object",
+                "required": [
+                  "count",
+                  "rise",
+                  "tread",
+                  "side"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "count": {
+                    "$ref": "#/definitions/count"
+                  },
+                  "rise": {
+                    "$ref": "#/definitions/positive"
+                  },
+                  "tread": {
+                    "$ref": "#/definitions/positive"
+                  },
+                  "side": {
+                    "$ref": "#/definitions/side"
+                  }
+                }
               }
             },
             "additionalProperties": false
@@ -490,11 +959,14 @@
               "sourceIds": true,
               "confidence": true,
               "note": true,
-              "baseY": true,
+              "baseLevel": true,
+              "uncertain": true,
+              "complex": true,
               "role": {
                 "enum": [
                   "terrace",
                   "peribolos",
+                  "fence",
                   "other"
                 ]
               },
@@ -508,14 +980,13 @@
                 "$ref": "#/definitions/positive"
               },
               "height": {
-                "$ref": "#/definitions/positive"
+                "$ref": "#/definitions/nonNegative"
               },
               "top": {
                 "enum": [
                   "level",
                   "follow"
-                ],
-                "description": "level: horizontal top at the highest base + height; follow: top follows the base."
+                ]
               }
             },
             "additionalProperties": false
@@ -546,11 +1017,14 @@
               "sourceIds": true,
               "confidence": true,
               "note": true,
-              "baseY": true,
+              "baseLevel": true,
+              "uncertain": true,
+              "complex": true,
               "shape": {
                 "enum": [
                   "rect",
-                  "circle"
+                  "circle",
+                  "pear"
                 ]
               },
               "center": {
@@ -566,6 +1040,9 @@
                 "$ref": "#/definitions/positive"
               },
               "diameter": {
+                "$ref": "#/definitions/positive"
+              },
+              "smallDiameter": {
                 "$ref": "#/definitions/positive"
               },
               "depth": {
@@ -608,6 +1085,22 @@
                     "diameter"
                   ]
                 }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "shape": {
+                      "const": "pear"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "length",
+                    "diameter",
+                    "smallDiameter"
+                  ]
+                }
               }
             ]
           }
@@ -634,7 +1127,9 @@
               "sourceIds": true,
               "confidence": true,
               "note": true,
-              "baseY": true,
+              "baseLevel": true,
+              "uncertain": true,
+              "complex": true,
               "polyline": {
                 "$ref": "#/definitions/polyline"
               },
@@ -645,111 +1140,149 @@
                 "$ref": "#/definitions/positive"
               },
               "feeds": {
-                "$ref": "common.schema.json#/definitions/id",
-                "description": "Id of the cistern this channel drains into."
+                "$ref": "common.schema.json#/definitions/id"
               }
             },
             "additionalProperties": false
           }
-        }
-      ]
-    },
-    "terrain": {
-      "type": "object",
-      "required": [
-        "confidence",
-        "sourceIds",
-        "terraces",
-        "falloff"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "confidence": {
-          "const": "conjectural",
-          "description": "The terrain shape is a reconstruction, not a survey."
         },
-        "sourceIds": {
-          "$ref": "common.schema.json#/definitions/sourceIds"
-        },
-        "note": {
-          "type": "string"
-        },
-        "terraces": {
-          "type": "object",
-          "minProperties": 1,
-          "propertyNames": {
-            "$ref": "common.schema.json#/definitions/id"
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "pavement"
+              }
+            }
           },
-          "additionalProperties": {
-            "type": "object",
+          "then": {
             "required": [
               "polygon",
-              "level"
+              "thickness"
             ],
-            "additionalProperties": false,
             "properties": {
+              "kind": true,
+              "name": true,
+              "phase": true,
+              "placement": true,
+              "sourceIds": true,
+              "confidence": true,
+              "note": true,
+              "baseLevel": true,
+              "uncertain": true,
+              "complex": true,
               "polygon": {
                 "type": "array",
                 "items": {
                   "$ref": "#/definitions/point"
                 },
                 "minItems": 3,
-                "description": "Simple polygon (may be non-convex), either winding."
+                "description": "Convex outline."
               },
-              "level": {
-                "$ref": "#/definitions/measure",
-                "description": "Terrace surface relative to the stylobate top (m, negative = below)."
-              },
-              "note": {
-                "type": "string"
+              "thickness": {
+                "$ref": "#/definitions/positive"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "column"
               }
             }
-          }
-        },
-        "falloff": {
-          "type": "object",
-          "required": [
-            "slope",
-            "radius"
-          ],
-          "additionalProperties": false,
-          "properties": {
-            "slope": {
-              "$ref": "#/definitions/positive",
-              "description": "Drop per metre at the terrace edge (unit ratio)."
+          },
+          "then": {
+            "required": [
+              "center",
+              "baseDiameter",
+              "baseHeight",
+              "lowerDiameter",
+              "upperDiameter",
+              "height",
+              "flutes",
+              "capital"
+            ],
+            "properties": {
+              "kind": true,
+              "name": true,
+              "phase": true,
+              "placement": true,
+              "sourceIds": true,
+              "confidence": true,
+              "note": true,
+              "baseLevel": true,
+              "uncertain": true,
+              "complex": true,
+              "center": {
+                "$ref": "#/definitions/point"
+              },
+              "baseDiameter": {
+                "$ref": "#/definitions/positive"
+              },
+              "baseHeight": {
+                "$ref": "#/definitions/positive"
+              },
+              "lowerDiameter": {
+                "$ref": "#/definitions/positive"
+              },
+              "upperDiameter": {
+                "$ref": "#/definitions/positive"
+              },
+              "height": {
+                "$ref": "#/definitions/positive",
+                "description": "Shaft + capital height above the base (m)."
+              },
+              "flutes": {
+                "$ref": "#/definitions/count"
+              },
+              "capital": {
+                "type": "object",
+                "required": [
+                  "kind",
+                  "width",
+                  "height"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "ionic",
+                      "doric"
+                    ]
+                  },
+                  "width": {
+                    "$ref": "#/definitions/positive"
+                  },
+                  "height": {
+                    "$ref": "#/definitions/positive"
+                  }
+                }
+              },
+              "crowning": {
+                "type": "object",
+                "required": [
+                  "kind",
+                  "height"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "sphinx"
+                    ]
+                  },
+                  "height": {
+                    "$ref": "#/definitions/positive"
+                  }
+                }
+              }
             },
-            "radius": {
-              "$ref": "#/definitions/positive",
-              "description": "Horizontal extent of the modelled hill beyond the terraces; the slope doubles by this distance."
-            }
-          }
-        },
-        "dem": {
-          "type": "object",
-          "required": [
-            "file",
-            "ref",
-            "verified"
-          ],
-          "additionalProperties": false,
-          "description": "Optional future DEM (APHT heightfield) that replaces the sparse description where it has data.",
-          "properties": {
-            "file": {
-              "type": "string",
-              "minLength": 1
-            },
-            "ref": {
-              "$ref": "common.schema.json#/definitions/id"
-            },
-            "verified": {
-              "type": "boolean"
-            },
-            "note": {
-              "type": "string"
-            }
+            "additionalProperties": false
           }
         }
-      }
+      ]
     }
   }
 }
