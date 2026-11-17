@@ -54,6 +54,9 @@ export interface Heightfield {
   originX: number
   originZ: number
   heights: Float32Array
+  /** Optional non-uniform node coordinates (rectilinear grid); when present they replace origin + i * cell for meshing. */
+  xs?: Float64Array
+  zs?: Float64Array
 }
 
 /** Walkable surface. Flat unless `slopeX` is set (dy/dx, y = `y` at x = minX) or `heightfield` is given (terrain). */

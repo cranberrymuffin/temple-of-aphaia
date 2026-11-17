@@ -160,17 +160,84 @@ export function outsideCuts(p0: Point2, p1: Point2, cuts: Point2[][]): [number, 
   return keep
 }
 
-/** Terrain mesh (group 'terrain') from the sparse description, cut by feature footprints. */
-export function sparseTerrain(desc: TerrainDesc, stylobateTop: number, tier: Tier, col: Collector, cuts: Point2[][] = []): Omit<GeneratorOutput, 'groups'> {
-  const fn = terrainHeightFn(desc, stylobateTop)
-  const g = naturalGroundFn(desc, stylobateTop)
-  const ts = terraces(desc, stylobateTop)
-  const bounds = terrainBounds(desc)
-  const cell = SPARSE_CELL[tier]
-  const tris = ts.map((t) => triangulate(t.poly))
+export interface SparseTerrainOptions {
+  /** Natural ground outside the terraces (e.g. the DEM); default: the parametric directional falloff. */
+  ground?: GroundFn
+  /** Rectilinear grid nodes for the natural ground; default: a uniform tier grid over the terraces + radius. */
+  grid?: { xs: Float64Array; zs: Float64Array }
+}
 
-  // Natural ground grid, minus terraces and features.
-  terrain(sampleToHeightfield(g, bounds, cell), 'high', col, [...cuts, ...tris.flat()])
+export interface TerrainMismatch {
+  terrace: string
+  /** Largest amount the natural ground rises above the terrace at its edge (m). */
+  maxAbove: number
+  /** Edge length where it does (m). */
+  length: number
+}
+
+/** Piecewise-linear height of the meshed grid (same triangulation as terrain(): (00,01,11) and (00,11,10)). */
+function meshHeight(hf: Heightfield & { xs: Float64Array; zs: Float64Array }) {
+  const find = (a: Float64Array, v: number) => {
+    let lo = 0
+    let hi = a.length - 2
+    if (v <= a[0]) return 0
+    if (v >= a[a.length - 1]) return a.length - 2
+    while (lo < hi) {
+      const mid = (lo + hi + 1) >> 1
+      if (a[mid] <= v) lo = mid
+      else hi = mid - 1
+    }
+    return lo
+  }
+  const H = (i: number, j: number) => hf.heights[j * hf.nx + i]
+  return (x: number, z: number) => {
+    const i = find(hf.xs, x)
+    const j = find(hf.zs, z)
+    const u = (x - hf.xs[i]) / (hf.xs[i + 1] - hf.xs[i])
+    const v = (z - hf.zs[j]) / (hf.zs[j + 1] - hf.zs[j])
+    const h00 = H(i, j)
+    const h01 = H(i, j + 1)
+    const h11 = H(i + 1, j + 1)
+    const h10 = H(i + 1, j)
+    return v >= u ? h00 + (h01 - h00) * v + (h11 - h01) * u : h00 + (h10 - h00) * u + (h11 - h10) * v
+  }
+}
+
+/** Terrain mesh (group 'terrain'): exact terrace tops, the natural ground grid around them, edge faces. */
+export function sparseTerrain(
+  desc: TerrainDesc,
+  stylobateTop: number,
+  tier: Tier,
+  col: Collector,
+  cuts: Point2[][] = [],
+  opts: SparseTerrainOptions = {},
+): Omit<GeneratorOutput, 'groups'> & { mismatches: TerrainMismatch[] } {
+  const g = opts.ground ?? naturalGroundFn(desc, stylobateTop)
+  const ts = terraces(desc, stylobateTop)
+  const tris = ts.map((t) => triangulate(t.poly))
+  const fnSurface = (x: number, z: number) => {
+    for (const t of ts) if (pointInPolygon(t.poly, [x, z])) return t.y
+    return g(x, z)
+  }
+
+  // Natural ground grid (rectilinear), minus terraces and features.
+  let grid = opts.grid
+  if (!grid) {
+    const b = terrainBounds(desc)
+    const cell = SPARSE_CELL[tier]
+    const axis = (lo: number, hi: number) => {
+      const n = Math.ceil((hi - lo) / cell)
+      return new Float64Array(Array.from({ length: n + 1 }, (_, k) => lo + k * cell))
+    }
+    grid = { xs: axis(b.minX, b.maxX), zs: axis(b.minZ, b.maxZ) }
+  }
+  const nx = grid.xs.length
+  const nz = grid.zs.length
+  const heights = new Float32Array(nx * nz)
+  for (let j = 0; j < nz; j++) for (let i = 0; i < nx; i++) heights[j * nx + i] = g(grid.xs[i], grid.zs[j])
+  const hf = { nx, nz, cell: 0, originX: grid.xs[0], originZ: grid.zs[0], heights, xs: grid.xs, zs: grid.zs }
+  terrain(hf, 'high', col, [...cuts, ...tris.flat()])
+  const mh = meshHeight(hf)
   const b = col.get('terrain')
 
   // Terrace tops, flat and exact, minus features.
@@ -182,11 +249,41 @@ export function sparseTerrain(desc: TerrainDesc, stylobateTop: number, tier: Tie
     }
   })
 
-  // Vertical faces on terrace edges. The grid interpolates g linearly between nodes, so faces reach past g
-  // by a bound on that error (steepest slope over a cell diagonal) to leave no crack.
-  const F = desc.falloff
-  const maxSlope = Math.max(...(['n', 'e', 's', 'w'] as const).map((k) => F.slope[k].value), ...ts.map((t) => t.over?.slope ?? 0))
-  const gap = maxSlope * cell * Math.SQRT2 * (1 + (cell * Math.SQRT2) / F.radius.value) + SKIRT_MARGIN
+  // Edge faces follow the meshed ground exactly: split every edge at grid lines, cell diagonals and where the
+  // ground crosses the terrace level; then down faces (ground lower) or up faces (ground higher).
+  const mismatches = new Map<string, TerrainMismatch>()
+  const crossings = (a: Point2, c: Point2): number[] => {
+    const us = new Set<number>([0, 1])
+    const add = (u: number) => {
+      if (u > 1e-9 && u < 1 - 1e-9) us.add(u)
+    }
+    for (const [arr, k] of [
+      [grid.xs, 0],
+      [grid.zs, 1],
+    ] as const) {
+      const d = c[k] - a[k]
+      if (Math.abs(d) < 1e-12) continue
+      const lo = Math.min(a[k], c[k])
+      const hi = Math.max(a[k], c[k])
+      for (const v of arr) if (v > lo && v < hi) add((v - a[k]) / d)
+    }
+    // Diagonals inside each cell piece.
+    const sorted = [...us].sort((p, q) => p - q)
+    for (let k = 0; k + 1 < sorted.length; k++) {
+      const um = (sorted[k] + sorted[k + 1]) / 2
+      const pm: Point2 = [a[0] + (c[0] - a[0]) * um, a[1] + (c[1] - a[1]) * um]
+      const ci = Math.max(0, Math.min(nx - 2, grid.xs.findIndex((v, idx) => idx < nx - 1 && pm[0] >= v && pm[0] <= grid.xs[idx + 1])))
+      const cj = Math.max(0, Math.min(nz - 2, grid.zs.findIndex((v, idx) => idx < nz - 1 && pm[1] >= v && pm[1] <= grid.zs[idx + 1])))
+      const dx = grid.xs[ci + 1] - grid.xs[ci]
+      const dz = grid.zs[cj + 1] - grid.zs[cj]
+      // f(u) = (x - x0)/dx - (z - z0)/dz, linear in u.
+      const f = (u: number) => (a[0] + (c[0] - a[0]) * u - grid.xs[ci]) / dx - (a[1] + (c[1] - a[1]) * u - grid.zs[cj]) / dz
+      const f0 = f(sorted[k])
+      const f1 = f(sorted[k + 1])
+      if (f0 * f1 < 0) add(sorted[k] + ((sorted[k + 1] - sorted[k]) * f0) / (f0 - f1))
+    }
+    return [...us].sort((p, q) => p - q)
+  }
   for (const t of ts) {
     const poly = t.ccw
     for (let i = 0; i < poly.length; i++) {
@@ -194,10 +291,8 @@ export function sparseTerrain(desc: TerrainDesc, stylobateTop: number, tier: Tie
       const c = poly[(i + 1) % poly.length]
       const len = Math.hypot(c[0] - a[0], c[1] - a[1])
       const out: Point2 = [(c[1] - a[1]) / len, -(c[0] - a[0]) / len]
-      const n = Math.max(1, Math.ceil(len / cell))
-      // Split at the cell subdivision and wherever another terrace's vertex lies on this edge, so each piece
-      // borders a single neighbour; then drop the parts inside feature footprints (they bring their own faces).
-      const params = new Set<number>(Array.from({ length: n + 1 }, (_, k) => k / n))
+      // Split where another terrace's vertex lies on this edge, so each piece borders a single neighbour.
+      const params = new Set<number>(crossings(a, c))
       for (const o of ts)
         if (o !== t)
           for (const q of o.poly) {
@@ -205,39 +300,43 @@ export function sparseTerrain(desc: TerrainDesc, stylobateTop: number, tier: Tie
             const off = Math.abs((q[0] - a[0]) * out[0] + (q[1] - a[1]) * out[1])
             if (u > 1e-9 && u < 1 - 1e-9 && off < 1e-6) params.add(u)
           }
-      const us = [...params].sort((x, y) => x - y)
       const at = (u: number): Point2 => [a[0] + (c[0] - a[0]) * u, a[1] + (c[1] - a[1]) * u]
       const probe = (p: Point2): Point2 => [p[0] + out[0] * 1e-3, p[1] + out[1] * 1e-3]
+      // Level crossings of the ground along the edge (linear within each piece).
+      const base = [...params].sort((p, q) => p - q)
+      for (let k = 0; k + 1 < base.length; k++) {
+        const h0 = mh(...at(base[k])) - t.y
+        const h1 = mh(...at(base[k + 1])) - t.y
+        if (h0 * h1 < 0) params.add(base[k] + ((base[k + 1] - base[k]) * h0) / (h0 - h1))
+      }
+      const us = [...params].sort((p, q) => p - q)
       for (let k = 0; k + 1 < us.length; k++) {
         const pa = at(us[k])
         const pb = at(us[k + 1])
         const mid = at((us[k] + us[k + 1]) / 2)
         const other = ts.find((o) => o !== t && pointInPolygon(o.poly, probe(mid)))
-        let y0: number
-        let y1: number
-        let facing: Point2
-        if (other) {
-          if (other.y >= t.y - 1e-6) continue // equal: seamless; higher: that terrace builds the riser
-          ;[y0, y1, facing] = [other.y - SKIRT_MARGIN, t.y, out]
-        } else {
-          const ga = g(...probe(pa))
-          const gb = g(...probe(pb))
-          if (Math.max(ga, gb) > t.y + 1e-6) [y0, y1, facing] = [t.y, Math.max(ga, gb) + gap, [-out[0], -out[1]]]
-          else [y0, y1, facing] = [Math.min(ga, gb) - gap, t.y, out]
+        if (other && other.y >= t.y - 1e-6) continue // equal: seamless; higher: that terrace builds the riser
+        const ga = other ? other.y : mh(...pa)
+        const gb = other ? other.y : mh(...pb)
+        const up = !other && (ga + gb) / 2 > t.y
+        if (up) {
+          const m = mismatches.get(t.id) ?? { terrace: t.id, maxAbove: 0, length: 0 }
+          m.maxAbove = Math.max(m.maxAbove, ga - t.y, gb - t.y)
+          m.length += Math.hypot(pb[0] - pa[0], pb[1] - pa[1])
+          mismatches.set(t.id, m)
         }
         for (const [u0, u1] of outsideCuts(pa, pb, cuts)) {
           const p0: Point2 = [pa[0] + (pb[0] - pa[0]) * u0, pa[1] + (pb[1] - pa[1]) * u0]
           const p1: Point2 = [pa[0] + (pb[0] - pa[0]) * u1, pa[1] + (pb[1] - pa[1]) * u1]
           if (Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) < 1e-4) continue // sub-millimetre slivers between cuts
-          b.polygonFacing(
-            [
-              [p0[0], y0, p0[1]],
-              [p1[0], y0, p1[1]],
-              [p1[0], y1, p1[1]],
-              [p0[0], y1, p0[1]],
-            ],
-            [facing[0], 0, facing[1]],
-          )
+          const g0 = other ? other.y : mh(...p0)
+          const g1 = other ? other.y : mh(...p1)
+          // Faces run between the terrace level and the meshed ground, overlapping it by a hair (no crack).
+          const eps = SKIRT_MARGIN
+          const quad: Vec3[] = up
+            ? [[p0[0], t.y, p0[1]], [p1[0], t.y, p1[1]], [p1[0], g1 + eps, p1[1]], [p0[0], g0 + eps, p0[1]]]
+            : [[p0[0], g0 - eps, p0[1]], [p1[0], g1 - eps, p1[1]], [p1[0], t.y, p1[1]], [p0[0], t.y, p0[1]]]
+          b.polygonFacing(quad, up ? [-out[0], 0, -out[1]] : [out[0], 0, out[1]])
         }
       }
     }
@@ -253,7 +352,7 @@ export function sparseTerrain(desc: TerrainDesc, stylobateTop: number, tier: Tie
     polygon: t.poly,
   }))
   const wb = terrainBounds(desc, WALK_MARGIN)
-  const walk = sampleToHeightfield(fn, wb, WALK_CELL)
+  const walk = sampleToHeightfield(fnSurface, wb, WALK_CELL)
   levels.push({ name: 'terrain', y: Math.min(...walk.heights), ...wb, heightfield: walk })
-  return { instances: [], colliders: [], levels }
+  return { instances: [], colliders: [], levels, mismatches: [...mismatches.values()].filter((m) => m.maxAbove > 0.01) }
 }

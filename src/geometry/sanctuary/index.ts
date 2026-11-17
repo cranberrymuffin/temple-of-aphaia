@@ -14,7 +14,9 @@ import { votiveColumn } from './votive'
 import type { GroundFn, SanctuaryContext } from './common'
 import { sampleHeight, terrain } from './terrain'
 import { channel, wallRun } from './wall'
-import { sparseTerrain, terrainHeightFn } from './terraces'
+import { demGrid, demGround, type Dem } from './dem'
+import { pointInPolygon } from '../../data/polygon'
+import { sparseTerrain, terrainHeightFn, type TerrainMismatch } from './terraces'
 
 export interface FeatureReport {
   id: string
@@ -96,26 +98,67 @@ export function buildTerrain(hf: Heightfield, tier: Tier, palette: PaletteLike, 
   return { ...t, groups: col.build(palette) }
 }
 
-/**
- * Terrain for the sanctuary document: the sparse, conjectural description (default), or a DEM heightfield
- * when one is supplied (future). Returns the mesh output and the ground function features must sit on.
- */
-export function sanctuaryTerrain(doc: SanctuaryDoc, stylobateTop: number, tier: Tier, palette: PaletteLike, cuts: Point2[][], dem?: Heightfield) {
-  if (dem) return { output: buildTerrain(dem, tier, palette, cuts), ground: groundFromHeightfield(dem) }
-  const col = new Collector()
-  const t = sparseTerrain(doc.terrain, stylobateTop, tier, col, cuts)
-  return { output: { ...t, groups: col.build(palette) }, ground: terrainHeightFn(doc.terrain, stylobateTop) }
-}
-
 export const groundFromHeightfield = (hf: Heightfield): GroundFn => (x, z) => sampleHeight(hf, x, z)
 
+/** Sea plane half-size beyond the landscape (m): it reaches the horizon past the DEM window. */
+export const SEA_EXTENT = 12000
+
+export interface SiteTerrain {
+  output: GeneratorOutput
+  /** Exact surface: terrace levels inside the terraces, natural ground (DEM or falloff) outside. */
+  ground: GroundFn
+  /** Places where the natural ground rises above a terrace edge (logged, cut faces built). */
+  mismatches: TerrainMismatch[]
+  seaLevelY?: number
+}
+
 /**
- * Whole site: ground function first (sparse terrain, or a DEM), then the features sitting on it, then the
- * terrain cut by their footprints plus any extra outlines (e.g. the temple krepis when it is not on a terrace).
+ * Terrain for the sanctuary: terraces at their (ancient) levels, the natural ground around them from the DEM
+ * when given (real hill + sea plane, rectilinear LOD grid) or else the parametric directional falloff.
  */
-export function buildSite(doc: SanctuaryDoc, stylobateTop: number, tier: Tier, palette: PaletteLike, opts: { dem?: Heightfield; extraCuts?: Point2[][] } = {}) {
-  const ground = opts.dem ? groundFromHeightfield(opts.dem) : terrainHeightFn(doc.terrain, stylobateTop)
+export function sanctuaryTerrain(doc: SanctuaryDoc, stylobateTop: number, tier: Tier, palette: PaletteLike, cuts: Point2[][], dem?: Dem): SiteTerrain {
+  const col = new Collector()
+  const t = sparseTerrain(doc.terrain, stylobateTop, tier, col, cuts, dem ? { ground: demGround(dem), grid: demGrid(dem, tier) } : {})
+  if (dem) {
+    const e = SEA_EXTENT
+    const y = dem.seaLevelY
+    col.get('sea').polygonFacing(
+      [
+        [-e, y, -e],
+        [e, y, -e],
+        [e, y, e],
+        [-e, y, e],
+      ],
+      [0, 1, 0],
+    )
+  }
+  const { mismatches, ...rest } = t
+  return {
+    output: { ...rest, groups: col.build(palette) },
+    ground: siteGround(doc, stylobateTop, dem),
+    mismatches,
+    seaLevelY: dem?.seaLevelY,
+  }
+}
+
+/** The surface features sit on: terrace level inside a terrace, natural ground outside. */
+export function siteGround(doc: SanctuaryDoc, stylobateTop: number, dem?: Dem): GroundFn {
+  if (!dem) return terrainHeightFn(doc.terrain, stylobateTop)
+  const g = demGround(dem)
+  const ts = Object.values(doc.terrain.terraces).map((t) => ({ poly: t.polygon, y: stylobateTop + t.level.value }))
+  return (x, z) => {
+    for (const t of ts) if (pointInPolygon(t.poly, [x, z])) return t.y
+    return g(x, z)
+  }
+}
+
+/**
+ * Whole site: ground function first, then the features sitting on it, then the terrain cut by their
+ * footprints plus any extra outlines.
+ */
+export function buildSite(doc: SanctuaryDoc, stylobateTop: number, tier: Tier, palette: PaletteLike, opts: { dem?: Dem; extraCuts?: Point2[][] } = {}) {
+  const ground = siteGround(doc, stylobateTop, opts.dem)
   const sanctuary = buildSanctuary(doc, tier, palette, ground, stylobateTop)
-  const terrainOut = sanctuaryTerrain(doc, stylobateTop, tier, palette, [...sanctuary.cuts, ...(opts.extraCuts ?? [])], opts.dem).output
-  return { sanctuary, terrain: terrainOut, ground }
+  const t = sanctuaryTerrain(doc, stylobateTop, tier, palette, [...sanctuary.cuts, ...(opts.extraCuts ?? [])], opts.dem)
+  return { sanctuary, terrain: t.output, ground, mismatches: t.mismatches, seaLevelY: t.seaLevelY }
 }

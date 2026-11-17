@@ -131,7 +131,14 @@ export function findCoplanarOverlaps(tris: Tri[], minArea = 1e-6, limit = 20): C
     for (const a of opts[0]) for (const b of opts[1]) for (const c of opts[2]) for (const e of opts[3]) keys.push(`${a},${b},${c},${e}`)
     return keys
   }
-  const info = live.map(([t, i]) => ({ t, i, pc: canon(t), cells: cells(t) }))
+  // Huge triangles (sea plane, ground) would cover millions of cells: bucket them by plane only.
+  const MAX_CELLS = 4096
+  const cellCount = (t: Tri) =>
+    [0, 1, 2].reduce((acc, k) => acc * (Math.floor(Math.max(t.a[k], t.b[k], t.c[k]) / CELL) - Math.floor(Math.min(t.a[k], t.b[k], t.c[k]) / CELL) + 1), 1)
+  const info = live.map(([t, i]) => {
+    const big = cellCount(t) > MAX_CELLS
+    return { t, i, pc: canon(t), cells: big ? ['*'] : cells(t), big }
+  })
   for (const x of info) {
     const pk = planeKeys(x.pc[0], x.pc[1], false)[0]
     for (const c of x.cells) {
@@ -145,11 +152,14 @@ export function findCoplanarOverlaps(tris: Tri[], minArea = 1e-6, limit = 20): C
   for (const x of info) {
     const seen = new Set<number>()
     for (const pk of planeKeys(x.pc[0], x.pc[1], true))
-      for (const c of x.cells) {
+      for (const c of [...x.cells, ...(x.big ? [] : ['*'])]) {
         const arr = keyOf.get(`${pk}|${c}`)
         if (!arr) continue
         for (const j of arr) {
-          if (j <= x.i || seen.has(j)) continue
+          // Small triangles meet the plane-only (huge) bucket in both index directions: the huge ones never
+          // query the cell buckets themselves.
+          const bothWays = c === '*' && !x.big
+          if (j === x.i || seen.has(j) || (!bothWays && j < x.i)) continue
           seen.add(j)
           const u = tris[j]
           const t = x.t

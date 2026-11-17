@@ -67,11 +67,11 @@ export function buildScene(out: GeneratorOutput, opts: BuildOptions): Group {
   const byMaterial = new Map<string, GeometryGroup[]>()
   for (const g of out.groups) {
     // Ground and sanctuary terrain keep their earth vertex colour even in the plain (unpainted) view.
-    const key = g.name === 'ground' || g.name === 'terrain' ? 'ground' : g.material
+    const key = g.name === 'ground' || g.name === 'terrain' ? 'ground' : g.name === 'sea' ? 'sea' : g.material
     byMaterial.set(key, [...(byMaterial.get(key) ?? []), g])
   }
   for (const [key, groups] of byMaterial) {
-    const mesh = new Mesh(toGeometry(groups), material(opts, key === 'ground'))
+    const mesh = new Mesh(toGeometry(groups), material(opts, key === 'ground' || key === 'sea'))
     mesh.name = key
     mesh.userData.elements = groups.map((g) => g.name)
     root.add(mesh)

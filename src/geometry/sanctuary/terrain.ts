@@ -116,13 +116,15 @@ export function terrain(hf: Heightfield, tier: Tier, col: Collector, exclude: Po
   const i0 = b.idx.length
   const holes = exclude.map((p) => ({ p, bb: bboxOf(p) }))
   const vmap = new Map<number, number>()
-  const P = (ix: number, iz: number): Vec3 => [hf.originX + ix * hf.cell, at(hf, ix, iz), hf.originZ + iz * hf.cell]
+  const X = (ix: number) => (hf.xs ? hf.xs[ix] : hf.originX + ix * hf.cell)
+  const Z = (iz: number) => (hf.zs ? hf.zs[iz] : hf.originZ + iz * hf.cell)
+  const P = (ix: number, iz: number): Vec3 => [X(ix), at(hf, ix, iz), Z(iz)]
   const vert = (ix: number, iz: number) => {
     const key = iz * hf.nx + ix
     let v = vmap.get(key)
     if (v === undefined) {
       const p = P(ix, iz)
-      v = b.vertex(p, normalAt(hf, p[0], p[2]), [p[0], p[2]])
+      v = b.vertex(p, [0, 1, 0], [p[0], p[2]]) // normals from the faces below
       vmap.set(key, v)
     }
     return v
@@ -164,7 +166,7 @@ export function terrain(hf: Heightfield, tier: Tier, col: Collector, exclude: Po
         for (const pc of pieces) {
           const base = b.vertexCount
           const v3 = pc.map(([x, z]): Vec3 => [x, hAt(x, z), z])
-          for (const p of v3) b.vertex(p, normalAt(hf, p[0], p[2]), [p[0], p[2]])
+          for (const p of v3) b.vertex(p, [0, 1, 0], [p[0], p[2]])
           // Fan the convex piece; drop clipping slivers and keep every triangle up-facing.
           for (let i = 1; i + 1 < pc.length; i++) {
             const [a, c, d] = [v3[0], v3[i], v3[i + 1]]
@@ -177,12 +179,10 @@ export function terrain(hf: Heightfield, tier: Tier, col: Collector, exclude: Po
       }
     }
   faceNormals(b, v0, i0)
-  const x0 = hf.originX
-  const z0 = hf.originZ
   return {
     instances: [],
     colliders: [],
-    levels: [{ name: 'terrain', y: minY, minX: x0, maxX: x0 + (hf.nx - 1) * hf.cell, minZ: z0, maxZ: z0 + (hf.nz - 1) * hf.cell, heightfield: hf }],
+    levels: [{ name: 'terrain', y: minY, minX: X(0), maxX: X(hf.nx - 1), minZ: Z(0), maxZ: Z(hf.nz - 1), heightfield: hf }],
   }
 }
 

@@ -31,6 +31,11 @@ describe('coplanar finder (controls)', () => {
     ])
     expect(run((b) => (b.box([0, 0, 0], [1, 1, 1], ['+y']), b.box([0, 1, 0], [1, 2, 1], ['-y'])))).toEqual([])
   })
+  it('flags small faces lying on a huge one (sea-plane case), whatever their order', () => {
+    expect(run((b) => (b.box([0, -1, 0], [1, 0, 1]), b.polygonFacing([[-9000, 0, -9000], [9000, 0, -9000], [9000, 0, 9000], [-9000, 0, 9000]], [0, 1, 0])))).not.toEqual([])
+    expect(run((b) => (b.polygonFacing([[-9000, 0, -9000], [9000, 0, -9000], [9000, 0, 9000], [-9000, 0, 9000]], [0, 1, 0]), b.box([0, -1, 0], [1, 0, 1])))).not.toEqual([])
+  })
+
   it('flags a 0.3 mm offset overlap (below the 0.5 mm plane tolerance)', () => {
     expect(run((b) => (b.box([0, 0, 0], [1, 1, 1]), b.box([0.2, 1.0003, 0.2], [0.8, 2, 0.8])))).not.toEqual([])
   })

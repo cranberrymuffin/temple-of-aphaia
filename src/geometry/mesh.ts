@@ -43,6 +43,7 @@ export const ELEMENT_PALETTE: Record<string, string> = {
   'interior-step': 'cella-floor-red',
   // Sanctuary (Step 3b; Step 4 refines the paint).
   terrain: '',
+  sea: '',
   altar: 'step-limestone',
   'sanctuary-building': 'step-limestone',
   'sanctuary-floor': 'step-limestone',
@@ -62,6 +63,8 @@ export const ELEMENT_PALETTE: Record<string, string> = {
 
 /** Unpainted ground colour (not a reconstruction claim, so not in palette.json). */
 const GROUND_RGB: Vec3 = [146, 132, 104]
+/** Unpainted sea colour (scenery, not a reconstruction claim). */
+const SEA_RGB: Vec3 = [58, 104, 140]
 export const NO_PALETTE = 0xffff
 
 export const sub = (a: Vec3, b: Vec3): Vec3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]]
@@ -218,7 +221,7 @@ export class MeshBuilder {
         const e = id ? palette[id] : undefined
         if (id && !e) throw new Error(`palette entry ${id} missing`)
         if (e && entry && e.pattern !== entry.pattern) throw new Error(`${this.name}: part palette ${id} needs another material`)
-        c = [e ? hexToRgb(e.color) : GROUND_RGB, e ? paletteIds.indexOf(id) : NO_PALETTE]
+        c = [e ? hexToRgb(e.color) : this.name === 'sea' ? SEA_RGB : GROUND_RGB, e ? paletteIds.indexOf(id) : NO_PALETTE]
         cache.set(id, c)
       }
       color.set(c[0], i * 3)

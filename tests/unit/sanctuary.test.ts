@@ -294,11 +294,17 @@ describe.each(TIERS)('sanctuary generators on the sparse terrain (%s)', (tier) =
     expect(n).toBeLessThan(tier === 'low' ? 30_000 : 150_000)
   })
 
-  it('DEM path: the same features on a heightfield (future)', () => {
-    const dem = buildSite(doc, S, tier, palette.colors, { dem: hf })
-    expect(dem.terrain.levels.find((l) => l.name === 'terrain')?.heightfield).toBe(hf)
-    expect(meshProblems([...dem.sanctuary.output.groups, ...dem.terrain.groups])).toEqual([])
-  })
+  it('DEM path: natural ground from a (synthetic) two-grid DEM, with a sea plane', () => {
+    const dem = { hilltop: hf, landscape: { ...hf, cell: 2, originX: -180, originZ: -160 }, seaLevelY: -50, attribution: 'synthetic', liability: 'synthetic' }
+    const site = buildSite(doc, S, tier, palette.colors, { dem })
+    const names = site.terrain.groups.map((g) => g.name)
+    expect(names).toContain('terrain')
+    expect(names).toContain('sea')
+    expect(site.seaLevelY).toBe(-50)
+    expect(meshProblems([...site.sanctuary.output.groups, ...site.terrain.groups])).toEqual([])
+    const hits = findCoplanarOverlaps(worldTriangles(mergeOutputs([site.sanctuary.output, site.terrain])))
+    expect(hits.map((h) => `${h.a} x ${h.b}`)).toEqual([])
+  }, 60_000)
 })
 
 describe('sparse terrain (terraces + retaining walls + hilltop falloff)', () => {
