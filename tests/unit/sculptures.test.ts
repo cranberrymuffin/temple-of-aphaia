@@ -15,7 +15,9 @@ import { validate } from '../../src/data/validate'
 import { resolveDimensions } from '../../src/data/resolveDimensions'
 import type { SanctuaryDoc } from '../../src/data/sanctuary'
 import type { Dimensions } from '../../src/data/types'
-import { fitScan, SCAN_CONVENTIONS } from '../../src/geometry/figures'
+import { layoutPediment, SCAN_CONVENTIONS } from '../../src/geometry/figures'
+import { buildSite } from '../../src/geometry/sanctuary'
+import { mirrorScan } from '../../src/app/sculptures'
 import { buildTemple } from '../../src/geometry/temple'
 import { THORVALDSEN_NOTE, CULT_STATUE_LABEL, aboutText, buildAboutContent } from '../../src/app/about/content'
 
@@ -25,6 +27,10 @@ const doc = sanctuary as unknown as SanctuaryDoc
 const r = resolveDimensions(dimensions.dimensions as unknown as Dimensions, { eastRamp: true, rampWidth: doc.temple.rampWidth.value, foundationDepth: doc.temple.foundationDepth.value })
 const temple = buildTemple(r, 'low', palette.colors as Record<string, { color: string; pattern: string }>)
 const field = { faceX: r.pediment.tympanumX, outerX: r.roof.halfX, baseY: r.pediment.baseY, halfZ: r.pediment.halfZ, apexY: r.pediment.apexY }
+
+type Entry = (typeof sculptures.sculptures)[number] & { asset?: string; mirror?: boolean }
+const entries = sculptures.sculptures as Entry[]
+const real = entries.filter((e) => e.kind === 'real')
 
 async function glbPositions(file: string): Promise<Float32Array> {
   const buf = readFileSync(`public/sculptures/${file}`)
@@ -51,17 +57,26 @@ describe('sculptures manifest', () => {
     expect(validate('sculptures', sculptures)).toEqual([])
     const figureIds = new Set([...pediments.west.figures, ...pediments.eastOptions.flatMap((o) => o.figures)].map((f) => f.id))
     const sourceIds = new Set(sources.sources.map((s) => s.id))
-    for (const s of sculptures.sculptures) {
+    for (const s of entries) {
       if ('figureId' in s.slot && s.slot.figureId) expect(figureIds.has(s.slot.figureId), s.id).toBe(true)
-      expect(sourceIds.has(s.source.sourceId), s.id).toBe(true)
+      const a = entries.find((x) => x.id === (s.asset ?? s.id))!
+      expect(a.kind, `${s.id} reuses a real scan`).toBe('real')
+      expect(sourceIds.has(a.source!.sourceId), s.id).toBe(true)
+      if (s.kind !== 'real') expect(s.from, s.id).toMatch(/^(mirrored|imagined) from /)
     }
+    // Every pediment slot has a scan (stand-ins remain only as the loading fallback).
+    const filled = new Set(entries.flatMap((e) => ('figureId' in e.slot && e.slot.figureId ? [e.slot.figureId] : [])))
+    for (const id of [...pediments.west.figures, ...pediments.eastOptions.find((o) => o.id === pediments.eastDisplayed)!.figures].map((f) => f.id)) expect(filled.has(id), id).toBe(true)
+    const sphinx = entries.find((e) => e.id === 'sphinx-aegina')!
+    expect(sources.sources.find((x) => x.id === 'sketchfab-marchal-sphinx')!.licence).toMatch(/CC BY-NC-SA 4\.0/)
+    expect(sphinx.licence).toMatch(/likewise CC BY-NC-SA/)
     const smk = sources.sources.find((s) => s.id === 'smk-royal-cast-collection')!
     expect(smk.licence).toMatch(/Public Domain Mark 1\.0/)
   })
 
   it('every scan has both LODs on disk, within the triangle targets and the 1.5 MB high-tier budget', () => {
     let high = 0
-    for (const s of sculptures.sculptures) {
+    for (const s of real) {
       const a = A[s.id]
       expect(a, s.id).toBeDefined()
       for (const lod of ['high', 'low'] as const) {
@@ -76,28 +91,56 @@ describe('sculptures manifest', () => {
 })
 
 describe('slot fitting with the real scan vertices', () => {
-  it('every pediment scan sits on the cornice, in front of the tympanum, under the raking soffit and inside the field', async () => {
+  it('height-based layout: every vertex on the cornice, in front of the tympanum, under the soffit, inside the field; no overlaps', async () => {
     const slots = new Map(temple.figureSlots.map((f) => [f.id, f]))
-    for (const s of sculptures.sculptures) {
-      if (!('figureId' in s.slot) || !s.slot.figureId) continue
-      const slot = slots.get(s.slot.figureId)!
-      const p = await glbPositions(A[s.id].lods.low.file)
-      const plinth = Math.min(A[s.id].plinthM, SCAN_CONVENTIONS.maxPlinth)
-      const fit = fitScan(p, plinth, slot.side, slot.z, field, slot.spacing * SCAN_CONVENTIONS.shiftFraction)
-      expect(fit.scale, s.id).toBeGreaterThan(0.35)
-      expect(fit.scale, s.id).toBeLessThanOrEqual(1)
-      const c = Math.cos(fit.rotY), sn = Math.sin(fit.rotY)
-      for (let i = 0; i < p.length; i += 3) {
-        const x = fit.position[0] + (c * p[i] + sn * p[i + 2]) * fit.scale
-        const y = fit.position[1] + p[i + 1] * fit.scale
-        const z = fit.position[2] + (-sn * p[i] + c * p[i + 2]) * fit.scale
-        expect(Math.abs(z), s.id).toBeLessThan(field.halfZ)
-        expect(Math.abs(x), s.id).toBeGreaterThan(field.faceX)
-        expect(Math.abs(x), s.id).toBeLessThanOrEqual(field.outerX + SCAN_CONVENTIONS.overhang + 1e-6)
-        if (y > field.baseY) expect(y, s.id).toBeLessThanOrEqual(field.baseY + (field.apexY - field.baseY) * (1 - Math.abs(z) / field.halfZ) + 1e-6)
-      }
+    const scans = new Map<string, Float32Array>()
+    for (const e of real) if (A[e.id]) scans.set(e.id, await glbPositions(A[e.id].lods.low.file))
+    for (const side of ['west', 'east'] as const) {
+      const row = entries
+        .filter((e) => 'pediment' in e.slot && e.slot.pediment === side)
+        .map((e) => {
+          const p = scans.get(e.asset ?? e.id)!
+          const pts = e.mirror ? mirrorScan({ positions: p, normals: new Float32Array(p.length), index: new Uint32Array(0) }).positions : p
+          return { e, slot: slots.get((e.slot as { figureId: string }).figureId)!, pts }
+        })
+        .sort((a, b) => (side === 'east' ? b.slot.z - a.slot.z : a.slot.z - b.slot.z))
+      const centre = row.findIndex((r) => Math.abs(r.slot.z) < 1e-6)
+      const fits = layoutPediment(field, side, row.map((r) => ({ points: r.pts, plinth: Math.min(A[r.e.asset ?? r.e.id].plinthM, SCAN_CONVENTIONS.maxPlinth) })), centre)
+      const spans: [number, number, string][] = []
+      row.forEach((r, k) => {
+        const fit = fits[k]
+        const p = r.pts
+        expect(fit.scale, r.e.id).toBeGreaterThan(0.45)
+        expect(fit.scale, r.e.id).toBeLessThanOrEqual(1)
+        const c = Math.cos(fit.rotY), sn = Math.sin(fit.rotY)
+        let z0 = Infinity, z1 = -Infinity
+        for (let i = 0; i < p.length; i += 3) {
+          const x = fit.position[0] + (c * p[i] + sn * p[i + 2]) * fit.scale
+          const y = fit.position[1] + p[i + 1] * fit.scale
+          const z = fit.position[2] + (-sn * p[i] + c * p[i + 2]) * fit.scale
+          z0 = Math.min(z0, z)
+          z1 = Math.max(z1, z)
+          expect(Math.abs(z), r.e.id).toBeLessThan(field.halfZ)
+          expect(Math.abs(x), r.e.id).toBeGreaterThan(field.faceX)
+          expect(Math.abs(x), r.e.id).toBeLessThanOrEqual(field.outerX + SCAN_CONVENTIONS.overhang + 1e-6)
+          if (y > field.baseY) expect(y, r.e.id).toBeLessThanOrEqual(field.baseY + (field.apexY - field.baseY) * (1 - Math.abs(z) / field.halfZ) + 1e-6)
+        }
+        spans.push([z0, z1, r.e.id])
+      })
+      spans.sort((a, b) => a[0] - b[0])
+      for (let i = 1; i < spans.length; i++) expect(spans[i][0], `${spans[i - 1][2]} / ${spans[i][2]}`).toBeGreaterThanOrEqual(spans[i - 1][1])
     }
-  }, 60_000)
+  }, 120_000)
+
+  it('the sphinx slot sits on the votive column capital and its scan fits the crowning height', () => {
+    const site = buildSite(doc, r.stylobate.top, 'low', palette.colors as Record<string, { color: string; pattern: string }>, {})
+    const sp = site.sanctuary.sphinxSlots[0]
+    const f = (sanctuary.features as unknown as Record<string, { center: [number, number]; crowning?: { height: { value: number } } }>)['votive-column']
+    expect([sp.x, sp.z]).toEqual(f.center)
+    expect(sp.height).toBe(f.crowning!.height.value)
+    expect(sp.ranges[0].count).toBeGreaterThan(0)
+    expect((assets as Record<string, { size: number[] }>)['sphinx-aegina'].size[1]).toBeCloseTo(sp.height, 3)
+  })
 
   it('the cult statue base sits on the naos floor at two thirds of the cella from the door, with a walk collider', () => {
     const c = temple.cultSlot
@@ -113,7 +156,10 @@ describe('About credits', () => {
     const text = aboutText(buildAboutContent({ site: { bounds: { minX: 0, maxX: 0, minZ: 0, maxZ: 0 }, displayLabel: '', features: [], terrainMismatches: [], attribution: [], demLoadMs: 0 }, log: [] }))
     expect(text).toContain(THORVALDSEN_NOTE)
     expect(text).toContain(CULT_STATUE_LABEL)
-    for (const s of sculptures.sculptures) expect(text).toContain(`SMK ${s.source.objectNumber}`)
+    for (const s of real.filter((e) => e.source!.sourceId === 'smk-royal-cast-collection')) expect(text).toContain(`SMK ${s.source!.objectNumber}`)
+    for (const s of entries.filter((e) => e.kind !== 'real')) expect(text).toContain(s.from!)
+    expect(text).toContain('A comparable sphinx (cast of the Sphinx of Aegina, Copenhagen); the Aphaia original is lost')
+    expect(text).toContain('Sphinx seated by Geoffrey Marchal is licensed under CC Attribution-NonCommercial-ShareAlike.')
     expect(text).toContain('Public Domain Mark 1.0')
   })
 })

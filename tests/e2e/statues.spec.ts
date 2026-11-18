@@ -1,5 +1,5 @@
 // Scanned sculptures: lazy loading after the first view, both pediments, the cult statue in the cella (walk
-// mode at eye height) and the About credits. Writes screenshots/statues/.
+// mode at eye height) and the About credits. Writes screenshots/statues2/.
 import { expect, test, type Page } from '@playwright/test'
 import type { TempleMeta } from '../../src/geometry/protocol'
 import type {} from '../../src/app/test-hook'
@@ -36,7 +36,7 @@ test.describe('scanned sculptures', () => {
     // No sculpture request before the first interactive view.
     for (const g of r.glb) expect(g.t, g.url).toBeGreaterThanOrEqual(r.ready - 50)
     expect(r.status.failed).toEqual([])
-    expect(r.status.loaded.length).toBe(14)
+    expect(r.status.loaded.length).toBe(26)
     expect(r.status.bytes).toBeLessThan(1.5 * 1024 * 1024)
     const stats = await page.evaluate(() => window.__aphaia!.stats())
     expect(stats.drawCalls).toBeLessThanOrEqual(10)
@@ -51,13 +51,18 @@ test.describe('scanned sculptures', () => {
       'west-pediment-left-half': { position: [-F.outerX - 6, F.baseY - 0.6, -3.5], target: [-F.outerX, mid - 0.4, -3.5], fov: 50 },
       'east-pediment-right-half': { position: [F.outerX + 6, F.baseY - 0.6, -3.5], target: [F.outerX, mid - 0.4, -3.5], fov: 50 },
       'front-34': { position: [F.outerX + 22, 12, 20], target: [0, 5, 0], fov: 50 },
+      'west-pediment-right-half': { position: [-F.outerX - 6, F.baseY - 0.6, 3.5], target: [-F.outerX, mid - 0.4, 3.5], fov: 50 },
+      'east-pediment-left-half': { position: [F.outerX + 6, F.baseY - 0.6, 3.5], target: [F.outerX, mid - 0.4, 3.5], fov: 50 },
     }
+    const sp = meta.sculpture.sphinxSlot!
+    shots['sphinx-column'] = { position: [sp.x - 7, sp.y + 0.5, sp.z + 6], target: [sp.x, sp.y + 0.7, sp.z], fov: 40 }
+    shots['sphinx-column-wide'] = { position: [sp.x - 22, sp.y - 6, sp.z + 18], target: [sp.x, sp.y - 5, sp.z], fov: 50 }
     for (const [name, pose] of Object.entries(shots)) {
       await page.evaluate((p) => {
         window.__aphaia!.setCamera(p)
         window.__aphaia!.tick(1000 / 60)
       }, pose)
-      await page.screenshot({ path: `screenshots/statues/${name}.png` })
+      await page.screenshot({ path: `screenshots/statues2/${name}.png` })
     }
 
     // Cella, walk mode at eye height, looking west at the cult statue from inside the door.
@@ -66,7 +71,7 @@ test.describe('scanned sculptures', () => {
     for (let i = 0; i < 120; i++) await page.evaluate(() => window.__aphaia!.tick(1000 / 60))
     await page.evaluate((x) => window.__aphaia!.walk.place(x, 0, Math.PI / 2, 0), c.eastWallX[0] - 1.2)
     await page.evaluate(() => window.__aphaia!.tick(1000 / 60))
-    await page.screenshot({ path: 'screenshots/statues/cella-walk-west.png' })
+    await page.screenshot({ path: 'screenshots/statues2/cella-walk-west.png' })
     const eye = await page.evaluate(() => window.__aphaia!.getCamera())
     expect(eye.position[1] - c.floorY).toBeGreaterThan(1.4)
 
@@ -77,7 +82,11 @@ test.describe('scanned sculptures', () => {
     await expect(panel).toContainText("Some figures are scans of casts showing Bertel Thorvaldsen's 1816–17 restorations")
     await expect(panel).toContainText("A comparable Late Archaic statue standing in for Aphaia's lost cult image")
     await page.locator('#about-sculptures-h').scrollIntoViewIfNeeded()
-    await page.locator('#about-sculptures summary', { hasText: 'Scanned figures' }).click()
-    await page.screenshot({ path: 'screenshots/statues/about-credits.png' })
+    await page.locator('#about-sculptures summary', { hasText: 'Pediment and cella figures' }).click()
+    await page.locator('#about-sculptures li', { hasText: 'mirrored from west L' }).scrollIntoViewIfNeeded()
+    await page.screenshot({ path: 'screenshots/statues2/about-credits.png' })
+    await page.locator('#about-sculptures summary', { hasText: 'Sphinx column' }).click()
+    await page.locator('#about-sculptures li', { hasText: 'A comparable sphinx' }).scrollIntoViewIfNeeded()
+    await page.screenshot({ path: 'screenshots/statues2/about-sphinx.png' })
   })
 })
