@@ -38,7 +38,7 @@
       "properties": {
         "id": { "$ref": "common.schema.json#/definitions/id" },
         "pose": { "enum": ["standing", "striding", "lunging", "kneeling-archer", "fallen"] },
-        "x": { "type": "number", "minimum": -1, "maximum": 1, "description": "Position along the tympanum base, -1 (left/south) to 1 (right/north)." },
+        "x": { "type": "number", "minimum": -1, "maximum": 1, "description": "Position along the tympanum base as seen from outside: -1 = viewer's left corner, 1 = right corner (east front: left = south; west front: left = north)." },
         "facing": { "enum": ["left", "right", "front"] },
         "nameId": { "$ref": "common.schema.json#/definitions/id" },
         "sourceIds": { "$ref": "common.schema.json#/definitions/sourceIds" },

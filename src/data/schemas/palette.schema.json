@@ -3,7 +3,7 @@
   "$id": "palette.schema.json",
   "title": "Polychrome palette",
   "type": "object",
-  "required": ["meta", "colors"],
+  "required": ["meta", "colors", "patterns"],
   "additionalProperties": false,
   "properties": {
     "$schema": { "type": "string" },
@@ -18,11 +18,31 @@
         "additionalProperties": false,
         "properties": {
           "color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" },
-          "pattern": { "enum": ["plain", "meander", "egg-and-dart", "hawksbeak", "palmette"] },
+          "pattern": { "enum": ["plain", "meander", "egg-and-dart", "hawksbeak", "palmette", "diamond"] },
           "sourceIds": { "$ref": "common.schema.json#/definitions/sourceIds" },
           "confidence": { "$ref": "confidence.schema.json" },
           "verified": { "type": "boolean" },
           "note": { "type": "string" }
+        }
+      }
+    },
+    "patterns": {
+      "type": "object",
+      "description": "Ornament tile colours per pattern material (one texture per pattern, shared by its palette entries).",
+      "propertyNames": { "enum": ["meander", "egg-and-dart", "hawksbeak", "palmette", "diamond"] },
+      "additionalProperties": {
+        "type": "object",
+        "required": ["ground", "primary", "secondary", "outline", "sourceIds", "confidence", "note"],
+        "additionalProperties": false,
+        "properties": {
+          "ground": { "type": "string", "pattern": "^#[0-9a-f]{6}$" },
+          "primary": { "type": "string", "pattern": "^#[0-9a-f]{6}$" },
+          "secondary": { "type": "string", "pattern": "^#[0-9a-f]{6}$" },
+          "outline": { "type": "string", "pattern": "^#[0-9a-f]{6}$" },
+          "extra": { "type": "array", "items": { "type": "string", "pattern": "^#[0-9a-f]{6}$" }, "maxItems": 4 },
+          "sourceIds": { "$ref": "common.schema.json#/definitions/sourceIds" },
+          "confidence": { "$ref": "confidence.schema.json" },
+          "note": { "type": "string", "minLength": 1 }
         }
       }
     }

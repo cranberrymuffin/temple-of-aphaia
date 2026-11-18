@@ -46,6 +46,14 @@
             "type": "string",
             "minLength": 1
           },
+          "quotes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Further verbatim excerpts from the same source."
+          },
           "url": {
             "type": "string",
             "pattern": "^https?://"

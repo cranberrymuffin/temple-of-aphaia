@@ -27,8 +27,9 @@
       "quote": "In Aegina, as you go towards the mountain of Zeus, God of all the Greeks, you reach a sanctuary of Aphaea, in whose honor Pindar composed an ode for the Aeginetans.",
       "url": "http://www.perseus.tufts.edu/hopper/text?doc=Paus.+2.30.3",
       "verified": true,
-      "licence": "Translation public domain (1918). Perseus encodes it under a Creative Commons licence: confirm the exact licence before shipping.",
-      "note": "Same paragraph: \"Her surname among the Aeginetans is Aphaea; in Crete it is Dictynna (Goddess of Nets).\" Pausanias relates the Britomartis story but says nothing about the architecture or the pediments."
+      "licence": "Translation published 1918 (public domain). Perseus edition: \"This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 United States License.\" Short verbatim quotations with attribution and a link are compatible; the text is not modified.",
+      "note": "Licence checked on the Perseus page 2026-11-18 (CC BY-SA 3.0 US; \"The Annenberg CPB/Project provided support for entering this text.\"). Same paragraph: Britomartis, daughter of Zeus and Carme, flees Minos into fishermen's nets and is made a goddess by Artemis; she \"shows herself\" in Aegina. Nothing about the architecture or the pediments.",
+      "quotes": ["Her surname among the Aeginetans is Aphaea; in Crete it is Dictynna (Goddess of Nets)."]
     },
     {
       "id": "pindar-aphaia",
@@ -262,29 +263,19 @@
     },
     "propylon-stairs-south": {
       "description": "The propylon's flight of steps rises from the south (outer) side, as the excavator describes it and the Ministry board shows it.",
-      "sourceIds": [
-        "furtwangler-1906",
-        "ministry-onsite-boards",
-        "wikimedia-plan-aphaia-sanctuary"
-      ],
+      "sourceIds": ["furtwangler-1906", "ministry-onsite-boards", "wikimedia-plan-aphaia-sanctuary"],
       "confidence": "attested",
       "note": "RESOLVED by the Ministry on-site board (2026-11-18): the steps rise from outside, on the south. The 2007 plan's three step lines on the north (inner) side are not followed; Furtwängler pp. 75-77 (gutters draining over the stair outwards) and the board agree."
     },
     "votive-column-shown": {
       "description": "The sphinx votive column is shown as standing c. 490 BC: a tall single column inside the terrace carrying a marble sphinx.",
-      "sourceIds": [
-        "furtwangler-1906",
-        "ministry-onsite-boards"
-      ],
+      "sourceIds": ["furtwangler-1906", "ministry-onsite-boards"],
       "confidence": "attested",
       "note": "User decision 2026-11-16 (always shown); no longer flagged uncertain since the Ministry board (2026-11-18) depicts it c. 490 BC. Height (about 10 lower diameters) and the sphinx's form remain derived/by analogy."
     },
     "suedbau-shown": {
       "description": "The Südbau terrace south of the sanctuary is NOT shown: listed as hidden in sanctuary.json.",
-      "sourceIds": [
-        "furtwangler-1906",
-        "ministry-onsite-boards"
-      ],
+      "sourceIds": ["furtwangler-1906", "ministry-onsite-boards"],
       "confidence": "conjectural",
       "note": "User decision 2026-11-18 (supersedes 2026-11-16): not depicted in the Ministry reconstruction; its shape is unknown."
     },
