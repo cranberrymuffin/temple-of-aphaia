@@ -1,0 +1,390 @@
+{
+  "meta": {
+    "status": "provisional",
+    "note": "Real 3D scans replacing stand-ins. Scans: SMK - Statens Museum for Kunst, The Royal Cast Collection, Copenhagen (plaster casts; Public Domain Mark 1.0). Casts of the Aegina pediments show Bertel Thorvaldsen's 1816-17 restorations. Orientation: `up` file axis becomes +Y, `facingDeg` turns the presentation front to +Z (viewer side)."
+  },
+  "lodTriangles": {
+    "high": 16000,
+    "low": 5000
+  },
+  "sculptures": [
+    {
+      "id": "w-a-lying-wounded",
+      "title": "Lying wounded warrior",
+      "slot": {
+        "pediment": "west",
+        "figureId": "west-a"
+      },
+      "source": {
+        "sourceId": "smk-royal-cast-collection",
+        "objectNumber": "KAS2123",
+        "page": "https://open.smk.dk/artwork/image/KAS2123",
+        "file": "https://api.smk.dk/api/v1/download-3d/3b591f09w_KAS2123_small.stl"
+      },
+      "original": {
+        "position": "west pediment, figure VII (SMK numbering)",
+        "date": "c. 500-490 BC",
+        "museum": "Staatliche Antikensammlungen und Glyptothek, Munich"
+      },
+      "restoration": "thorvaldsen",
+      "scan": {
+        "file": "KAS2123.stl",
+        "up": "+z",
+        "facingDeg": 0,
+        "heightM": 0.48
+      },
+      "paint": "marble"
+    },
+    {
+      "id": "w-b-kneeling",
+      "title": "Kneeling archer (shown as the crouching fighter)",
+      "slot": {
+        "pediment": "west",
+        "figureId": "west-b"
+      },
+      "source": {
+        "sourceId": "smk-royal-cast-collection",
+        "objectNumber": "KAS2131",
+        "page": "https://open.smk.dk/artwork/image/KAS2131",
+        "file": "https://api.smk.dk/api/v1/download-3d/6t053m59g_KAS2131_small.stl"
+      },
+      "original": {
+        "position": "west pediment, figure XII (SMK numbering)",
+        "date": "c. 500-490 BC",
+        "museum": "Staatliche Antikensammlungen und Glyptothek, Munich"
+      },
+      "restoration": "thorvaldsen",
+      "scan": {
+        "file": "KAS2131.stl",
+        "up": "+z",
+        "facingDeg": 90,
+        "heightM": 0.845
+      },
+      "paint": "marble"
+    },
+    {
+      "id": "w-f-standing-shield",
+      "title": "Standing warrior with shield",
+      "slot": {
+        "pediment": "west",
+        "figureId": "west-f"
+      },
+      "source": {
+        "sourceId": "smk-royal-cast-collection",
+        "objectNumber": "KAS2126",
+        "page": "https://open.smk.dk/artwork/image/KAS2126",
+        "file": "https://api.smk.dk/api/v1/download-3d/m900p029n_KAS2126_small.stl"
+      },
+      "original": {
+        "position": "west pediment, figure II (SMK numbering)",
+        "date": "c. 500-490 BC",
+        "museum": "Staatliche Antikensammlungen und Glyptothek, Munich"
+      },
+      "restoration": "thorvaldsen",
+      "scan": {
+        "file": "KAS2126.stl",
+        "up": "+z",
+        "facingDeg": 0,
+        "heightM": 1.28
+      },
+      "paint": "marble"
+    },
+    {
+      "id": "w-g-athena",
+      "title": "Athena standing with shield",
+      "slot": {
+        "pediment": "west",
+        "figureId": "west-g"
+      },
+      "source": {
+        "sourceId": "smk-royal-cast-collection",
+        "objectNumber": "KAS2128",
+        "page": "https://open.smk.dk/artwork/image/KAS2128",
+        "file": "https://api.smk.dk/api/v1/download-3d/q811kq429_KAS2128.stl"
+      },
+      "original": {
+        "position": "west pediment, figure I (SMK numbering)",
+        "date": "c. 500-490 BC",
+        "museum": "Staatliche Antikensammlungen und Glyptothek, Munich"
+      },
+      "restoration": "thorvaldsen",
+      "scan": {
+        "file": "KAS2128.stl",
+        "up": "+y",
+        "facingDeg": 0,
+        "heightM": 1.705
+      },
+      "paint": "marble"
+    },
+    {
+      "id": "w-k-standing-shield",
+      "title": "Standing warrior with shield",
+      "slot": {
+        "pediment": "west",
+        "figureId": "west-k"
+      },
+      "source": {
+        "sourceId": "smk-royal-cast-collection",
+        "objectNumber": "KAS2129",
+        "page": "https://open.smk.dk/artwork/image/KAS2129",
+        "file": "https://api.smk.dk/api/v1/download-3d/3f462b07k_KAS2129_small.stl"
+      },
+      "original": {
+        "position": "west pediment, figure IX (SMK numbering)",
+        "date": "c. 500-490 BC",
+        "museum": "Staatliche Antikensammlungen und Glyptothek, Munich"
+      },
+      "restoration": "thorvaldsen",
+      "scan": {
+        "file": "KAS2129.stl",
+        "up": "+y",
+        "facingDeg": 0,
+        "heightM": 1.325
+      },
+      "paint": "marble"
+    },
+    {
+      "id": "w-l-kneeling-archer",
+      "title": "Kneeling archer",
+      "slot": {
+        "pediment": "west",
+        "figureId": "west-l"
+      },
+      "source": {
+        "sourceId": "smk-royal-cast-collection",
+        "objectNumber": "KAS2125",
+        "page": "https://open.smk.dk/artwork/image/KAS2125",
+        "file": "https://api.smk.dk/api/v1/download-3d/kh04dv58t_KAS2125.stl"
+      },
+      "original": {
+        "position": "west pediment, figure IV (SMK numbering)",
+        "date": "c. 500-490 BC",
+        "museum": "Staatliche Antikensammlungen und Glyptothek, Munich"
+      },
+      "restoration": "thorvaldsen",
+      "scan": {
+        "file": "KAS2125.stl",
+        "up": "+z",
+        "facingDeg": 0,
+        "heightM": 1.04
+      },
+      "paint": "marble"
+    },
+    {
+      "id": "w-m-kneeling",
+      "title": "Kneeling warrior",
+      "slot": {
+        "pediment": "west",
+        "figureId": "west-m"
+      },
+      "source": {
+        "sourceId": "smk-royal-cast-collection",
+        "objectNumber": "KAS2124",
+        "page": "https://open.smk.dk/artwork/image/KAS2124",
+        "file": "https://api.smk.dk/api/v1/download-3d/rj430923v_KAS2124_small.stl"
+      },
+      "original": {
+        "position": "west pediment, figure V (SMK numbering)",
+        "date": "c. 500-490 BC",
+        "museum": "Staatliche Antikensammlungen und Glyptothek, Munich"
+      },
+      "restoration": "thorvaldsen",
+      "scan": {
+        "file": "KAS2124.stl",
+        "up": "+z",
+        "facingDeg": 0,
+        "heightM": 0.91
+      },
+      "paint": "marble"
+    },
+    {
+      "id": "w-n-patroklos",
+      "title": "Lying warrior (\"Patroklos\")",
+      "slot": {
+        "pediment": "west",
+        "figureId": "west-n"
+      },
+      "source": {
+        "sourceId": "smk-royal-cast-collection",
+        "objectNumber": "KAS2127",
+        "page": "https://open.smk.dk/artwork/image/KAS2127",
+        "file": "https://api.smk.dk/api/v1/download-3d/9k41zk00c_KAS2127_small.stl"
+      },
+      "original": {
+        "position": "west pediment, figure XIII (SMK numbering)",
+        "date": "c. 500-490 BC",
+        "museum": "Staatliche Antikensammlungen und Glyptothek, Munich"
+      },
+      "restoration": "thorvaldsen",
+      "scan": {
+        "file": "KAS2127.stl",
+        "up": "+y",
+        "facingDeg": 0,
+        "heightM": 0.605
+      },
+      "paint": "marble"
+    },
+    {
+      "id": "e-a-lying-wounded",
+      "title": "Lying wounded warrior",
+      "slot": {
+        "pediment": "east",
+        "figureId": "east-a"
+      },
+      "source": {
+        "sourceId": "smk-royal-cast-collection",
+        "objectNumber": "KAS541-1",
+        "page": "https://open.smk.dk/artwork/image/KAS541/1",
+        "file": "https://api.smk.dk/api/v1/download-3d/zc77sv65c_KAS541-1_small.stl"
+      },
+      "original": {
+        "position": "east pediment XI; Furtwängler 1906 no. 41",
+        "date": "485-480 BC",
+        "museum": "Staatliche Antikensammlungen und Glyptothek, Munich"
+      },
+      "restoration": "thorvaldsen",
+      "scan": {
+        "file": "KAS541-1.stl",
+        "up": "+z",
+        "facingDeg": -90,
+        "unitToMetre": 0.001
+      },
+      "paint": "marble"
+    },
+    {
+      "id": "e-b-herakles",
+      "title": "Herakles kneeling with bow",
+      "slot": {
+        "pediment": "east",
+        "figureId": "east-b"
+      },
+      "source": {
+        "sourceId": "smk-royal-cast-collection",
+        "objectNumber": "KAS541-5",
+        "page": "https://open.smk.dk/artwork/image/KAS541/5",
+        "file": "https://api.smk.dk/api/v1/download-3d/m613n336t_KAS541-5_small.stl"
+      },
+      "original": {
+        "position": "east pediment V; Furtwängler 1906 no. 86",
+        "date": "485-480 BC",
+        "museum": "Staatliche Antikensammlungen und Glyptothek, Munich"
+      },
+      "restoration": "thorvaldsen",
+      "scan": {
+        "file": "KAS541-5.stl",
+        "up": "+z",
+        "facingDeg": 0,
+        "heightM": 0.795
+      },
+      "paint": "marble"
+    },
+    {
+      "id": "e-c-running",
+      "title": "Running warrior",
+      "slot": {
+        "pediment": "east",
+        "figureId": "east-c"
+      },
+      "source": {
+        "sourceId": "smk-royal-cast-collection",
+        "objectNumber": "KAS541-4",
+        "page": "https://open.smk.dk/artwork/image/KAS541/4",
+        "file": "https://api.smk.dk/api/v1/download-3d/m039k9883_KAS541-4_small.stl"
+      },
+      "original": {
+        "position": "east pediment IV; Furtwängler 1906 no. 82",
+        "date": "485-480 BC",
+        "museum": "Staatliche Antikensammlungen und Glyptothek, Munich"
+      },
+      "restoration": "thorvaldsen",
+      "scan": {
+        "file": "KAS541-4.stl",
+        "up": "+z",
+        "facingDeg": -90,
+        "heightM": 0.95
+      },
+      "paint": "marble"
+    },
+    {
+      "id": "e-e-standing",
+      "title": "Standing warrior",
+      "slot": {
+        "pediment": "east",
+        "figureId": "east-e"
+      },
+      "source": {
+        "sourceId": "smk-royal-cast-collection",
+        "objectNumber": "KAS541-2",
+        "page": "https://open.smk.dk/artwork/image/KAS541/2",
+        "file": "https://api.smk.dk/api/v1/download-3d/rb68xh237_KAS541-2_small.stl"
+      },
+      "original": {
+        "position": "east pediment II; Furtwängler 1906 no. 72",
+        "date": "485-480 BC",
+        "museum": "Staatliche Antikensammlungen und Glyptothek, Munich"
+      },
+      "restoration": "thorvaldsen",
+      "scan": {
+        "file": "KAS541-2.stl",
+        "up": "+y",
+        "facingDeg": 0,
+        "heightM": 1.48
+      },
+      "paint": "marble"
+    },
+    {
+      "id": "e-l-lying-wounded",
+      "title": "Lying wounded warrior",
+      "slot": {
+        "pediment": "east",
+        "figureId": "east-l"
+      },
+      "source": {
+        "sourceId": "smk-royal-cast-collection",
+        "objectNumber": "KAS541-3",
+        "page": "https://open.smk.dk/artwork/image/KAS541/3",
+        "file": "https://api.smk.dk/api/v1/download-3d/rn3015890_KAS541-3_small.stl"
+      },
+      "original": {
+        "position": "east pediment III; Furtwängler 1906 no. 77",
+        "date": "485-480 BC",
+        "museum": "Staatliche Antikensammlungen und Glyptothek, Munich"
+      },
+      "restoration": "thorvaldsen",
+      "scan": {
+        "file": "KAS541-3.stl",
+        "up": "+z",
+        "facingDeg": -90,
+        "unitToMetre": 0.001
+      },
+      "paint": "marble"
+    },
+    {
+      "id": "cella-kore",
+      "title": "Kore in chiton and cape (epiblema), Acropolis, c. 530 BC",
+      "slot": {
+        "site": "cella-cult-statue"
+      },
+      "source": {
+        "sourceId": "smk-royal-cast-collection",
+        "objectNumber": "KAS1800",
+        "page": "https://open.smk.dk/artwork/image/KAS1800",
+        "file": "https://api.smk.dk/api/v1/download-3d/1n79h939z_KAS1800_small.stl"
+      },
+      "original": {
+        "position": "Athens, Acropolis Museum",
+        "date": "c. 530 BC",
+        "museum": "Acropolis Museum, Athens"
+      },
+      "restoration": "none",
+      "scan": {
+        "file": "KAS1800.stl",
+        "up": "+z",
+        "facingDeg": 0,
+        "heightM": 2.05
+      },
+      "paint": "marble",
+      "note": "Stand-in for the lost cult image (comparable Late Archaic statue). Furtwängler 1906 p. 43 infers a small, probably seated image; no seated Late Archaic goddess scan with a usable licence was found."
+    }
+  ]
+}

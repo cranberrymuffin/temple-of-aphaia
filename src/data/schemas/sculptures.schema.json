@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "sculptures.schema.json",
+  "title": "Scanned sculptures replacing stand-ins",
+  "type": "object",
+  "required": ["meta", "lodTriangles", "sculptures"],
+  "additionalProperties": false,
+  "properties": {
+    "meta": { "type": "object", "required": ["status", "note"] },
+    "lodTriangles": {
+      "type": "object",
+      "required": ["high", "low"],
+      "additionalProperties": false,
+      "properties": { "high": { "type": "integer", "minimum": 1000 }, "low": { "type": "integer", "minimum": 500 } }
+    },
+    "sculptures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "slot", "source", "original", "restoration", "scan", "paint"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "$ref": "common.schema.json#/definitions/id" },
+          "title": { "type": "string", "minLength": 1 },
+          "slot": {
+            "oneOf": [
+              {
+                "type": "object",
+                "required": ["pediment", "figureId"],
+                "additionalProperties": false,
+                "properties": { "pediment": { "enum": ["west", "east"] }, "figureId": { "$ref": "common.schema.json#/definitions/id" } }
+              },
+              {
+                "type": "object",
+                "required": ["site"],
+                "additionalProperties": false,
+                "properties": { "site": { "enum": ["cella-cult-statue", "sphinx-column"] } }
+              }
+            ]
+          },
+          "source": {
+            "type": "object",
+            "required": ["sourceId", "objectNumber", "page", "file"],
+            "additionalProperties": false,
+            "properties": {
+              "sourceId": { "$ref": "common.schema.json#/definitions/id" },
+              "objectNumber": { "type": "string", "minLength": 1 },
+              "page": { "type": "string", "pattern": "^https?://" },
+              "file": { "type": "string", "pattern": "^https?://" }
+            }
+          },
+          "original": {
+            "type": "object",
+            "required": ["position", "date", "museum"],
+            "additionalProperties": false,
+            "properties": { "position": { "type": "string" }, "date": { "type": "string" }, "museum": { "type": "string" } }
+          },
+          "restoration": { "enum": ["thorvaldsen", "none", "uncertain"] },
+          "scan": {
+            "type": "object",
+            "required": ["file", "up", "facingDeg"],
+            "additionalProperties": false,
+            "properties": {
+              "file": { "type": "string", "minLength": 1 },
+              "up": { "enum": ["+x", "-x", "+y", "-y", "+z", "-z"] },
+              "facingDeg": { "type": "number" },
+              "heightM": { "type": "number", "exclusiveMinimum": 0 },
+              "unitToMetre": { "type": "number", "exclusiveMinimum": 0 }
+            },
+            "oneOf": [{ "required": ["heightM"] }, { "required": ["unitToMetre"] }]
+          },
+          "paint": { "enum": ["marble"] },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -180,6 +180,15 @@
       "verified": true,
       "licence": "Copyrighted (Hellenic Ministry of Culture and Sports). Reference only: the photographs are not redistributed, traced or shown; only the facts read from them are used.",
       "note": "Read from the user's photos (summarised in the research brief, section 21). Supersedes earlier guesses on the enclosure wall (stone socle with a mudbrick superstructure and coping, hiding the krepis from outside), the propylon (two columns in antis, central door, stair rising from the south, roof sculpture), the priests' houses (hipped tiled roofs, taller rear block, lower front block with a columned porch, pent-roof wing, against the outside of the wall), the altar (raised rear on a paved court lined with statue bases, a tall base in front), the paved way, the cistern well-head and the sphinx column (shown, attested). The Südbau is not depicted. Drawn reconstructions, not measurements: proportions taken from them are DERIVED with their own confidence."
+    },
+    {
+      "id": "smk-royal-cast-collection",
+      "type": "archaeological",
+      "citation": "SMK – Statens Museum for Kunst (National Gallery of Denmark), The Royal Cast Collection (Den Kongelige Afstøbningssamling), Copenhagen: 3D scans of plaster casts, published on SMK Open.",
+      "url": "https://open.smk.dk",
+      "verified": true,
+      "licence": "Public Domain Mark 1.0 (https://creativecommons.org/publicdomain/mark/1.0/), as stated on each object record (field \"rights\"); free download without an account. Credit is given as a courtesy.",
+      "note": "Records read through the SMK API on 2026-11-18. Aegina casts KAS541/1-5 (east pediment; made in Munich, Technische Hochschule; acquired 1898) and KAS2123-KAS2131 (west pediment; acquired 1952). Their complete limbs show Bertel Thorvaldsen's 1816-17 restorations, removed from the Munich originals in the 1960s. KAS1800: Kore in chiton and cape (epiblema), Acropolis, c. 530 BC. No 3D files exist for the Scythian archer (KAS2130), west XIV (KAS2132), the Naxian sphinx column (KAS1462) or the Aphaia sphinx fragments (KAS1341, KAS267)."
     }
   ],
   "names": {
@@ -339,6 +348,18 @@
       "description": "The painted west-pediment archer is labelled \"Trojan archer (identified as Paris by some)\".",
       "sourceIds": ["furtwangler-1906", "harvard-gazette-2007"],
       "confidence": "interpretive"
+    },
+    "pediment-scans": {
+      "description": "Pediment figures with a licensed scan are shown as 3D scans of the Copenhagen plaster casts, which show Bertel Thorvaldsen's 1816-17 restorations as they were cast; the other figures keep their stand-ins.",
+      "sourceIds": ["smk-royal-cast-collection", "furtwangler-1906"],
+      "confidence": "interpretive",
+      "note": "User decision 2026-11-18 (Thorvaldsen restorations accepted as-is). Slots follow pediments.json; scans are assigned by pose and direction."
+    },
+    "cult-statue-standin": {
+      "description": "A comparable Late Archaic statue (Kore in chiton and cape from the Athenian Acropolis, c. 530 BC, Copenhagen cast) stands on the documented cult-statue base in the naos, in place of Aphaia's lost cult image.",
+      "sourceIds": ["furtwangler-1906", "smk-royal-cast-collection"],
+      "confidence": "conjectural",
+      "note": "Furtwängler 1906 p. 43: base trace 92 x 112 cm at the boundary of the second third of the cella; a small, probably seated image with light-blue paint on the seat. No licensed scan of a seated Late Archaic goddess was found; a standing kore is shown instead."
     }
   }
 }

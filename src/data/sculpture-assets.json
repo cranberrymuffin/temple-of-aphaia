@@ -1,0 +1,282 @@
+{
+  "w-a-lying-wounded": {
+    "plinthM": 0,
+    "size": [
+      1.425,
+      0.48,
+      0.589
+    ],
+    "lods": {
+      "high": {
+        "file": "w-a-lying-wounded-high-10b2066cf5.glb",
+        "triangles": 16000,
+        "bytes": 62780
+      },
+      "low": {
+        "file": "w-a-lying-wounded-low-cfa43ae964.glb",
+        "triangles": 4996,
+        "bytes": 21664
+      }
+    }
+  },
+  "w-b-kneeling": {
+    "plinthM": 0.08,
+    "size": [
+      1.072,
+      0.845,
+      0.509
+    ],
+    "lods": {
+      "high": {
+        "file": "w-b-kneeling-high-d80e4fa75d.glb",
+        "triangles": 15994,
+        "bytes": 64648
+      },
+      "low": {
+        "file": "w-b-kneeling-low-629eaefff5.glb",
+        "triangles": 4998,
+        "bytes": 22024
+      }
+    }
+  },
+  "w-f-standing-shield": {
+    "plinthM": 0.075,
+    "size": [
+      0.995,
+      1.28,
+      0.643
+    ],
+    "lods": {
+      "high": {
+        "file": "w-f-standing-shield-high-9e0e02e618.glb",
+        "triangles": 15998,
+        "bytes": 64872
+      },
+      "low": {
+        "file": "w-f-standing-shield-low-fd0e8ad295.glb",
+        "triangles": 5000,
+        "bytes": 21988
+      }
+    }
+  },
+  "w-g-athena": {
+    "plinthM": 0.065,
+    "size": [
+      0.748,
+      1.705,
+      0.722
+    ],
+    "lods": {
+      "high": {
+        "file": "w-g-athena-high-6ed5fc56a4.glb",
+        "triangles": 15988,
+        "bytes": 64384
+      },
+      "low": {
+        "file": "w-g-athena-low-ae5260295f.glb",
+        "triangles": 4994,
+        "bytes": 21948
+      }
+    }
+  },
+  "w-k-standing-shield": {
+    "plinthM": 0.07,
+    "size": [
+      0.984,
+      1.325,
+      0.54
+    ],
+    "lods": {
+      "high": {
+        "file": "w-k-standing-shield-high-dbc395c8aa.glb",
+        "triangles": 15999,
+        "bytes": 64840
+      },
+      "low": {
+        "file": "w-k-standing-shield-low-a6c689885f.glb",
+        "triangles": 4999,
+        "bytes": 22112
+      }
+    }
+  },
+  "w-l-kneeling-archer": {
+    "plinthM": 0.12,
+    "size": [
+      0.682,
+      1.04,
+      0.445
+    ],
+    "lods": {
+      "high": {
+        "file": "w-l-kneeling-archer-high-8d14e43498.glb",
+        "triangles": 15964,
+        "bytes": 65292
+      },
+      "low": {
+        "file": "w-l-kneeling-archer-low-464a7c4683.glb",
+        "triangles": 4998,
+        "bytes": 22168
+      }
+    }
+  },
+  "w-m-kneeling": {
+    "plinthM": 0.07,
+    "size": [
+      1.037,
+      0.91,
+      0.583
+    ],
+    "lods": {
+      "high": {
+        "file": "w-m-kneeling-high-fa3692a068.glb",
+        "triangles": 15998,
+        "bytes": 64512
+      },
+      "low": {
+        "file": "w-m-kneeling-low-62af297adf.glb",
+        "triangles": 4998,
+        "bytes": 22024
+      }
+    }
+  },
+  "w-n-patroklos": {
+    "plinthM": 0.13,
+    "size": [
+      1.602,
+      0.605,
+      0.434
+    ],
+    "lods": {
+      "high": {
+        "file": "w-n-patroklos-high-7e03bed729.glb",
+        "triangles": 16000,
+        "bytes": 63208
+      },
+      "low": {
+        "file": "w-n-patroklos-low-70895cab3b.glb",
+        "triangles": 4998,
+        "bytes": 21716
+      }
+    }
+  },
+  "e-a-lying-wounded": {
+    "plinthM": 0,
+    "size": [
+      1.839,
+      0.732,
+      0.489
+    ],
+    "lods": {
+      "high": {
+        "file": "e-a-lying-wounded-high-3869a10030.glb",
+        "triangles": 16000,
+        "bytes": 63484
+      },
+      "low": {
+        "file": "e-a-lying-wounded-low-1f89af0974.glb",
+        "triangles": 5000,
+        "bytes": 21836
+      }
+    }
+  },
+  "e-b-herakles": {
+    "plinthM": 0.045,
+    "size": [
+      0.599,
+      0.795,
+      0.349
+    ],
+    "lods": {
+      "high": {
+        "file": "e-b-herakles-high-cc2d1d285d.glb",
+        "triangles": 16000,
+        "bytes": 65356
+      },
+      "low": {
+        "file": "e-b-herakles-low-0cda86aa2a.glb",
+        "triangles": 4998,
+        "bytes": 22212
+      }
+    }
+  },
+  "e-c-running": {
+    "plinthM": 0.075,
+    "size": [
+      1.25,
+      0.95,
+      0.364
+    ],
+    "lods": {
+      "high": {
+        "file": "e-c-running-high-d4f96d92b0.glb",
+        "triangles": 15998,
+        "bytes": 64496
+      },
+      "low": {
+        "file": "e-c-running-low-08016ddc42.glb",
+        "triangles": 4998,
+        "bytes": 22028
+      }
+    }
+  },
+  "e-e-standing": {
+    "plinthM": 0.1,
+    "size": [
+      1.088,
+      1.48,
+      0.647
+    ],
+    "lods": {
+      "high": {
+        "file": "e-e-standing-high-0a0b1e3a9a.glb",
+        "triangles": 16000,
+        "bytes": 63828
+      },
+      "low": {
+        "file": "e-e-standing-low-46413ce879.glb",
+        "triangles": 4998,
+        "bytes": 21816
+      }
+    }
+  },
+  "e-l-lying-wounded": {
+    "plinthM": 0.205,
+    "size": [
+      1.536,
+      0.954,
+      0.671
+    ],
+    "lods": {
+      "high": {
+        "file": "e-l-lying-wounded-high-7c6f46d602.glb",
+        "triangles": 15998,
+        "bytes": 63384
+      },
+      "low": {
+        "file": "e-l-lying-wounded-low-5ae499cb70.glb",
+        "triangles": 4994,
+        "bytes": 21676
+      }
+    }
+  },
+  "cella-kore": {
+    "plinthM": 0,
+    "size": [
+      0.521,
+      2.05,
+      0.523
+    ],
+    "lods": {
+      "high": {
+        "file": "cella-kore-high-e318763598.glb",
+        "triangles": 16000,
+        "bytes": 62120
+      },
+      "low": {
+        "file": "cella-kore-low-59a893f5f1.glb",
+        "triangles": 5000,
+        "bytes": 21508
+      }
+    }
+  }
+}
