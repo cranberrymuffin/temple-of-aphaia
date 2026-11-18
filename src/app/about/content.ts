@@ -35,6 +35,8 @@ export const OSM_ATTRIBUTION = '© OpenStreetMap contributors, ODbL'
 export const THORVALDSEN_NOTE =
   "Some figures are scans of casts showing Bertel Thorvaldsen's 1816–17 restorations, which were removed from the originals in Munich in the 1960s; limbs and arrangement may differ from current reconstructions."
 export const CULT_STATUE_LABEL = "A comparable Late Archaic statue standing in for Aphaia's lost cult image"
+const sculpture = (id: string) => sculptures.sculptures.find((s) => s.id === id)
+const SPHINX = sculpture('sphinx-aegina')!
 export const SCAN_CREDIT = 'SMK – Statens Museum for Kunst, The Royal Cast Collection, Copenhagen (3D scans via SMK Open, Public Domain Mark 1.0)'
 
 type Source = (typeof sources.sources)[number] & { quote?: string; url?: string; page?: string; quotes?: string[] }
@@ -173,15 +175,22 @@ export function buildAboutContent(meta: Pick<TempleMeta, 'site' | 'log'>): Secti
       title: 'Sculpture scans',
       blocks: [
         { kind: 'p', text: THORVALDSEN_NOTE },
-        { kind: 'p', text: `Scans: ${SCAN_CREDIT}. The pediment figures are casts of the originals in the Glyptothek, Munich; each scan is fitted into its slot and shown in plain marble (no colour scheme is applied to the scans). Figures without a scan keep their simplified stand-ins.` },
+        { kind: 'p', text: `Scans: ${SCAN_CREDIT}. The pediment figures are casts of the originals in the Glyptothek, Munich. Every slot shows a scan: a real scan of the figure, a scan mirrored from its counterpart in the mirror-symmetric composition, or a figure imagined from another scan of the same type (labelled below). Figures are spaced by height and shown in plain marble; the Scythian archer carries the attested diamond-costume colours. The simplified stand-ins appear only while the scans load.` },
         {
           kind: 'list',
-          collapsed: `Scanned figures (${sculptures.sculptures.length})`,
-          items: sculptures.sculptures.map((s) => ({
-            text: `${'figureId' in s.slot && s.slot.figureId ? `${s.slot.pediment} pediment, slot ${s.slot.figureId.split('-')[1].toUpperCase()}` : 'Cella'}: ${s.title}`,
-            meta: `SMK ${s.source.objectNumber}; original ${s.original.position}, ${s.original.date} (${s.original.museum}); ${s.restoration === 'thorvaldsen' ? "cast shows Thorvaldsen's restorations" : 'unrestored cast'}; Public Domain Mark 1.0${'note' in s && s.note ? ` · ${s.note}` : ''}`,
-            url: s.source.page,
-          })),
+          collapsed: `Pediment and cella figures (${sculptures.sculptures.filter((s) => !('site' in s.slot && s.slot.site === 'sphinx-column')).length})`,
+          items: sculptures.sculptures
+            .filter((s) => !('site' in s.slot && s.slot.site === 'sphinx-column'))
+            .map((s) => {
+              const a = (sculpture(s.asset ?? s.id) ?? s) as typeof s
+              const where = 'figureId' in s.slot && s.slot.figureId ? `${s.slot.pediment} pediment, slot ${s.slot.figureId.split('-')[1].toUpperCase()}` : 'Cella'
+              const how = s.kind === 'real' ? 'real scan' : (s.from ?? s.kind)
+              return {
+                text: `${where}: ${s.title} (${how})`,
+                meta: `SMK ${a.source?.objectNumber}; original ${a.original?.position}, ${a.original?.date} (${a.original?.museum}); ${a.restoration === 'thorvaldsen' ? "cast shows Thorvaldsen's restorations" : 'unrestored cast'}; Public Domain Mark 1.0${s.note ? ` · ${s.note}` : ''}`,
+                url: a.source?.page,
+              }
+            }),
         },
         {
           kind: 'list',
@@ -203,7 +212,8 @@ export function buildAboutContent(meta: Pick<TempleMeta, 'site' | 'log'>): Secti
           collapsed: 'Sphinx column',
           items: [
             {
-              text: 'The sphinx on the votive column is still a stand-in: no licensed scan of a comparable Archaic sphinx could be downloaded without an account.',
+              text: `${SPHINX.label}. ${SPHINX.title} by Geoffrey Marchal (Sketchfab). Licence: ${SPHINX.licence}`,
+              url: SPHINX.source?.page,
               meta: 'Furtwängler et al. 1906: the column was poros with a plain, painted capital; its height (about ten lower diameters) and the crowning sphinx are restorations by analogy with the Naxian column at Delphi (p. 157). "We do not know what it carried", but very probably a sphinx (p. 487). An early Archaic marble head found in the excavation recalls the Naxian sphinx and comes from a female statue, a sphinx or Aphaia herself, but the column\'s sphinx must have been considerably larger (pp. 359-360, 487). SMK holds a cast of a sphinx found in 1901 in the Aphaia cistern (KAS1341, no 3D file).',
             },
           ],
