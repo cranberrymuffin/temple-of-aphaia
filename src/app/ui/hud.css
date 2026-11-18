@@ -92,12 +92,12 @@
   pointer-events: none !important;
 }
 
-#hud[data-mode='walk'] .hud-hint {
-  /* Leave the joystick corner free on phones. */
-  left: auto;
+/* Walk on a touch screen: keep the hint clear of the joystick (120 px pad + its 20 px inset). */
+#hud.hud-touch[data-mode='walk'] .hud-hint {
+  left: calc(max(20px, env(safe-area-inset-left)) + 132px);
   right: max(12px, env(safe-area-inset-right));
   transform: none;
-  max-width: min(60vw, 560px);
+  max-width: none;
 }
 
 .hud-help {
@@ -138,8 +138,9 @@
   margin: 10px 0 12px;
 }
 
-.hud-close {
+.hud-help .hud-close {
   width: 100%;
+  padding: 0 12px;
 }
 
 .hud-joystick {

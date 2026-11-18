@@ -24,7 +24,7 @@ export function createControls(camera: PerspectiveCamera, dom: HTMLElement) {
   const orbit = createOrbit(camera, dom)
   let walk: Walk | null = null
   let mode: Mode = 'orbit'
-  let transition: { t: Transition; to: Mode } | null = null
+  let transition: { t: Transition; to: Mode; pose: Pose } | null = null
   let orbitPose: Pose | null = null
   let home: Pose | null = null
   const listeners = new Set<(m: Mode, transitioning: boolean) => void>()
@@ -33,7 +33,9 @@ export function createControls(camera: PerspectiveCamera, dom: HTMLElement) {
   const emit = () => listeners.forEach((f) => f(mode, transition !== null))
 
   const currentPose = (): Pose =>
-    mode === 'walk' && walk
+    transition
+      ? transition.pose
+      : mode === 'walk' && walk
       ? walk.pose()
       : { position: camera.position.toArray() as V3, target: orbit.controls.target.toArray() as V3, fov: camera.fov }
 
@@ -75,7 +77,7 @@ export function createControls(camera: PerspectiveCamera, dom: HTMLElement) {
     walk?.setInputEnabled(false)
     walk?.setActive(false)
     if (toMode === 'walk') setNear(NEAR.walk)
-    transition = { t: new Transition(from, to), to: toMode }
+    transition = { t: new Transition(from, to), to: toMode, pose: from }
     emit()
   }
 
@@ -144,6 +146,7 @@ export function createControls(camera: PerspectiveCamera, dom: HTMLElement) {
     update(dtMs: number) {
       if (transition) {
         const { pose, done } = transition.t.advance(dtMs)
+        transition.pose = pose
         applyPose(pose)
         if (done) {
           const to = transition.to

@@ -2,8 +2,9 @@
 // (VITE_TEST_HOOK=1); production builds tree-shake it away.
 import { Euler } from 'three'
 import type { TempleMeta } from '../geometry/protocol'
-import type { Tier } from '../geometry/types'
+import type { Collider, GeneratorOutput, Tier } from '../geometry/types'
 import { applyLook, type Look } from './controls/look'
+import { orbitGround } from './controls/ground'
 import type { Mode } from './controls/manager'
 import type { WalkState } from './controls/walk'
 import type { CameraPose, Viewer } from './viewer'
@@ -29,6 +30,10 @@ export interface AphaiaHook {
   setMode(m: Mode): void
   reset(): void
   getMode(): { mode: Mode; destination: Mode; transitioning: boolean; progress: number | null }
+  /** Ground height at (x, z) as the orbit camera's ground clamp sees it. */
+  ground(x: number, z: number): number
+  /** Generator colliders whose name matches the regular expression source. */
+  colliders(pattern: string): Collider[]
   walk: {
     /** Mouse-look maths (the same path Pointer Lock and drag-to-look feed). In walk mode it turns the walker. */
     applyLook(dx: number, dy: number): Look
@@ -49,7 +54,12 @@ declare global {
 
 export const TEST_HOOK_ENABLED: boolean = import.meta.env.DEV || import.meta.env.VITE_TEST_HOOK === '1'
 
-export function installTestHook(viewer: Viewer, meta: TempleMeta, base: Omit<AphaiaStats, 'drawCalls' | 'renderedTriangles' | 'fps'>) {
+export function installTestHook(
+  viewer: Viewer,
+  meta: TempleMeta,
+  base: Omit<AphaiaStats, 'drawCalls' | 'renderedTriangles' | 'fps'>,
+  world: Pick<GeneratorOutput, 'colliders' | 'levels'>,
+) {
   if (!TEST_HOOK_ENABLED) return
   const e = new Euler(0, 0, 0, 'YXZ')
   window.__aphaia = {
@@ -67,6 +77,8 @@ export function installTestHook(viewer: Viewer, meta: TempleMeta, base: Omit<Aph
       transitioning: viewer.controls.transitioning,
       progress: viewer.controls.progress,
     }),
+    ground: (x, z) => orbitGround(world.levels, x, z),
+    colliders: (pattern) => world.colliders.filter((c) => new RegExp(pattern).test(c.name)),
     walk: {
       place(x, z, yaw, pitch = 0) {
         viewer.controls.walk?.place(x, z, yaw, pitch)

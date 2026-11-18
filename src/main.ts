@@ -25,7 +25,7 @@ async function start() {
     viewer.controls.configure(res.output, res.meta)
     createHud(viewer.controls)
     mountAbout(res.meta)
-    installTestHook(viewer, res.meta, { tier, generationMs: res.ms, workerWallMs: res.wallMs, triangles: res.triangles })
+    installTestHook(viewer, res.meta, { tier, generationMs: res.ms, workerWallMs: res.wallMs, triangles: res.triangles }, res.output)
     status?.remove()
   } catch (err) {
     if (status) status.textContent = `Could not build the temple: ${err instanceof Error ? err.message : String(err)}`

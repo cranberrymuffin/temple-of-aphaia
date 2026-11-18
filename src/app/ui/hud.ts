@@ -73,7 +73,11 @@ export function createHud(controls: Controls, root: HTMLElement = document.body)
     el.title = b.title ?? b.label
     el.setAttribute('aria-label', b.title ?? b.label)
     el.innerHTML = `${b.icon ?? ''}<span class="hud-label">${b.label}</span>`
-    el.addEventListener('click', b.onClick)
+    el.addEventListener('click', (e) => {
+      b.onClick()
+      // A pointer click hands the keyboard back to the scene (WASD, and Space must not re-press the button).
+      if (e.detail > 0) el.blur()
+    })
     return el
   }
   const modeBtn = mkButton({ id: 'hud-mode', label: 'Walk', icon: ICONS.walk, onClick: () => controls.toggle() })
@@ -103,6 +107,7 @@ export function createHud(controls: Controls, root: HTMLElement = document.body)
 
   const joystick = createJoystick((v) => controls.setJoystick(v))
   const touch = touchScreen()
+  hud.classList.toggle('hud-touch', touch)
 
   // Keep pointer events on HUD elements away from the canvas controls.
   for (const el of [bar, help, joystick.el]) el.addEventListener('pointerdown', (e) => e.stopPropagation())
