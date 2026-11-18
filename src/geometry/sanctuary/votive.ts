@@ -6,12 +6,24 @@ import { addShaft } from '../column'
 import type { Collector, Vec3 } from '../mesh'
 import { MeshBuilder, composeMatrix } from '../mesh'
 import type { GeneratorOutput } from '../types'
+import type { GroupRange } from '../figures'
+
+/** Where a scanned sphinx replaces the stand-in: capital top centre (world), its plan half-size, the crowning height. */
+export interface SphinxSlot {
+  x: number
+  y: number
+  z: number
+  halfX: number
+  halfZ: number
+  height: number
+  ranges: GroupRange[]
+}
 import { SANCTUARY_CONVENTIONS as K, groundRange, type SanctuaryContext } from './common'
 import { footprints } from '../../data/sanctuary'
 
 export const BASE_SIDES = { low: 16, med: 24, high: 32 } as const
 
-export function votiveColumn(id: string, f: ColumnFeature, ctx: SanctuaryContext, col: Collector): Omit<GeneratorOutput, 'groups'> {
+export function votiveColumn(id: string, f: ColumnFeature, ctx: SanctuaryContext, col: Collector): Omit<GeneratorOutput, 'groups'> & { sphinxSlot?: SphinxSlot } {
   const range = groundRange(ctx.ground, footprints(f)[0])
   const g = f.baseLevel !== undefined ? ctx.stylobateTop + f.baseLevel : range.max
   const bottom = Math.min(g, range.min) - K.skirt
@@ -57,6 +69,7 @@ export function votiveColumn(id: string, f: ColumnFeature, ctx: SanctuaryContext
   const y0 = bh + shaftH
   // Its bottom face closes the open shaft top (the shaft has no top cap).
   b.box([-cw, y0, -cd], [cw, y0 + capH, cd])
+  let sphinxSlot: SphinxSlot | undefined
   if (f.crowning) {
     // Sphinx stand-in: plinth, body, raised chest/head, sickle wing; blocky on purpose (Step 4 replaces it).
     const h = f.crowning.height.value
@@ -66,12 +79,16 @@ export function votiveColumn(id: string, f: ColumnFeature, ctx: SanctuaryContext
     s.box([-cw * 0.7, y1 + h * 0.08, -cd * 0.55], [cw * 0.35, y1 + h * 0.38, cd * 0.55], ['-y', '+x'])
     s.box([cw * 0.35, y1 + h * 0.08, -cd * 0.55], [cw * 0.75, y1 + h * 0.85, cd * 0.55], ['-y'])
     s.box([-cw * 0.55, y1 + h * 0.38, -cd * 0.08], [cw * 0.1, y1 + h * 0.95, cd * 0.08], ['-y'])
-    col.get('sphinx').append(s, composeMatrix([f.center[0], g, f.center[1]], 0))
+    const sg = col.get('sphinx')
+    const start = sg.idx.length
+    sg.append(s, composeMatrix([f.center[0], g, f.center[1]], 0))
+    sphinxSlot = { x: f.center[0], y: g + y1, z: f.center[1], halfX: cw, halfZ: cd, height: h, ranges: [{ group: 'sphinx', start, count: sg.idx.length - start }] }
   }
   col.get('votive-column').append(b, composeMatrix([f.center[0], g, f.center[1]], 0))
   return {
     instances: [],
     colliders: [{ kind: 'circle', name: `${id}-column`, x: f.center[0], z: f.center[1], r: R, y0: bottom, y1: g + bh + f.height.value }],
     levels: [],
+    sphinxSlot,
   }
 }

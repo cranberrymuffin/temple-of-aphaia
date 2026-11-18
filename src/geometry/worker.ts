@@ -103,6 +103,7 @@ scope.onmessage = async (e) => {
         field: { faceX: r.pediment.tympanumX, outerX: r.roof.halfX, baseY: r.pediment.baseY, halfZ: r.pediment.halfZ, apexY: r.pediment.apexY },
         figureSlots: temple.figureSlots,
         cultSlot: temple.cultSlot,
+        sphinxSlot: site.sanctuary.sphinxSlots[0],
       },
     }
     const ms = performance.now() - t0

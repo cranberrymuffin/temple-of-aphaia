@@ -294,3 +294,69 @@ export function figures(r: Resolved, col: Collector): Omit<GeneratorOutput, 'gro
   }
   return { instances: [], colliders: [], levels: [], placed }
 }
+
+export interface LayoutFigure {
+  /** Canonical scan vertices (metres; mirrored already if the slot uses a mirrored scan). */
+  points: ArrayLike<number>
+  plinth: number
+}
+
+/**
+ * Height-based spacing for one pediment. `figs` are in viewer left-to-right order with the centre figure
+ * (Athena) at index `centre`. Each half is packed outward from the centre with a uniform gap, each figure
+ * as large as the raking soffit allows; the gap then grows (per half) while every figure keeps >= 95% of
+ * its packed scale and the outer figure stays inside the field, so corners fill without needless
+ * shrinking and footprints never overlap. Returns each figure's fit (z centre in `position[2]`).
+ */
+export function layoutPediment(f: Field, side: 'east' | 'west', figs: LayoutFigure[], centre: number, minGap = 0.03): ScanFit[] {
+  const rightZ = side === 'east' ? -1 : 1
+  const xr = figs.map((g) => {
+    let x0 = Infinity
+    let x1 = -Infinity
+    for (let i = 0; i < g.points.length; i += 3) {
+      x0 = Math.min(x0, g.points[i])
+      x1 = Math.max(x1, g.points[i])
+    }
+    return [x0, x1]
+  })
+  const fitAt = (i: number, u: number) => fitScan(figs[i].points, figs[i].plinth, side, u * rightZ, f)
+  const out: ScanFit[] = new Array(figs.length)
+  out[centre] = fitAt(centre, 0)
+  const sC = out[centre].scale
+  // Pack one half: dir +1 = toward the viewer's right.
+  const pack = (dir: 1 | -1, gap: number) => {
+    const fits: ScanFit[] = []
+    let edge = dir > 0 ? xr[centre][1] * sC : xr[centre][0] * sC
+    for (let i = centre + dir; i >= 0 && i < figs.length; i += dir) {
+      const [x0, x1] = xr[i]
+      let s = 1
+      let fit = fitAt(i, 0)
+      for (let k = 0; k < 4; k++) {
+        const u = dir > 0 ? edge + gap - x0 * s : edge - gap - x1 * s
+        fit = fitAt(i, u)
+        s = fit.scale
+      }
+      const u = fit.position[2] * rightZ
+      edge = dir > 0 ? u + x1 * s : u + x0 * s
+      fits.push(fit)
+    }
+    return { fits, edge }
+  }
+  for (const dir of [1, -1] as const) {
+    const base = pack(dir, minGap)
+    let best = base.fits
+    let lo = minGap
+    let hi = f.halfZ
+    for (let k = 0; k < 24; k++) {
+      const g = (lo + hi) / 2
+      const t = pack(dir, g)
+      const ok = Math.abs(t.edge) <= f.halfZ - minGap && t.fits.every((fit, j) => fit.scale >= 0.95 * base.fits[j].scale)
+      if (ok) {
+        lo = g
+        best = t.fits
+      } else hi = g
+    }
+    best.forEach((fit, j) => (out[centre + dir * (j + 1)] = fit))
+  }
+  return out
+}
