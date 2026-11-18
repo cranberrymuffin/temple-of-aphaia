@@ -189,6 +189,15 @@
       "verified": true,
       "licence": "Public Domain Mark 1.0 (https://creativecommons.org/publicdomain/mark/1.0/), as stated on each object record (field \"rights\"); free download without an account. Credit is given as a courtesy.",
       "note": "Records read through the SMK API on 2026-11-18. Aegina casts KAS541/1-5 (east pediment; made in Munich, Technische Hochschule; acquired 1898) and KAS2123-KAS2131 (west pediment; acquired 1952). Their complete limbs show Bertel Thorvaldsen's 1816-17 restorations, removed from the Munich originals in the 1960s. KAS1800: Kore in chiton and cape (epiblema), Acropolis, c. 530 BC. No 3D files exist for the Scythian archer (KAS2130), west XIV (KAS2132), the Naxian sphinx column (KAS1462) or the Aphaia sphinx fragments (KAS1341, KAS267)."
+    },
+    {
+      "id": "sketchfab-marchal-sphinx",
+      "type": "archaeological",
+      "citation": "Geoffrey Marchal, \"Sphinx seated\" (Sketchfab, 3D scan of the Copenhagen Royal Cast Collection cast of the Sphinx of Aegina, c. 470-460 BC, National Archaeological Museum, Athens).",
+      "url": "https://sketchfab.com/3d-models/sphinx-seated-67b3007d2707483393ca4a3ee94ac759",
+      "verified": true,
+      "licence": "CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/). Credit line: \"Sphinx seated by Geoffrey Marchal is licensed under CC Attribution-NonCommercial-ShareAlike.\" Our simplified GLB (public/sculptures/sphinx-aegina-*.glb) is a derivative and is likewise licensed CC BY-NC-SA 4.0; non-commercial site.",
+      "note": "Downloaded by the user through their Sketchfab account on 2026-11-18 (refs/scans/sketchfab-sphinx/licences.txt). Licence read from the Sketchfab download dialog and the public model API."
     }
   ],
   "names": {
@@ -350,16 +359,22 @@
       "confidence": "interpretive"
     },
     "pediment-scans": {
-      "description": "Pediment figures with a licensed scan are shown as 3D scans of the Copenhagen plaster casts, which show Bertel Thorvaldsen's 1816-17 restorations as they were cast; the other figures keep their stand-ins.",
+      "description": "Every pediment slot shows a 3D scan of a Copenhagen plaster cast (Thorvaldsen's 1816-17 restorations as cast): a real scan of the figure, a scan mirrored from its counterpart in the mirror-symmetric composition, or a figure imagined from another scan of the same type; slots are spaced by figure height.",
       "sourceIds": ["smk-royal-cast-collection", "furtwangler-1906"],
       "confidence": "interpretive",
-      "note": "User decision 2026-11-18 (Thorvaldsen restorations accepted as-is). Slots follow pediments.json; scans are assigned by pose and direction."
+      "note": "User decisions 2026-11-18 (Thorvaldsen restorations accepted; mirror counterparts; imagined fills labelled). Furtwängler 1906 pp. 195, 312: mirror-symmetric groups each side of Athena."
     },
     "cult-statue-standin": {
       "description": "A comparable Late Archaic statue (Kore in chiton and cape from the Athenian Acropolis, c. 530 BC, Copenhagen cast) stands on the documented cult-statue base in the naos, in place of Aphaia's lost cult image.",
       "sourceIds": ["furtwangler-1906", "smk-royal-cast-collection"],
       "confidence": "conjectural",
       "note": "Furtwängler 1906 p. 43: base trace 92 x 112 cm at the boundary of the second third of the cella; a small, probably seated image with light-blue paint on the seat. No licensed scan of a seated Late Archaic goddess was found; a standing kore is shown instead."
+    },
+    "sphinx-scan": {
+      "description": "The votive column carries a scan of a comparable sphinx (cast of the Sphinx of Aegina, c. 470-460 BC); the Aphaia original is lost, and the column's crowning sphinx is itself a restoration by analogy with the Naxian column.",
+      "sourceIds": ["sketchfab-marchal-sphinx", "furtwangler-1906"],
+      "confidence": "conjectural",
+      "note": "Furtwängler 1906 pp. 157, 359-360, 487. Scaled to the 1.6 m crowning height; it faces the temple."
     }
   }
 }

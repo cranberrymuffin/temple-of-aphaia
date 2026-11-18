@@ -278,5 +278,25 @@
         "bytes": 21508
       }
     }
+  },
+  "sphinx-aegina": {
+    "plinthM": 0,
+    "size": [
+      1.287,
+      1.6,
+      0.81
+    ],
+    "lods": {
+      "high": {
+        "file": "sphinx-aegina-high-e2b77d7f3a.glb",
+        "triangles": 15999,
+        "bytes": 67200
+      },
+      "low": {
+        "file": "sphinx-aegina-low-6c399fe548.glb",
+        "triangles": 4999,
+        "bytes": 23496
+      }
+    }
   }
 }

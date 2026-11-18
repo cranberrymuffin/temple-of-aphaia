@@ -28,12 +28,13 @@
       },
       "restoration": "thorvaldsen",
       "scan": {
-        "file": "KAS2123.stl",
+        "file": "smk/KAS2123.stl",
         "up": "+z",
         "facingDeg": 0,
         "heightM": 0.48
       },
-      "paint": "marble"
+      "paint": "marble",
+      "kind": "real"
     },
     {
       "id": "w-b-kneeling",
@@ -55,12 +56,13 @@
       },
       "restoration": "thorvaldsen",
       "scan": {
-        "file": "KAS2131.stl",
+        "file": "smk/KAS2131.stl",
         "up": "+z",
         "facingDeg": 90,
         "heightM": 0.845
       },
-      "paint": "marble"
+      "paint": "marble",
+      "kind": "real"
     },
     {
       "id": "w-f-standing-shield",
@@ -82,12 +84,13 @@
       },
       "restoration": "thorvaldsen",
       "scan": {
-        "file": "KAS2126.stl",
+        "file": "smk/KAS2126.stl",
         "up": "+z",
         "facingDeg": 0,
         "heightM": 1.28
       },
-      "paint": "marble"
+      "paint": "marble",
+      "kind": "real"
     },
     {
       "id": "w-g-athena",
@@ -109,12 +112,13 @@
       },
       "restoration": "thorvaldsen",
       "scan": {
-        "file": "KAS2128.stl",
+        "file": "smk/KAS2128.stl",
         "up": "+y",
         "facingDeg": 0,
         "heightM": 1.705
       },
-      "paint": "marble"
+      "paint": "marble",
+      "kind": "real"
     },
     {
       "id": "w-k-standing-shield",
@@ -136,12 +140,13 @@
       },
       "restoration": "thorvaldsen",
       "scan": {
-        "file": "KAS2129.stl",
+        "file": "smk/KAS2129.stl",
         "up": "+y",
         "facingDeg": 0,
         "heightM": 1.325
       },
-      "paint": "marble"
+      "paint": "marble",
+      "kind": "real"
     },
     {
       "id": "w-l-kneeling-archer",
@@ -163,12 +168,13 @@
       },
       "restoration": "thorvaldsen",
       "scan": {
-        "file": "KAS2125.stl",
+        "file": "smk/KAS2125.stl",
         "up": "+z",
         "facingDeg": 0,
         "heightM": 1.04
       },
-      "paint": "marble"
+      "paint": "marble",
+      "kind": "real"
     },
     {
       "id": "w-m-kneeling",
@@ -190,12 +196,13 @@
       },
       "restoration": "thorvaldsen",
       "scan": {
-        "file": "KAS2124.stl",
+        "file": "smk/KAS2124.stl",
         "up": "+z",
         "facingDeg": 0,
         "heightM": 0.91
       },
-      "paint": "marble"
+      "paint": "marble",
+      "kind": "real"
     },
     {
       "id": "w-n-patroklos",
@@ -217,12 +224,13 @@
       },
       "restoration": "thorvaldsen",
       "scan": {
-        "file": "KAS2127.stl",
+        "file": "smk/KAS2127.stl",
         "up": "+y",
         "facingDeg": 0,
         "heightM": 0.605
       },
-      "paint": "marble"
+      "paint": "marble",
+      "kind": "real"
     },
     {
       "id": "e-a-lying-wounded",
@@ -244,12 +252,13 @@
       },
       "restoration": "thorvaldsen",
       "scan": {
-        "file": "KAS541-1.stl",
+        "file": "smk/KAS541-1.stl",
         "up": "+z",
         "facingDeg": -90,
         "unitToMetre": 0.001
       },
-      "paint": "marble"
+      "paint": "marble",
+      "kind": "real"
     },
     {
       "id": "e-b-herakles",
@@ -271,12 +280,13 @@
       },
       "restoration": "thorvaldsen",
       "scan": {
-        "file": "KAS541-5.stl",
+        "file": "smk/KAS541-5.stl",
         "up": "+z",
         "facingDeg": 0,
         "heightM": 0.795
       },
-      "paint": "marble"
+      "paint": "marble",
+      "kind": "real"
     },
     {
       "id": "e-c-running",
@@ -298,12 +308,13 @@
       },
       "restoration": "thorvaldsen",
       "scan": {
-        "file": "KAS541-4.stl",
+        "file": "smk/KAS541-4.stl",
         "up": "+z",
         "facingDeg": -90,
         "heightM": 0.95
       },
-      "paint": "marble"
+      "paint": "marble",
+      "kind": "real"
     },
     {
       "id": "e-e-standing",
@@ -325,12 +336,13 @@
       },
       "restoration": "thorvaldsen",
       "scan": {
-        "file": "KAS541-2.stl",
+        "file": "smk/KAS541-2.stl",
         "up": "+y",
         "facingDeg": 0,
         "heightM": 1.48
       },
-      "paint": "marble"
+      "paint": "marble",
+      "kind": "real"
     },
     {
       "id": "e-l-lying-wounded",
@@ -352,12 +364,13 @@
       },
       "restoration": "thorvaldsen",
       "scan": {
-        "file": "KAS541-3.stl",
+        "file": "smk/KAS541-3.stl",
         "up": "+z",
         "facingDeg": -90,
         "unitToMetre": 0.001
       },
-      "paint": "marble"
+      "paint": "marble",
+      "kind": "real"
     },
     {
       "id": "cella-kore",
@@ -378,13 +391,188 @@
       },
       "restoration": "none",
       "scan": {
-        "file": "KAS1800.stl",
+        "file": "smk/KAS1800.stl",
         "up": "+z",
         "facingDeg": 0,
         "heightM": 2.05
       },
       "paint": "marble",
-      "note": "Stand-in for the lost cult image (comparable Late Archaic statue). Furtwängler 1906 p. 43 infers a small, probably seated image; no seated Late Archaic goddess scan with a usable licence was found."
+      "note": "Stand-in for the lost cult image (comparable Late Archaic statue). Furtwängler 1906 p. 43 infers a small, probably seated image; no seated Late Archaic goddess scan with a usable licence was found.",
+      "kind": "real"
+    },
+    {
+      "id": "w-c-archer-mirrored",
+      "title": "Kneeling archer (Scythian archer slot)",
+      "slot": {
+        "pediment": "west",
+        "figureId": "west-c"
+      },
+      "kind": "mirrored",
+      "asset": "w-l-kneeling-archer",
+      "mirror": true,
+      "from": "mirrored from west L",
+      "paint": "scythian-costume",
+      "note": "The Scythian archer has no scan: the helmeted archer of slot L, mirrored, carries the attested diamond-costume colours on shirt and leggings (Harvard Gazette 2007), an imagined combination."
+    },
+    {
+      "id": "w-d-mirrored",
+      "title": "Standing warrior with shield",
+      "slot": {
+        "pediment": "west",
+        "figureId": "west-d"
+      },
+      "kind": "mirrored",
+      "asset": "w-k-standing-shield",
+      "mirror": true,
+      "from": "mirrored from west K",
+      "paint": "marble"
+    },
+    {
+      "id": "w-h-mirrored",
+      "title": "Standing warrior with shield",
+      "slot": {
+        "pediment": "west",
+        "figureId": "west-h"
+      },
+      "kind": "mirrored",
+      "asset": "w-f-standing-shield",
+      "mirror": true,
+      "from": "mirrored from west F",
+      "paint": "marble"
+    },
+    {
+      "id": "w-e-imagined",
+      "title": "Wounded warrior raising his shield",
+      "slot": {
+        "pediment": "west",
+        "figureId": "west-e"
+      },
+      "kind": "imagined",
+      "asset": "e-l-lying-wounded",
+      "mirror": false,
+      "from": "imagined from the east-pediment lying wounded warrior (KAS541/3)",
+      "paint": "marble"
+    },
+    {
+      "id": "w-i-imagined",
+      "title": "Wounded warrior raising his shield",
+      "slot": {
+        "pediment": "west",
+        "figureId": "west-i"
+      },
+      "kind": "imagined",
+      "asset": "e-l-lying-wounded",
+      "mirror": true,
+      "from": "imagined from the east-pediment lying wounded warrior (KAS541/3), mirrored",
+      "paint": "marble"
+    },
+    {
+      "id": "e-d-imagined",
+      "title": "Warrior sinking back",
+      "slot": {
+        "pediment": "east",
+        "figureId": "east-d"
+      },
+      "kind": "imagined",
+      "asset": "w-a-lying-wounded",
+      "mirror": false,
+      "from": "imagined from the west-pediment lying wounded warrior (KAS2123)",
+      "paint": "marble"
+    },
+    {
+      "id": "e-h-imagined",
+      "title": "Warrior sinking back",
+      "slot": {
+        "pediment": "east",
+        "figureId": "east-h"
+      },
+      "kind": "imagined",
+      "asset": "w-a-lying-wounded",
+      "mirror": true,
+      "from": "imagined from the west-pediment lying wounded warrior (KAS2123), mirrored",
+      "paint": "marble"
+    },
+    {
+      "id": "e-f-imagined",
+      "title": "Athena (east)",
+      "slot": {
+        "pediment": "east",
+        "figureId": "east-f"
+      },
+      "kind": "imagined",
+      "asset": "w-g-athena",
+      "mirror": false,
+      "from": "imagined from the west-pediment Athena (KAS2128); the east Athena has no scan",
+      "paint": "marble"
+    },
+    {
+      "id": "e-g-mirrored",
+      "title": "Standing warrior",
+      "slot": {
+        "pediment": "east",
+        "figureId": "east-g"
+      },
+      "kind": "mirrored",
+      "asset": "e-e-standing",
+      "mirror": true,
+      "from": "mirrored from east E",
+      "paint": "marble"
+    },
+    {
+      "id": "e-i-mirrored",
+      "title": "Running warrior (squire)",
+      "slot": {
+        "pediment": "east",
+        "figureId": "east-i"
+      },
+      "kind": "mirrored",
+      "asset": "e-c-running",
+      "mirror": true,
+      "from": "mirrored from east C",
+      "paint": "marble"
+    },
+    {
+      "id": "e-k-mirrored",
+      "title": "Kneeling archer",
+      "slot": {
+        "pediment": "east",
+        "figureId": "east-k"
+      },
+      "kind": "mirrored",
+      "asset": "e-b-herakles",
+      "mirror": true,
+      "from": "mirrored from east B: a mirrored Herakles stand-in, not a second Herakles",
+      "paint": "marble"
+    },
+    {
+      "id": "sphinx-aegina",
+      "title": "Sphinx seated (cast of the Sphinx of Aegina, Copenhagen)",
+      "slot": {
+        "site": "sphinx-column"
+      },
+      "kind": "real",
+      "source": {
+        "sourceId": "sketchfab-marchal-sphinx",
+        "objectNumber": "Sketchfab 67b3007d2707483393ca4a3ee94ac759",
+        "page": "https://sketchfab.com/3d-models/sphinx-seated-67b3007d2707483393ca4a3ee94ac759",
+        "file": "https://sketchfab.com/3d-models/sphinx-seated-67b3007d2707483393ca4a3ee94ac759"
+      },
+      "original": {
+        "position": "Sphinx from Aegina (Aphrodite temple area), c. 470-460 BC",
+        "date": "c. 470-460 BC",
+        "museum": "National Archaeological Museum, Athens (cast: The Royal Cast Collection, Copenhagen)"
+      },
+      "restoration": "none",
+      "scan": {
+        "file": "sketchfab-sphinx/sphinx_seated.glb",
+        "up": "+y",
+        "facingDeg": 0,
+        "heightM": 1.6
+      },
+      "paint": "marble",
+      "label": "A comparable sphinx (cast of the Sphinx of Aegina, Copenhagen); the Aphaia original is lost",
+      "licence": "CC BY-NC-SA 4.0 (\"Sphinx seated by Geoffrey Marchal is licensed under CC Attribution-NonCommercial-ShareAlike.\"); our simplified GLB is a derivative and is likewise CC BY-NC-SA 4.0.",
+      "note": "Scaled to the 1.6 m crowning height in sanctuary.json; faces the temple."
     }
   ]
 }

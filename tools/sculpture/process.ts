@@ -1,5 +1,5 @@
-// Usage: npx vite-node tools/sculpture/process.ts -- <scan-dir> <out-dir> [id...]
-// For every sculpture in src/data/sculptures.json (or the ids given): read the scan from <scan-dir>/<file>,
+// Usage: npx vite-node tools/sculpture/process.ts -- refs/scans public/sculptures [id...]
+// For every real sculpture in src/data/sculptures.json (or the ids given): read the scan (<scan-dir>/<scan.file>, STL or GLB),
 // orient it (+Y up, presentation front +Z, resting on y = 0), scale it to metres (scan.heightM or
 // scan.unitToMetre), simplify to the high and low LOD
 // triangle targets with meshoptimizer, recompute normals and write <out-dir>/<id>-<lod>.glb compressed with
@@ -10,7 +10,7 @@ import { mkdtempSync, readFileSync, renameSync, rmSync, statSync, writeFileSync 
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { MeshoptSimplifier } from 'three/examples/jsm/libs/meshopt_simplifier.module.js'
-import { bounds, compact, readStl, vertexNormals, writeGlb } from './mesh-io'
+import { bounds, compact, readMesh, vertexNormals, writeGlb } from './mesh-io'
 import { orientPositions } from './orient'
 
 const [scanDir, outDir, ...only] = process.argv.slice(2).filter((a) => a !== '--')
@@ -44,8 +44,8 @@ function plinthHeight(p, height) {
 }
 
 for (const s of manifest.sculptures) {
-  if (only.length && !only.includes(s.id)) continue
-  const m = readStl(join(scanDir, s.scan.file))
+  if (!s.scan || (only.length && !only.includes(s.id))) continue
+  const m = readMesh(join(scanDir, s.scan.file))
   const p = orientPositions(m.positions, s.scan.up, s.scan.facingDeg)
   // Real size: the museum's recorded height when given (the files' units vary), else file units -> metres.
   const k = s.scan.heightM ? s.scan.heightM / bounds(p).size[1] : s.scan.unitToMetre

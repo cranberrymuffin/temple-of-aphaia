@@ -20,6 +20,11 @@ export function readStl(path, weld = 1e-4) {
       for (let k = 0; k < 9; k++) raw.push(buf.readFloatLE(o + k * 4))
     }
   }
+  return weldTriangles(raw, weld)
+}
+
+/** Welds a triangle soup (9 floats per triangle) into indexed form and drops degenerate triangles. */
+export function weldTriangles(raw: number[], weld = 1e-4) {
   const map = new Map()
   const pos = []
   const idx = new Uint32Array(raw.length / 3)
@@ -193,3 +198,66 @@ export function previewPng(path, { positions: p, indices: idx }, size = 320, vie
   })
   writeFileSync(path, png(W, size, rgb))
 }
+
+/** Reads a plain (uncompressed) GLB: every mesh primitive's POSITION and indices with node transforms applied, welded. */
+export function readGlb(path: string, weld = 1e-4) {
+  const buf = readFileSync(path)
+  if (buf.readUInt32LE(0) !== 0x46546c67) throw new Error(`${path}: not a GLB`)
+  const jsonLen = buf.readUInt32LE(12)
+  const j = JSON.parse(buf.subarray(20, 20 + jsonLen).toString())
+  if (j.extensionsRequired?.length) throw new Error(`${path}: unsupported extensions ${j.extensionsRequired}`)
+  const binStart = 20 + jsonLen + 8
+  const view = (acc: { bufferView: number; byteOffset?: number }) => {
+    const bv = j.bufferViews[acc.bufferView]
+    return binStart + (bv.byteOffset ?? 0) + (acc.byteOffset ?? 0)
+  }
+  const mul = (a: number[], b: number[]) => {
+    const o = new Array(16).fill(0)
+    for (let c = 0; c < 4; c++) for (let r = 0; r < 4; r++) for (let k = 0; k < 4; k++) o[c * 4 + r] += a[k * 4 + r] * b[c * 4 + k]
+    return o
+  }
+  const local = (n: { matrix?: number[]; translation?: number[]; rotation?: number[]; scale?: number[] }) => {
+    if (n.matrix) return n.matrix
+    const [x, y, z, w] = n.rotation ?? [0, 0, 0, 1]
+    const [sx, sy, sz] = n.scale ?? [1, 1, 1]
+    const [tx, ty, tz] = n.translation ?? [0, 0, 0]
+    return [
+      (1 - 2 * (y * y + z * z)) * sx, 2 * (x * y + z * w) * sx, 2 * (x * z - y * w) * sx, 0,
+      2 * (x * y - z * w) * sy, (1 - 2 * (x * x + z * z)) * sy, 2 * (y * z + x * w) * sy, 0,
+      2 * (x * z + y * w) * sz, 2 * (y * z - x * w) * sz, (1 - 2 * (x * x + y * y)) * sz, 0,
+      tx, ty, tz, 1,
+    ]
+  }
+  const raw: number[] = []
+  const visit = (ni: number, parent: number[]) => {
+    const n = j.nodes[ni]
+    const m = mul(parent, local(n))
+    if (n.mesh !== undefined) {
+      for (const prim of j.meshes[n.mesh].primitives) {
+        const pa = j.accessors[prim.attributes.POSITION]
+        if (pa.componentType !== 5126) throw new Error('POSITION must be float32')
+        const po = view(pa)
+        const stride = j.bufferViews[pa.bufferView].byteStride ?? 12
+        const pt = (i: number) => {
+          const x = buf.readFloatLE(po + i * stride), y = buf.readFloatLE(po + i * stride + 4), z = buf.readFloatLE(po + i * stride + 8)
+          return [m[0] * x + m[4] * y + m[8] * z + m[12], m[1] * x + m[5] * y + m[9] * z + m[13], m[2] * x + m[6] * y + m[10] * z + m[14]]
+        }
+        if (prim.indices === undefined) {
+          for (let i = 0; i < pa.count; i++) raw.push(...pt(i))
+        } else {
+          const ia = j.accessors[prim.indices]
+          const io = view(ia)
+          const read = ia.componentType === 5125 ? (i: number) => buf.readUInt32LE(io + i * 4) : ia.componentType === 5123 ? (i: number) => buf.readUInt16LE(io + i * 2) : (i: number) => buf.readUInt8(io + i)
+          for (let i = 0; i < ia.count; i++) raw.push(...pt(read(i)))
+        }
+      }
+    }
+    for (const c of n.children ?? []) visit(c, m)
+  }
+  const I = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
+  for (const ni of j.scenes[j.scene ?? 0].nodes) visit(ni, I)
+  return weldTriangles(raw, weld)
+}
+
+/** STL or plain GLB, by extension. */
+export const readMesh = (path: string) => (path.toLowerCase().endsWith('.glb') ? readGlb(path) : readStl(path))
