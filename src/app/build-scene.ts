@@ -1,22 +1,8 @@
-// The only place `three` meets generator output: one merged mesh per pattern material, one InstancedMesh
-// per instance set. Materials here are the Step 3 plain placeholders; Step 4 swaps in src/materials.
-import {
-  BufferAttribute,
-  BufferGeometry,
-  DoubleSide,
-  Group,
-  InstancedMesh,
-  Matrix4,
-  Mesh,
-  MeshStandardMaterial,
-  type Material,
-} from 'three'
+// The only place `three` meets generator output: one merged mesh per material (src/app/materials), one
+// InstancedMesh per instance set.
+import { BufferAttribute, BufferGeometry, DoubleSide, Group, InstancedMesh, Matrix4, Mesh } from 'three'
 import type { GeneratorOutput, GeometryGroup } from '../geometry/types'
-
-export interface BuildOptions {
-  /** Show the per-vertex palette colours (provisional paint). Default: plain unpainted material. */
-  paint: boolean
-}
+import type { MaterialSet } from './materials'
 
 function toGeometry(groups: GeometryGroup[]): BufferGeometry {
   let nv = 0
@@ -51,27 +37,20 @@ function toGeometry(groups: GeometryGroup[]): BufferGeometry {
   return geo
 }
 
-function material(opts: BuildOptions, ground: boolean): Material {
-  return new MeshStandardMaterial({
-    color: opts.paint || ground ? 0xffffff : 0xe8e2d4,
-    vertexColors: opts.paint || ground,
-    roughness: 0.85,
-    metalness: 0,
-    side: ground ? DoubleSide : undefined,
-  })
-}
-
-export function buildScene(out: GeneratorOutput, opts: BuildOptions): Group {
+export function buildScene(out: GeneratorOutput, materials: MaterialSet): Group {
   const root = new Group()
   root.name = 'temple'
   const byMaterial = new Map<string, GeometryGroup[]>()
   for (const g of out.groups) {
-    // Ground and sanctuary terrain keep their earth vertex colour even in the plain (unpainted) view.
-    const key = g.name === 'ground' || g.name === 'terrain' ? 'ground' : g.name === 'sea' ? 'sea' : g.material
+    // Ground and sanctuary terrain get the terrain material; the rest groups by its pattern material.
+    const key = materials.canonical(g.name === 'ground' || g.name === 'terrain' ? 'ground' : g.name === 'sea' ? 'sea' : g.material)
     byMaterial.set(key, [...(byMaterial.get(key) ?? []), g])
   }
   for (const [key, groups] of byMaterial) {
-    const mesh = new Mesh(toGeometry(groups), material(opts, key === 'ground' || key === 'sea'))
+    const mat = materials.get(key)
+    // Terrain faces are seen from below at skirts and cut faces: render both sides.
+    if (key === 'ground') mat.side = DoubleSide
+    const mesh = new Mesh(toGeometry(groups), mat)
     mesh.name = key
     mesh.userData.elements = groups.map((g) => g.name)
     root.add(mesh)
@@ -79,7 +58,7 @@ export function buildScene(out: GeneratorOutput, opts: BuildOptions): Group {
   const m = new Matrix4()
   for (const s of out.instances) {
     const count = s.matrices.length / 16
-    const mesh = new InstancedMesh(toGeometry([s.geometry]), material(opts, false), count)
+    const mesh = new InstancedMesh(toGeometry([s.geometry]), materials.get(s.geometry.material), count)
     for (let i = 0; i < count; i++) mesh.setMatrixAt(i, m.fromArray(s.matrices, i * 16))
     mesh.instanceMatrix.needsUpdate = true
     mesh.computeBoundingSphere()

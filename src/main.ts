@@ -1,5 +1,6 @@
 import './style.css'
 import { buildScene } from './app/build-scene'
+import { createMaterials } from './app/materials'
 import { generateTemple } from './app/geometry-client'
 import { installTestHook, TEST_HOOK_ENABLED } from './app/test-hook'
 import { pickTier } from './app/tier'
@@ -14,8 +15,12 @@ async function start() {
   const viewer = createViewer(app)
   try {
     const res = await generateTemple({ tier, keepColorIdx: TEST_HOOK_ENABLED })
-    const paint = new URLSearchParams(location.search).has('paint')
-    viewer.add(buildScene(res.output, { paint }))
+    // Painted by default; ?plain shows the unpainted Step 3 look for comparison.
+    const paint = !new URLSearchParams(location.search).has('plain')
+    const site = { bounds: res.meta.site.bounds, seaLevelY: res.meta.site.seaLevelY }
+    const materials = createMaterials({ tier, paint, site, anisotropy: viewer.renderer.capabilities.getMaxAnisotropy() })
+    viewer.add(buildScene(res.output, materials))
+    await materials.ready
     viewer.controls.configure(res.output, res.meta)
     createHud(viewer.controls)
     installTestHook(viewer, res.meta, { tier, generationMs: res.ms, workerWallMs: res.wallMs, triangles: res.triangles })
