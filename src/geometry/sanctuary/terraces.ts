@@ -8,7 +8,7 @@
 // terrace and g outside. Mesh: terraces triangulated exactly at their levels; g on a tier-resolution grid,
 // cut by the terraces and feature footprints; vertical faces on terrace edges close the step to g: down
 // (retaining face, rock face or riser to a lower terrace) or up (cut face where the hill is higher).
-import type { Point2, TerrainDesc } from '../../data/sanctuary'
+import type { EdgeFace, Point2, TerrainDesc } from '../../data/sanctuary'
 import { pointInPolygon, signedArea, triangulate } from '../../data/polygon'
 import type { Collector, Vec3 } from '../mesh'
 import type { GeneratorOutput, Heightfield, Level, Tier } from '../types'
@@ -28,18 +28,37 @@ interface T {
   ccw: Point2[]
   y: number
   over?: { edgeDrop: number; slope: number }
+  /** Edge-face material per ccw edge. */
+  faces: EdgeFace[]
 }
+
+/** Mesh group (material id) of each terrace edge-face kind; Step 4 paints them. */
+export const EDGE_FACE_GROUP: Record<EdgeFace, string> = { rubble: 'sanctuary-wall', ashlar: 'ashlar-wall', older: 'older-wall', rock: 'rock-face' }
+
+/** Conventions for the terrace edge faces (logged with the site). */
+export const EDGE_CONVENTIONS = {
+  /** Retaining faces taller than this (m) lean back: the foot steps out by batterRatio per metre above it. */
+  batterFrom: 1.5,
+  batterRatio: 0.12,
+} as const
 
 function terraces(desc: TerrainDesc, stylobateTop: number): T[] {
   return Object.entries(desc.terraces)
     .filter(([, t]) => !t.hiddenReason)
-    .map(([id, t]) => ({
-    id,
-    poly: t.polygon,
-    ccw: signedArea(t.polygon) < 0 ? [...t.polygon].reverse() : t.polygon,
-    y: stylobateTop + t.level.value,
-    over: t.falloff ? { edgeDrop: t.falloff.edgeDrop.value, slope: t.falloff.slope.value } : undefined,
-  }))
+    .map(([id, t]) => {
+      const n = t.polygon.length
+      const rev = signedArea(t.polygon) < 0
+      const faceOf = (i: number): EdgeFace => t.edgeFaces?.[i] ?? t.edgeFace ?? 'rubble'
+      return {
+        id,
+        poly: t.polygon,
+        ccw: rev ? [...t.polygon].reverse() : t.polygon,
+        y: stylobateTop + t.level.value,
+        over: t.falloff ? { edgeDrop: t.falloff.edgeDrop.value, slope: t.falloff.slope.value } : undefined,
+        // Reversed: ccw edge k runs from point n-1-k to n-2-k, i.e. original edge n-2-k.
+        faces: Array.from({ length: n }, (_, k) => faceOf(rev ? (2 * n - 2 - k) % n : k)),
+      }
+    })
 }
 
 /** Distance from q to the polygon boundary and the outward unit direction there. */
@@ -95,6 +114,36 @@ export function naturalGroundFn(desc: TerrainDesc, stylobateTop: number): Ground
     }
     return h
   }
+}
+
+/**
+ * Conjectural correction of a surface model (the DEM is a DSM with modern spoil heaps and trees) next to the
+ * terraces: within `hold` of a terrace edge (and under it) the natural ground is kept at least `drop` below that
+ * terrace, feathered (smoothstep) back to the original by `radius`. `stats.maxLowered` records the largest change seen.
+ */
+export function clampNearTerraces(g: GroundFn, desc: TerrainDesc, stylobateTop: number, radius: number, drop: number, hold = 0) {
+  const ts = terraces(desc, stylobateTop).map((t) => ({
+    ...t,
+    bb: [Math.min(...t.poly.map((p) => p[0])) - radius, Math.max(...t.poly.map((p) => p[0])) + radius, Math.min(...t.poly.map((p) => p[1])) - radius, Math.max(...t.poly.map((p) => p[1])) + radius],
+  }))
+  const stats = { maxLowered: 0, radius, drop, hold }
+  const ground: GroundFn = (x, z) => {
+    const h = g(x, z)
+    let out = h
+    for (const t of ts) {
+      const cap = t.y - drop
+      if (h <= cap || x < t.bb[0] || x > t.bb[1] || z < t.bb[2] || z > t.bb[3]) continue
+      // Under the terrace too (d = 0): the mesh triangles across its edge interpolate those nodes.
+      const d = pointInPolygon(t.poly, [x, z]) ? 0 : nearest(t, [x, z]).d
+      if (d >= radius) continue
+      const s = Math.max(0, d - hold) / (radius - hold)
+      const w = s * s * (3 - 2 * s)
+      out = Math.min(out, w * h + (1 - w) * cap)
+    }
+    stats.maxLowered = Math.max(stats.maxLowered, h - out)
+    return out
+  }
+  return { ground, stats }
 }
 
 /** Exact terrain height in the temple frame: terrace level inside a terrace, natural ground outside. */
@@ -314,11 +363,15 @@ export function sparseTerrain(
   }
   for (const t of ts) {
     const poly = t.ccw
+    // Battered feet at each edge's start and end vertex, to close the wedge at convex corners.
+    const startFoot: (Vec3 | undefined)[] = []
+    const endFoot: (Vec3 | undefined)[] = []
     for (let i = 0; i < poly.length; i++) {
       const a = poly[i]
       const c = poly[(i + 1) % poly.length]
       const len = Math.hypot(c[0] - a[0], c[1] - a[1])
       const out: Point2 = [(c[1] - a[1]) / len, -(c[0] - a[0]) / len]
+      const face = col.get(EDGE_FACE_GROUP[t.faces[i]])
       // Split where another terrace's vertex lies on this edge, so each piece borders a single neighbour.
       const params = new Set<number>(crossings(a, c))
       for (const o of ts)
@@ -359,14 +412,45 @@ export function sparseTerrain(
           if (Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) < 1e-4) continue // sub-millimetre slivers between cuts
           const g0 = other ? other.y : mh(...p0)
           const g1 = other ? other.y : mh(...p1)
-          // Faces run between the terrace level and the meshed ground, overlapping it by a hair (no crack).
+          // Faces run between the terrace level and the meshed ground, overlapping it by a hair (no crack): masonry
+          // or rock (never bare terrain). A tall retaining face toward natural ground is battered: its foot steps out.
           const eps = SKIRT_MARGIN
-          const quad: Vec3[] = up
-            ? [[p0[0], t.y, p0[1]], [p1[0], t.y, p1[1]], [p1[0], g1 + eps, p1[1]], [p0[0], g0 + eps, p0[1]]]
-            : [[p0[0], g0 - eps, p0[1]], [p1[0], g1 - eps, p1[1]], [p1[0], t.y, p1[1]], [p0[0], t.y, p0[1]]]
-          b.polygonFacing(quad, up ? [-out[0], 0, -out[1]] : [out[0], 0, out[1]])
+          const dirOut: Vec3 = up ? [-out[0], 0, -out[1]] : [out[0], 0, out[1]]
+          if (up || other) {
+            const quad: Vec3[] = up
+              ? [[p0[0], t.y, p0[1]], [p1[0], t.y, p1[1]], [p1[0], g1 + eps, p1[1]], [p0[0], g0 + eps, p0[1]]]
+              : [[p0[0], g0 - eps, p0[1]], [p1[0], g1 - eps, p1[1]], [p1[0], t.y, p1[1]], [p0[0], t.y, p0[1]]]
+            face.polygonFacing(quad, dirOut)
+          } else {
+            const foot = (p: Point2, g: number): Vec3 => {
+              const k = EDGE_CONVENTIONS.batterRatio * Math.max(0, t.y - g - EDGE_CONVENTIONS.batterFrom)
+              const q: Point2 = [p[0] + out[0] * k, p[1] + out[1] * k]
+              return [q[0], (k > 0 ? Math.min(g, mh(...q)) : g) - eps, q[1]]
+            }
+            const f0 = foot(p0, g0)
+            const f1 = foot(p1, g1)
+            if (Math.hypot(p0[0] - a[0], p0[1] - a[1]) < 1e-9) startFoot[i] = f0
+            if (Math.hypot(p1[0] - c[0], p1[1] - c[1]) < 1e-9) endFoot[i] = f1
+            const t0: Vec3 = [p0[0], t.y, p0[1]]
+            const t1: Vec3 = [p1[0], t.y, p1[1]]
+            // Two triangles: the four corners need not be coplanar once the feet step out by different amounts.
+            const bat: Vec3 = [out[0], 0.2, out[1]]
+            face.polygonFacing([f0, f1, t1], bat)
+            face.polygonFacing([f0, t1, t0], bat)
+          }
         }
       }
+    }
+    for (let k = 0; k < poly.length; k++) {
+      const fa = endFoot[(k - 1 + poly.length) % poly.length]
+      const fb = startFoot[k]
+      if (!fa || !fb || Math.hypot(fa[0] - fb[0], fa[2] - fb[2]) < 1e-6) continue
+      const v = poly[k]
+      const pv = poly[(k - 1 + poly.length) % poly.length]
+      const nv = poly[(k + 1) % poly.length]
+      if ((v[0] - pv[0]) * (nv[1] - v[1]) - (v[1] - pv[1]) * (nv[0] - v[0]) <= 0) continue // reflex corner: the faces overlap
+      const dir: Vec3 = [(fa[0] + fb[0]) / 2 - v[0], 0.2, (fa[2] + fb[2]) / 2 - v[1]]
+      col.get(EDGE_FACE_GROUP[t.faces[k]]).polygonFacing([fa, fb, [v[0], t.y, v[1]]], dir)
     }
   }
 

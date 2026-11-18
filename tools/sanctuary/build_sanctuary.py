@@ -240,12 +240,17 @@ terrain = {
                            "note": "Edges on the terrace walls' centre lines (plan)."},
         "ne-knoll": {"polygon": knoll_poly, "level": derived(r3(S_REL_BASE), "m", "rock rises to terrace height at the NE corner (p. 85)"),
                      "falloff": {"edgeDrop": conj(3.2, "m", "vertical rock face down to the cave entrance (cave 1.5-1.8 m high, p. 88)"), "slope": conj(0.8, "ratio", "steep east and north")},
-                     "note": "Outline beyond the plan's dashed (no-wall) north edge is conjectural."},
+                     # Edges 0-2 adjoin the temple terrace (same level, no face). East edges: the tall ashlar retaining
+                     # wall of the NE corner (Ministry board b); north edges: the rock face above the cave (p. 88).
+                     "edgeFaces": ["ashlar", "ashlar", "ashlar", "ashlar", "ashlar", "rock", "rock"],
+                     "note": "Outline beyond the plan's dashed (no-wall) north edge is conjectural. East faces ashlar (Ministry board: tall ashlar retaining wall at the NE corner), north faces natural rock (Furtwängler p. 88)."},
         "outer-terrace": {"polygon": plaza_poly, "level": conj(r3(S_REL_BASE - 0.9), "m", "plaza before the gate; three steps of about 0.30 m up to the propylon floor at terrace height"),
                           "falloff": {"edgeDrop": conj(2.0, "m", "lower south wall: three courses on rock, 1.20 m fill (p. 101)"), "slope": conj(0.35, "ratio", "rock slope to the south")},
+                          "edgeFace": "rock",
                           "note": "Rock 'rises evenly' toward the propylon (p. 100); modelled flat."},
         "se-houses-terrace": {"polygon": se_poly, "level": conj(r3(S_REL_BASE - 1.55), "m", "rock ridge falling SE under the houses (p. 91); one level for the group"),
-                              "falloff": {"edgeDrop": conj(2.5, "m", "east wall's outer corner 'schon ganz tief' (p. 91)"), "slope": conj(0.7, "ratio", "steep fall to the east and south-east (p. 98)")}},
+                              "falloff": {"edgeDrop": conj(2.5, "m", "east wall's outer corner 'schon ganz tief' (p. 91)"), "slope": conj(0.7, "ratio", "steep fall to the east and south-east (p. 98)")},
+                              "edgeFace": "rock", "note": "The houses stand on a rock outcrop (Ministry board; rock ridge, p. 91): exposed edges are rock faces."},
         "suedbau-terrace": {"polygon": sued_poly, "level": text(-9.0, "m", "102", "about 9 m below the stylobat"),
                             "falloff": {"edgeDrop": conj(1.0, "m", "south edge of the Südbau terrace"), "slope": conj(0.3, "ratio", "south slope")},
                             "hiddenReason": "Südbau terrace: not depicted in the Ministry reconstruction; shape unknown (user decision 2026-11-18).",
@@ -270,6 +275,12 @@ terrain = {
         "file": "measurements/hilltop.json + measurements/landscape.json (PNG16 heightfields in the temple frame)",
         "ref": "copernicus-dem-glo30", "verified": True,
         "note": "User decision 2026-11-17: beyond the terraces the real hill and coast from the Copernicus DEM; the directional falloff above is only the fallback when no DEM is supplied.",
+        "nearTerraceClamp": {
+            "radius": conj(15, "m", "feather distance back to the DEM"),
+            "drop": conj(1.0, "m", "least exposed height of a retaining wall or rock face above the outside ground"),
+            "hold": conj(6.0, "m", "fully applied this close to the edge (one coarse-tier grid cell), then feathered"),
+            "note": "CONJECTURAL correction (lead decision 2026-11-18): the DEM is a surface model with modern spoil heaps and trees, which rises near the parapet outside the SW wall. Within 6 m of a terrace edge the ground is held at least 1.0 m below that terrace, feathered back to the DEM by 15 m.",
+        },
     },
 }
 
@@ -498,7 +509,7 @@ features["se-rooms-ii-iv"] = {
          "doors": [{"offset": r3(zs[i] - czl), "width": text(1.36, "m", "92-100", "door of room II (later narrowed to 1.22 m)") if i == order[0] else conj(1.2, "m", "doors without bolt cuttings"), "height": conj(2.2, "m", "door height")} for i in range(3)]},
         *[{"axis": "x", "offset": r3(sz - czl), "from": r3(west_wall_x + t / 2 - cxl), "to": r3(Lr / 2 - cxl), "thickness": conj(0.75, "m", "plan wall band between rooms"), "doors": []} for sz in seps],
     ],
-    "columns": {"shape": "octagonal", "diameter": conj(0.3, "m", "small octagonal capital, shaft top 0.255 m (p. 99)"),
+    "columns": {"shape": "square", "diameter": board(0.45, "m", "stout square piers of the porch as drawn (the text's small octagonal capital, shaft top 0.255 m, p. 99, would be a thin post); size from the drawn figures", "conjectural"),
                 "positions": [[r3(x_lo + 0.4 - cxl), r3(z)] for z in [z_lo + t + (k + 0.5) * (z_hi - z_lo - 2 * t) / 4 - czl for k in range(4)]]},
     "architraves": [{"axis": "z", "offset": r3(x_lo + 0.4 - cxl), "from": r3(z_lo + t - czl), "to": r3(z_hi - t - czl), "depth": conj(0.3, "m", "timber beam (p. 99)"), "height": conj(0.3, "m", "timber beam")}],
     "roof": {"ridge": "z", "ridgeHeight": conj(1.5, "m", "pitch unknown"), "overhang": conj(0.35, "m", "eaves"), "tiled": True, "confidence": "conjectural",

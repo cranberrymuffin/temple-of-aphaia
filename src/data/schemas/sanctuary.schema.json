@@ -431,6 +431,27 @@
                 "type": "string",
                 "minLength": 1,
                 "description": "Listed but not depicted (user decision): left out of the terrain."
+              },
+              "edgeFace": {
+                "enum": [
+                  "rubble",
+                  "ashlar",
+                  "older",
+                  "rock"
+                ],
+                "description": "Material of this terrace's exposed edge faces (retaining masonry or rock); default rubble."
+              },
+              "edgeFaces": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "rubble",
+                    "ashlar",
+                    "older",
+                    "rock"
+                  ]
+                },
+                "description": "Per polygon edge (edge i runs from point i to i + 1); overrides edgeFace."
               }
             }
           }
@@ -520,6 +541,29 @@
             },
             "note": {
               "type": "string"
+            },
+            "nearTerraceClamp": {
+              "type": "object",
+              "required": [
+                "radius",
+                "drop"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "radius": {
+                  "$ref": "#/definitions/positive"
+                },
+                "drop": {
+                  "$ref": "#/definitions/positive"
+                },
+                "note": {
+                  "type": "string"
+                },
+                "hold": {
+                  "$ref": "#/definitions/positive"
+                }
+              },
+              "description": "Conjectural correction of the DSM next to the terraces: within radius of a terrace edge the natural ground is held at least drop below that terrace, feathered back to the DEM."
             }
           }
         }
@@ -869,7 +913,8 @@
                   "shape": {
                     "enum": [
                       "octagonal",
-                      "round"
+                      "round",
+                      "square"
                     ]
                   },
                   "diameter": {

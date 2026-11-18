@@ -50,6 +50,8 @@ export const ELEMENT_PALETTE: Record<string, string> = {
   'sanctuary-wall': 'rubble-stone',
   'ashlar-wall': 'step-limestone',
   'older-wall': 'older-masonry',
+  // Natural rock faces at terrace edges (worker-1: give it its own palette id; rubble-stone until then).
+  'rock-face': 'rubble-stone',
   mudbrick: 'mudbrick',
   'wall-coping': 'roof-tile',
   'sculpture-placeholder': 'marble',

@@ -15,7 +15,7 @@ import type { GroundFn, SanctuaryContext } from './common'
 import { sampleHeight, terrain } from './terrain'
 import { channel, wallRun } from './wall'
 import { demGrid, demGround, type Dem } from './dem'
-import { meshedGround, sparseTerrain, type TerrainMismatch } from './terraces'
+import { clampNearTerraces, meshedGround, sparseTerrain, type TerrainMismatch } from './terraces'
 
 export interface FeatureReport {
   id: string
@@ -116,15 +116,27 @@ export interface SiteTerrain {
   /** Places where the natural ground rises above a terrace edge (logged, cut faces built). */
   mismatches: TerrainMismatch[]
   seaLevelY?: number
+  /** Conjectural DSM correction next to the terraces (largest lowering, radius, drop), when applied. */
+  groundCorrection?: { maxLowered: number; radius: number; drop: number; hold: number }
 }
 
 /**
  * Terrain for the sanctuary: terraces at their (ancient) levels, the natural ground around them from the DEM
  * when given (real hill + sea plane, rectilinear LOD grid) or else the parametric directional falloff.
  */
+/** Natural ground beyond the terraces: the DEM (corrected next to the terraces when the data asks) on its LOD grid, or the falloff. */
+export function naturalGround(doc: SanctuaryDoc, stylobateTop: number, tier: Tier, dem?: Dem) {
+  if (!dem) return { opts: {}, correction: undefined }
+  const c = doc.terrain.dem?.nearTerraceClamp
+  const raw = demGround(dem)
+  const clamp = c ? clampNearTerraces(raw, doc.terrain, stylobateTop, c.radius.value, c.drop.value, c.hold?.value ?? 0) : undefined
+  return { opts: { ground: clamp ? clamp.ground : raw, grid: demGrid(dem, tier) }, correction: clamp?.stats }
+}
+
 export function sanctuaryTerrain(doc: SanctuaryDoc, stylobateTop: number, tier: Tier, palette: PaletteLike, cuts: Point2[][], dem?: Dem): SiteTerrain {
   const col = new Collector()
-  const t = sparseTerrain(doc.terrain, stylobateTop, tier, col, cuts, dem ? { ground: demGround(dem), grid: demGrid(dem, tier) } : {})
+  const nat = naturalGround(doc, stylobateTop, tier, dem)
+  const t = sparseTerrain(doc.terrain, stylobateTop, tier, col, cuts, nat.opts)
   if (dem) {
     const e = SEA_EXTENT
     const y = dem.seaLevelY
@@ -144,12 +156,13 @@ export function sanctuaryTerrain(doc: SanctuaryDoc, stylobateTop: number, tier: 
     ground: siteGround(doc, stylobateTop, tier, dem),
     mismatches,
     seaLevelY: dem?.seaLevelY,
+    groundCorrection: nat.correction,
   }
 }
 
 /** The surface features sit on, exactly as the terrain meshes it: terrace level inside a terrace, else the meshed natural ground. */
 export function siteGround(doc: SanctuaryDoc, stylobateTop: number, tier: Tier, dem?: Dem): GroundFn {
-  return meshedGround(doc.terrain, stylobateTop, tier, dem ? { ground: demGround(dem), grid: demGrid(dem, tier) } : {})
+  return meshedGround(doc.terrain, stylobateTop, tier, naturalGround(doc, stylobateTop, tier, dem).opts)
 }
 
 /**
@@ -160,5 +173,5 @@ export function buildSite(doc: SanctuaryDoc, stylobateTop: number, tier: Tier, p
   const ground = siteGround(doc, stylobateTop, tier, opts.dem)
   const sanctuary = buildSanctuary(doc, tier, palette, ground, stylobateTop)
   const t = sanctuaryTerrain(doc, stylobateTop, tier, palette, [...sanctuary.cuts, ...(opts.extraCuts ?? [])], opts.dem)
-  return { sanctuary, terrain: t.output, ground, mismatches: t.mismatches, seaLevelY: t.seaLevelY }
+  return { sanctuary, terrain: t.output, ground, mismatches: t.mismatches, seaLevelY: t.seaLevelY, groundCorrection: t.groundCorrection }
 }

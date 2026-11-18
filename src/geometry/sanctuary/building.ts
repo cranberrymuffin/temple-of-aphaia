@@ -170,7 +170,8 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
     wood.box(min, max, a.axis === 'x' ? ['+x', '-x'] : ['+z', '-z'])
   }
   if (f.columns) {
-    const sides = f.columns.shape === 'octagonal' ? 8 : 16
+    // Square piers are 4-sided prisms with faces on the local axes; the diameter is across flats.
+    const sides = f.columns.shape === 'square' ? 4 : f.columns.shape === 'octagonal' ? 8 : 16
     const r = f.columns.diameter.value / 2 / Math.cos(Math.PI / sides) // across-flats diameter
     const colTop = top - archH
     for (const [cx, cz] of f.columns.positions) {

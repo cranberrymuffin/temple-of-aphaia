@@ -88,6 +88,7 @@ scope.onmessage = async (e) => {
         attribution: dem ? [dem.attribution, dem.liability] : [],
         demLoadMs: tDem - t0,
         demError,
+        groundCorrection: site.groundCorrection,
       },
       cella: {
         centerX: r.cella.centerX,

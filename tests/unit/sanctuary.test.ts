@@ -346,8 +346,13 @@ describe('sparse terrain (terraces + retaining walls + hilltop falloff)', () => 
 
   it.each(TIERS)('mesh (%s): flat terrace tops, riser to the lower terrace only, walk heightfield and terrace levels', (tier) => {
     const site = buildSite(doc, S, tier, palette.colors)
-    const g = site.terrain.groups[0]
     expect(meshProblems(site.terrain.groups)).toEqual([])
+    // Edge faces are built in masonry/rock groups, not as bare terrain.
+    expect(site.terrain.groups.map((x) => x.name)).toContain('sanctuary-wall')
+    const g = site.terrain.groups.filter((x) => x.name !== 'sea').reduce((acc, x) => {
+      const base = acc.positions.length / 3
+      return { positions: [...acc.positions, ...x.positions], normals: [...acc.normals, ...x.normals], indices: [...acc.indices, ...Array.from(x.indices, (k) => k + base)] }
+    }, { positions: [] as number[], normals: [] as number[], indices: [] as number[] })
     // Vertical faces on the shared edge x = 40 (east terrace 0.5 m higher than the temple terrace).
     let facingWest = 0
     let facingEast = 0

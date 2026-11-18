@@ -6,7 +6,7 @@ import sources from '../../src/data/sources.json'
 import sanctuary from '../../src/data/sanctuary.json'
 import { resolveDimensions } from '../../src/data/resolveDimensions'
 import { convexOverlap, footprints, partitionByPhase, rotatedRect, sanctuaryRefErrors, type Point2, type SanctuaryDoc } from '../../src/data/sanctuary'
-import { pointInPolygon } from '../../src/data/polygon'
+import { offsetPolyline, pointInPolygon } from '../../src/data/polygon'
 import type { Dimensions } from '../../src/data/types'
 import { validate } from '../../src/data/validate'
 import { buildSite, siteGround } from '../../src/geometry/sanctuary'
@@ -254,6 +254,35 @@ describe('built site on the real DEM', async () => {
       const hits = findCoplanarOverlaps(tris)
       expect(hits.map((h) => `${h.a} x ${h.b} @ ${h.at.map((v) => v.toFixed(2))} (${(h.area * 1e4).toFixed(1)} cm2)`)).toEqual([])
     }, 240_000)
+
+    it('no bare terrain cliff faces near the site: terrace edges are masonry or rock (rock-face, ashlar, rubble)', () => {
+      const names = site.terrain.groups.map((g) => g.name)
+      for (const n of ['ashlar-wall', 'rock-face']) expect(names).toContain(n)
+      const near = worldTriangles({ ...site.terrain, instances: [] }).filter(
+        (t) => t.group === 'terrain' && [t.a, t.b, t.c].every((p) => Math.abs(p[0]) < 120 && Math.abs(p[2]) < 120) && Math.abs(t.n[1]) < 0.2,
+      )
+      expect(near.map((t) => t.a.map((v) => v.toFixed(1)).join(','))).toEqual([])
+    })
+
+    it('outside the walls the (corrected) ground stays at least 1 m below the terrace', () => {
+      expect(site.groundCorrection?.maxLowered ?? 0).toBeGreaterThan(0)
+      console.log(`[dem ${tier}] ground correction ${JSON.stringify(site.groundCorrection)}`)
+      const terraces = Object.values(doc.terrain.terraces).filter((t) => !t.hiddenReason)
+      for (const id of ['terrace-wall-nws', 'terrace-wall-se']) {
+        const w = doc.features[id]
+        if (w.kind !== 'wall') throw new Error(id)
+        const { left, right } = offsetPolyline(w.polyline, w.thickness.value + 1.0)
+        for (const side of [left, right])
+          for (let i = 0; i + 1 < side.length; i++)
+            for (let u = 0.05; u < 1; u += 0.05) {
+              const p: Point2 = [side[i][0] + (side[i + 1][0] - side[i][0]) * u, side[i][1] + (side[i + 1][1] - side[i][1]) * u]
+              if (terraces.some((t) => pointInPolygon(t.polygon, p))) continue
+              // The temple terrace is the highest neighbour of these walls.
+              const cap = r.stylobate.top + doc.terrain.terraces['temple-terrace'].level.value - 1.0 + 0.05
+              expect(site.ground(p[0], p[1]), `${id} @ ${p.map((v) => v.toFixed(1))}`).toBeLessThan(cap)
+            }
+      }
+    })
 
     it('triangle budget', () => {
       const n = triangleCount(all)

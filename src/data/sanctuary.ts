@@ -54,8 +54,14 @@ export interface Terrace {
   falloff?: FalloffOverride
   /** Listed but not depicted (user decision): left out of the terrain. */
   hiddenReason?: string
+  /** Material of the exposed edge faces (retaining masonry or rock face); default rubble. */
+  edgeFace?: EdgeFace
+  /** Per polygon edge (edge i from point i to i + 1); overrides edgeFace. */
+  edgeFaces?: EdgeFace[]
   note?: string
 }
+
+export type EdgeFace = 'rubble' | 'ashlar' | 'older' | 'rock'
 
 export type Dir<T> = { n: T; e: T; s: T; w: T }
 
@@ -66,7 +72,14 @@ export interface TerrainDesc {
   note?: string
   terraces: Record<string, Terrace>
   falloff: { edgeDrop: Dir<Measure>; slope: Dir<Measure>; radius: Measure }
-  dem?: { file: string; ref: string; verified: boolean; note?: string }
+  dem?: {
+    file: string
+    ref: string
+    verified: boolean
+    note?: string
+    /** Conjectural DSM correction: within radius (m) of a terrace edge the ground stays at least drop (m) below it. */
+    nearTerraceClamp?: { radius: Measure; drop: Measure; hold?: Measure; note?: string }
+  }
 }
 
 interface FeatureBase {
@@ -157,7 +170,7 @@ export interface BuildingFeature extends FeatureBase {
   doors: Door[]
   openSides?: Side[]
   crossWalls?: CrossWall[]
-  columns?: { shape: 'octagonal' | 'round'; diameter: Measure; positions: Point2[] }
+  columns?: { shape: 'octagonal' | 'round' | 'square'; diameter: Measure; positions: Point2[] }
   architraves?: { axis: 'x' | 'z'; offset: number; from: number; to: number; depth: Measure; height: Measure }[]
   roof?: Roof
   steps?: Steps

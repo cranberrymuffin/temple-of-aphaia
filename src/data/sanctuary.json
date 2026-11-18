@@ -139,7 +139,16 @@
       "note": "CONJECTURAL: steep east and north"
      }
     },
-    "note": "Outline beyond the plan's dashed (no-wall) north edge is conjectural."
+    "edgeFaces": [
+     "ashlar",
+     "ashlar",
+     "ashlar",
+     "ashlar",
+     "ashlar",
+     "rock",
+     "rock"
+    ],
+    "note": "Outline beyond the plan's dashed (no-wall) north edge is conjectural. East faces ashlar (Ministry board: tall ashlar retaining wall at the NE corner), north faces natural rock (Furtwängler p. 88)."
    },
    "outer-terrace": {
     "polygon": [
@@ -213,6 +222,7 @@
       "note": "CONJECTURAL: rock slope to the south"
      }
     },
+    "edgeFace": "rock",
     "note": "Rock 'rises evenly' toward the propylon (p. 100); modelled flat."
    },
    "se-houses-terrace": {
@@ -278,7 +288,9 @@
       "provisional": true,
       "note": "CONJECTURAL: steep fall to the east and south-east (p. 98)"
      }
-    }
+    },
+    "edgeFace": "rock",
+    "note": "The houses stand on a rock outcrop (Ministry board; rock ridge, p. 91): exposed edges are rock faces."
    },
    "suedbau-terrace": {
     "polygon": [
@@ -424,7 +436,37 @@
    "file": "measurements/hilltop.json + measurements/landscape.json (PNG16 heightfields in the temple frame)",
    "ref": "copernicus-dem-glo30",
    "verified": true,
-   "note": "User decision 2026-11-17: beyond the terraces the real hill and coast from the Copernicus DEM; the directional falloff above is only the fallback when no DEM is supplied."
+   "note": "User decision 2026-11-17: beyond the terraces the real hill and coast from the Copernicus DEM; the directional falloff above is only the fallback when no DEM is supplied.",
+   "nearTerraceClamp": {
+    "radius": {
+     "value": 15,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: feather distance back to the DEM"
+    },
+    "drop": {
+     "value": 1.0,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: least exposed height of a retaining wall or rock face above the outside ground"
+    },
+    "hold": {
+     "value": 6.0,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: fully applied this close to the edge (one coarse-tier grid cell), then feathered"
+    },
+    "note": "CONJECTURAL correction (lead decision 2026-11-18): the DEM is a surface model with modern spoil heaps and trees, which rises near the parapet outside the SW wall. Within 6 m of a terrace edge the ground is held at least 1.0 m below that terrace, feathered back to the DEM by 15 m."
+   }
   }
  },
  "features": {
@@ -2711,15 +2753,15 @@
     }
    ],
    "columns": {
-    "shape": "octagonal",
+    "shape": "square",
     "diameter": {
-     "value": 0.3,
+     "value": 0.45,
      "unit": "m",
      "source": "published",
-     "ref": "furtwangler-1906",
+     "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "CONJECTURAL: small octagonal capital, shaft top 0.255 m (p. 99)"
+     "note": "DERIVED from the Ministry board (confidence: conjectural): stout square piers of the porch as drawn (the text's small octagonal capital, shaft top 0.255 m, p. 99, would be a thin post); size from the drawn figures"
     },
     "positions": [
      [
