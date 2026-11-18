@@ -58,6 +58,8 @@ export interface Terrace {
   edgeFace?: EdgeFace
   /** Per polygon edge (edge i from point i to i + 1); overrides edgeFace. */
   edgeFaces?: EdgeFace[]
+  /** Overrides the DEM clamp drop next to this terrace (0: the ground beside it may reach its level). */
+  clampDrop?: Measure
   note?: string
 }
 
@@ -100,10 +102,27 @@ interface FeatureBase {
 }
 
 export interface Steps {
+  /** The (upper) flight next to the floor. */
   count: Measure
   rise: Measure
   tread: Measure
   side: Side
+  /** A second flight below a landing (the landing replaces the upper flight's last tread). */
+  lower?: { count: Measure; rise: Measure; tread: Measure }
+  landing?: Measure
+  /** Flanking cheek walls rise this far above each tread (stepped); default: level with the floor. */
+  cheekHeight?: Measure
+}
+
+/** Each step's depth and rise from the floor outward (upper flight, landing, lower flight). */
+export function stepSequence(s: Steps): { depth: number; rise: number }[] {
+  const out: { depth: number; rise: number }[] = []
+  for (let j = 0; j < s.count.value; j++) out.push({ depth: s.tread.value, rise: s.rise.value })
+  if (s.lower) {
+    if (s.landing && out.length) out[out.length - 1].depth = s.landing.value
+    for (let j = 0; j < s.lower.count.value; j++) out.push({ depth: s.lower.tread.value, rise: s.lower.rise.value })
+  }
+  return out
 }
 
 export interface AltarFeature extends FeatureBase {
@@ -366,7 +385,7 @@ export function rotatedRect(center: Point2, length: number, width: number, rotat
 
 /** Rectangle occupied by a flight of steps against one side of a local L x W block. */
 export function stepsRect(center: Point2, L: number, W: number, rotation: number, s: Steps): Point2[] {
-  const out = s.count.value * s.tread.value
+  const out = stepSequence(s).reduce((a, q) => a + q.depth, 0)
   const [dx, dz] = { n: [0, -1], s: [0, 1], e: [1, 0], w: [-1, 0] }[s.side]
   const T = localToWorld2(center, rotation)
   return rotatedRect(T(dx * (L / 2 + out / 2), dz * (W / 2 + out / 2)), dx ? out : L, dz ? out : W, rotation)

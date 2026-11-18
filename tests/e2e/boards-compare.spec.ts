@@ -8,6 +8,7 @@ type Pose = { position: [number, number, number]; target: [number, number, numbe
 const VIEWS: Record<string, Pose> = {
   'a-aerial-ne': { position: [37, 34, -56], target: [29, -2, 6], fov: 42 },
   'b-approach-elevation': { position: [17, 3, 140], target: [17, 4, 0], fov: 22 },
+  'c-propylon-stair': { position: [13, -1.5, 40], target: [23.3, -1.6, 26], fov: 55 },
 }
 
 test('board comparison views', async ({ page }) => {

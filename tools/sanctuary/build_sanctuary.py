@@ -176,6 +176,7 @@ def east_x(z):
 
 
 SE_CORNER = [east_x(ZS + 0.4), ZS + 0.4]
+STAIR_RISE = 5 * 0.32 + 8 * 0.30  # propylon stair (both flights): plaza level below the terrace
 # A point 0.275 m back along the great wall's north leg from its east end (where wall-se now ends, buried in it).
 _wn0, _wn1 = [r3(XW), r3(ZN)], pt(wn["centreline"][1])
 _wl = math.hypot(_wn1[0] - _wn0[0], _wn1[1] - _wn0[1])
@@ -212,7 +213,7 @@ features["terrace-wall-nws"] = {
     "top": "level", "masonry": "rubble", "parapets": [dict(PARAPET, segments=[0, 1, 2])],
     "phase": NEW, "placement": placement(None, max(wn["uncertaintyM"], ww["uncertaintyM"], ws["uncertaintyM"]), "attested"),
     "sourceIds": [FW, WP, MIN], "confidence": "attested",
-    "note": "Ends inside the propylon's west side wall; the north wall stops where the rock reaches terrace height (NE knoll, p. 85). Enclosure parapet (stone socle, mudbrick, tiled coping) after the Ministry board: from outside it hides the krepis.",
+    "note": "Ends inside the propylon's west side wall; the north wall stops where the rock reaches terrace height (NE knoll, p. 85). Enclosure parapet (stone socle, mudbrick, tiled coping) after the Ministry board: from outside it hides the krepis. CONFLICT between the Ministry boards: the NE aerial (IMG_8187, scaled by the column's 1.45 m base slab) gives a parapet of about 1.8 m above the terrace; the approach elevation (IMG_8191) draws it about 3.4-3.9 m above the propylon floor. User decision 2026-11-18: keep 1.8 m (the aerial).",
 }
 features["terrace-wall-se"] = {
     "kind": "wall", "name": "South terrace wall east of the propylon, east peribolos (north leg), NE corner and north wall east of the knoll", "role": "terrace",
@@ -283,10 +284,11 @@ terrain = {
                      # wall of the NE corner (Ministry board b); north edges: the rock face above the cave (p. 88).
                      "edgeFaces": ["ashlar", "ashlar", "ashlar", "ashlar", "ashlar", "rock", "rock"],
                      "note": "Outline beyond the plan's dashed (no-wall) north edge is conjectural. East faces ashlar (Ministry board: tall ashlar retaining wall at the NE corner), north faces natural rock (Furtwängler p. 88)."},
-        "outer-terrace": {"polygon": plaza_poly, "level": conj(r3(S_REL_BASE - 0.9), "m", "plaza before the gate; three steps of about 0.30 m up to the propylon floor at terrace height"),
+        "outer-terrace": {"polygon": plaza_poly, "level": board(r3(S_REL_BASE - STAIR_RISE), "m", f"plaza at the foot of the propylon stair, {STAIR_RISE:.1f} m below the terrace: IMG_8191 draws a climb of about 4 m (+/-1 m) in two flights from the approach to the propylon floor (scale: the propylon's eave 4.4 m and plan width 9.32 m); the floor stays at terrace height (p. 77)", "analogy"),
+                          "clampDrop": board(0, "m", "IMG_8191: the open slope west of the stair lies at about the plaza's level along the wall foot, so the ground next to the plaza is not held below it", "analogy"),
                           "falloff": {"edgeDrop": conj(2.0, "m", "lower south wall: three courses on rock, 1.20 m fill (p. 101)"), "slope": conj(0.35, "ratio", "rock slope to the south")},
                           "edgeFace": "rock",
-                          "note": "Rock 'rises evenly' toward the propylon (p. 100); modelled flat."},
+                          "note": "Rock 'rises evenly' toward the propylon (p. 100); modelled flat. Level after the Ministry approach board (IMG_8191): the grand stair climbs about 4 m to the gate; the priests' houses stand on the rock outcrop above it (rock face on the SE terrace's edge)."},
         "se-houses-terrace": {"polygon": se_poly, "level": conj(r3(S_REL_BASE - 1.55), "m", "rock ridge falling SE under the houses (p. 91); one level for the group"),
                               "falloff": {"edgeDrop": conj(2.5, "m", "east wall's outer corner 'schon ganz tief' (p. 91)"), "slope": conj(0.7, "ratio", "steep fall to the east and south-east (p. 98)")},
                               "edgeFace": "rock", "note": "The houses stand on a rock outcrop (Ministry board; rock ridge, p. 91): exposed edges are rock faces."},
@@ -420,7 +422,7 @@ features["cistern"] = {
     "rimHeight": board(0.25, "m", "round well-head drawn as a low ring next to the sphinx column (IMG_8187; about 0.25 m, +/-0.15, against the column base slab); the rim itself is gone (p. 87)", "analogy"),
     "depth": conj(4.0, "m", "depth not stated (Taf. 12,2 not seen); the older 2.5 m shaft below is not modelled"),
     "phase": phase("Older shaft, reworked in the new campaign", -650, None, "attested", "lower shaft older; upper shaft and cleft reworked (p. 88); open and in use c. 490"),
-    "placement": placement("cistern", conf="attested"), "sourceIds": [FW, WP, MIN], "confidence": "attested",
+    "placement": placement("cistern", conf="attested", note="plan position kept (user decision 2026-11-18); the Ministry aerial (IMG_8187) draws the cistern and the sphinx column within about 1 m of the north wall, the plan about 5 m"), "sourceIds": [FW, WP, MIN], "confidence": "attested",
     "note": "Shown with a round well-head (Ministry board b).",
 }
 # Settling basin: pear from the bulb (west) to the tip (toward the cistern), shortened until its rim clears the cistern rim.
@@ -489,7 +491,13 @@ features["propylon"] = {
                     for z in sorted({round(c[1], 1) for c in cols})],
     "roof": {"ridge": "x", "ridgeOffset": r3(door_z - pcz), "ridgeHeight": board(1.15, "m", "IMG_8191: the roof rises about 0.23 x the eave height above the eaves (scale: the propylon's width 9.32 m from the plan); +/-0.3", "analogy"), "overhang": conj(0.4, "m", "eaves"), "tiled": True,
              "confidence": "analogy", "note": "Ridge E-W over the door wall, eaves N and S, gables on the E and W side walls (pp. 79, 82-83)."},
-    "steps": {"count": conj(3, "count", "a free flight on the outer (south) side; 'third step on a grid wall' (pp. 77-78)"), "rise": conj(0.30, "m", "step rise"), "tread": conj(0.35, "m", "step tread"), "side": "s"},
+    # IMG_8191 (Ministry approach board): a grand climb of about 4 m in two flights with a landing, flanked by
+    # orthostate walls. Risers kept <= 0.35 m (walk mode steps up at most 0.55 m).
+    "steps": {"count": board(5, "count", "upper flight; IMG_8191 draws a short upper flight to the door above a landing; 'third step on a grid wall' (pp. 77-78)", "analogy"),
+              "rise": board(0.32, "m", "upper riser; 5 x 0.32 = 1.6 m", "conjectural"), "tread": conj(0.35, "m", "step tread"), "side": "s",
+              "landing": board(2.0, "m", "landing between the flights (IMG_8191, about 2 m +/-0.7)", "analogy"),
+              "lower": {"count": board(8, "count", "lower flight; 8 x 0.30 = 2.4 m, total climb 4.0 m", "analogy"), "rise": board(0.30, "m", "lower riser", "conjectural"), "tread": board(0.38, "m", "lower tread, a little deeper (wider flight drawn)", "conjectural")},
+              "cheekHeight": board(0.6, "m", "orthostate cheek walls stepping down beside the flights, about 0.6 m above each tread (IMG_8191; +/-0.3)", "analogy")},
     "roofOrnament": {"width": board(0.8, "m", "small sculpture on the roof ridge (placeholder block); IMG_8191 about 0.9 m wide", "analogy"), "height": board(1.0, "m", "IMG_8191: about 1.0 m (+/-0.3) above the ridge", "analogy")},
     "baseLevel": r3(S_REL_BASE),
     "phase": NEW, "placement": placement("propylon", conf="attested"), "sourceIds": [FW, WP, MIN], "confidence": "analogy",

@@ -253,7 +253,13 @@
       "description": "The great terrace wall rises above the terrace as an enclosure parapet: natural-stone socle 0.70 m, mudbrick 0.95 m and a tiled coping 0.15 m (overhang 0.10 m), 1.80 m in all; the east leg to the NE corner is ashlar with a flush coping; the older east stretch has its own material.",
       "sourceIds": ["ministry-onsite-boards", "furtwangler-1906", "copernicus-dem-glo30"],
       "confidence": "interpretive",
-      "note": "Construction from the Ministry board (stone socle + mudbrick + coping). Height DERIVED from the board's statement that the wall hides the krepis from outside: an eye 1.6 m above the highest approach ground outside the wall (DEM up to about 0.16 m above the terrace) needs about 1.6-1.75 m; 1.80 m chosen (tested in sanctuary-data.test.ts). Socle and coping heights conjectural."
+      "note": "Construction from the Ministry board (stone socle + mudbrick + coping). Height DERIVED from the board's statement that the wall hides the krepis from outside: an eye 1.6 m above the highest approach ground outside the wall (DEM up to about 0.16 m above the terrace) needs about 1.6-1.75 m; 1.80 m chosen (tested in sanctuary-data.test.ts). Socle and coping heights conjectural. CONFLICT between the boards: the NE aerial (IMG_8187, scaled by the sphinx column's 1.45 m base slab) confirms about 1.8 m; the approach elevation (IMG_8191) draws the wall about 3.4-3.9 m above the propylon floor. User decision 2026-11-18: keep 1.8 m (the aerial)."
+    },
+    "propylon-grand-stair": {
+      "description": "The approach climbs about 4.0 m to the propylon in two flights (5 risers of 0.32 m, a 2.0 m landing, 8 risers of 0.30 m), flanked by stepped orthostate cheek walls; the plaza before it lies 4.0 m below the terrace, with the priests' houses on the rock outcrop above it and the open slope west of it at about plaza level.",
+      "sourceIds": ["ministry-onsite-boards", "furtwangler-1906"],
+      "confidence": "analogy",
+      "note": "User decision 2026-11-18: follow the Ministry approach board (IMG_8191) over the earlier three-step conjecture. Total rise DERIVED from the drawing (+/-1 m); step counts, risers and treads conjectural (risers kept <= 0.35 m for walking). The propylon floor stays at terrace height (Furtwängler p. 77)."
     },
     "priests-houses-massing": {
       "description": "The SE (priests') houses outside the boundary wall: hipped tiled roofs; the rooms against the wall form a taller rear block (walls 4.2 m), rooms II-IV a lower front block (3.2 m) with the columned porch open to the west (gate side); the vestibule/forecourt a lower pent-roof wing (2.6 m).",

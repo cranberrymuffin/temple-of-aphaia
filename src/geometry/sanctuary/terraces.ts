@@ -124,6 +124,7 @@ export function naturalGroundFn(desc: TerrainDesc, stylobateTop: number): Ground
 export function clampNearTerraces(g: GroundFn, desc: TerrainDesc, stylobateTop: number, radius: number, drop: number, hold = 0) {
   const ts = terraces(desc, stylobateTop).map((t) => ({
     ...t,
+    drop: desc.terraces[t.id].clampDrop?.value ?? drop,
     bb: [Math.min(...t.poly.map((p) => p[0])) - radius, Math.max(...t.poly.map((p) => p[0])) + radius, Math.min(...t.poly.map((p) => p[1])) - radius, Math.max(...t.poly.map((p) => p[1])) + radius],
   }))
   const stats = { maxLowered: 0, radius, drop, hold }
@@ -131,7 +132,7 @@ export function clampNearTerraces(g: GroundFn, desc: TerrainDesc, stylobateTop: 
     const h = g(x, z)
     let out = h
     for (const t of ts) {
-      const cap = t.y - drop
+      const cap = t.y - t.drop
       if (h <= cap || x < t.bb[0] || x > t.bb[1] || z < t.bb[2] || z > t.bb[3]) continue
       // Under the terrace too (d = 0): the mesh triangles across its edge interpolate those nodes.
       const d = pointInPolygon(t.poly, [x, z]) ? 0 : nearest(t, [x, z]).d

@@ -7,6 +7,7 @@ import { levelHeight, STEP_UP, surfaceAt } from '../../src/app/controls/ground'
 import { WALK_SPAWN } from '../../src/app/controls/manager'
 import type { Collider, Level } from '../../src/geometry/types'
 import { buildWorld } from './helpers/world'
+import sanctuary from '../../src/data/sanctuary.json'
 
 let world: WalkWorld
 
@@ -199,7 +200,9 @@ describe('walk on the generated site', () => {
     const spawn = at(WALK_SPAWN.x, WALK_SPAWN.z)
     expect(Number.isFinite(spawn.y)).toBe(true)
     expect(clear(spawn)).toBe(true)
-    expect(spawn.y).toBeCloseTo(-0.9, 1)
+    // The plaza at the foot of the propylon stair (outer terrace, from sanctuary.json); the walk below climbs the
+    // two flights (about 4 m) up into the propylon.
+    expect(spawn.y).toBeCloseTo(0.78 + sanctuary.terrain.terraces['outer-terrace'].level.value, 1)
     let p = walk(spawn, 0, -14, 200)
     expect(p.z).toBeCloseTo(WALK_SPAWN.z - 14, 6)
     expect(p.y).toBeCloseTo(0, 1)

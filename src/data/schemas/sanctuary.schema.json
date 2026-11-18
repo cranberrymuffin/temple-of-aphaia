@@ -452,6 +452,10 @@
                   ]
                 },
                 "description": "Per polygon edge (edge i runs from point i to i + 1); overrides edgeFace."
+              },
+              "clampDrop": {
+                "$ref": "#/definitions/nonNegative",
+                "description": "Overrides terrain.dem.nearTerraceClamp.drop next to this terrace."
               }
             }
           }
@@ -1053,6 +1057,33 @@
                   },
                   "side": {
                     "$ref": "#/definitions/side"
+                  },
+                  "lower": {
+                    "type": "object",
+                    "required": [
+                      "count",
+                      "rise",
+                      "tread"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "count": {
+                        "$ref": "#/definitions/count"
+                      },
+                      "rise": {
+                        "$ref": "#/definitions/positive"
+                      },
+                      "tread": {
+                        "$ref": "#/definitions/positive"
+                      }
+                    },
+                    "description": "Second flight below a landing."
+                  },
+                  "landing": {
+                    "$ref": "#/definitions/positive"
+                  },
+                  "cheekHeight": {
+                    "$ref": "#/definitions/positive"
                   }
                 }
               },

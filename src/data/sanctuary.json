@@ -195,13 +195,22 @@
      ]
     ],
     "level": {
-     "value": -1.68,
+     "value": -4.78,
      "unit": "m",
      "source": "published",
-     "ref": "furtwangler-1906",
+     "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "CONJECTURAL: plaza before the gate; three steps of about 0.30 m up to the propylon floor at terrace height"
+     "note": "DERIVED from the Ministry board (confidence: analogy): plaza at the foot of the propylon stair, 4.0 m below the terrace: IMG_8191 draws a climb of about 4 m (+/-1 m) in two flights from the approach to the propylon floor (scale: the propylon's eave 4.4 m and plan width 9.32 m); the floor stays at terrace height (p. 77)"
+    },
+    "clampDrop": {
+     "value": 0,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: analogy): IMG_8191: the open slope west of the stair lies at about the plaza's level along the wall foot, so the ground next to the plaza is not held below it"
     },
     "falloff": {
      "edgeDrop": {
@@ -224,7 +233,7 @@
      }
     },
     "edgeFace": "rock",
-    "note": "Rock 'rises evenly' toward the propylon (p. 100); modelled flat."
+    "note": "Rock 'rises evenly' toward the propylon (p. 100); modelled flat. Level after the Ministry approach board (IMG_8191): the grand stair climbs about 4 m to the gate; the priests' houses stand on the rock outcrop above it (rock face on the SE terrace's edge)."
    },
    "se-houses-terrace": {
     "polygon": [
@@ -580,7 +589,7 @@
     "ministry-onsite-boards"
    ],
    "confidence": "attested",
-   "note": "Ends inside the propylon's west side wall; the north wall stops where the rock reaches terrace height (NE knoll, p. 85). Enclosure parapet (stone socle, mudbrick, tiled coping) after the Ministry board: from outside it hides the krepis."
+   "note": "Ends inside the propylon's west side wall; the north wall stops where the rock reaches terrace height (NE knoll, p. 85). Enclosure parapet (stone socle, mudbrick, tiled coping) after the Ministry board: from outside it hides the krepis. CONFLICT between the Ministry boards: the NE aerial (IMG_8187, scaled by the column's 1.45 m base slab) gives a parapet of about 1.8 m above the terrace; the approach elevation (IMG_8191) draws it about 3.4-3.9 m above the propylon floor. User decision 2026-11-18: keep 1.8 m (the aerial)."
   },
   "terrace-wall-se": {
    "kind": "wall",
@@ -1835,7 +1844,8 @@
     "ref": "wikimedia-plan-aphaia-sanctuary",
     "verified": true,
     "confidence": "attested",
-    "uncertaintyM": 0.779
+    "uncertaintyM": 0.779,
+    "note": "plan position kept (user decision 2026-11-18); the Ministry aerial (IMG_8187) draws the cistern and the sphinx column within about 1 m of the north wall, the plan about 5 m"
    },
    "sourceIds": [
     "furtwangler-1906",
@@ -2313,22 +2323,22 @@
    },
    "steps": {
     "count": {
-     "value": 3,
+     "value": 5,
      "unit": "count",
      "source": "published",
-     "ref": "furtwangler-1906",
+     "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "CONJECTURAL: a free flight on the outer (south) side; 'third step on a grid wall' (pp. 77-78)"
+     "note": "DERIVED from the Ministry board (confidence: analogy): upper flight; IMG_8191 draws a short upper flight to the door above a landing; 'third step on a grid wall' (pp. 77-78)"
     },
     "rise": {
-     "value": 0.3,
+     "value": 0.32,
      "unit": "m",
      "source": "published",
-     "ref": "furtwangler-1906",
+     "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "CONJECTURAL: step rise"
+     "note": "DERIVED from the Ministry board (confidence: conjectural): upper riser; 5 x 0.32 = 1.6 m"
     },
     "tread": {
      "value": 0.35,
@@ -2339,7 +2349,54 @@
      "provisional": true,
      "note": "CONJECTURAL: step tread"
     },
-    "side": "s"
+    "side": "s",
+    "landing": {
+     "value": 2.0,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: analogy): landing between the flights (IMG_8191, about 2 m +/-0.7)"
+    },
+    "lower": {
+     "count": {
+      "value": 8,
+      "unit": "count",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: analogy): lower flight; 8 x 0.30 = 2.4 m, total climb 4.0 m"
+     },
+     "rise": {
+      "value": 0.3,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): lower riser"
+     },
+     "tread": {
+      "value": 0.38,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): lower tread, a little deeper (wider flight drawn)"
+     }
+    },
+    "cheekHeight": {
+     "value": 0.6,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: analogy): orthostate cheek walls stepping down beside the flights, about 0.6 m above each tread (IMG_8191; +/-0.3)"
+    }
    },
    "roofOrnament": {
     "width": {

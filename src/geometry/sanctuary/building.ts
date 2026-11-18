@@ -3,7 +3,7 @@
 // cross walls, columns with timber architraves, an optional gabled roof (ridge offset allowed, gables
 // filled on the end walls) and an outer flight of steps.
 import type { BuildingFeature, Door, Side } from '../../data/sanctuary'
-import { footprints } from '../../data/sanctuary'
+import { footprints, stepSequence } from '../../data/sanctuary'
 import type { Collector, Face, Vec3 } from '../mesh'
 import { MeshBuilder, composeMatrix, transformPoint } from '../mesh'
 import type { Collider, GeneratorOutput, Level } from '../types'
@@ -20,7 +20,7 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
   const gMax = Math.max(...ranges.map((r) => r.max))
   const fixed = f.baseLevel !== undefined ? ctx.stylobateTop + f.baseLevel : undefined
   const floorY = fixed ?? gMax + K.floorRiseRatio * t
-  const stepsDrop = f.steps ? f.steps.count.value * f.steps.rise.value : 0
+  const stepsDrop = f.steps ? stepSequence(f.steps).reduce((a, q) => a + q.rise, 0) : 0
   const bottom = Math.min(fixed ?? gMin, gMin, floorY - stepsDrop) - K.skirt
   const top = floorY + H
   const m = composeMatrix([f.center[0], 0, f.center[1]], deg(f.rotation))
@@ -97,68 +97,72 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
     floor.polygonFacing([[a[0], bottom, a[2]], [b[0], bottom, b[2]], [b[0], floorY, b[2]], [a[0], floorY, a[2]]], dir)
   }
 
-  // Outer flight of steps, descending away from the floor: step j (1..n) top = floor - j * rise.
+  // Outer flight(s) of steps, descending away from the floor (upper flight, landing, lower flight).
   if (f.steps) {
-    const n = f.steps.count.value
-    const rise = f.steps.rise.value
-    const tr = f.steps.tread.value
+    const seq = stepSequence(f.steps)
+    const n = seq.length
     const s = f.steps.side
     const sign = s === 'e' || s === 's' ? 1 : -1
     const alongX = s === 'n' || s === 's' // the flight spans local x when it is on the n or s side
     const base = alongX ? hz : hx
+    // Offsets (outward from the wall face) and tops of every step.
+    const o: number[] = [0]
+    const yTop: number[] = [floorY]
+    seq.forEach((q, j) => {
+      o.push(o[j] + q.depth)
+      yTop.push(yTop[j] - q.rise)
+    })
     // Between the side walls when they exist (flanked flight), else the full side.
     const a0 = alongX ? (open.has('w') ? -hx : -hx + t) : open.has('n') ? -hz : -hz + t
     const a1 = alongX ? (open.has('e') ? hx : hx - t) : open.has('s') ? hz : hz - t
     const inner: Face = alongX ? (sign > 0 ? '-z' : '+z') : sign > 0 ? '-x' : '+x'
     const outerF: Face = alongX ? (sign > 0 ? '+z' : '-z') : sign > 0 ? '+x' : '-x'
     // Where a side wall stands, it continues beside the flight as a cheek wall (the orthostate walls flanking
-    // the stair) from the skirt up to the floor, so the steps' ends abut it and the footprint is filled.
+    // the stair), one block per step from the skirt up to cheekHeight above that tread (default: the floor), so
+    // the steps' ends abut it and the footprint is filled.
     const cheekLo = alongX ? !open.has('w') : !open.has('n')
     const cheekHi = alongX ? !open.has('e') : !open.has('s')
     const endLo: Face = alongX ? '-x' : '-z'
     const endHi: Face = alongX ? '+x' : '+z'
-    const run = n * tr
+    const ch = f.steps.cheekHeight?.value ?? Infinity
+    const span = (j: number): [number, number] => (sign > 0 ? [base + o[j - 1], base + o[j]] : [-base - o[j], -base - o[j - 1]])
     for (const [has, w0, w1, face] of [
       [cheekLo, alongX ? -hx : -hz, a0, endHi],
       [cheekHi, a1, alongX ? hx : hz, endLo],
     ] as const) {
       if (!has) continue
-      const [c0, c1] = sign > 0 ? [base, base + run] : [-base - run, -base]
-      const min: Vec3 = alongX ? [w0, bottom, c0] : [c0, bottom, w0]
-      const max: Vec3 = alongX ? [w1, floorY, c1] : [c1, floorY, w1]
-      // Faces toward the flight are split per step above each tread (below it the step end abuts).
-      floor.box(min, max, ['-y', inner, face])
       const wf = face === endHi ? w1 : w0
       for (let j = 1; j <= n; j++) {
-        const o0 = sign * (base + (j - 1) * tr)
-        const o1 = sign * (base + j * tr)
-        const yTop = floorY - j * rise
-        const q: Vec3[] = alongX
-          ? [[wf, yTop, o0], [wf, yTop, o1], [wf, floorY, o1], [wf, floorY, o0]]
-          : [[o0, yTop, wf], [o1, yTop, wf], [o1, floorY, wf], [o0, floorY, wf]]
-        const dir: Vec3 = alongX ? [face === endHi ? 1 : -1, 0, 0] : [0, 0, face === endHi ? 1 : -1]
-        floor.polygonFacing(q, dir)
+        const top = Math.min(floorY, yTop[j] + ch)
+        const [c0, c1] = span(j)
+        const min: Vec3 = alongX ? [w0, bottom, c0] : [c0, bottom, w0]
+        const max: Vec3 = alongX ? [w1, top, c1] : [c1, top, w1]
+        // The face toward the building is covered by the previous (taller) block or the side wall; toward the
+        // flight only the part above the tread shows.
+        floor.box(min, max, ['-y', inner, face])
+        if (top - yTop[j] > 1e-9) {
+          const q: Vec3[] = alongX
+            ? [[wf, yTop[j], c0], [wf, yTop[j], c1], [wf, top, c1], [wf, top, c0]]
+            : [[c0, yTop[j], wf], [c1, yTop[j], wf], [c1, top, wf], [c0, top, wf]]
+          floor.polygonFacing(q, alongX ? [face === endHi ? 1 : -1, 0, 0] : [0, 0, face === endHi ? 1 : -1])
+        }
+        const c = transformPoint(m, [(min[0] + max[0]) / 2, 0, (min[2] + max[2]) / 2])
+        colliders.push({ kind: 'obb', name: `${id}-cheek-${j}`, cx: c[0], cz: c[2], halfX: (max[0] - min[0]) / 2, halfZ: (max[2] - min[2]) / 2, rotY: deg(f.rotation), y0: bottom, y1: top })
       }
-      const c = transformPoint(m, [(min[0] + max[0]) / 2, 0, (min[2] + max[2]) / 2])
-      colliders.push({ kind: 'obb', name: `${id}-cheek`, cx: c[0], cz: c[2], halfX: (max[0] - min[0]) / 2, halfZ: (max[2] - min[2]) / 2, rotY: deg(f.rotation), y0: bottom, y1: floorY })
     }
     for (let j = 1; j <= n; j++) {
-      const o0 = base + (j - 1) * tr
-      const o1 = base + j * tr
-      const yTop = floorY - j * rise
-      const [c0, c1] = sign > 0 ? [o0, o1] : [-o1, -o0]
+      const [c0, c1] = span(j)
       const min: Vec3 = alongX ? [a0, bottom, c0] : [c0, bottom, a0]
-      const max: Vec3 = alongX ? [a1, yTop, c1] : [c1, yTop, a1]
+      const max: Vec3 = alongX ? [a1, yTop[j], c1] : [c1, yTop[j], a1]
       floor.box(min, max, ['-y', inner, ...(j < n ? [outerF] : []), ...(cheekLo ? [endLo] : []), ...(cheekHi ? [endHi] : [])])
-      const yPrev = floorY - (j - 1) * rise
       // Riser above the previous step's top at this step's inner edge (the part not shared with step j-1).
-      const oi = sign * o0
+      const oi = sign * (base + o[j - 1])
       const riser: Vec3[] = alongX
-        ? [[a0, yTop, oi], [a1, yTop, oi], [a1, yPrev, oi], [a0, yPrev, oi]]
-        : [[oi, yTop, a0], [oi, yTop, a1], [oi, yPrev, a1], [oi, yPrev, a0]]
+        ? [[a0, yTop[j], oi], [a1, yTop[j], oi], [a1, yTop[j - 1], oi], [a0, yTop[j - 1], oi]]
+        : [[oi, yTop[j], a0], [oi, yTop[j], a1], [oi, yTop[j - 1], a1], [oi, yTop[j - 1], a0]]
       if (j > 1 || open.has(s)) floor.polygonFacing(riser, alongX ? [0, 0, sign] : [sign, 0, 0])
       const c = transformPoint(m, [(min[0] + max[0]) / 2, 0, (min[2] + max[2]) / 2])
-      levels.push({ name: `${id}-step-${j}`, y: yTop, minX: c[0] - (max[0] - min[0]) / 2, maxX: c[0] + (max[0] - min[0]) / 2, minZ: c[2] - (max[2] - min[2]) / 2, maxZ: c[2] + (max[2] - min[2]) / 2, rotY: deg(f.rotation) })
+      levels.push({ name: `${id}-step-${j}`, y: yTop[j], minX: c[0] - (max[0] - min[0]) / 2, maxX: c[0] + (max[0] - min[0]) / 2, minZ: c[2] - (max[2] - min[2]) / 2, maxZ: c[2] + (max[2] - min[2]) / 2, rotY: deg(f.rotation) })
     }
   }
 
