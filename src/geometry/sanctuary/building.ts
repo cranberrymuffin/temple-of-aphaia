@@ -27,6 +27,9 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
   const walls = new MeshBuilder('sanctuary-building')
   const floor = new MeshBuilder('sanctuary-floor')
   const wood = new MeshBuilder('timber')
+  // Columns and piers are stone (the propylon's are octagonal, stuccoed, carrying timber architraves, per
+  // Furtwängler); only the architraves are timber.
+  const stone = new MeshBuilder(f.role === 'propylon' ? 'propylon-column' : 'porch-pier')
   const roofB = new MeshBuilder('sanctuary-roof')
   const colliders: Collider[] = []
   const levels: Level[] = []
@@ -159,7 +162,7 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
     }
   }
 
-  // Timber architraves and columns.
+  // Timber architraves and stone columns.
   const archH = Math.max(0, ...(f.architraves ?? []).map((a) => a.height.value))
   for (const a of f.architraves ?? []) {
     const d = a.depth.value / 2
@@ -182,7 +185,7 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
       for (let i = 0; i < sides; i++) {
         const p = ring[i]
         const q = ring[(i + 1) % sides]
-        wood.polygonFacing(
+        stone.polygonFacing(
           [
             [p[0], floorY, p[1]],
             [q[0], floorY, q[1]],
@@ -221,6 +224,7 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
   col.get('sanctuary-building').append(walls, m)
   col.get('sanctuary-floor').append(floor, m)
   if (wood.idx.length) col.get('timber').append(wood, m)
+  if (stone.idx.length) col.get(stone.name).append(stone, m)
   if (roofB.idx.length) col.get('sanctuary-roof').append(roofB, m)
   const c = transformPoint(m, [(x0 + x1) / 2, 0, (z0 + z1) / 2])
   levels.push({ name: `${id}-floor`, y: floorY, minX: c[0] - (x1 - x0) / 2, maxX: c[0] + (x1 - x0) / 2, minZ: c[2] - (z1 - z0) / 2, maxZ: c[2] + (z1 - z0) / 2, rotY: deg(f.rotation) })
