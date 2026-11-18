@@ -3,9 +3,11 @@ import type { Resolved } from '../data/resolveDimensions'
 import { cella, columnMesh } from './cella'
 import { crepidoma } from './crepidoma'
 import { entablature } from './entablature'
+import { figures } from './figures'
 import { ground } from './ground'
 import type { PaletteLike } from './mesh'
 import { Collector, composeMatrix } from './mesh'
+import { ornament } from './ornament'
 import { pediment } from './pediment'
 import { roof } from './roof'
 import type { Collider, GeneratorOutput, InstanceSet, Tier } from './types'
@@ -39,6 +41,8 @@ export function buildTemple(r: Resolved, tier: Tier, palette: PaletteLike, opts:
     crepidoma(r, col),
     entablature(r, tier, col),
     pediment(r, col),
+    figures(r, col),
+    ornament(r, col),
     roof(r, col),
     cella(r, tier, col),
   ]
