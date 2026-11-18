@@ -12,5 +12,8 @@ export default defineConfig({
     environment: 'node',
     // Geometry/coplanarity checks run several times slower on 2-core CI runners than locally.
     testTimeout: 60_000,
+    // On 2-core CI runners, parallel heavy geometry files starve the Vitest main process
+    // (birpc "Timeout calling onTaskUpdate"); run files one at a time there.
+    ...(process.env.CI ? { fileParallelism: false } : {}),
   },
 })
