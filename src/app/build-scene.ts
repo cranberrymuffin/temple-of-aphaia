@@ -1,6 +1,6 @@
 // The only place `three` meets generator output: one merged mesh per material (src/app/materials), one
 // InstancedMesh per instance set.
-import { BufferAttribute, BufferGeometry, DoubleSide, Group, InstancedMesh, Matrix4, Mesh } from 'three'
+import { BufferAttribute, BufferGeometry, Group, InstancedMesh, Matrix4, Mesh } from 'three'
 import type { GeneratorOutput, GeometryGroup } from '../geometry/types'
 import type { MaterialSet } from './materials'
 
@@ -47,10 +47,9 @@ export function buildScene(out: GeneratorOutput, materials: MaterialSet): Group 
     byMaterial.set(key, [...(byMaterial.get(key) ?? []), g])
   }
   for (const [key, groups] of byMaterial) {
-    const mat = materials.get(key)
-    // Terrain faces are seen from below at skirts and cut faces: render both sides.
-    if (key === 'ground') mat.side = DoubleSide
-    const mesh = new Mesh(toGeometry(groups), mat)
+    // Single-sided everywhere: every terrain triangle faces up (edge faces are in the masonry groups), and a
+    // double-sided ground depth-fights with its own back faces at distance (dotted far-terrain lines).
+    const mesh = new Mesh(toGeometry(groups), materials.get(key))
     mesh.name = key
     mesh.userData.elements = groups.map((g) => g.name)
     root.add(mesh)
