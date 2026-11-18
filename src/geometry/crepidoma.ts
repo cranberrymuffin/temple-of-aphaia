@@ -33,6 +33,7 @@ export function crepidoma(r: Resolved, col: Collector): Omit<GeneratorOutput, 'g
     b.polygonFacing([[rp.minX, 0, z0], [rp.minX, rp.topY, z0], [rp.maxX, 0, z0]], [0, 0, -1])
     // Fill over the lower treads up to the ramp top (bottom on the tread, back against the next step, front inside the ramp).
     for (const f of rp.fills) b.box([f.minX, f.y0, z0], [f.maxX, rp.topY, z1], ['-y', '-x', '+x'])
+    for (const f of rp.fills) levels.push({ name: 'ramp-fill', y: rp.topY, minX: f.minX, maxX: f.maxX, minZ: z0, maxZ: z1 })
     levels.push({ name: 'ramp', y: rp.topY, minX: rp.minX, maxX: rp.maxX, minZ: z0, maxZ: z1, slopeX: -rp.topY / (rp.maxX - rp.minX) })
   }
   return { instances: [], colliders: [], levels }

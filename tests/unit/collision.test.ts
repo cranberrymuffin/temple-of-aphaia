@@ -180,12 +180,11 @@ describe('walk on the generated site', () => {
     let p = at(21, 0)
     expect(p.y).toBeLessThan(0.2)
     const ys: number[] = []
-    // The ramp fill over the lowest tread (x 14.825..15.25) has no walk level yet (reported to the geometry
-    // owner); skip that strip until it has one.
-    const fill = !world.levels.some((l) => l.name === 'ramp-fill')
+    // The fill over the lowest tread (x 14.825..15.25) carries the ramp top level, so the climb never dips.
+    expect(world.levels.some((l) => l.name === 'ramp-fill')).toBe(true)
     for (let i = 0; i < 90; i++) {
       p = resolveMove(p, { x: -0.1, z: 0 }, world)
-      if (!(fill && p.x > 14.8 && p.x < 15.3)) ys.push(p.y)
+      ys.push(p.y)
     }
     expect(p.y).toBeCloseTo(0.78, 6)
     // Monotonic climb, no rise per 10 cm above the step-up.
