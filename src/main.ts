@@ -1,4 +1,5 @@
 import './style.css'
+import { mountAbout } from './app/about'
 import { buildScene } from './app/build-scene'
 import { createMaterials } from './app/materials'
 import { generateTemple } from './app/geometry-client'
@@ -23,6 +24,7 @@ async function start() {
     await materials.ready
     viewer.controls.configure(res.output, res.meta)
     createHud(viewer.controls)
+    mountAbout(res.meta)
     installTestHook(viewer, res.meta, { tier, generationMs: res.ms, workerWallMs: res.wallMs, triangles: res.triangles })
     status?.remove()
   } catch (err) {
