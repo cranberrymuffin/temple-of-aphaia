@@ -18,7 +18,9 @@ function toGeometry(groups: GeometryGroup[]): BufferGeometry {
   const idx = new Uint32Array(ni)
   let vo = 0
   let io = 0
+  const groupIndexStart: Record<string, number> = {}
   for (const g of groups) {
+    groupIndexStart[g.name] = io
     pos.set(g.positions, vo * 3)
     nor.set(g.normals, vo * 3)
     uv.set(g.uvs, vo * 2)
@@ -34,6 +36,8 @@ function toGeometry(groups: GeometryGroup[]): BufferGeometry {
   geo.setAttribute('color', new BufferAttribute(col, 3, true))
   geo.setIndex(new BufferAttribute(idx, 1))
   geo.computeBoundingSphere()
+  // Where each generator group starts in the merged index buffer (sculptures.ts hides replaced stand-ins).
+  geo.userData.groupIndexStart = groupIndexStart
   return geo
 }
 

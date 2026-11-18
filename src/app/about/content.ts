@@ -4,6 +4,7 @@ import dimensions from '../../data/dimensions.json'
 import palette from '../../data/palette.json'
 import pediments from '../../data/pediments.json'
 import sanctuary from '../../data/sanctuary.json'
+import sculptures from '../../data/sculptures.json'
 import sources from '../../data/sources.json'
 import deviations from '../../../measurements/approved-deviations.json'
 import scanReport from '../../../measurements/scan-report.json'
@@ -30,6 +31,11 @@ export interface Section {
 /** Required wording whenever k is not used as the absolute scale (plan Step 2.7; Step 2 handoff). */
 export const SCALE_STATEMENT = 'The scan verifies proportions; absolute size is anchored to published values.'
 export const OSM_ATTRIBUTION = '© OpenStreetMap contributors, ODbL'
+/** Required wording (user decision 2026-11-18) wherever Thorvaldsen-restored scans are shown. */
+export const THORVALDSEN_NOTE =
+  "Some figures are scans of casts showing Bertel Thorvaldsen's 1816–17 restorations, which were removed from the originals in Munich in the 1960s; limbs and arrangement may differ from current reconstructions."
+export const CULT_STATUE_LABEL = "A comparable Late Archaic statue standing in for Aphaia's lost cult image"
+export const SCAN_CREDIT = 'SMK – Statens Museum for Kunst, The Royal Cast Collection, Copenhagen (3D scans via SMK Open, Public Domain Mark 1.0)'
 
 type Source = (typeof sources.sources)[number] & { quote?: string; url?: string; page?: string; quotes?: string[] }
 const byId = new Map<string, Source>(sources.sources.map((s) => [s.id, s as Source]))
@@ -158,7 +164,49 @@ export function buildAboutContent(meta: Pick<TempleMeta, 'site' | 'log'>): Secti
         },
         {
           kind: 'p',
-          text: 'The figures are blocky stand-ins. Their left-to-right order is inferred from Furtwängler\'s group descriptions (interpretive). The west-pediment archer is labelled "Trojan archer (identified as Paris by some)": Furtwängler rejected the name Paris, the Gods in Color curators consider it probable. Which side Herakles kneels on is unverified.',
+          text: 'Figures with a licensed scan are shown as scans (see Sculpture scans); the rest are blocky stand-ins. The left-to-right order is inferred from Furtwängler\'s group descriptions (interpretive). The west-pediment archer is labelled "Trojan archer (identified as Paris by some)": Furtwängler rejected the name Paris, the Gods in Color curators consider it probable. Which side Herakles kneels on is unverified.',
+        },
+      ],
+    },
+    {
+      id: 'sculptures',
+      title: 'Sculpture scans',
+      blocks: [
+        { kind: 'p', text: THORVALDSEN_NOTE },
+        { kind: 'p', text: `Scans: ${SCAN_CREDIT}. The pediment figures are casts of the originals in the Glyptothek, Munich; each scan is fitted into its slot and shown in plain marble (no colour scheme is applied to the scans). Figures without a scan keep their simplified stand-ins.` },
+        {
+          kind: 'list',
+          collapsed: `Scanned figures (${sculptures.sculptures.length})`,
+          items: sculptures.sculptures.map((s) => ({
+            text: `${'figureId' in s.slot && s.slot.figureId ? `${s.slot.pediment} pediment, slot ${s.slot.figureId.split('-')[1].toUpperCase()}` : 'Cella'}: ${s.title}`,
+            meta: `SMK ${s.source.objectNumber}; original ${s.original.position}, ${s.original.date} (${s.original.museum}); ${s.restoration === 'thorvaldsen' ? "cast shows Thorvaldsen's restorations" : 'unrestored cast'}; Public Domain Mark 1.0${'note' in s && s.note ? ` · ${s.note}` : ''}`,
+            url: s.source.page,
+          })),
+        },
+        {
+          kind: 'list',
+          collapsed: 'Cult statue (research)',
+          items: [
+            { text: CULT_STATUE_LABEL + ': Kore in chiton and cape (epiblema), Athenian Acropolis, c. 530 BC (SMK cast KAS1800).' },
+            {
+              text: 'Base: an unstuccoed patch of 92 x 112 cm in the 9th and 10th rows of floor slabs of the central aisle, at the boundary of the second third of the cella; the image was small and probably seated (the base is elongated), with traces of fine light-blue paint where the stucco rose against its plinth. Four square holes mark a wooden barrier round it, named in the temple inventory.',
+              meta: 'Furtwängler et al. 1906, p. 43; p. 499 (probably a new image made with the rebuilt temple; the old one likely burnt with the earlier temple).',
+            },
+            {
+              text: 'The building inscription (Furtwängler no. 5): in the priesthood of Kleoitas the house (oikos) and the altar were made for Aphaia, the ivory was added and the enclosure built round. Furtwängler first read "the ivory" as an ivory cult image, then as ivory decoration; he assigns the inscription to the oldest building period, before the older temple.',
+              meta: 'Furtwängler et al. 1906, pp. 2-4. The large ivory eye found in the cella in 1811 is not from the cult image (pp. 43, 499).',
+            },
+          ],
+        },
+        {
+          kind: 'list',
+          collapsed: 'Sphinx column',
+          items: [
+            {
+              text: 'The sphinx on the votive column is still a stand-in: no licensed scan of a comparable Archaic sphinx could be downloaded without an account.',
+              meta: 'Furtwängler et al. 1906 (pp. 156-157) restores the sphinx by analogy with the Naxian column at Delphi. SMK also holds a cast of a sphinx found in 1901 in the Aphaia cistern, c. 560 BC (KAS1341), without a 3D file.',
+            },
+          ],
         },
       ],
     },
