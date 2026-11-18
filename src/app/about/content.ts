@@ -204,7 +204,7 @@ export function buildAboutContent(meta: Pick<TempleMeta, 'site' | 'log'>): Secti
           items: [
             {
               text: 'The sphinx on the votive column is still a stand-in: no licensed scan of a comparable Archaic sphinx could be downloaded without an account.',
-              meta: 'Furtwängler et al. 1906 (pp. 156-157) restores the sphinx by analogy with the Naxian column at Delphi. SMK also holds a cast of a sphinx found in 1901 in the Aphaia cistern, c. 560 BC (KAS1341), without a 3D file.',
+              meta: 'Furtwängler et al. 1906: the column was poros with a plain, painted capital; its height (about ten lower diameters) and the crowning sphinx are restorations by analogy with the Naxian column at Delphi (p. 157). "We do not know what it carried", but very probably a sphinx (p. 487). An early Archaic marble head found in the excavation recalls the Naxian sphinx and comes from a female statue, a sphinx or Aphaia herself, but the column\'s sphinx must have been considerably larger (pp. 359-360, 487). SMK holds a cast of a sphinx found in 1901 in the Aphaia cistern (KAS1341, no 3D file).',
             },
           ],
         },
