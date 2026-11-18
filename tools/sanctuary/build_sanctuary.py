@@ -134,6 +134,31 @@ def geom(fid, key=None, role="key"):
 features: dict = {}
 hidden: dict = {}
 
+# ---- BOARD_CHECK: proportions measured on the Ministry boards (user photos, refs/boards, 2026-11-18) ----------
+# Method: pixel heights on downscaled photos, compared within one depth plane. Scales: IMG_8187 (aerial from the NE)
+# the sphinx column's base slab (1.45 m, text) and the drawn figures; IMG_8191 (approach elevation) the propylon's
+# plan width (9.32 m) and the sphinx column's drawn diameter (1.19 m, text), which agree within 11%; the drawn
+# figures there are about 1.6x too large for that scale and are only used for the houses (same plane as the
+# figures). Uncertainties are rough (+/-15-30%).
+#   item                          board            model before   action
+#   parapet above terrace         1.8 (aerial) /   1.80           kept (elevation 3.4-3.9 disagrees; aerial followed)
+#   exposed wall below terrace    ~1.6             >=1.0 (clamp)  clamp drop 1.0 -> 1.6
+#   houses front block eave       ~3.9             3.2            -> 3.9
+#   houses rear block eave        ~4.9             4.2            -> 4.9
+#   pent wing eave (high side)    ~2.6-3.3         2.6 (+0.8)     kept
+#   porch piers                   ~0.45 square     0.45           kept
+#   propylon eave / width         0.53 x 9.32=4.9  4.4            kept (within 20%)
+#   propylon roof rise            ~1.15            1.6            -> 1.15
+#   propylon ridge sculpture      ~1.0 x 0.9       0.7 x 0.5      -> 1.0 x 0.8
+#   propylon columns H/D          ~9 (slender)     ~6             kept (text: 6 and 5.5 diameters, p. 78)
+#   altar rear top above court    ~2.5             2.2            screen 1.0 -> 1.3
+#   altar length / court width    ~0.9-1.0         0.88           kept
+#   court statue plinths          4, ~0.6 m, one row on the west edge   6 in two rows, 1.0 m   -> 3 + the legend-6 base
+#   north long base (base-north)  ~2.5 tall        1.0            -> 2.5
+#   sphinx column capital top     ~11.3-13.3       12.3           kept
+#   cistern well-head             ~0.25 low ring   0.7            -> 0.25
+#   NE corner                     enclosure wall + ashlar corner to the sloping hill; knoll plate   knoll hidden, wall added
+
 # ---- walls (terrace retaining walls flush with the upper ground) ------------------------------------------
 wn, ww, ws, wse, we = (WALLS[k] for k in ("terrace_wall_n", "terrace_wall_w", "terrace_wall_s", "terrace_wall_s_east", "terrace_wall_e"))
 ZN = (wn["centreline"][0][1] + wn["centreline"][1][1]) / 2
@@ -151,11 +176,20 @@ def east_x(z):
 
 
 SE_CORNER = [east_x(ZS + 0.4), ZS + 0.4]
+# A point 0.275 m back along the great wall's north leg from its east end (where wall-se now ends, buried in it).
+_wn0, _wn1 = [r3(XW), r3(ZN)], pt(wn["centreline"][1])
+_wl = math.hypot(_wn1[0] - _wn0[0], _wn1[1] - _wn0[1])
+NWS_END_IN = [_wn1[0] - (_wn1[0] - _wn0[0]) / _wl * 0.275, _wn1[1] - (_wn1[1] - _wn0[1]) / _wl * 0.275]
 # Enclosure parapet on the terrace wall (Ministry board a/c: natural-stone socle + mudbrick superstructure with a
 # coping, hiding the temple's krepis from outside). Total height DERIVED from that constraint: an observer's eye
 # (1.6 m) on the highest approach ground just outside the south wall (DEM: about 0.16 m above the terrace, west of
 # the propylon) sees over anything lower, so the parapet must reach about 1.75 m above the terrace; rounded to
 # 1.80 m (checked in tests/unit/sanctuary-data.test.ts against sight lines from the approach).
+# BOARD CHECK (photos 2026-11-18, refs/boards, measured on the drawings; see BOARD_CHECK below): the NE aerial
+# (IMG_8187) scaled by the sphinx column's base slab (1.45 m, Furtwängler) drawn beside the north wall gives a
+# parapet of about 1.8 m (+/-0.4) above the terrace, coping included: confirmed. The approach elevation (IMG_8191)
+# draws the wall top 0.77 x the propylon's eave height above its floor (3.4-3.9 m); the two boards disagree, and
+# the aerial, with a physical scale in the same plane, is followed.
 PARAPET_H = 1.80
 SOCLE, COPING = 0.70, 0.15
 PARAPET = {
@@ -164,11 +198,11 @@ PARAPET = {
     "coping": board(COPING, "m", "tiled coping course", "conjectural"),
     "overhang": board(0.10, "m", "coping projection beyond each face", "conjectural"),
 }
-NE_COPING = {
-    "socle": board(0, "m", "no superstructure at the NE corner: tall ashlar retaining wall with a coping", "analogy"),
-    "mudbrick": board(0, "m", "no mudbrick at the NE corner", "analogy"),
-    "coping": board(0.30, "m", "coping course on the ashlar retaining wall", "conjectural"),
-    "overhang": board(0, "m", "coping flush with the wall faces (it sits at terrace level on the inner side)", "conjectural"),
+NE_ASHLAR = {
+    "socle": board(r3(PARAPET_H - COPING), "m", "the NE corner is ashlar up to the coping (IMG_8187: coursed blocks to the top, coping line level with the mudbrick parapet)", "analogy"),
+    "mudbrick": board(0, "m", "no mudbrick at the NE corner (IMG_8187)", "analogy"),
+    "coping": board(COPING, "m", "coping course, level with the parapet coping", "conjectural"),
+    "overhang": board(0.10, "m", "coping projection beyond each face", "conjectural"),
 }
 features["terrace-wall-nws"] = {
     "kind": "wall", "name": "Great terrace and enclosure wall (south, west, north)", "role": "terrace",
@@ -181,15 +215,19 @@ features["terrace-wall-nws"] = {
     "note": "Ends inside the propylon's west side wall; the north wall stops where the rock reaches terrace height (NE knoll, p. 85). Enclosure parapet (stone socle, mudbrick, tiled coping) after the Ministry board: from outside it hides the krepis.",
 }
 features["terrace-wall-se"] = {
-    "kind": "wall", "name": "South terrace wall east of the propylon, orthostate wall and east peribolos (north leg)", "role": "terrace",
-    "polyline": [[PX1 - 0.35, r3(ZS)], pt([wse["centreline"][1][0], ZS]), pt(SE_CORNER), pt(E0)],
+    "kind": "wall", "name": "South terrace wall east of the propylon, east peribolos (north leg), NE corner and north wall east of the knoll", "role": "terrace",
+    # Continues past the NE corner along the terrace's north edge (IMG_8187: the enclosure wall runs north of the
+    # cistern and the sphinx column) and ends inside the great wall's north leg (buried 0.27 m, no coplanar ends).
+    "polyline": [[PX1 - 0.35, r3(ZS)], pt([wse["centreline"][1][0], ZS]), pt(SE_CORNER), pt(E0), [33.3, -18.63], [29.75, r3(ZN)], pt(NWS_END_IN)],
     "thickness": derived(0.85, "m", "one thickness for the run: south upper wall 0.83 m (p. 91), east wall 0.70-1.0 m (p. 86); the orthostate wall is 0.40 m (p. 91)"),
     "height": derived(0, "m", "retaining wall top flush with the terrace"),
-    "top": "level", "masonry": ["rubble", "rubble", "ashlar"],
-    "parapets": [dict(PARAPET, segments=[0, 1]), dict(NE_COPING, segments=[2])],
+    "top": "level", "masonry": ["rubble", "rubble", "ashlar", "ashlar", "rubble", "rubble"],
+    # The last segment's coping is 1 cm lower so its buried end never shares the great wall's coping top plane.
+    "parapets": [dict(PARAPET, segments=[0, 1, 4]), dict(NE_ASHLAR, segments=[2, 3]),
+                 dict(PARAPET, coping=board(r3(COPING - 0.01), "m", "tiled coping course; 1 cm lower where this run ends inside the great wall (no coincident faces)", "conjectural"), segments=[5])],
     "phase": NEW, "placement": placement(None, max(wse["uncertaintyM"], we["uncertaintyM"]), "attested"),
     "sourceIds": [FW, WP, MIN], "confidence": "attested",
-    "note": "Turns 9.70 m east of the propylon (p. 91) along the east wall's line; one mitred run so the corners stay clean. South legs: enclosure parapet as on the great wall; east leg up to the NE corner: tall ashlar retaining wall with a coping (Ministry board).",
+    "note": "Turns 9.70 m east of the propylon (p. 91) along the east wall's line; one mitred run so the corners stay clean. South legs and the north wall: enclosure parapet as on the great wall; east leg and NE corner: tall ashlar retaining wall up to the coping, down to the sloping hillside (Ministry board IMG_8187). The text has no wall where the rock reaches terrace height at the NE (p. 85); the board's enclosure is followed.",
 }
 se_dir = [E1[0] - SE_CORNER[0], E1[1] - SE_CORNER[1]]
 se_len = math.hypot(*se_dir)
@@ -239,6 +277,7 @@ terrain = {
         "temple-terrace": {"polygon": main_poly, "level": derived(r3(S_REL_BASE), "m", "base of the lowest krepis step = -(crepidomaStepCount x crepidomaStepRise); surface 'in der Höhe der Unterstufe' (p. 69)"),
                            "note": "Edges on the terrace walls' centre lines (plan)."},
         "ne-knoll": {"polygon": knoll_poly, "level": derived(r3(S_REL_BASE), "m", "rock rises to terrace height at the NE corner (p. 85)"),
+                     "hiddenReason": "Trimmed (2026-11-18): the plan and text support the terrace only to its dashed north edge; the Ministry board (IMG_8187) shows the enclosure wall there with the hillside sloping below, so the real (corrected) hill takes over.",
                      "falloff": {"edgeDrop": conj(3.2, "m", "vertical rock face down to the cave entrance (cave 1.5-1.8 m high, p. 88)"), "slope": conj(0.8, "ratio", "steep east and north")},
                      # Edges 0-2 adjoin the temple terrace (same level, no face). East edges: the tall ashlar retaining
                      # wall of the NE corner (Ministry board b); north edges: the rock face above the cave (p. 88).
@@ -277,9 +316,9 @@ terrain = {
         "note": "User decision 2026-11-17: beyond the terraces the real hill and coast from the Copernicus DEM; the directional falloff above is only the fallback when no DEM is supplied.",
         "nearTerraceClamp": {
             "radius": conj(15, "m", "feather distance back to the DEM"),
-            "drop": conj(1.0, "m", "least exposed height of a retaining wall or rock face above the outside ground"),
+            "drop": board(1.6, "m", "least exposed height of the retaining wall below the terrace: IMG_8191 draws the wall about 1.9 x the parapet above the outside ground (exposed about 0.9 x parapet = 1.6 m, +/-0.5); IMG_8187 shows about 1.5 m of ashlar below the parapet at the NE corner", "analogy"),
             "hold": conj(6.0, "m", "fully applied this close to the edge (one coarse-tier grid cell), then feathered"),
-            "note": "CONJECTURAL correction (lead decision 2026-11-18): the DEM is a surface model with modern spoil heaps and trees, which rises near the parapet outside the SW wall. Within 6 m of a terrace edge the ground is held at least 1.0 m below that terrace, feathered back to the DEM by 15 m.",
+            "note": "CONJECTURAL correction (lead decision 2026-11-18): the DEM is a surface model with modern spoil heaps and trees, which rises near the parapet outside the SW wall. Within 6 m of a terrace edge the ground is held at least 1.6 m below that terrace (board-derived), feathered back to the DEM by 15 m.",
         },
     },
 }
@@ -300,7 +339,7 @@ features["altar"] = {
     "width": text(13.08, "m", "72-73", "foundation length N-S, 40 ft of 0.327 m"),
     "height": conj(1.2, "m", "superstructure not preserved; height by analogy (p. 73)"),
     "steps": {"count": conj(3, "count", "'eine grosse Freitreppe' (p. 73), number unknown"), "rise": conj(0.3, "m", "step rise"), "tread": conj(0.35, "m", "step tread"), "side": "w"},
-    "backScreen": {"height": board(1.0, "m", "raised rear (back screen) of the long altar block", "analogy"), "thickness": board(0.6, "m", "thickness of the raised rear", "conjectural")},
+    "backScreen": {"height": board(1.3, "m", "raised rear: IMG_8187 draws the altar's end face about 2.0 m high at the court side (scale: drawn figures and the column base), rising to about 2.5 m (+/-0.5) at the rear; rear top = altar 1.2 + 1.3", "analogy"), "thickness": board(0.6, "m", "thickness of the raised rear", "conjectural")},
     "phase": NEW, "placement": placement("altar", conf="attested", note=f"plan centre; text: 22.5 m from the stylobate step (p. 69), plan gives {ac[0]-min(aL,aW)/2-DIMS['stylobateLength']['value']/2:.2f} m"),
     "sourceIds": [FW, WP, MIN], "confidence": "attested",
     "note": "A long raised block with a raised rear on the paved court (Ministry board b, legend 4-5); heights conjectural (analogy with Agrigento, p. 73).",
@@ -324,17 +363,18 @@ features["paved-way"] = {
 }
 # Statue bases lining the court pavement (Ministry board b), placeholder figures; and the tall base in front (legend 6).
 COURT_EAST = altar_west - steps_w + 0.05
-for side, z in (("n", -6.75), ("s", 6.75)):
-    for k, x in enumerate([31.0, 32.9, 34.8]):
-        features[f"court-base-{side}{k + 1}"] = {
-            "kind": "base", "name": f"Statue base on the altar court ({'north' if side == 'n' else 'south'} row, {k + 1})",
-            "center": [x, z], "rotation": 0,
-            "length": board(0.8, "m", "statue plinth", "conjectural"), "width": board(0.8, "m", "statue plinth", "conjectural"),
-            "height": board(1.0, "m", "plinth height against the drawn figures", "conjectural"),
-            "figure": {"height": board(1.7, "m", "standing statue placeholder (life size)", "conjectural"), "width": board(0.5, "m", "placeholder", "conjectural"), "depth": board(0.35, "m", "placeholder", "conjectural")},
-            "phase": NEW, "placement": placement(None, 1.5, "conjectural", note="Ministry board b: statues on bases line the pavement; number and spacing not legible, evenly spaced along the court's edge", ref=MIN, verified=False),
-            "sourceIds": [MIN], "confidence": "conjectural",
-        }
+# IMG_8187: four statues on plinths line the court's west edge, flanking the paved way's join; the northernmost is
+# taken as the tall base of legend 6 (statue-base-front), the other three are court bases.
+for fid, z in (("court-base-n1", -3.0), ("court-base-s1", 3.0), ("court-base-s2", 5.6)):
+    features[fid] = {
+        "kind": "base", "name": f"Statue base on the altar court's west edge ({'north' if z < 0 else 'south'} of the paved way)",
+        "center": [30.5, z], "rotation": 0,
+        "length": board(0.8, "m", "statue plinth", "conjectural"), "width": board(0.8, "m", "statue plinth", "conjectural"),
+        "height": board(0.6, "m", "IMG_8187: plinths about a third of the figures' height (+/-0.2 m)", "analogy"),
+        "figure": {"height": board(1.7, "m", "standing statue placeholder (life size)", "conjectural"), "width": board(0.5, "m", "placeholder", "conjectural"), "depth": board(0.35, "m", "placeholder", "conjectural")},
+        "phase": NEW, "placement": placement(None, 1.5, "conjectural", note="Ministry board IMG_8187: statues on bases along the court's west edge, flanking the paved way; spacing from the drawing", ref=MIN, verified=False),
+        "sourceIds": [MIN], "confidence": "analogy",
+    }
 features["statue-base-front"] = {
     "kind": "base", "name": "Tall statue base in front of the altar pavement", "center": [29.0, -5.4], "rotation": 0,
     "length": board(1.2, "m", "base footprint", "conjectural"), "width": board(1.2, "m", "base footprint", "conjectural"),
@@ -358,7 +398,7 @@ bn = F["base_north"]
 features["base-north"] = {
     "kind": "base", "name": "North base beside the altar court", "center": [r3(bn["centroid"][0]), -12.70], "rotation": 0,
     "length": text(6.25, "m", "74", "superstructure; foundation 6.30 m"), "width": text(0.75, "m", "74"),
-    "height": conj(1.0, "m", "superstructure height unknown"),
+    "height": board(2.5, "m", "IMG_8187 draws this long base as a tall block about 2.5 m high (+/-0.7; scale: the column base slab beside it), perhaps a back wall for a sculptural group (legend 16)", "analogy"),
     "phase": NEW, "placement": placement("base_north", conf="attested", note="12.70 m north of the axis (p. 74); x from the plan"),
     "sourceIds": [FW, WP], "confidence": "attested",
 }
@@ -377,7 +417,7 @@ cr = cis["geometry"][1]["radius"]
 features["cistern"] = {
     "kind": "cistern", "name": "Cistern (upper shaft)", "shape": "circle", "center": [r3(ccx), r3(ccz)], "rotation": 0,
     "diameter": text(1.2, "m", "88", "upper shaft inner diameter 1.15-1.22 m"), "rimWidth": plan(cr - 0.6, "m", cis["uncertaintyM"], "rim = plan outer radius minus the shaft radius"),
-    "rimHeight": board(0.7, "m", "round well-head over the opening next to the sphinx column (legend 14); the rim itself is gone (p. 87)", "analogy"),
+    "rimHeight": board(0.25, "m", "round well-head drawn as a low ring next to the sphinx column (IMG_8187; about 0.25 m, +/-0.15, against the column base slab); the rim itself is gone (p. 87)", "analogy"),
     "depth": conj(4.0, "m", "depth not stated (Taf. 12,2 not seen); the older 2.5 m shaft below is not modelled"),
     "phase": phase("Older shaft, reworked in the new campaign", -650, None, "attested", "lower shaft older; upper shaft and cleft reworked (p. 88); open and in use c. 490"),
     "placement": placement("cistern", conf="attested"), "sourceIds": [FW, WP, MIN], "confidence": "attested",
@@ -447,10 +487,10 @@ features["propylon"] = {
                 "positions": [to_local([pcx, pcz], 0, c) for c in cols]},
     "architraves": [{"axis": "x", "offset": r3(z - pcz), "from": r3(-inner_hx), "to": r3(inner_hx), "depth": conj(0.4, "m", "timber architrave (p. 79)"), "height": conj(0.35, "m", "timber architrave")}
                     for z in sorted({round(c[1], 1) for c in cols})],
-    "roof": {"ridge": "x", "ridgeOffset": r3(door_z - pcz), "ridgeHeight": conj(1.6, "m", "pitch unknown"), "overhang": conj(0.4, "m", "eaves"), "tiled": True,
+    "roof": {"ridge": "x", "ridgeOffset": r3(door_z - pcz), "ridgeHeight": board(1.15, "m", "IMG_8191: the roof rises about 0.23 x the eave height above the eaves (scale: the propylon's width 9.32 m from the plan); +/-0.3", "analogy"), "overhang": conj(0.4, "m", "eaves"), "tiled": True,
              "confidence": "analogy", "note": "Ridge E-W over the door wall, eaves N and S, gables on the E and W side walls (pp. 79, 82-83)."},
     "steps": {"count": conj(3, "count", "a free flight on the outer (south) side; 'third step on a grid wall' (pp. 77-78)"), "rise": conj(0.30, "m", "step rise"), "tread": conj(0.35, "m", "step tread"), "side": "s"},
-    "roofOrnament": {"width": board(0.5, "m", "small sculpture on the roof ridge (placeholder block)", "conjectural"), "height": board(0.7, "m", "small sculpture on the roof ridge", "conjectural")},
+    "roofOrnament": {"width": board(0.8, "m", "small sculpture on the roof ridge (placeholder block); IMG_8191 about 0.9 m wide", "analogy"), "height": board(1.0, "m", "IMG_8191: about 1.0 m (+/-0.3) above the ridge", "analogy")},
     "baseLevel": r3(S_REL_BASE),
     "phase": NEW, "placement": placement("propylon", conf="attested"), "sourceIds": [FW, WP, MIN], "confidence": "analogy",
     "complex": "south-gate",
@@ -556,10 +596,10 @@ for hid in ("se-rooms-ii-iv", "se-room-a", "se-room-b", "se-room-i7"):
     h["roof"]["note"] = HIP_NOTE + " Tile fragments found (p. 99)."
     h["sourceIds"] = [FW, WP, MIN]
 for hid in ("se-room-a", "se-room-b", "se-room-i7"):
-    features[hid]["wallHeight"] = board(4.2, "m", "taller rear block of the priests' houses (massing against the front block)", "analogy")
+    features[hid]["wallHeight"] = board(4.9, "m", "taller rear block: IMG_8191 eave about 4.9 m (+/-0.8) above the ground, by the drawn figures (1.7 m) beside the porch; about 1 m above the front block's", "analogy")
     features[hid]["name"] = features[hid]["name"].replace("SE houses:", "Priests' houses, taller rear block:")
 features["se-rooms-ii-iv"]["name"] = "Priests' houses, lower front block: rooms II-IV with the columned porch (Vorhalle) facing the gate side"
-features["se-rooms-ii-iv"]["wallHeight"] = board(3.2, "m", "lower front block with the columned porch", "analogy")
+features["se-rooms-ii-iv"]["wallHeight"] = board(3.9, "m", "lower front block with the columned porch: IMG_8191 eave about 3.9 m (+/-0.6) by the drawn figures beside it", "analogy")
 features["se-forecourt"]["wallHeight"] = board(2.6, "m", "lower pent-roof wing", "analogy")
 features["se-forecourt"]["roof"] = {"form": "pent", "highSide": "n", "ridge": "x", "ridgeHeight": board(0.8, "m", "pent roof rising toward the taller block", "conjectural"),
                                     "overhang": conj(0.3, "m", "eaves"), "tiled": True, "confidence": "analogy", "note": "Pent-roof wing (Ministry board), high side toward the rear block (east)."}
