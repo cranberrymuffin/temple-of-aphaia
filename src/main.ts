@@ -3,6 +3,7 @@ import { buildScene } from './app/build-scene'
 import { generateTemple } from './app/geometry-client'
 import { installTestHook, TEST_HOOK_ENABLED } from './app/test-hook'
 import { pickTier } from './app/tier'
+import { createHud } from './app/ui/hud'
 import { createViewer } from './app/viewer'
 
 async function start() {
@@ -15,8 +16,8 @@ async function start() {
     const res = await generateTemple({ tier, keepColorIdx: TEST_HOOK_ENABLED })
     const paint = new URLSearchParams(location.search).has('paint')
     viewer.add(buildScene(res.output, { paint }))
-    const b = res.meta.bounds
-    viewer.setCamera({ position: [b.maxX * 1.6, b.maxY * 1.8, b.maxZ * 3.2], target: [0, b.maxY * 0.4, 0] })
+    viewer.controls.configure(res.output, res.meta)
+    createHud(viewer.controls)
     installTestHook(viewer, res.meta, { tier, generationMs: res.ms, workerWallMs: res.wallMs, triangles: res.triangles })
     status?.remove()
   } catch (err) {

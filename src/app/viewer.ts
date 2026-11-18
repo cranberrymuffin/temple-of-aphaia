@@ -1,9 +1,9 @@
-// Minimal viewer shell: renderer, scene, basic lights, camera, placeholder orbit, render loop.
-// Controls live in src/app/controls; Step 5 swaps them without touching this file's API.
-import { Color, DirectionalLight, HemisphereLight, Scene, SRGBColorSpace, Vector3, WebGLRenderer, type Object3D } from 'three'
+// Viewer shell: renderer, scene, basic lights, camera, orbit/walk controls, render loop.
+// Controls live in src/app/controls (manager.ts switches orbit and walk with a smooth transition).
+import { Color, DirectionalLight, HemisphereLight, Scene, SRGBColorSpace, WebGLRenderer, type Object3D } from 'three'
 import { AppClock } from './clock'
 import { createCamera } from './camera'
-import { createOrbit } from './controls/orbit'
+import { createControls } from './controls/manager'
 
 export interface CameraPose {
   position: [number, number, number]
@@ -28,7 +28,7 @@ export function createViewer(container: HTMLElement) {
   scene.add(fill)
 
   const camera = createCamera(1)
-  const orbit = createOrbit(camera, renderer.domElement)
+  const controls = createControls(camera, renderer.domElement)
   const clock = new AppClock()
   let frames = 0
   let fps = 0
@@ -45,7 +45,7 @@ export function createViewer(container: HTMLElement) {
   resize()
 
   const renderFrame = (dt: number) => {
-    orbit.update(dt)
+    controls.update(dt)
     renderer.render(scene, camera)
     frames++
     const t = performance.now()
@@ -63,27 +63,17 @@ export function createViewer(container: HTMLElement) {
     renderer,
     scene,
     camera,
-    orbit,
+    controls,
     clock,
     add(obj: Object3D) {
       scene.add(obj)
     },
     setCamera(p: CameraPose) {
-      camera.position.set(...p.position)
-      orbit.controls.target.set(...p.target)
-      if (p.fov) camera.fov = p.fov
-      camera.updateProjectionMatrix()
-      camera.lookAt(new Vector3(...p.target))
-      orbit.controls.update()
+      controls.setPose({ position: p.position, target: p.target, fov: p.fov ?? camera.fov })
       renderer.render(scene, camera)
     },
     getCamera(): Required<CameraPose> & { near: number } {
-      return {
-        position: camera.position.toArray() as [number, number, number],
-        target: orbit.controls.target.toArray() as [number, number, number],
-        fov: camera.fov,
-        near: camera.near,
-      }
+      return { ...controls.getPose(), near: camera.near }
     },
     /** Manual clock: advance and render one frame. */
     tick(ms: number) {
