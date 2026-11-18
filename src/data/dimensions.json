@@ -451,6 +451,17 @@
       "verified": true,
       "definition": "East ramp slope, rise:run as printed (\"1:6\").",
       "note": "Read in section \"II. 1. Der Altar\" (page not pinned, near printed p. 69). Ramp existence: p. 25. It reaches the second step; a half-step bridged to the top step."
+    },
+    "tympanumSetback": {
+      "value": 0.23,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "page": "30",
+      "url": "https://archive.org/details/aeginadasheiligtunse",
+      "verified": true,
+      "definition": "Setback of the tympanum wall (orthostates) behind the architrave line, east pediment.",
+      "note": "East: orthostates 53 cm thick, set back 23 cm behind the architrave line (p. 30). Applied to both pediments."
     }
   }
 }

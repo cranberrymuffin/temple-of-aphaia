@@ -60,7 +60,7 @@ scope.onmessage = async (e) => {
     const temple = buildTemple(r, e.data.tier, palette.colors, { colorIdx: e.data.keepColorIdx, ground: false })
     const site = buildSite(doc, r.stylobate.top, e.data.tier, palette.colors, { dem })
     const land = dem ? demExtent(dem.landscape) : undefined
-    const output = mergeOutputs([temple, site.sanctuary.output, site.terrain])
+    const output = mergeOutputs([{ groups: temple.groups, instances: temple.instances, colliders: temple.colliders, levels: temple.levels }, site.sanctuary.output, site.terrain])
     if (!e.data.keepColorIdx) for (const g of output.groups) delete g.colorIdx
     const tb = terrainBounds(doc.terrain)
     const meta: TempleMeta = {
@@ -99,6 +99,11 @@ scope.onmessage = async (e) => {
         westWallX: r.cella.westWallX,
       },
       log: r.log,
+      sculpture: {
+        field: { faceX: r.pediment.tympanumX, outerX: r.roof.halfX, baseY: r.pediment.baseY, halfZ: r.pediment.halfZ, apexY: r.pediment.apexY },
+        figureSlots: temple.figureSlots,
+        cultSlot: temple.cultSlot,
+      },
     }
     const ms = performance.now() - t0
     scope.postMessage({ ok: true, tier: e.data.tier, output, meta, ms, triangles: triangleCount(output) }, transferables(output))

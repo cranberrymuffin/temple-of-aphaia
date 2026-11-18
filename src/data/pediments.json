@@ -1,7 +1,7 @@
 {
   "meta": {
     "status": "merged",
-    "note": "Compositions per Furtwängler et al. 1906 (west 13 figures, pp. 195, 312; later east 11 figures, p. 312). Figure order, facing and x are inferred (choices.pediment-figure-order); x positions are provisional for Step 4."
+    "note": "Compositions per Furtwängler et al. 1906 (west 13 figures, pp. 195, 312; later east 11 figures, p. 312). Figure order, facing and x are inferred (choices.pediment-figure-order); x positions are provisional for Step 4. Herakles (east B) and the Scythian archer (west C) are placed on the sides that match the available scans; both sides are unverified."
   },
   "west": {
     "id": "west",
@@ -41,10 +41,12 @@
         "x": -0.613,
         "facing": "left",
         "sourceIds": [
-          "furtwangler-1906"
+          "furtwangler-1906",
+          "harvard-gazette-2007"
         ],
         "confidence": "interpretive",
-        "note": "Figure C: archer, facing the corner. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+        "note": "Figure C: archer, facing the corner; the painted Gods in Color archer in Scythian dress (no licensed scan: stand-in). His side is unverified. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting.",
+        "nameId": "trojan-archer"
       },
       {
         "id": "west-d",
@@ -129,13 +131,11 @@
         "pose": "kneeling-archer",
         "x": 0.613,
         "facing": "right",
-        "nameId": "trojan-archer",
         "sourceIds": [
-          "furtwangler-1906",
-          "harvard-gazette-2007"
+          "furtwangler-1906"
         ],
         "confidence": "interpretive",
-        "note": "Figure L: archer, facing the corner; shown as the painted Gods in Color archer (his side is unverified). Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+        "note": "Figure L: archer, facing the corner (scan: SMK KAS2125, a helmeted kneeling archer). Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
       },
       {
         "id": "west-m",
@@ -204,7 +204,8 @@
             "furtwangler-1906"
           ],
           "confidence": "interpretive",
-          "note": "Figure B: archer. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+          "note": "Figure B: archer with a lion-skin helmet front: Herakles (pp. 308-310), shown here because the SMK scan (KAS541/5) aims toward the left corner; his side is unverified (one older source puts him on the right). Order inferred (not stated on one page).",
+          "nameId": "herakles"
         },
         {
           "id": "east-c",
@@ -289,12 +290,11 @@
           "pose": "kneeling-archer",
           "x": 0.736,
           "facing": "right",
-          "nameId": "herakles",
           "sourceIds": [
             "furtwangler-1906"
           ],
           "confidence": "interpretive",
-          "note": "Figure K: archer with a lion-skin helmet front: Herakles (pp. 308-310); his side is unverified. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
+          "note": "Figure K: archer, facing the corner. Order inferred (not stated on one page); x is an even provisional spacing for Step 4 fitting."
         },
         {
           "id": "east-l",

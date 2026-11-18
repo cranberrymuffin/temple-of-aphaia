@@ -81,6 +81,9 @@ export const ELEMENT_PALETTE: Record<string, string> = {
   'athena-aegis': 'athena-aegis',
   'archer-vest': 'archer-vest-yellow',
   'archer-costume': 'archer-diamond-pattern',
+  // Cult statue base and stand-in (cult.ts).
+  'cult-base': 'marble',
+  'cult-statue': 'athena-aegis',
 }
 
 /** Unpainted ground colour (not a reconstruction claim, so not in palette.json). */

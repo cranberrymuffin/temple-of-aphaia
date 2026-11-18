@@ -77,7 +77,8 @@
         "interiorLowerDiameter",
         "interiorUpperColumnHeight",
         "interiorUpperDiameter",
-        "eastRampSlope"
+        "eastRampSlope",
+        "tympanumSetback"
       ],
       "properties": {
         "stylobateLength": {
@@ -207,6 +208,9 @@
           "$ref": "#/definitions/entry"
         },
         "eastRampSlope": {
+          "$ref": "#/definitions/entry"
+        },
+        "tympanumSetback": {
           "$ref": "#/definitions/entry"
         }
       }

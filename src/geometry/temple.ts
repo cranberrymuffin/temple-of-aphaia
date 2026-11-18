@@ -3,7 +3,8 @@ import type { Resolved } from '../data/resolveDimensions'
 import { cella, columnMesh } from './cella'
 import { crepidoma } from './crepidoma'
 import { entablature } from './entablature'
-import { figures } from './figures'
+import { cultStatue, type CultSlot } from './cult'
+import { figures, type PlacedFigure } from './figures'
 import { ground } from './ground'
 import type { PaletteLike } from './mesh'
 import { Collector, composeMatrix } from './mesh'
@@ -34,24 +35,32 @@ function peristyle(r: Resolved, tier: Tier, palette: PaletteLike): { instance: I
   return { instance: { name: 'peristyle', geometry, matrices, labels }, colliders }
 }
 
-export function buildTemple(r: Resolved, tier: Tier, palette: PaletteLike, opts: TempleOptions = {}): GeneratorOutput {
+/** The temple output plus the slots where scanned sculptures replace stand-ins. */
+export type TempleOutput = GeneratorOutput & { figureSlots: PlacedFigure[]; cultSlot: CultSlot }
+
+export function buildTemple(r: Resolved, tier: Tier, palette: PaletteLike, opts: TempleOptions = {}): TempleOutput {
   const col = new Collector()
+  const fig = figures(r, col)
+  const cult = cultStatue(r, col)
   const parts = [
     ...(opts.ground === false ? [] : [ground(r, col)]),
     crepidoma(r, col),
     entablature(r, tier, col),
     pediment(r, col),
-    figures(r, col),
+    fig,
     ornament(r, col),
     roof(r, col),
     cella(r, tier, col),
+    cult,
   ]
   const ps = peristyle(r, tier, palette)
-  const out: GeneratorOutput = {
+  const out: TempleOutput = {
     groups: col.build(palette),
     instances: [ps.instance],
     colliders: [...ps.colliders, ...parts.flatMap((p) => p.colliders)],
     levels: parts.flatMap((p) => p.levels),
+    figureSlots: fig.placed,
+    cultSlot: cult.slot,
   }
   if (opts.colorIdx === false) {
     for (const g of out.groups) delete g.colorIdx

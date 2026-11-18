@@ -113,7 +113,7 @@ export function poseParts(pose: Pose, opts: { archer: boolean; athena: boolean }
   }
 }
 
-interface Field {
+export interface Field {
   /** Tympanum face (|x|) and the cornice outer face (|x|). */
   faceX: number
   outerX: number
@@ -145,6 +145,13 @@ export function fitScale(parts: Part[], zc: number, dir: number, f: Field): numb
   return lo
 }
 
+/** Index range of one stand-in inside a generator group (lets the viewer hide it when a scan replaces it). */
+export interface GroupRange {
+  group: string
+  start: number
+  count: number
+}
+
 export interface PlacedFigure {
   id: string
   side: 'east' | 'west'
@@ -153,6 +160,83 @@ export interface PlacedFigure {
   z: number
   /** Top of the figure (m above the cornice). */
   top: number
+  /** Plan distance to the neighbouring slot (m). */
+  spacing: number
+  ranges: GroupRange[]
+}
+
+export const SCAN_CONVENTIONS = {
+  /** Gap between the tympanum and the back of a scanned figure (m). */
+  backGap: 0.02,
+  /** How far a scanned figure may project past the cornice edge (m): the originals' shields and limbs did. */
+  overhang: 0.12,
+  /** Deepest a cast's plinth is sunk into the cornice (m): the detected plinth can include a shield rim. */
+  maxPlinth: 0.1,
+  /** How far a scan may move toward the centre from its evenly spaced slot, as a fraction of the slot spacing. */
+  shiftFraction: 0.6,
+}
+
+export interface ScanFit {
+  scale: number
+  /** World position of the canonical origin and the rotation about +y (radians). */
+  position: [number, number, number]
+  rotY: number
+}
+
+/**
+ * Fits a scanned figure into its pediment slot. `points` are canonical scan vertices (metres, +y up,
+ * presentation front +z, plinth top at `plinth`). The figure keeps its real size unless it must shrink to
+ * clear the raking soffit, stay inside the field and keep its depth on the cornice (plus the overhang).
+ * Canonical +x becomes the viewer's right (east front: -z; west front: +z).
+ */
+export function fitScan(points: ArrayLike<number>, plinth: number, side: 'east' | 'west', zc: number, f: Field, maxShift = 0): ScanFit {
+  // The slots are evenly spaced placeholders: a scan may move toward the centre (by up to maxShift) when
+  // that lets it keep more of its real size. The smallest shift within 2% of the best scale wins.
+  if (maxShift > 0) {
+    const inward = -Math.sign(zc) || 1
+    let best = fitScan(points, plinth, side, zc, f)
+    let bestZ = zc
+    for (let d = 0.05; d <= maxShift + 1e-9; d += 0.05) {
+      const t = fitScan(points, plinth, side, zc + inward * d, f)
+      if (t.scale > best.scale * 1.02) {
+        best = t
+        bestZ = zc + inward * d
+      }
+    }
+    return { ...best, position: [best.position[0], best.position[1], bestZ] }
+  }
+  const sx = side === 'east' ? 1 : -1
+  const rightZ = side === 'east' ? -1 : 1
+  let zmin = Infinity
+  let zmax = -Infinity
+  for (let i = 2; i < points.length; i += 3) {
+    zmin = Math.min(zmin, points[i])
+    zmax = Math.max(zmax, points[i])
+  }
+  const room = f.outerX + SCAN_CONVENTIONS.overhang - f.faceX - SCAN_CONVENTIONS.backGap
+  const fits = (s: number) => {
+    if ((zmax - zmin) * s > room) return false
+    for (let i = 0; i < points.length; i += 3) {
+      const y = points[i + 1] - plinth
+      const z = zc + rightZ * points[i] * s
+      if (Math.abs(z) >= f.halfZ) return false
+      if (y > 0 && y * s > allowed(f, z)) return false
+    }
+    return true
+  }
+  let lo = 0
+  let hi = 1
+  if (!fits(hi)) {
+    for (let i = 0; i < 30; i++) {
+      const mid = (lo + hi) / 2
+      if (fits(mid)) lo = mid
+      else hi = mid
+    }
+    hi = lo
+  }
+  const s = hi
+  const x = sx * (f.faceX + SCAN_CONVENTIONS.backGap - zmin * s)
+  return { scale: s, position: [x, f.baseY - plinth * s, zc], rotY: (sx * Math.PI) / 2 }
 }
 
 /** Emits every figure of the west pediment and the displayed east option. */
@@ -186,6 +270,7 @@ export function figures(r: Resolved, col: Collector): Omit<GeneratorOutput, 'gro
       const room = field.outerX - field.faceX - C.backGap - C.depthStep * 12 - 0.03
       const dScale = Math.min(1, room / (2 * C.localDepth * s))
       const depthCentre = field.faceX + C.backGap + C.depthStep * (k % 12) + C.localDepth * s * dScale
+      const r0 = [body.idx.length, costume.idx.length]
       for (const p of parts) {
         const b: MeshBuilder = p.paint === 'archer-costume' ? costume : body
         if (b === body) b.beginPart(p.paint)
@@ -200,7 +285,11 @@ export function figures(r: Resolved, col: Collector): Omit<GeneratorOutput, 'gro
         if (b === costume) for (let i = v0 * 2; i < b.uv.length; i++) b.uv[i] /= C.diamondTile
       }
       body.endPart()
-      placed.push({ id: f.id, side, pose: f.pose, scale: s, z: zc, top: Math.max(...parts.map((p) => p.max[1])) * s })
+      const ranges = [
+        { group: body.name, start: r0[0], count: body.idx.length - r0[0] },
+        { group: costume.name, start: r0[1], count: costume.idx.length - r0[1] },
+      ].filter((g) => g.count > 0)
+      placed.push({ id: f.id, side, pose: f.pose, scale: s, z: zc, top: Math.max(...parts.map((p) => p.max[1])) * s, spacing: specs.length > 1 ? (1.84 / (specs.length - 1)) * P.halfZ : 0, ranges })
     }
   }
   return { instances: [], colliders: [], levels: [], placed }

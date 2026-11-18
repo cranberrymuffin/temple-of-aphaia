@@ -626,7 +626,7 @@ export function resolveDimensions(
         guttaePerRow: C.guttaePerRow,
       },
     },
-    pediment: { pitch, tympanumX: faceX, baseY: c1, halfZ: corHalfZ, apexY: c1 + corHalfZ * Math.tan(pitch) },
+    pediment: { pitch, tympanumX: faceX - v('tympanumSetback'), baseY: c1, halfZ: corHalfZ, apexY: c1 + corHalfZ * Math.tan(pitch) },
     roof: {
       halfX: corHalfX,
       halfZ: corHalfZ,
