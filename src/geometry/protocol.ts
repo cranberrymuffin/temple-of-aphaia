@@ -37,7 +37,7 @@ export interface TempleMeta {
     /** Why the DEM was not used (the parametric falloff was built instead). */
     demError?: string
     /** Conjectural correction of the DSM next to the terraces (largest lowering in m), when applied. */
-    groundCorrection?: { maxLowered: number; radius: number; drop: number; hold: number }
+    groundCorrection?: { maxLowered: number; maxRaised: number; radius: number; drop: number; hold: number }
   }
   cella: { centerX: number; halfX: number; halfZ: number; floorY: number; eastWallX: [number, number]; westWallX: [number, number] }
   /** Where scanned sculptures replace stand-ins: the pediment field, each figure slot, the cult-statue base. */

@@ -125,23 +125,31 @@ export function clampNearTerraces(g: GroundFn, desc: TerrainDesc, stylobateTop: 
   const ts = terraces(desc, stylobateTop).map((t) => ({
     ...t,
     drop: desc.terraces[t.id].clampDrop?.value ?? drop,
+    fill: desc.terraces[t.id].fillDrop?.value,
     bb: [Math.min(...t.poly.map((p) => p[0])) - radius, Math.max(...t.poly.map((p) => p[0])) + radius, Math.min(...t.poly.map((p) => p[1])) - radius, Math.max(...t.poly.map((p) => p[1])) + radius],
   }))
-  const stats = { maxLowered: 0, radius, drop, hold }
+  const stats = { maxLowered: 0, maxRaised: 0, radius, drop, hold }
   const ground: GroundFn = (x, z) => {
     const h = g(x, z)
-    let out = h
+    let low = h
+    let high = h
     for (const t of ts) {
       const cap = t.y - t.drop
-      if (h <= cap || x < t.bb[0] || x > t.bb[1] || z < t.bb[2] || z > t.bb[3]) continue
+      const fill = t.fill === undefined ? -Infinity : t.y - t.fill
+      if ((h <= cap && h >= fill) || x < t.bb[0] || x > t.bb[1] || z < t.bb[2] || z > t.bb[3]) continue
       // Under the terrace too (d = 0): the mesh triangles across its edge interpolate those nodes.
       const d = pointInPolygon(t.poly, [x, z]) ? 0 : nearest(t, [x, z]).d
       if (d >= radius) continue
       const s = Math.max(0, d - hold) / (radius - hold)
       const w = s * s * (3 - 2 * s)
-      out = Math.min(out, w * h + (1 - w) * cap)
+      if (h > cap) low = Math.min(low, w * h + (1 - w) * cap)
+      if (h < fill) high = Math.max(high, w * h + (1 - w) * fill)
     }
+    // A fill (softening a drop next to a lower terrace) wins where it applies: it only reaches ground already
+    // below that terrace, which the higher neighbours' lowering would otherwise deepen into a ditch.
+    const out = high > h ? high : low
     stats.maxLowered = Math.max(stats.maxLowered, h - out)
+    stats.maxRaised = Math.max(stats.maxRaised, out - h)
     return out
   }
   return { ground, stats }

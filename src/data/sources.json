@@ -255,11 +255,11 @@
       "confidence": "interpretive",
       "note": "Construction from the Ministry board (stone socle + mudbrick + coping). Height DERIVED from the board's statement that the wall hides the krepis from outside: an eye 1.6 m above the highest approach ground outside the wall (DEM up to about 0.16 m above the terrace) needs about 1.6-1.75 m; 1.80 m chosen (tested in sanctuary-data.test.ts). Socle and coping heights conjectural. CONFLICT between the boards: the NE aerial (IMG_8187, scaled by the sphinx column's 1.45 m base slab) confirms about 1.8 m; the approach elevation (IMG_8191) draws the wall about 3.4-3.9 m above the propylon floor. User decision 2026-11-18: keep 1.8 m (the aerial)."
     },
-    "propylon-grand-stair": {
-      "description": "The approach climbs about 4.0 m to the propylon in two flights (5 risers of 0.32 m, a 2.0 m landing, 8 risers of 0.30 m), flanked by stepped orthostate cheek walls; the plaza before it lies 4.0 m below the terrace, with the priests' houses on the rock outcrop above it and the open slope west of it at about plaza level.",
-      "sourceIds": ["ministry-onsite-boards", "furtwangler-1906"],
+    "propylon-approach-terraces": {
+      "description": "The approach to the propylon climbs 2.4 m over broad, low ashlar terraces running along the wall front from the fence wall to the priests' houses' rock: the top tier at the propylon floor (terrace height) carries the gate's southward projection, then seven tiers of 0.30 m (0.9 m deep) step down to the plaza; the plaza's lower south wall is flush with it.",
+      "sourceIds": ["ministry-onsite-boards", "furtwangler-1906", "wikimedia-plan-aphaia-sanctuary"],
       "confidence": "analogy",
-      "note": "User decision 2026-11-18: follow the Ministry approach board (IMG_8191) over the earlier three-step conjecture. Total rise DERIVED from the drawing (+/-1 m); step counts, risers and treads conjectural (risers kept <= 0.35 m for walking). The propylon floor stays at terrace height (Furtwängler p. 77)."
+      "note": "User decision 2026-11-20 (supersedes the two-flight stair of the same day): match the Ministry approach board (IMG_8191), whose long low courses with stepped ends let the propylon read as set into the wall line. Total climb DERIVED from the drawing (about 4 m drawn, read lower once spread over the slope; 2.4 m, +/-1 m); tier count, risers (<= 0.35 m for walking) and depths conjectural. Next to the plaza the ground is raised to at most 0.5 m below it (CONJECTURAL fill toward the board's gentle slope); the propylon floor stays at terrace height (Furtwängler p. 77); the plan footprints are kept."
     },
     "priests-houses-massing": {
       "description": "The SE (priests') houses outside the boundary wall: hipped tiled roofs; the rooms against the wall form a taller rear block (walls 4.2 m), rooms II-IV a lower front block (3.2 m) with the columned porch open to the west (gate side); the vestibule/forecourt a lower pent-roof wing (2.6 m).",

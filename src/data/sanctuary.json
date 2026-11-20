@@ -154,16 +154,8 @@
    "outer-terrace": {
     "polygon": [
      [
-      15.0,
-      20.583
-     ],
-     [
-      36.436,
-      20.583
-     ],
-     [
-      36.6,
-      30.0
+      35.580769231,
+      32.5
      ],
      [
       31.3,
@@ -190,18 +182,18 @@
       33.31
      ],
      [
-      15.07,
-      23.25
+      15.603300199,
+      32.5
      ]
     ],
     "level": {
-     "value": -4.78,
+     "value": -3.18,
      "unit": "m",
      "source": "published",
      "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "DERIVED from the Ministry board (confidence: analogy): plaza at the foot of the propylon stair, 4.0 m below the terrace: IMG_8191 draws a climb of about 4 m (+/-1 m) in two flights from the approach to the propylon floor (scale: the propylon's eave 4.4 m and plan width 9.32 m); the floor stays at terrace height (p. 77)"
+     "note": "DERIVED from the Ministry board (confidence: analogy): plaza at the foot of the approach terraces, 2.4 m below the terrace (IMG_8191: about 4 m drawn, +/-1 m, read lower once spread over the slope); the propylon floor stays at terrace height (p. 77)"
     },
     "clampDrop": {
      "value": 0,
@@ -210,7 +202,16 @@
      "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "DERIVED from the Ministry board (confidence: analogy): IMG_8191: the open slope west of the stair lies at about the plaza's level along the wall foot, so the ground next to the plaza is not held below it"
+     "note": "DERIVED from the Ministry board (confidence: analogy): IMG_8191: the open slope west of the approach lies at about the plaza's level along the wall foot, so the ground next to the plaza is not held below it"
+    },
+    "fillDrop": {
+     "value": 0.5,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: conjectural): CONJECTURAL softening: next to the plaza the ground is raised to at most 0.5 m below it, feathered back to the DEM, toward the board's gentle slope south of the gate (IMG_8191)"
     },
     "falloff": {
      "edgeDrop": {
@@ -233,7 +234,263 @@
      }
     },
     "edgeFace": "rock",
-    "note": "Rock 'rises evenly' toward the propylon (p. 100); modelled flat. Level after the Ministry approach board (IMG_8191): the grand stair climbs about 4 m to the gate; the priests' houses stand on the rock outcrop above it (rock face on the SE terrace's edge)."
+    "note": "Rock 'rises evenly' toward the propylon (p. 100); modelled flat south of the approach terraces, which take its northern part (Ministry approach board IMG_8191). The priests' houses stand on the rock outcrop above it (rock face on the SE terrace's edge)."
+   },
+   "approach-tier-1": {
+    "polygon": [
+     [
+      15.0,
+      20.583
+     ],
+     [
+      36.436,
+      20.583
+     ],
+     [
+      36.533821812,
+      26.2
+     ],
+     [
+      15.240079523,
+      26.2
+     ],
+     [
+      15.07,
+      23.25
+     ]
+    ],
+    "level": {
+     "value": -0.78,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: analogy): approach terrace 1 of 8: 0.30 m below the one above (riser kept <= 0.35 m for walking; course height on IMG_8191 about 0.3-0.7 m)"
+    },
+    "edgeFace": "ashlar",
+    "note": "Top tier at the propylon floor (terrace height), carrying the propylon's southward projection so it reads as set into the wall line. Broad, low ashlar course along the wall front, 0.9 m deep, from the fence wall to the SE houses' rock (IMG_8191: long low courses with stepped ends; DERIVED, conjectural depth)."
+   },
+   "approach-tier-2": {
+    "polygon": [
+     [
+      36.533821812,
+      26.2
+     ],
+     [
+      36.549495593,
+      27.1
+     ],
+     [
+      15.291968191,
+      27.1
+     ],
+     [
+      15.240079523,
+      26.2
+     ]
+    ],
+    "level": {
+     "value": -1.08,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: analogy): approach terrace 2 of 8: 0.30 m below the one above (riser kept <= 0.35 m for walking; course height on IMG_8191 about 0.3-0.7 m)"
+    },
+    "edgeFace": "ashlar",
+    "note": "Broad, low ashlar course along the wall front, 0.9 m deep, from the fence wall to the SE houses' rock (IMG_8191: long low courses with stepped ends; DERIVED, conjectural depth)."
+   },
+   "approach-tier-3": {
+    "polygon": [
+     [
+      36.549495593,
+      27.1
+     ],
+     [
+      36.565169375,
+      28.0
+     ],
+     [
+      15.343856859,
+      28.0
+     ],
+     [
+      15.291968191,
+      27.1
+     ]
+    ],
+    "level": {
+     "value": -1.38,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: analogy): approach terrace 3 of 8: 0.30 m below the one above (riser kept <= 0.35 m for walking; course height on IMG_8191 about 0.3-0.7 m)"
+    },
+    "edgeFace": "ashlar",
+    "note": "Broad, low ashlar course along the wall front, 0.9 m deep, from the fence wall to the SE houses' rock (IMG_8191: long low courses with stepped ends; DERIVED, conjectural depth)."
+   },
+   "approach-tier-4": {
+    "polygon": [
+     [
+      36.565169375,
+      28.0
+     ],
+     [
+      36.580843156,
+      28.9
+     ],
+     [
+      15.395745527,
+      28.9
+     ],
+     [
+      15.343856859,
+      28.0
+     ]
+    ],
+    "level": {
+     "value": -1.68,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: analogy): approach terrace 4 of 8: 0.30 m below the one above (riser kept <= 0.35 m for walking; course height on IMG_8191 about 0.3-0.7 m)"
+    },
+    "edgeFace": "ashlar",
+    "note": "Broad, low ashlar course along the wall front, 0.9 m deep, from the fence wall to the SE houses' rock (IMG_8191: long low courses with stepped ends; DERIVED, conjectural depth)."
+   },
+   "approach-tier-5": {
+    "polygon": [
+     [
+      36.580843156,
+      28.9
+     ],
+     [
+      36.596516937,
+      29.8
+     ],
+     [
+      15.447634195,
+      29.8
+     ],
+     [
+      15.395745527,
+      28.9
+     ]
+    ],
+    "level": {
+     "value": -1.98,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: analogy): approach terrace 5 of 8: 0.30 m below the one above (riser kept <= 0.35 m for walking; course height on IMG_8191 about 0.3-0.7 m)"
+    },
+    "edgeFace": "ashlar",
+    "note": "Broad, low ashlar course along the wall front, 0.9 m deep, from the fence wall to the SE houses' rock (IMG_8191: long low courses with stepped ends; DERIVED, conjectural depth)."
+   },
+   "approach-tier-6": {
+    "polygon": [
+     [
+      36.596516937,
+      29.8
+     ],
+     [
+      36.6,
+      30.0
+     ],
+     [
+      36.314615385,
+      30.7
+     ],
+     [
+      15.499522863,
+      30.7
+     ],
+     [
+      15.447634195,
+      29.8
+     ]
+    ],
+    "level": {
+     "value": -2.28,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: analogy): approach terrace 6 of 8: 0.30 m below the one above (riser kept <= 0.35 m for walking; course height on IMG_8191 about 0.3-0.7 m)"
+    },
+    "edgeFace": "ashlar",
+    "note": "Broad, low ashlar course along the wall front, 0.9 m deep, from the fence wall to the SE houses' rock (IMG_8191: long low courses with stepped ends; DERIVED, conjectural depth)."
+   },
+   "approach-tier-7": {
+    "polygon": [
+     [
+      36.314615385,
+      30.7
+     ],
+     [
+      35.947692308,
+      31.6
+     ],
+     [
+      15.551411531,
+      31.6
+     ],
+     [
+      15.499522863,
+      30.7
+     ]
+    ],
+    "level": {
+     "value": -2.58,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: analogy): approach terrace 7 of 8: 0.30 m below the one above (riser kept <= 0.35 m for walking; course height on IMG_8191 about 0.3-0.7 m)"
+    },
+    "edgeFace": "ashlar",
+    "note": "Broad, low ashlar course along the wall front, 0.9 m deep, from the fence wall to the SE houses' rock (IMG_8191: long low courses with stepped ends; DERIVED, conjectural depth)."
+   },
+   "approach-tier-8": {
+    "polygon": [
+     [
+      35.947692308,
+      31.6
+     ],
+     [
+      35.580769231,
+      32.5
+     ],
+     [
+      15.603300199,
+      32.5
+     ],
+     [
+      15.551411531,
+      31.6
+     ]
+    ],
+    "level": {
+     "value": -2.88,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: analogy): approach terrace 8 of 8: 0.30 m below the one above (riser kept <= 0.35 m for walking; course height on IMG_8191 about 0.3-0.7 m)"
+    },
+    "edgeFace": "ashlar",
+    "note": "Broad, low ashlar course along the wall front, 0.9 m deep, from the fence wall to the SE houses' rock (IMG_8191: long low courses with stepped ends; DERIVED, conjectural depth)."
    },
    "se-houses-terrace": {
     "polygon": [
@@ -878,8 +1135,8 @@
      41.6
     ],
     [
-     31.32,
-     43.25
+     30.622,
+     43.192
     ]
    ],
    "thickness": {
@@ -900,6 +1157,7 @@
     "note": "DERIVED: top flush with the outer terrace; 1.20 m stone fill behind (p. 101)"
    },
    "top": "level",
+   "baseLevel": -3.18,
    "phase": {
     "label": "Late Archaic new layout",
     "fromYear": -510,
@@ -932,6 +1190,38 @@
     [
      15.07,
      23.25
+    ],
+    [
+     15.24,
+     26.2
+    ],
+    [
+     15.292,
+     27.1
+    ],
+    [
+     15.344,
+     28.0
+    ],
+    [
+     15.396,
+     28.9
+    ],
+    [
+     15.448,
+     29.8
+    ],
+    [
+     15.5,
+     30.7
+    ],
+    [
+     15.551,
+     31.6
+    ],
+    [
+     15.603,
+     32.5
     ],
     [
      15.65,
@@ -2321,83 +2611,6 @@
     "confidence": "analogy",
     "note": "Ridge E-W over the door wall, eaves N and S, gables on the E and W side walls (pp. 79, 82-83)."
    },
-   "steps": {
-    "count": {
-     "value": 5,
-     "unit": "count",
-     "source": "published",
-     "ref": "ministry-onsite-boards",
-     "verified": false,
-     "provisional": true,
-     "note": "DERIVED from the Ministry board (confidence: analogy): upper flight; IMG_8191 draws a short upper flight to the door above a landing; 'third step on a grid wall' (pp. 77-78)"
-    },
-    "rise": {
-     "value": 0.32,
-     "unit": "m",
-     "source": "published",
-     "ref": "ministry-onsite-boards",
-     "verified": false,
-     "provisional": true,
-     "note": "DERIVED from the Ministry board (confidence: conjectural): upper riser; 5 x 0.32 = 1.6 m"
-    },
-    "tread": {
-     "value": 0.35,
-     "unit": "m",
-     "source": "published",
-     "ref": "furtwangler-1906",
-     "verified": false,
-     "provisional": true,
-     "note": "CONJECTURAL: step tread"
-    },
-    "side": "s",
-    "landing": {
-     "value": 2.0,
-     "unit": "m",
-     "source": "published",
-     "ref": "ministry-onsite-boards",
-     "verified": false,
-     "provisional": true,
-     "note": "DERIVED from the Ministry board (confidence: analogy): landing between the flights (IMG_8191, about 2 m +/-0.7)"
-    },
-    "lower": {
-     "count": {
-      "value": 8,
-      "unit": "count",
-      "source": "published",
-      "ref": "ministry-onsite-boards",
-      "verified": false,
-      "provisional": true,
-      "note": "DERIVED from the Ministry board (confidence: analogy): lower flight; 8 x 0.30 = 2.4 m, total climb 4.0 m"
-     },
-     "rise": {
-      "value": 0.3,
-      "unit": "m",
-      "source": "published",
-      "ref": "ministry-onsite-boards",
-      "verified": false,
-      "provisional": true,
-      "note": "DERIVED from the Ministry board (confidence: conjectural): lower riser"
-     },
-     "tread": {
-      "value": 0.38,
-      "unit": "m",
-      "source": "published",
-      "ref": "ministry-onsite-boards",
-      "verified": false,
-      "provisional": true,
-      "note": "DERIVED from the Ministry board (confidence: conjectural): lower tread, a little deeper (wider flight drawn)"
-     }
-    },
-    "cheekHeight": {
-     "value": 0.6,
-     "unit": "m",
-     "source": "published",
-     "ref": "ministry-onsite-boards",
-     "verified": false,
-     "provisional": true,
-     "note": "DERIVED from the Ministry board (confidence: analogy): orthostate cheek walls stepping down beside the flights, about 0.6 m above each tread (IMG_8191; +/-0.3)"
-    }
-   },
    "roofOrnament": {
     "width": {
      "value": 0.8,
@@ -2443,7 +2656,7 @@
    ],
    "confidence": "analogy",
    "complex": "south-gate",
-   "note": "Matches the Ministry board: the only entrance, two columns between antae on each front, a central door, steps rising from outside (south), a small sculpture on the roof. Floor at terrace height (orthostate cover slabs at terrace level, p. 77). The stair conflict with the plan is resolved by the board (sources.json choices.propylon-stairs-south)."
+   "note": "Matches the Ministry board: the only entrance, two columns between antae on each front, a central door, the approach rising from outside (south), a small sculpture on the roof. Floor at terrace height (orthostate cover slabs at terrace level, p. 77); the approach climbs to it over broad low ashlar terraces in front of the wall (terraces approach-tier-1..8; IMG_8191), which carry its southward projection, so no separate stair. The stair-side conflict with the plan is resolved by the board (sources.json choices.propylon-stairs-south)."
   },
   "se-rooms-ii-iv": {
    "kind": "building",

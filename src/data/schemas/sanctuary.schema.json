@@ -456,6 +456,10 @@
               "clampDrop": {
                 "$ref": "#/definitions/nonNegative",
                 "description": "Overrides terrain.dem.nearTerraceClamp.drop next to this terrace."
+              },
+              "fillDrop": {
+                "$ref": "#/definitions/nonNegative",
+                "description": "Conjectural fill next to this terrace: within the DEM clamp's radius the ground is raised to at most this far below it, feathered back."
               }
             }
           }

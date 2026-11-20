@@ -176,7 +176,14 @@ def east_x(z):
 
 
 SE_CORNER = [east_x(ZS + 0.4), ZS + 0.4]
-STAIR_RISE = 5 * 0.32 + 8 * 0.30  # propylon stair (both flights): plaza level below the terrace
+# Approach to the gate (Ministry approach board IMG_8191, user decision 2026-11-20): broad, low ashlar terraces
+# running along the wall front from the fence wall to the SE houses' rock. The top tier is at the propylon floor
+# (terrace height) and carries the propylon's southward projection; then TIER_N - 1 tiers of TIER_RISE each, then
+# the plaza. Total climb DERIVED from the drawing, reduced from 4 m once spread over the slope (the board's lower
+# courses lie nearer the viewer, so the elevation overstates their drop).
+TIER_RISE, TIER_N, TIER_DEPTH = 0.30, 8, 0.9
+TIER1_SOUTH = 26.2  # the top tier reaches 1 m beyond the propylon's front (25.19)
+APPROACH_RISE = TIER_RISE * TIER_N  # plaza level below the terrace (2.4 m)
 # A point 0.275 m back along the great wall's north leg from its east end (where wall-se now ends, buried in it).
 _wn0, _wn1 = [r3(XW), r3(ZN)], pt(wn["centreline"][1])
 _wl = math.hypot(_wn1[0] - _wn0[0], _wn1[1] - _wn0[1])
@@ -244,16 +251,19 @@ features["terrace-wall-e"] = {
 }
 features["lower-south-wall"] = {
     "kind": "wall", "name": "Lower south retaining wall of the outer terrace", "role": "terrace",
-    "polyline": [[11.41, 41.6], [31.32, 43.25]],
+    # Ends 0.7 m short of the plan's end so its plaza-level top stays clear of the higher SE houses' rock terrace.
+    "polyline": [[11.41, 41.6], [r3(31.32 - 0.7 * 19.91 / 19.978), r3(43.25 - 0.7 * 1.65 / 19.978)]],
     "thickness": plan(0.65, "m", F["lower_south_wall"]["uncertaintyM"]),
     "height": derived(0, "m", "top flush with the outer terrace; 1.20 m stone fill behind (p. 101)"),
-    "top": "level", "phase": NEW, "placement": placement("lower_south_wall", conf="attested"),
+    "top": "level", "baseLevel": r3(S_REL_BASE - APPROACH_RISE),  # flush with the plaza, not with the highest ground under it
+    "phase": NEW, "placement": placement("lower_south_wall", conf="attested"),
     "sourceIds": [FW, WP], "confidence": "attested",
     "note": "About 20 m south of the propylon, about 15 m continuous (p. 101). Side gate (0.95 m) at its east end not modelled.",
 }
 features["fence-wall"] = {
     "kind": "wall", "name": "Fence wall west of the propylon", "role": "fence",
-    "polyline": [[15.07, 23.25], [15.65, 33.31]],
+    # Points at the approach tiers' edges so its top steps down with them (top 'follow').
+    "polyline": [[15.07, 23.25]] + [[r3(15.07 + (15.65 - 15.07) * (z - 23.25) / (33.31 - 23.25)), r3(z)] for z in [TIER1_SOUTH + k * TIER_DEPTH for k in range(TIER_N)] if z < 33.31] + [[15.65, 33.31]],
     "thickness": text(0.30, "m", "101"), "height": text(0.7, "m", "101", "slabs about 0.7 m high"),
     "top": "follow", "phase": NEW, "placement": placement("fence_wall", conf="analogy", note="south part dashed (reconstructed) on the plan"),
     "sourceIds": [FW, WP], "confidence": "analogy",
@@ -265,7 +275,37 @@ main_poly = [
     pt(SE_CORNER), pt([wse["centreline"][1][0], ZS]), [r3(XW), r3(ZS)],
 ]
 knoll_poly = [pt(wn["centreline"][1]), [29.75, r3(ZN)], [33.3, -18.63], pt(E0), [40.8, -20.5], [34.0, -25.5], [18.0, -24.5]]
-plaza_poly = [[15.0, r3(ZS)], pt([wse["centreline"][1][0], ZS]), [36.6, 30.0], [31.3, 43.0], [11.4, 41.6], [11.67, 39.71], [12.85, 36.84], [14.47, 34.65], [15.65, 33.31], [15.07, 23.25]]
+plaza_full = [[15.0, r3(ZS)], pt([wse["centreline"][1][0], ZS]), [36.6, 30.0], [31.3, 43.0], [11.4, 41.6], [11.67, 39.71], [12.85, 36.84], [14.47, 34.65], [15.65, 33.31], [15.07, 23.25]]
+
+
+def clip_z(poly, z0, z1):
+    """Part of a polygon between z0 and z1 (Sutherland-Hodgman against two half-planes; this outline is z-monotone enough)."""
+    def half(pts, keep, zc):
+        out = []
+        for i, p in enumerate(pts):
+            q = pts[(i + 1) % len(pts)]
+            pin, qin = keep(p[1]), keep(q[1])
+            if pin:
+                out.append(p)
+            if pin != qin:
+                t = (zc - p[1]) / (q[1] - p[1])
+                out.append([p[0] + t * (q[0] - p[0]), zc])
+        return out
+    pts = half(poly, lambda z: z >= z0 - 1e-9, z0) if z0 is not None else poly
+    pts = half(pts, lambda z: z <= z1 + 1e-9, z1) if z1 is not None else pts
+    clean = []
+    for p in pts:
+        p = [round(p[0], 9), round(p[1], 9)]  # full precision: shared edges must stay exactly on the neighbours' lines
+        if not clean or abs(p[0] - clean[-1][0]) > 1e-6 or abs(p[1] - clean[-1][1]) > 1e-6:
+            clean.append(p)
+    if len(clean) > 1 and abs(clean[0][0] - clean[-1][0]) < 1e-6 and abs(clean[0][1] - clean[-1][1]) < 1e-6:
+        clean.pop()
+    return clean
+
+
+tier_z = [ZS] + [TIER1_SOUTH + k * TIER_DEPTH for k in range(TIER_N)]  # tier k spans tier_z[k]..tier_z[k+1]
+approach_tiers = [clip_z(plaza_full, tier_z[k], tier_z[k + 1]) for k in range(TIER_N)]
+plaza_poly = clip_z(plaza_full, tier_z[-1], None)
 se_poly = [pt([wse["centreline"][1][0], ZS]), pt(SE_CORNER), pt(E1), [54.4, 41.5], [55.4, 47.2], [42.9, 47.2], [31.3, 43.0], [36.6, 30.0]]
 SUED = {"x0": -5.0, "x1": 20.0, "z0": r3(ZS + 33.0), "w": 6.0}
 sued_poly = [[SUED["x0"], SUED["z0"]], [SUED["x1"], SUED["z0"]], [SUED["x1"], SUED["z0"] + SUED["w"]], [SUED["x0"], SUED["z0"] + SUED["w"]]]
@@ -284,11 +324,19 @@ terrain = {
                      # wall of the NE corner (Ministry board b); north edges: the rock face above the cave (p. 88).
                      "edgeFaces": ["ashlar", "ashlar", "ashlar", "ashlar", "ashlar", "rock", "rock"],
                      "note": "Outline beyond the plan's dashed (no-wall) north edge is conjectural. East faces ashlar (Ministry board: tall ashlar retaining wall at the NE corner), north faces natural rock (Furtwängler p. 88)."},
-        "outer-terrace": {"polygon": plaza_poly, "level": board(r3(S_REL_BASE - STAIR_RISE), "m", f"plaza at the foot of the propylon stair, {STAIR_RISE:.1f} m below the terrace: IMG_8191 draws a climb of about 4 m (+/-1 m) in two flights from the approach to the propylon floor (scale: the propylon's eave 4.4 m and plan width 9.32 m); the floor stays at terrace height (p. 77)", "analogy"),
-                          "clampDrop": board(0, "m", "IMG_8191: the open slope west of the stair lies at about the plaza's level along the wall foot, so the ground next to the plaza is not held below it", "analogy"),
+        "outer-terrace": {"polygon": plaza_poly, "level": board(r3(S_REL_BASE - APPROACH_RISE), "m", f"plaza at the foot of the approach terraces, {APPROACH_RISE:.1f} m below the terrace (IMG_8191: about 4 m drawn, +/-1 m, read lower once spread over the slope); the propylon floor stays at terrace height (p. 77)", "analogy"),
+                          "clampDrop": board(0, "m", "IMG_8191: the open slope west of the approach lies at about the plaza's level along the wall foot, so the ground next to the plaza is not held below it", "analogy"),
+                          "fillDrop": board(0.5, "m", "CONJECTURAL softening: next to the plaza the ground is raised to at most 0.5 m below it, feathered back to the DEM, toward the board's gentle slope south of the gate (IMG_8191)", "conjectural"),
                           "falloff": {"edgeDrop": conj(2.0, "m", "lower south wall: three courses on rock, 1.20 m fill (p. 101)"), "slope": conj(0.35, "ratio", "rock slope to the south")},
                           "edgeFace": "rock",
-                          "note": "Rock 'rises evenly' toward the propylon (p. 100); modelled flat. Level after the Ministry approach board (IMG_8191): the grand stair climbs about 4 m to the gate; the priests' houses stand on the rock outcrop above it (rock face on the SE terrace's edge)."},
+                          "note": "Rock 'rises evenly' toward the propylon (p. 100); modelled flat south of the approach terraces, which take its northern part (Ministry approach board IMG_8191). The priests' houses stand on the rock outcrop above it (rock face on the SE terrace's edge)."},
+        **{f"approach-tier-{k + 1}": {
+            "polygon": approach_tiers[k],
+            "level": board(r3(S_REL_BASE - TIER_RISE * k), "m", f"approach terrace {k + 1} of {TIER_N}: {TIER_RISE:.2f} m below the one above (riser kept <= 0.35 m for walking; course height on IMG_8191 about 0.3-0.7 m)", "analogy"),
+            "edgeFace": "ashlar",
+            "note": ("Top tier at the propylon floor (terrace height), carrying the propylon's southward projection so it reads as set into the wall line. " if k == 0 else "")
+                    + f"Broad, low ashlar course along the wall front, {TIER_DEPTH:.1f} m deep, from the fence wall to the SE houses' rock (IMG_8191: long low courses with stepped ends; DERIVED, conjectural depth).",
+        } for k in range(TIER_N)},
         "se-houses-terrace": {"polygon": se_poly, "level": conj(r3(S_REL_BASE - 1.55), "m", "rock ridge falling SE under the houses (p. 91); one level for the group"),
                               "falloff": {"edgeDrop": conj(2.5, "m", "east wall's outer corner 'schon ganz tief' (p. 91)"), "slope": conj(0.7, "ratio", "steep fall to the east and south-east (p. 98)")},
                               "edgeFace": "rock", "note": "The houses stand on a rock outcrop (Ministry board; rock ridge, p. 91): exposed edges are rock faces."},
@@ -491,18 +539,11 @@ features["propylon"] = {
                     for z in sorted({round(c[1], 1) for c in cols})],
     "roof": {"ridge": "x", "ridgeOffset": r3(door_z - pcz), "ridgeHeight": board(1.15, "m", "IMG_8191: the roof rises about 0.23 x the eave height above the eaves (scale: the propylon's width 9.32 m from the plan); +/-0.3", "analogy"), "overhang": conj(0.4, "m", "eaves"), "tiled": True,
              "confidence": "analogy", "note": "Ridge E-W over the door wall, eaves N and S, gables on the E and W side walls (pp. 79, 82-83)."},
-    # IMG_8191 (Ministry approach board): a grand climb of about 4 m in two flights with a landing, flanked by
-    # orthostate walls. Risers kept <= 0.35 m (walk mode steps up at most 0.55 m).
-    "steps": {"count": board(5, "count", "upper flight; IMG_8191 draws a short upper flight to the door above a landing; 'third step on a grid wall' (pp. 77-78)", "analogy"),
-              "rise": board(0.32, "m", "upper riser; 5 x 0.32 = 1.6 m", "conjectural"), "tread": conj(0.35, "m", "step tread"), "side": "s",
-              "landing": board(2.0, "m", "landing between the flights (IMG_8191, about 2 m +/-0.7)", "analogy"),
-              "lower": {"count": board(8, "count", "lower flight; 8 x 0.30 = 2.4 m, total climb 4.0 m", "analogy"), "rise": board(0.30, "m", "lower riser", "conjectural"), "tread": board(0.38, "m", "lower tread, a little deeper (wider flight drawn)", "conjectural")},
-              "cheekHeight": board(0.6, "m", "orthostate cheek walls stepping down beside the flights, about 0.6 m above each tread (IMG_8191; +/-0.3)", "analogy")},
     "roofOrnament": {"width": board(0.8, "m", "small sculpture on the roof ridge (placeholder block); IMG_8191 about 0.9 m wide", "analogy"), "height": board(1.0, "m", "IMG_8191: about 1.0 m (+/-0.3) above the ridge", "analogy")},
     "baseLevel": r3(S_REL_BASE),
     "phase": NEW, "placement": placement("propylon", conf="attested"), "sourceIds": [FW, WP, MIN], "confidence": "analogy",
     "complex": "south-gate",
-    "note": "Matches the Ministry board: the only entrance, two columns between antae on each front, a central door, steps rising from outside (south), a small sculpture on the roof. Floor at terrace height (orthostate cover slabs at terrace level, p. 77). The stair conflict with the plan is resolved by the board (sources.json choices.propylon-stairs-south).",
+    "note": "Matches the Ministry board: the only entrance, two columns between antae on each front, a central door, the approach rising from outside (south), a small sculpture on the roof. Floor at terrace height (orthostate cover slabs at terrace level, p. 77); the approach climbs to it over broad low ashlar terraces in front of the wall (terraces approach-tier-1..8; IMG_8191), which carry its southward projection, so no separate stair. The stair-side conflict with the plan is resolved by the board (sources.json choices.propylon-stairs-south).",
 }
 
 # ---- south-east houses (rooms = holes of the plan's wall network) ---------------------------------------------------

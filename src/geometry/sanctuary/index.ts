@@ -120,7 +120,7 @@ export interface SiteTerrain {
   mismatches: TerrainMismatch[]
   seaLevelY?: number
   /** Conjectural DSM correction next to the terraces (largest lowering, radius, drop), when applied. */
-  groundCorrection?: { maxLowered: number; radius: number; drop: number; hold: number }
+  groundCorrection?: { maxLowered: number; maxRaised: number; radius: number; drop: number; hold: number }
 }
 
 /**

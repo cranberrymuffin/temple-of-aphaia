@@ -60,6 +60,8 @@ export interface Terrace {
   edgeFaces?: EdgeFace[]
   /** Overrides the DEM clamp drop next to this terrace (0: the ground beside it may reach its level). */
   clampDrop?: Measure
+  /** Conjectural fill: next to this terrace the ground is raised to at most this far below it (softens drops). */
+  fillDrop?: Measure
   note?: string
 }
 

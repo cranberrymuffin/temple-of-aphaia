@@ -106,7 +106,16 @@ describe('sanctuary.json', () => {
     if (f.altar.kind !== 'altar' || f.propylon.kind !== 'building' || f.cistern.kind !== 'cistern' || f['altar-court'].kind !== 'pavement') throw new Error('kinds')
     expect(f.altar.width.value).toBe(13.08)
     expect(f.propylon.crossWalls![0].thickness.value).toBe(0.6)
-    expect(f.propylon.steps?.side).toBe('s')
+    expect(f.propylon.steps).toBeUndefined() // the approach terraces lead up to it (IMG_8191)
+    expect(doc.terrain.terraces['approach-tier-1'].level.value).toBeCloseTo(f.propylon.baseLevel!, 6)
+    // Broad low terraces up to the gate: every riser walkable (<= 0.35 m), ending at the plaza.
+    const tiers = Object.keys(doc.terrain.terraces).filter((k) => k.startsWith('approach-tier-')).sort((a, b) => +a.split('-')[2] - +b.split('-')[2])
+    expect(tiers.length).toBeGreaterThanOrEqual(4)
+    const lv = [...tiers, 'outer-terrace'].map((k) => doc.terrain.terraces[k].level.value)
+    for (let i = 1; i < lv.length; i++) {
+      expect(lv[i - 1] - lv[i]).toBeGreaterThan(0.05)
+      expect(lv[i - 1] - lv[i]).toBeLessThanOrEqual(0.35)
+    }
     expect(f.cistern.diameter!.value).toBe(1.2)
     const zs = f['altar-court'].polygon.map((p) => p[1])
     expect(Math.max(...zs) - Math.min(...zs)).toBeCloseTo(14.9, 6)
