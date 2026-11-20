@@ -40,7 +40,18 @@ export const EDGE_CONVENTIONS = {
   /** Retaining faces taller than this (m) lean back: the foot steps out by batterRatio per metre above it. */
   batterFrom: 1.5,
   batterRatio: 0.12,
+  /** Natural rock faces: always battered (foot out by rockBatter..rockBatter + rockJitter per metre of height),
+   * faceted every rockFacet metres along the edge with a deterministic per-point jitter. */
+  rockBatter: 0.25,
+  rockJitter: 0.35,
+  rockFacet: 1.2,
 } as const
+
+/** Deterministic pseudo-random value in [0, 1) for a point (continuous across pieces sharing it). */
+function hash01(p: Point2): number {
+  const h = Math.sin(Math.round(p[0] * 1000) * 12.9898 + Math.round(p[1] * 1000) * 78.233) * 43758.5453
+  return h - Math.floor(h)
+}
 
 function terraces(desc: TerrainDesc, stylobateTop: number): T[] {
   return Object.entries(desc.terraces)
@@ -381,8 +392,10 @@ export function sparseTerrain(
       const len = Math.hypot(c[0] - a[0], c[1] - a[1])
       const out: Point2 = [(c[1] - a[1]) / len, -(c[0] - a[0]) / len]
       const face = col.get(EDGE_FACE_GROUP[t.faces[i]])
+      const rock = t.faces[i] === 'rock'
       // Split where another terrace's vertex lies on this edge, so each piece borders a single neighbour.
       const params = new Set<number>(crossings(a, c))
+      if (rock) for (let k = 1; k * EDGE_CONVENTIONS.rockFacet < len; k++) params.add((k * EDGE_CONVENTIONS.rockFacet) / len)
       for (const o of ts)
         if (o !== t)
           for (const q of o.poly) {
@@ -425,16 +438,19 @@ export function sparseTerrain(
           // or rock (never bare terrain). A tall retaining face toward natural ground is battered: its foot steps out.
           const eps = SKIRT_MARGIN
           const dirOut: Vec3 = up ? [-out[0], 0, -out[1]] : [out[0], 0, out[1]]
-          if (up || other) {
+          if (up || (other && !rock)) {
             const quad: Vec3[] = up
               ? [[p0[0], t.y, p0[1]], [p1[0], t.y, p1[1]], [p1[0], g1 + eps, p1[1]], [p0[0], g0 + eps, p0[1]]]
               : [[p0[0], g0 - eps, p0[1]], [p1[0], g1 - eps, p1[1]], [p1[0], t.y, p1[1]], [p0[0], t.y, p0[1]]]
             face.polygonFacing(quad, dirOut)
           } else {
+            const C = EDGE_CONVENTIONS
             const foot = (p: Point2, g: number): Vec3 => {
-              const k = EDGE_CONVENTIONS.batterRatio * Math.max(0, t.y - g - EDGE_CONVENTIONS.batterFrom)
+              const h = Math.max(0, t.y - g)
+              const k = rock ? (C.rockBatter + C.rockJitter * hash01(p)) * h : C.batterRatio * Math.max(0, h - C.batterFrom)
               const q: Point2 = [p[0] + out[0] * k, p[1] + out[1] * k]
-              return [q[0], (k > 0 ? Math.min(g, mh(...q)) : g) - eps, q[1]]
+              // Toward a lower terrace the foot rests on its flat top; toward natural ground on the meshed ground.
+              return [q[0], (k > 0 && !other ? Math.min(g, mh(...q)) : g) - eps, q[1]]
             }
             const f0 = foot(p0, g0)
             const f1 = foot(p1, g1)

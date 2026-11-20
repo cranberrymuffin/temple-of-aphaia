@@ -25,6 +25,9 @@ export const SANCTUARY_CONVENTIONS = {
   channelCopingRatio: 0.25,
   /** Roof slab vertical thickness (m), hidden detail scale. */
   roofThickness: 0.18,
+  /** Ridge cap course on hipped roofs: width and height above the ridge (m). */
+  ridgeCapWidth: 0.24,
+  ridgeCapHeight: 0.1,
   /** Ground sampling step for footprint ranges (m). */
   sampleStep: 0.25,
 } as const

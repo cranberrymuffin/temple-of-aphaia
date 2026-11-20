@@ -319,6 +319,14 @@ function addHippedRoof(f: BuildingFeature, roofB: MeshBuilder, top: number, hx: 
     roofB.polygonFacing([P(U, e + dy, -V), P(U, e + dy, V), P(r, yr + dy, 0)], flip(N(tan, 0)))
     roofB.polygonFacing([P(-U, e + dy, -V), P(-U, e + dy, V), P(-r, yr + dy, 0)], flip(N(-tan, 0)))
   }
+  // Ridge cap: a narrow tile course along the ridge, sunk so its lower edges meet the slopes.
+  if (r > 0) {
+    const cw = K.ridgeCapWidth / 2
+    const y0 = yr + th - cw * tan
+    const a0 = P(-r - cw, y0, -cw)
+    const a1 = P(r + cw, yr + th + K.ridgeCapHeight, cw)
+    roofB.box([Math.min(a0[0], a1[0]), y0, Math.min(a0[2], a1[2])], [Math.max(a0[0], a1[0]), yr + th + K.ridgeCapHeight, Math.max(a0[2], a1[2])], ['-y'])
+  }
   // Eave fascias all round.
   const c: [number, number][] = [
     [-U, -V],

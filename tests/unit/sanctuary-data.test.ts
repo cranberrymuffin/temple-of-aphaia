@@ -54,13 +54,14 @@ describe('sanctuary.json', () => {
     expect(se.masonry).toEqual(['rubble', 'rubble', 'ashlar', 'ashlar', 'rubble', 'rubble']) // NE corner ashlar
     expect(doc.terrain.terraces['ne-knoll'].hiddenReason).toBeTruthy() // trimmed: the hill takes over
     expect(e.masonry).toBe('older')
-    for (const id of ['se-rooms-ii-iv', 'se-room-a', 'se-room-b', 'se-room-i7']) {
+    // Two blocks under hipped roofs (Ministry boards), plus room I 1 and the bath, also hipped.
+    for (const id of ['se-rooms-ii-iv', 'se-rear-block', 'se-room-i1', 'se-bath']) {
       const h = f[id]
       if (h.kind !== 'building') throw new Error(id)
       expect(h.roof?.form, id).toBe('hipped')
     }
     const front = f['se-rooms-ii-iv']
-    const rear = f['se-room-a']
+    const rear = f['se-rear-block']
     const wing = f['se-forecourt']
     if (front.kind !== 'building' || rear.kind !== 'building' || wing.kind !== 'building') throw new Error('kinds')
     expect(rear.wallHeight.value).toBeGreaterThan(front.wallHeight.value) // taller block behind

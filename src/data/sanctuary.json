@@ -2877,15 +2877,16 @@
     }
    ],
    "roof": {
+    "form": "hipped",
     "ridge": "z",
     "ridgeHeight": {
-     "value": 1.5,
+     "value": 1.4,
      "unit": "m",
      "source": "published",
-     "ref": "furtwangler-1906",
+     "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "CONJECTURAL: pitch unknown"
+     "note": "DERIVED from the Ministry board (confidence: analogy): IMG_8191: the front block's hipped roof rises about 1.4 m (+/-0.4) above its eaves"
     },
     "overhang": {
      "value": 0.35,
@@ -2898,8 +2899,7 @@
     },
     "tiled": true,
     "confidence": "analogy",
-    "note": "Hipped tiled roof (Ministry board); pitch conjectural. Tile fragments found (p. 99).",
-    "form": "hipped"
+    "note": "Hipped tiled roof (Ministry boards IMG_8187/IMG_8191); pitch from the drawings, conjectural. Tile fragments found (p. 99)."
    },
    "phase": {
     "label": "Late Archaic new layout",
@@ -2926,378 +2926,27 @@
    ],
    "confidence": "analogy",
    "complex": "se-houses",
-   "note": "Room II early in the new campaign; III and IV about the temple's completion (p. 99)."
-  },
-  "se-room-i7": {
-   "kind": "building",
-   "role": "house",
-   "name": "Priests' houses, taller rear block: narrow room I 7 along the east wall",
-   "center": [
-    48.445,
-    24.425
-   ],
-   "rotation": -74.981,
-   "length": {
-    "value": 7.929,
-    "unit": "m",
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "note": "plan measurement, +/-1.50 m; room interior plus walls"
-   },
-   "width": {
-    "value": 3.142,
-    "unit": "m",
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "note": "plan measurement, +/-1.50 m; room interior plus walls"
-   },
-   "wallThickness": {
-    "value": 0.27,
-    "unit": "m",
-    "source": "published",
-    "ref": "furtwangler-1906",
-    "verified": false,
-    "provisional": true,
-    "note": "CONJECTURAL: within the plan's wall band"
-   },
-   "wallHeight": {
-    "value": 4.9,
-    "unit": "m",
-    "source": "published",
-    "ref": "ministry-onsite-boards",
-    "verified": false,
-    "provisional": true,
-    "note": "DERIVED from the Ministry board (confidence: analogy): taller rear block: IMG_8191 eave about 4.9 m (+/-0.8) above the ground, by the drawn figures (1.7 m) beside the porch; about 1 m above the front block's"
-   },
-   "doors": [
-    {
-     "wall": "n",
-     "offset": 0,
-     "width": {
-      "value": 1.0,
-      "unit": "m",
-      "source": "published",
-      "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "note": "CONJECTURAL: door width not given"
-     },
-     "height": {
-      "value": 2.1,
-      "unit": "m",
-      "source": "published",
-      "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "note": "CONJECTURAL: door height"
-     }
-    }
-   ],
-   "roof": {
-    "ridge": "x",
-    "ridgeHeight": {
-     "value": 1.2,
-     "unit": "m",
-     "source": "published",
-     "ref": "furtwangler-1906",
-     "verified": false,
-     "provisional": true,
-     "note": "CONJECTURAL: pitch unknown"
-    },
-    "overhang": {
-     "value": 0.3,
-     "unit": "m",
-     "source": "published",
-     "ref": "furtwangler-1906",
-     "verified": false,
-     "provisional": true,
-     "note": "CONJECTURAL: eaves"
-    },
-    "tiled": true,
-    "confidence": "analogy",
-    "note": "Hipped tiled roof (Ministry board); pitch conjectural. Tile fragments found (p. 99).",
-    "form": "hipped"
-   },
-   "phase": {
-    "label": "Late Archaic new layout",
-    "fromYear": -510,
-    "toYear": null,
-    "confidence": "attested",
-    "sourceIds": [
-     "furtwangler-1906"
-    ],
-    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
-   },
-   "placement": {
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "confidence": "analogy",
-    "uncertaintyM": 1.503
-   },
-   "sourceIds": [
-    "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary",
-    "ministry-onsite-boards"
-   ],
-   "confidence": "conjectural",
-   "complex": "se-houses"
-  },
-  "se-room-a": {
-   "kind": "building",
-   "role": "house",
-   "name": "Priests' houses, taller rear block: room (I 4/I 5 group)",
-   "center": [
-    45.071,
-    27.188
-   ],
-   "rotation": 13.81,
-   "length": {
-    "value": 4.362,
-    "unit": "m",
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "note": "plan measurement, +/-1.50 m; room interior plus walls"
-   },
-   "width": {
-    "value": 4.12,
-    "unit": "m",
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "note": "plan measurement, +/-1.50 m; room interior plus walls"
-   },
-   "wallThickness": {
-    "value": 0.27,
-    "unit": "m",
-    "source": "published",
-    "ref": "furtwangler-1906",
-    "verified": false,
-    "provisional": true,
-    "note": "CONJECTURAL: within the plan's wall band"
-   },
-   "wallHeight": {
-    "value": 4.9,
-    "unit": "m",
-    "source": "published",
-    "ref": "ministry-onsite-boards",
-    "verified": false,
-    "provisional": true,
-    "note": "DERIVED from the Ministry board (confidence: analogy): taller rear block: IMG_8191 eave about 4.9 m (+/-0.8) above the ground, by the drawn figures (1.7 m) beside the porch; about 1 m above the front block's"
-   },
-   "doors": [
-    {
-     "wall": "w",
-     "offset": 0,
-     "width": {
-      "value": 1.0,
-      "unit": "m",
-      "source": "published",
-      "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "note": "CONJECTURAL: door width not given"
-     },
-     "height": {
-      "value": 2.1,
-      "unit": "m",
-      "source": "published",
-      "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "note": "CONJECTURAL: door height"
-     }
-    }
-   ],
-   "roof": {
-    "ridge": "x",
-    "ridgeHeight": {
-     "value": 1.2,
-     "unit": "m",
-     "source": "published",
-     "ref": "furtwangler-1906",
-     "verified": false,
-     "provisional": true,
-     "note": "CONJECTURAL: pitch unknown"
-    },
-    "overhang": {
-     "value": 0.3,
-     "unit": "m",
-     "source": "published",
-     "ref": "furtwangler-1906",
-     "verified": false,
-     "provisional": true,
-     "note": "CONJECTURAL: eaves"
-    },
-    "tiled": true,
-    "confidence": "analogy",
-    "note": "Hipped tiled roof (Ministry board); pitch conjectural. Tile fragments found (p. 99).",
-    "form": "hipped"
-   },
-   "phase": {
-    "label": "Late Archaic new layout",
-    "fromYear": -510,
-    "toYear": null,
-    "confidence": "attested",
-    "sourceIds": [
-     "furtwangler-1906"
-    ],
-    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
-   },
-   "placement": {
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "confidence": "analogy",
-    "uncertaintyM": 1.503
-   },
-   "sourceIds": [
-    "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary",
-    "ministry-onsite-boards"
-   ],
-   "confidence": "conjectural",
-   "complex": "se-houses"
-  },
-  "se-room-b": {
-   "kind": "building",
-   "role": "house",
-   "name": "Priests' houses, taller rear block: room (I 4/I 5 group)",
-   "center": [
-    44.04,
-    23.346
-   ],
-   "rotation": 14.007,
-   "length": {
-    "value": 4.34,
-    "unit": "m",
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "note": "plan measurement, +/-1.50 m; room interior plus walls"
-   },
-   "width": {
-    "value": 3.658,
-    "unit": "m",
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "note": "plan measurement, +/-1.50 m; room interior plus walls"
-   },
-   "wallThickness": {
-    "value": 0.27,
-    "unit": "m",
-    "source": "published",
-    "ref": "furtwangler-1906",
-    "verified": false,
-    "provisional": true,
-    "note": "CONJECTURAL: within the plan's wall band"
-   },
-   "wallHeight": {
-    "value": 4.9,
-    "unit": "m",
-    "source": "published",
-    "ref": "ministry-onsite-boards",
-    "verified": false,
-    "provisional": true,
-    "note": "DERIVED from the Ministry board (confidence: analogy): taller rear block: IMG_8191 eave about 4.9 m (+/-0.8) above the ground, by the drawn figures (1.7 m) beside the porch; about 1 m above the front block's"
-   },
-   "doors": [
-    {
-     "wall": "w",
-     "offset": 0,
-     "width": {
-      "value": 1.0,
-      "unit": "m",
-      "source": "published",
-      "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "note": "CONJECTURAL: door width not given"
-     },
-     "height": {
-      "value": 2.1,
-      "unit": "m",
-      "source": "published",
-      "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "note": "CONJECTURAL: door height"
-     }
-    }
-   ],
-   "roof": {
-    "ridge": "x",
-    "ridgeHeight": {
-     "value": 1.2,
-     "unit": "m",
-     "source": "published",
-     "ref": "furtwangler-1906",
-     "verified": false,
-     "provisional": true,
-     "note": "CONJECTURAL: pitch unknown"
-    },
-    "overhang": {
-     "value": 0.3,
-     "unit": "m",
-     "source": "published",
-     "ref": "furtwangler-1906",
-     "verified": false,
-     "provisional": true,
-     "note": "CONJECTURAL: eaves"
-    },
-    "tiled": true,
-    "confidence": "analogy",
-    "note": "Hipped tiled roof (Ministry board); pitch conjectural. Tile fragments found (p. 99).",
-    "form": "hipped"
-   },
-   "phase": {
-    "label": "Late Archaic new layout",
-    "fromYear": -510,
-    "toYear": null,
-    "confidence": "attested",
-    "sourceIds": [
-     "furtwangler-1906"
-    ],
-    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
-   },
-   "placement": {
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "confidence": "analogy",
-    "uncertaintyM": 1.503
-   },
-   "sourceIds": [
-    "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary",
-    "ministry-onsite-boards"
-   ],
-   "confidence": "conjectural",
-   "complex": "se-houses"
+   "note": "Room II early in the new campaign; III and IV about the temple's completion (p. 99). Front block of the priests' houses on the Ministry boards: one volume under a hipped roof, the four-pier porch on its west front facing the gate (IMG_8191 draws about four piers)."
   },
   "se-forecourt": {
    "kind": "building",
    "role": "house",
    "name": "Priests' houses, pent-roof wing: vestibule and forecourt I 2/I 3",
    "center": [
-    40.151,
-    26.479
+    39.921,
+    26.291
    ],
-   "rotation": -74.962,
+   "rotation": 13.58,
    "length": {
-    "value": 7.93,
+    "value": 4.15,
     "unit": "m",
     "source": "plan",
     "ref": "wikimedia-plan-aphaia-sanctuary",
     "verified": true,
-    "note": "plan measurement, +/-1.50 m; room interior plus walls"
+    "note": "plan measurement, +/-1.50 m; the plan's vestibule I 2/I 3, west of the rear block"
    },
    "width": {
-    "value": 4.332,
+    "value": 7.518,
     "unit": "m",
     "source": "plan",
     "ref": "wikimedia-plan-aphaia-sanctuary",
@@ -3320,20 +2969,20 @@
     "ref": "ministry-onsite-boards",
     "verified": false,
     "provisional": true,
-    "note": "DERIVED from the Ministry board (confidence: analogy): lower pent-roof wing"
+    "note": "DERIVED from the Ministry board (confidence: analogy): lower pent-roof wing (IMG_8191: eave about 2.6 m, high side about 3.3 m)"
    },
    "doors": [
     {
      "wall": "w",
      "offset": 0,
      "width": {
-      "value": 1.0,
+      "value": 1.2,
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
       "verified": false,
       "provisional": true,
-      "note": "CONJECTURAL: door width not given"
+      "note": "CONJECTURAL: entrance from outside, toward the gate"
      },
      "height": {
       "value": 2.1,
@@ -3348,16 +2997,16 @@
    ],
    "roof": {
     "form": "pent",
-    "highSide": "n",
-    "ridge": "x",
+    "highSide": "e",
+    "ridge": "z",
     "ridgeHeight": {
-     "value": 0.8,
+     "value": 0.7,
      "unit": "m",
      "source": "published",
      "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "DERIVED from the Ministry board (confidence: conjectural): pent roof rising toward the taller block"
+     "note": "DERIVED from the Ministry board (confidence: analogy): pent roof rising toward the rear block (high side about 3.3 m, IMG_8191)"
     },
     "overhang": {
      "value": 0.3,
@@ -3396,34 +3045,34 @@
    ],
    "confidence": "conjectural",
    "complex": "se-houses",
-   "note": "Entrance vestibule; 'Wächterzimmer' (p. 100). Borderline date."
+   "note": "Entrance vestibule; 'Wächterzimmer' (p. 100). Borderline date. Placed in the front block's frame beside the rear block (Ministry boards)."
   },
   "se-room-i1": {
    "kind": "building",
    "role": "ancillary",
    "name": "Room I 1 beside the propylon",
    "center": [
-    31.115,
-    22.449
+    30.845,
+    22.571
    ],
    "rotation": 0,
    "length": {
-    "value": 6.431,
+    "value": 5.11,
     "unit": "m",
     "source": "plan",
     "ref": "wikimedia-plan-aphaia-sanctuary",
     "verified": true,
-    "note": "plan measurement, +/-0.96 m"
+    "note": "plan measurement, +/-0.96 m; kept clear of the propylon wall and the bath's eaves"
    },
    "width": {
-    "value": 3.132,
+    "value": 2.887,
     "unit": "m",
     "source": "published",
     "ref": "furtwangler-1906",
     "page": "92",
     "url": "https://archive.org/details/aeginadasheiligtunse",
     "verified": true,
-    "note": "depth about 2.3 m inside (plus front wall)"
+    "note": "depth about 2.3 m inside (plus front wall); kept clear of the parapet's coping"
    },
    "wallThickness": {
     "value": 0.4,
@@ -3467,25 +3116,21 @@
      }
     }
    ],
-   "openSides": [
-    "n",
-    "w"
-   ],
+   "openSides": [],
    "roof": {
-    "form": "pent",
-    "highSide": "n",
+    "form": "hipped",
     "ridge": "x",
     "ridgeHeight": {
-     "value": 0.6,
+     "value": 0.9,
      "unit": "m",
      "source": "published",
      "ref": "furtwangler-1906",
      "verified": false,
      "provisional": true,
-     "note": "CONJECTURAL: lean roof against the terrace wall"
+     "note": "CONJECTURAL: low hipped roof"
     },
     "overhang": {
-     "value": 0.2,
+     "value": 0.3,
      "unit": "m",
      "source": "published",
      "ref": "furtwangler-1906",
@@ -3495,7 +3140,7 @@
     },
     "tiled": true,
     "confidence": "conjectural",
-    "note": "Lean roof against the terrace wall; Fiechter: perhaps an open pen for animals (p. 92)."
+    "note": "Fiechter: perhaps an open pen for animals (p. 92). Its own walls and roof, set off the terrace wall and the propylon."
    },
    "phase": {
     "label": "Late Archaic new layout",
@@ -3520,7 +3165,7 @@
    ],
    "confidence": "analogy",
    "complex": "south-gate",
-   "note": "Rear wall is the terrace wall, west wall the propylon's side wall (both shared, so those sides are open here)."
+   "note": "Against the terrace wall and the propylon's side wall, set just off both so its eaves clear them."
   },
   "se-bath": {
    "kind": "building",
@@ -3611,7 +3256,8 @@
     },
     "tiled": true,
     "confidence": "conjectural",
-    "note": "Many tile fragments found (p. 99); form generic (Abb. 61: 'da alle Einzelheiten fehlen')."
+    "note": "Hipped like the houses (Ministry boards); many tile fragments found (p. 99).",
+    "form": "hipped"
    },
    "phase": {
     "label": "c. 490-480 BC (borderline)",
@@ -3637,6 +3283,203 @@
    "confidence": "conjectural",
    "complex": "south-gate",
    "note": "Inserted later than rooms I-IV, within about three decades (p. 99); basins not modelled. Borderline date."
+  },
+  "se-rear-block": {
+   "kind": "building",
+   "role": "house",
+   "name": "Priests' houses, taller rear block (rooms I 4/I 5 and I 7)",
+   "center": [
+    46.375,
+    25.426
+   ],
+   "rotation": 13.58,
+   "length": {
+    "value": 8.002,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-1.50 m; the plan's rooms I 4/I 5 and I 7 in one volume (Ministry boards: one block)"
+   },
+   "width": {
+    "value": 6.168,
+    "unit": "m",
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "note": "plan measurement, +/-1.50 m; rooms plus walls, kept clear of the terrace wall (askew to the houses)"
+   },
+   "wallThickness": {
+    "value": 0.6,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "CONJECTURAL: footing courses with orthostates (p. 93), as the front block"
+   },
+   "wallHeight": {
+    "value": 4.9,
+    "unit": "m",
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: analogy): taller rear block: IMG_8191 eave about 4.9 m (+/-0.8) above the ground, by the drawn figures (1.7 m) beside the porch; about 1 m above the front block's"
+   },
+   "doors": [
+    {
+     "wall": "w",
+     "offset": 1.406,
+     "width": {
+      "value": 1.0,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: door width not given"
+     },
+     "height": {
+      "value": 2.2,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: door height"
+     }
+    },
+    {
+     "wall": "w",
+     "offset": -1.534,
+     "width": {
+      "value": 1.0,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: door width not given"
+     },
+     "height": {
+      "value": 2.2,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: door height"
+     }
+    }
+   ],
+   "crossWalls": [
+    {
+     "axis": "x",
+     "offset": -0.694,
+     "from": -3.401,
+     "to": 0.289,
+     "thickness": {
+      "value": 0.5,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: partition between rooms I 4 and I 5 (plan wall band); ends at room I 7's wall"
+     },
+     "doors": []
+    },
+    {
+     "axis": "z",
+     "offset": 0.539,
+     "from": -2.484,
+     "to": 2.484,
+     "thickness": {
+      "value": 0.5,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: wall of the narrow room I 7 (plan)"
+     },
+     "doors": [
+      {
+       "offset": 1.406,
+       "width": {
+        "value": 0.9,
+        "unit": "m",
+        "source": "published",
+        "ref": "furtwangler-1906",
+        "verified": false,
+        "provisional": true,
+        "note": "CONJECTURAL: door into room I 7 (its plan door is on its north wall, toward the terrace wall; moved inside)"
+       },
+       "height": {
+        "value": 2.1,
+        "unit": "m",
+        "source": "published",
+        "ref": "furtwangler-1906",
+        "verified": false,
+        "provisional": true,
+        "note": "CONJECTURAL: door height"
+       }
+      }
+     ]
+    }
+   ],
+   "roof": {
+    "form": "hipped",
+    "ridge": "x",
+    "ridgeHeight": {
+     "value": 1.2,
+     "unit": "m",
+     "source": "published",
+     "ref": "ministry-onsite-boards",
+     "verified": false,
+     "provisional": true,
+     "note": "DERIVED from the Ministry board (confidence: analogy): IMG_8191: the rear block's hipped roof rises about 1.1-1.2 m (+/-0.4) above its eaves"
+    },
+    "overhang": {
+     "value": 0.35,
+     "unit": "m",
+     "source": "published",
+     "ref": "furtwangler-1906",
+     "verified": false,
+     "provisional": true,
+     "note": "CONJECTURAL: eaves"
+    },
+    "tiled": true,
+    "confidence": "analogy",
+    "note": "Hipped tiled roof (Ministry boards IMG_8187/IMG_8191); pitch from the drawings, conjectural."
+   },
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "analogy",
+    "uncertaintyM": 1.503,
+    "note": "volume around the plan's rooms I 4/I 5 and I 7 (Ministry boards: one block)"
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
+   ],
+   "confidence": "analogy",
+   "complex": "se-houses",
+   "note": "Built against the outside of the boundary wall, reached only from outside (Ministry board). Interior walls keep the plan's rooms."
   },
   "suedbau-north-wall": {
    "kind": "wall",
