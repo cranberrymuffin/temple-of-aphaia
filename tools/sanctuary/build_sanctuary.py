@@ -337,9 +337,9 @@ terrain = {
             "note": ("Top tier at the propylon floor (terrace height), carrying the propylon's southward projection so it reads as set into the wall line. " if k == 0 else "")
                     + f"Broad, low ashlar course along the wall front, {TIER_DEPTH:.1f} m deep, from the fence wall to the SE houses' rock (IMG_8191: long low courses with stepped ends; DERIVED, conjectural depth).",
         } for k in range(TIER_N)},
-        "se-houses-terrace": {"polygon": se_poly, "level": conj(r3(S_REL_BASE - 1.55), "m", "rock ridge falling SE under the houses (p. 91); one level for the group"),
+        "se-houses-terrace": {"polygon": se_poly, "level": board(r3(S_REL_BASE), "m", f"the houses' rock outcrop about level with the top approach course, so the houses stand {APPROACH_RISE:.1f} m above the plaza (IMG_8191 draws them 2-3 m above it, +/-0.7 m); the text gives no absolute level here, only a rock ridge falling SE (p. 91). Reached from the top approach tier at the same level.", "analogy"),
                               "falloff": {"edgeDrop": conj(2.5, "m", "east wall's outer corner 'schon ganz tief' (p. 91)"), "slope": conj(0.7, "ratio", "steep fall to the east and south-east (p. 98)")},
-                              "edgeFace": "rock", "note": "The houses stand on a rock outcrop (Ministry board; rock ridge, p. 91): exposed edges are rock faces."},
+                              "edgeFace": "rock", "note": "The houses stand on a rock outcrop (Ministry board; rock ridge, p. 91): exposed edges are battered, faceted rock faces down to the plaza and the slope. Level with the top approach tier, which leads onto it (the vestibule's entrance needs no stair)."},
         "suedbau-terrace": {"polygon": sued_poly, "level": text(-9.0, "m", "102", "about 9 m below the stylobat"),
                             "falloff": {"edgeDrop": conj(1.0, "m", "south edge of the Südbau terrace"), "slope": conj(0.3, "ratio", "south slope")},
                             "hiddenReason": "Südbau terrace: not depicted in the Ministry reconstruction; shape unknown (user decision 2026-11-18).",
@@ -657,10 +657,26 @@ def in_front_frame(u0, u1, z0, z1):
 
 FB["name"] = "Priests' houses, lower front block: rooms II-IV with the columned porch (Vorhalle) facing the gate side"
 FB["wallHeight"] = board(3.9, "m", "lower front block with the columned porch: IMG_8191 eave about 3.9 m (+/-0.6) by the drawn figures beside it", "analogy")
-FB["roof"] = {"form": "hipped", "ridge": "z", "ridgeHeight": board(1.4, "m", "IMG_8191: the front block's hipped roof rises about 1.4 m (+/-0.4) above its eaves", "analogy"),
+# The porch as drawn on IMG_8191: about four piers in an opening on the north part of the west front, solid wall
+# beyond. The plan's Vorhalle (4.30 m deep) still runs behind the whole row of rooms II-IV; only its front is
+# walled except at the opening (conflict recorded in sources.json choices.priests-houses-massing).
+PORCH_W = 6.4
+fb_t = FB["wallThickness"]["value"]
+porch_c = -FB_HZ + fb_t + 0.6 + PORCH_W / 2  # local z of the opening's centre (north part)
+FB["openSides"] = []
+FB["doors"] = [{"wall": "w", "offset": r3(porch_c), "width": board(PORCH_W, "m", "porch opening on the west front, about a third of it (IMG_8191; +/-1.5 m)", "analogy"),
+                "height": board(r3(FB["wallHeight"]["value"] - 0.5), "m", "the opening rises to a lintel 0.5 m below the eaves", "conjectural")}]
+FB["columns"] = {"shape": "square", "diameter": board(0.45, "m", "stout square piers of the porch as drawn (the text's small octagonal capital, shaft top 0.255 m, p. 99, would be a thin post)", "conjectural"),
+                 "positions": [[r3(-FB_HX + fb_t / 2), r3(porch_c + dz)] for dz in (-2.4, -0.8, 0.8, 2.4)]}
+FB.pop("architraves", None)
+EAVES = {
+    "cornice": {"height": board(0.3, "m", "eave cornice band under the roof edge (IMG_8191, IMG_8187)", "analogy"), "projection": conj(0.12, "m", "cornice projection")},
+    "antefixes": {"spacing": conj(0.6, "m", "one per cover-tile row"), "width": conj(0.2, "m", "antefix plaque"), "height": board(0.25, "m", "antefix row along the eaves (IMG_8191)", "analogy")},
+}
+FB["roof"] = {"form": "hipped", "ridge": "z", **EAVES, "ridgeHeight": board(1.4, "m", "IMG_8191: the front block's hipped roof rises about 1.4 m (+/-0.4) above its eaves", "analogy"),
               "overhang": conj(0.35, "m", "eaves"), "tiled": True, "confidence": "analogy", "note": HIP_NOTE + " Tile fragments found (p. 99)."}
 FB["sourceIds"] = [FW, WP, MIN]
-FB["note"] = "Room II early in the new campaign; III and IV about the temple's completion (p. 99). Front block of the priests' houses on the Ministry boards: one volume under a hipped roof, the four-pier porch on its west front facing the gate (IMG_8191 draws about four piers)."
+FB["note"] = "Room II early in the new campaign; III and IV about the temple's completion (p. 99). Front block of the priests' houses on the Ministry boards: one volume under a hipped roof with an eave cornice and antefixes; the porch opens through about a third of its west front on four piers, solid wall beyond (IMG_8191), with the plan's Vorhalle behind."
 
 # Rear block: the plan's rooms I 4/I 5 (two rooms) and the narrow room I 7 along the east, in one volume. Local
 # extents measured from those rooms in the front block's frame (u -2.21..5.67, z -16.56..-8.55); the north face is
@@ -684,7 +700,7 @@ features["se-rear-block"] = {
         {"axis": "z", "offset": r3(2.29 - rb_cu), "from": r3(RB_Z0 + rb_t - rb_cz), "to": r3(RB_Z1 - rb_t - rb_cz), "thickness": conj(0.5, "m", "wall of the narrow room I 7 (plan)"),
          "doors": [{"offset": r3(-10.66 - rb_cz), "width": conj(0.9, "m", "door into room I 7 (its plan door is on its north wall, toward the terrace wall; moved inside)"), "height": conj(2.1, "m", "door height")}]},
     ],
-    "roof": {"form": "hipped", "ridge": "x", "ridgeHeight": board(1.2, "m", "IMG_8191: the rear block's hipped roof rises about 1.1-1.2 m (+/-0.4) above its eaves", "analogy"),
+    "roof": {"form": "hipped", "ridge": "x", **EAVES, "ridgeHeight": board(1.2, "m", "IMG_8191: the rear block's hipped roof rises about 1.1-1.2 m (+/-0.4) above its eaves", "analogy"),
              "overhang": conj(0.35, "m", "eaves"), "tiled": True, "confidence": "analogy", "note": HIP_NOTE},
     "phase": NEW, "placement": placement("se_houses", conf="analogy", note="volume around the plan's rooms I 4/I 5 and I 7 (Ministry boards: one block)"),
     "sourceIds": [FW, WP, MIN], "confidence": "analogy", "complex": "se-houses",
@@ -716,12 +732,14 @@ features["se-room-i1"].update({
     "length": plan(i1x1 - i1x0, "m", F["se_houses_bath"]["uncertaintyM"], "kept clear of the propylon wall and the bath's eaves"),
     "width": text(r3(z1 - i1z0), "m", "92", "depth about 2.3 m inside (plus front wall); kept clear of the parapet's coping"),
     "openSides": [],
-    "roof": {"form": "hipped", "ridge": "x", "ridgeHeight": conj(0.9, "m", "low hipped roof"), "overhang": conj(0.3, "m", "eaves"),
-             "tiled": True, "confidence": "conjectural", "note": "Fiechter: perhaps an open pen for animals (p. 92). Its own walls and roof, set off the terrace wall and the propylon."},
-    "note": "Against the terrace wall and the propylon's side wall, set just off both so its eaves clear them.",
+    "wallHeight": conj(2.0, "m", "pen walls; the front wall is a 'low poor wall' (p. 92)"),
+    "doors": [{"wall": "s", "offset": 0, "width": conj(1.3, "m", "opening in the front wall"), "height": conj(1.7, "m", "opening height")}],
+    "note": "Shown as an unroofed pen (Fiechter: perhaps an open pen for animals, p. 92), so from above only the two house blocks and the wing carry roofs, as on the Ministry aerial (IMG_8187). Set just off the terrace wall and the propylon.",
 })
+features["se-room-i1"].pop("roof", None)
 features["se-bath"]["roof"]["form"] = "hipped"
 features["se-bath"]["roof"]["note"] = "Hipped like the houses (Ministry boards); many tile fragments found (p. 99)."
+features["se-bath"]["hiddenReason"] = "Inserted after rooms I-IV, within about three decades of them (p. 99), i.e. after the temple's completion; not drawn on the Ministry boards (user decision 2026-11-21)."
 
 # ---- Südbau (off the sheet; text placement) -------------------------------------------------------------------------
 SUED_UNC = "Off the plan sheet: about 33 m south of the peribolos and about 9 m below the stylobat (p. 102); x and width conjectural."

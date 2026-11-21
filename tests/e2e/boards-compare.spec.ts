@@ -11,7 +11,7 @@ const VIEWS: Record<string, Pose> = {
   'c-propylon-stair': { position: [13, -1.5, 40], target: [23.3, -1.6, 26], fov: 55 },
   // The priests' houses: from the plaza (IMG_8191's right side), and their porch close up.
   'd-houses-from-plaza': { position: [24, 0, 44], target: [44, 1, 30], fov: 50 },
-  'e-houses-porch': { position: [33, -0.6, 39], target: [42, 0.4, 36], fov: 55 },
+  'e-houses-porch': { position: [35.6, 1.6, 34.5], target: [41.5, 1.8, 32], fov: 60 },
 }
 
 test('board comparison views', async ({ page }) => {

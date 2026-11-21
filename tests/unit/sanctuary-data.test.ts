@@ -54,19 +54,34 @@ describe('sanctuary.json', () => {
     expect(se.masonry).toEqual(['rubble', 'rubble', 'ashlar', 'ashlar', 'rubble', 'rubble']) // NE corner ashlar
     expect(doc.terrain.terraces['ne-knoll'].hiddenReason).toBeTruthy() // trimmed: the hill takes over
     expect(e.masonry).toBe('older')
-    // Two blocks under hipped roofs (Ministry boards), plus room I 1 and the bath, also hipped.
-    for (const id of ['se-rooms-ii-iv', 'se-rear-block', 'se-room-i1', 'se-bath']) {
+    // Two blocks under hipped roofs with cornice and antefixes (Ministry boards); room I 1 an open pen; the later bath hidden.
+    for (const id of ['se-rooms-ii-iv', 'se-rear-block']) {
       const h = f[id]
       if (h.kind !== 'building') throw new Error(id)
       expect(h.roof?.form, id).toBe('hipped')
+      expect(h.roof?.cornice, id).toBeTruthy()
+      expect(h.roof?.antefixes, id).toBeTruthy()
     }
+    const i1 = f['se-room-i1']
+    if (i1.kind !== 'building') throw new Error('i1')
+    expect(i1.roof).toBeUndefined()
+    expect(f['se-bath'].hiddenReason).toMatch(/after the temple's completion/)
+    // The houses' rock outcrop stands 2-3 m above the plaza, level with the top approach tier (its way in).
+    const T = doc.terrain.terraces
+    const rise = T['se-houses-terrace'].level.value - T['outer-terrace'].level.value
+    expect(rise).toBeGreaterThanOrEqual(2)
+    expect(rise).toBeLessThanOrEqual(3)
+    expect(T['se-houses-terrace'].level.value).toBeCloseTo(T['approach-tier-1'].level.value, 6)
     const front = f['se-rooms-ii-iv']
     const rear = f['se-rear-block']
     const wing = f['se-forecourt']
     if (front.kind !== 'building' || rear.kind !== 'building' || wing.kind !== 'building') throw new Error('kinds')
     expect(rear.wallHeight.value).toBeGreaterThan(front.wallHeight.value) // taller block behind
     expect(front.columns?.positions.length).toBeGreaterThan(1) // columned porch
-    expect(front.openSides).toContain('w') // facing the gate side
+    // The porch as on IMG_8191: an opening on part of the west front with about four piers, solid wall beyond.
+    const porch = front.doors.find((d) => d.wall === 'w')!
+    expect(porch.width.value).toBeLessThan(front.width.value / 2)
+    expect(front.columns?.positions.length).toBe(4)
     expect(wing.roof?.form).toBe('pent')
     expect(wing.wallHeight.value).toBeLessThan(front.wallHeight.value)
     const altar = f.altar

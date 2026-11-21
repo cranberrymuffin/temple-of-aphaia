@@ -63,6 +63,9 @@ export const ELEMENT_PALETTE: Record<string, string> = {
   'propylon-column': 'shaft-stucco',
   'porch-pier': 'house-stucco',
   'sanctuary-roof': 'roof-tile-terracotta',
+  // Priests' houses: eave cornice band and antefix plaques (instanced).
+  'house-cornice': 'roof-tile-terracotta',
+  'house-antefix': 'antefix-palmette',
   'votive-column': 'marble',
   sphinx: 'marble',
   'interior-columns-lower': 'shaft-stucco',

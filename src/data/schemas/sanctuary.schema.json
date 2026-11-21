@@ -1018,6 +1018,44 @@
                   },
                   "highSide": {
                     "$ref": "#/definitions/side"
+                  },
+                  "cornice": {
+                    "type": "object",
+                    "required": [
+                      "height",
+                      "projection"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "height": {
+                        "$ref": "#/definitions/positive"
+                      },
+                      "projection": {
+                        "$ref": "#/definitions/positive"
+                      }
+                    },
+                    "description": "Eave cornice band around the wall tops."
+                  },
+                  "antefixes": {
+                    "type": "object",
+                    "required": [
+                      "spacing",
+                      "width",
+                      "height"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "spacing": {
+                        "$ref": "#/definitions/positive"
+                      },
+                      "width": {
+                        "$ref": "#/definitions/positive"
+                      },
+                      "height": {
+                        "$ref": "#/definitions/positive"
+                      }
+                    },
+                    "description": "Antefix plaques along the eaves (instanced)."
                   }
                 },
                 "allOf": [

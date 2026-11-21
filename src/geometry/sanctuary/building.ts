@@ -9,7 +9,12 @@ import { MeshBuilder, composeMatrix, transformPoint } from '../mesh'
 import type { Collider, GeneratorOutput, Level } from '../types'
 import { SANCTUARY_CONVENTIONS as K, deg, groundRange, type SanctuaryContext } from './common'
 
-export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, col: Collector): Omit<GeneratorOutput, 'groups'> {
+export type BuildingOutput = Omit<GeneratorOutput, 'groups'> & {
+  /** World matrices (16 floats each) of this building's antefix plaques; instanced by the sanctuary assembly. */
+  antefixes?: number[][]
+}
+
+export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, col: Collector): BuildingOutput {
   const L = f.length.value
   const W = f.width.value
   const t = f.wallThickness.value
@@ -210,6 +215,46 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
     else if (form === 'pent') addPentRoof(f, roofB, walls, open, top, hx, hz, t)
     else addRoof(f, roofB, walls, open, top, hx, hz, t)
   }
+  // Eave cornice: a band projecting from the outer wall faces just below the roof, mitred at the corners
+  // (the long bands carry the corner squares; the end bands stop at them).
+  const cornice = f.roof?.cornice
+  if (cornice) {
+    const ch = cornice.height.value
+    const p = cornice.projection.value
+    const cb = new MeshBuilder('house-cornice')
+    const y0 = top - ch
+    cb.box([-hx - p, y0, -hz - p], [hx + p, top, -hz], ['+z'])
+    cb.box([-hx - p, y0, hz], [hx + p, top, hz + p], ['-z'])
+    cb.box([-hx - p, y0, -hz], [-hx, top, hz], ['+x', '-z', '+z'])
+    cb.box([hx, y0, -hz], [hx + p, top, hz], ['-x', '-z', '+z'])
+    col.get('house-cornice').append(cb, m)
+  }
+  const antefixes: number[][] = []
+  const af = f.roof?.antefixes
+  if (af && f.roof && (f.roof.form ?? 'gabled') === 'hipped') {
+    // Plaques stand on the eave edge of a hipped roof, all round, facing outward.
+    const ridgeX = hx >= hz
+    const hv = ridgeX ? hz : hx
+    const o = f.roof.overhang.value
+    const tan = f.roof.ridgeHeight.value / hv
+    const yE = top - o * tan + K.roofThickness
+    const U = hx + o
+    const V = hz + o
+    const sp = af.spacing.value
+    const along = (x0: number, z0: number, x1: number, z1: number, out: number) => {
+      const len = Math.hypot(x1 - x0, z1 - z0)
+      const n = Math.max(1, Math.floor(len / sp))
+      for (let k = 0; k < n; k++) {
+        const u = (k + 0.5) / n
+        const pW = transformPoint(m, [x0 + (x1 - x0) * u, yE, z0 + (z1 - z0) * u])
+        antefixes.push(composeMatrix(pW, deg(f.rotation) + out))
+      }
+    }
+    along(-U, -V, U, -V, Math.PI) // north eave faces -z
+    along(-U, V, U, V, 0) // south eave faces +z
+    along(-U, -V, -U, V, -Math.PI / 2) // west eave faces -x
+    along(U, -V, U, V, Math.PI / 2) // east eave faces +x
+  }
   if (f.roofOrnament) {
     // Placeholder block astride the ridge at its middle (the gable sculpture of the Ministry board).
     if (!f.roof || (f.roof.form ?? 'gabled') === 'pent') throw new Error(`${id}: a roof ornament needs a ridge`)
@@ -232,7 +277,29 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
   if (roofB.idx.length) col.get('sanctuary-roof').append(roofB, m)
   const c = transformPoint(m, [(x0 + x1) / 2, 0, (z0 + z1) / 2])
   levels.push({ name: `${id}-floor`, y: floorY, minX: c[0] - (x1 - x0) / 2, maxX: c[0] + (x1 - x0) / 2, minZ: c[2] - (z1 - z0) / 2, maxZ: c[2] + (z1 - z0) / 2, rotY: deg(f.rotation) })
-  return { instances: [], colliders, levels }
+  return { instances: [], colliders, levels, antefixes }
+}
+
+/** Antefix plaque (local: standing on y = 0, face toward +z, base centred on the origin): a pointed palmette plate. */
+export function antefixMesh(width: number, height: number, thickness = 0.03): MeshBuilder {
+  const b = new MeshBuilder('house-antefix')
+  const w = width / 2
+  const outline: [number, number][] = [
+    [-w, 0],
+    [w, 0],
+    [w, 0.6 * height],
+    [0, height],
+    [-w, 0.6 * height],
+  ]
+  b.polygonFacing(outline.map(([x, y]): Vec3 => [x, y, thickness]), [0, 0, 1])
+  b.polygonFacing(outline.map(([x, y]): Vec3 => [x, y, 0]), [0, 0, -1])
+  for (let i = 0; i < outline.length; i++) {
+    const [ax, ay] = outline[i]
+    const [bx, by] = outline[(i + 1) % outline.length]
+    if (ay === 0 && by === 0) continue // the base sits on the roof
+    b.polygonFacing([[ax, ay, 0], [bx, by, 0], [bx, by, thickness], [ax, ay, thickness]], [by - ay, -(bx - ax), 0])
+  }
+  return b
 }
 
 /**

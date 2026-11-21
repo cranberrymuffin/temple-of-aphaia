@@ -43,7 +43,7 @@ export const EDGE_CONVENTIONS = {
   /** Natural rock faces: always battered (foot out by rockBatter..rockBatter + rockJitter per metre of height),
    * faceted every rockFacet metres along the edge with a deterministic per-point jitter. */
   rockBatter: 0.25,
-  rockJitter: 0.35,
+  rockJitter: 0.2,
   rockFacet: 1.2,
 } as const
 

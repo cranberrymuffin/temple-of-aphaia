@@ -171,6 +171,9 @@ export interface Roof {
   form?: 'gabled' | 'hipped' | 'pent'
   highSide?: Side
   ridge: 'x' | 'z'
+  /** Eave cornice band around the wall tops (outside the walls), and a row of antefix plaques along the eaves. */
+  cornice?: { height: Measure; projection: Measure }
+  antefixes?: { spacing: Measure; width: Measure; height: Measure }
   ridgeOffset?: number
   ridgeHeight: Measure
   overhang: Measure
