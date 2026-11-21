@@ -16,7 +16,7 @@ function views(m: TempleMeta): Record<string, Pose> {
   const [px, pz] = F.propylon.center
   const front = pz + F.propylon.width!.value / 2 // south face of the propylon (stair foot beyond it)
   const [cx, cz] = F.cistern.center
-  const [hx, hz] = F['se-rooms-ii-iv'].center
+  const [hx, hz] = [45.5, 31.8] // the priests' houses on their outcrop
   return {
     'wide-hill-sea': { position: [420, 260, 520], target: [0, -40, 0], fov: 45 },
     // Eye 1.6 m above the plaza south of the gate: the enclosure parapet should hide the krepis.

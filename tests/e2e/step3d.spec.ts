@@ -14,7 +14,7 @@ function views(m: TempleMeta): Record<string, Pose> {
   const terraceY = S + sanctuary.terrain.terraces['temple-terrace'].level.value
   const outerY = S + sanctuary.terrain.terraces['outer-terrace'].level.value
     const [cx, cz] = F.cistern.center
-  const [hx, hz] = F['se-rooms-ii-iv'].center
+  const [hx, hz] = [45.5, 31.8] // the priests' houses on their outcrop
   return {
     'wide-hill-sea': { position: [420, 260, 520], target: [0, -40, 0], fov: 45 },
     'wide-hill-low': { position: [-900, 120, 700], target: [200, 60, -300], fov: 50 },

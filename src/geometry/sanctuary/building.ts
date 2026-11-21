@@ -9,12 +9,7 @@ import { MeshBuilder, composeMatrix, transformPoint } from '../mesh'
 import type { Collider, GeneratorOutput, Level } from '../types'
 import { SANCTUARY_CONVENTIONS as K, deg, groundRange, type SanctuaryContext } from './common'
 
-export type BuildingOutput = Omit<GeneratorOutput, 'groups'> & {
-  /** World matrices (16 floats each) of this building's antefix plaques; instanced by the sanctuary assembly. */
-  antefixes?: number[][]
-}
-
-export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, col: Collector): BuildingOutput {
+export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, col: Collector): Omit<GeneratorOutput, 'groups'> {
   const L = f.length.value
   const W = f.width.value
   const t = f.wallThickness.value
@@ -32,9 +27,9 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
   const walls = new MeshBuilder('sanctuary-building')
   const floor = new MeshBuilder('sanctuary-floor')
   const wood = new MeshBuilder('timber')
-  // Columns and piers are stone (the propylon's are octagonal, stuccoed, carrying timber architraves, per
-  // Furtwängler); only the architraves are timber.
-  const stone = new MeshBuilder(f.role === 'propylon' ? 'propylon-column' : 'porch-pier')
+  // Columns are stone (the propylon's are octagonal, stuccoed, carrying timber architraves, per Furtwängler);
+  // only the architraves are timber.
+  const stone = new MeshBuilder('propylon-column')
   const roofB = new MeshBuilder('sanctuary-roof')
   const colliders: Collider[] = []
   const levels: Level[] = []
@@ -182,8 +177,8 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
     wood.box(min, max, a.axis === 'x' ? ['+x', '-x'] : ['+z', '-z'])
   }
   if (f.columns) {
-    // Square piers are 4-sided prisms with faces on the local axes; the diameter is across flats.
-    const sides = f.columns.shape === 'square' ? 4 : f.columns.shape === 'octagonal' ? 8 : 16
+    // The diameter is across flats.
+    const sides = f.columns.shape === 'octagonal' ? 8 : 16
     const r = f.columns.diameter.value / 2 / Math.cos(Math.PI / sides) // across-flats diameter
     const colTop = top - archH
     for (const [cx, cz] of f.columns.positions) {
@@ -205,65 +200,14 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
         )
       }
       const c = transformPoint(m, [cx, 0, cz])
-      const hd = f.columns.diameter.value / 2
-      // Square piers collide as the squares they are (oriented with the building); others as circles.
-      colliders.push(
-        f.columns.shape === 'square'
-          ? { kind: 'obb', name: `${id}-pier`, cx: c[0], cz: c[2], halfX: hd, halfZ: hd, rotY: deg(f.rotation), y0: floorY, y1: colTop }
-          : { kind: 'circle', name: `${id}-column`, x: c[0], z: c[2], r: hd, y0: floorY, y1: colTop },
-      )
+      colliders.push({ kind: 'circle', name: `${id}-column`, x: c[0], z: c[2], r: f.columns.diameter.value / 2, y0: floorY, y1: colTop })
     }
   }
 
-  if (f.roof) {
-    const form = f.roof.form ?? 'gabled'
-    if (form === 'hipped') addHippedRoof(f, roofB, top, hx, hz)
-    else if (form === 'pent') addPentRoof(f, roofB, walls, open, top, hx, hz, t)
-    else addRoof(f, roofB, walls, open, top, hx, hz, t)
-  }
-  // Eave cornice: a band projecting from the outer wall faces just below the roof, mitred at the corners
-  // (the long bands carry the corner squares; the end bands stop at them).
-  const cornice = f.roof?.cornice
-  if (cornice) {
-    const ch = cornice.height.value
-    const p = cornice.projection.value
-    const cb = new MeshBuilder('house-cornice')
-    const y0 = top - ch
-    cb.box([-hx - p, y0, -hz - p], [hx + p, top, -hz], ['+z'])
-    cb.box([-hx - p, y0, hz], [hx + p, top, hz + p], ['-z'])
-    cb.box([-hx - p, y0, -hz], [-hx, top, hz], ['+x', '-z', '+z'])
-    cb.box([hx, y0, -hz], [hx + p, top, hz], ['-x', '-z', '+z'])
-    col.get('house-cornice').append(cb, m)
-  }
-  const antefixes: number[][] = []
-  const af = f.roof?.antefixes
-  if (af && f.roof && (f.roof.form ?? 'gabled') === 'hipped') {
-    // Plaques stand on the eave edge of a hipped roof, all round, facing outward.
-    const ridgeX = hx >= hz
-    const hv = ridgeX ? hz : hx
-    const o = f.roof.overhang.value
-    const tan = f.roof.ridgeHeight.value / hv
-    const yE = top - o * tan + K.roofThickness
-    const U = hx + o
-    const V = hz + o
-    const sp = af.spacing.value
-    const along = (x0: number, z0: number, x1: number, z1: number, out: number) => {
-      const len = Math.hypot(x1 - x0, z1 - z0)
-      const n = Math.max(1, Math.floor(len / sp))
-      for (let k = 0; k < n; k++) {
-        const u = (k + 0.5) / n
-        const pW = transformPoint(m, [x0 + (x1 - x0) * u, yE, z0 + (z1 - z0) * u])
-        antefixes.push(composeMatrix(pW, deg(f.rotation) + out))
-      }
-    }
-    along(-U, -V, U, -V, Math.PI) // north eave faces -z
-    along(-U, V, U, V, 0) // south eave faces +z
-    along(-U, -V, -U, V, -Math.PI / 2) // west eave faces -x
-    along(U, -V, U, V, Math.PI / 2) // east eave faces +x
-  }
+  if (f.roof) addRoof(f, roofB, walls, open, top, hx, hz, t)
   if (f.roofOrnament) {
     // Placeholder block astride the ridge at its middle (the gable sculpture of the Ministry board).
-    if (!f.roof || (f.roof.form ?? 'gabled') === 'pent') throw new Error(`${id}: a roof ornament needs a ridge`)
+    if (!f.roof) throw new Error(`${id}: a roof ornament needs a ridge`)
     const ow = f.roofOrnament.width.value / 2
     const yr = top + f.roof.ridgeHeight.value + K.roofThickness
     const r = f.roof.ridgeOffset ?? 0
@@ -283,29 +227,7 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
   if (roofB.idx.length) col.get('sanctuary-roof').append(roofB, m)
   const c = transformPoint(m, [(x0 + x1) / 2, 0, (z0 + z1) / 2])
   levels.push({ name: `${id}-floor`, y: floorY, minX: c[0] - (x1 - x0) / 2, maxX: c[0] + (x1 - x0) / 2, minZ: c[2] - (z1 - z0) / 2, maxZ: c[2] + (z1 - z0) / 2, rotY: deg(f.rotation) })
-  return { instances: [], colliders, levels, antefixes }
-}
-
-/** Antefix plaque (local: standing on y = 0, face toward +z, base centred on the origin): a pointed palmette plate. */
-export function antefixMesh(width: number, height: number, thickness = 0.03): MeshBuilder {
-  const b = new MeshBuilder('house-antefix')
-  const w = width / 2
-  const outline: [number, number][] = [
-    [-w, 0],
-    [w, 0],
-    [w, 0.6 * height],
-    [0, height],
-    [-w, 0.6 * height],
-  ]
-  b.polygonFacing(outline.map(([x, y]): Vec3 => [x, y, thickness]), [0, 0, 1])
-  b.polygonFacing(outline.map(([x, y]): Vec3 => [x, y, 0]), [0, 0, -1])
-  for (let i = 0; i < outline.length; i++) {
-    const [ax, ay] = outline[i]
-    const [bx, by] = outline[(i + 1) % outline.length]
-    if (ay === 0 && by === 0) continue // the base sits on the roof
-    b.polygonFacing([[ax, ay, 0], [bx, by, 0], [bx, by, thickness], [ax, ay, thickness]], [by - ay, -(bx - ax), 0])
-  }
-  return b
+  return { instances: [], colliders, levels }
 }
 
 /**
@@ -357,108 +279,5 @@ function addRoof(f: BuildingFeature, roofB: MeshBuilder, walls: MeshBuilder, ope
       [s * (hu - t), -s],
     ] as const)
       walls.polygonFacing([P(uu, top, -hv), P(uu, top, hv), P(uu, yr, r)], alongU(dir))
-  }
-}
-
-/**
- * Hipped roof (four equal pitches) over the wall tops: ridge along the longer axis given by roof.ridge,
- * eaves all round at one height; each slope's underside passes through the outer wall faces at the wall top.
- */
-function addHippedRoof(f: BuildingFeature, roofB: MeshBuilder, top: number, hx: number, hz: number) {
-  const R = f.roof!
-  // The ridge runs along the longer side, so all four pitches are equal.
-  const ridgeX = hx >= hz
-  const hu = ridgeX ? hx : hz
-  const hv = ridgeX ? hz : hx
-  const rh = R.ridgeHeight.value
-  const o = R.overhang.value
-  const th = K.roofThickness
-  const tan = rh / hv
-  const yr = top + rh
-  const e = top - o * tan
-  const U = hu + o
-  const V = hv + o
-  const r = Math.max(0, hu - hv) // half ridge length (0: pyramid)
-  const P = (u: number, y: number, v: number): Vec3 => (ridgeX ? [u, y, v] : [v, y, u])
-  const N = (du: number, dv: number): Vec3 => (ridgeX ? [du, 1, dv] : [dv, 1, du])
-  for (const [dy, down] of [
-    [th, false],
-    [0, true],
-  ] as const) {
-    const flip = (n: Vec3): Vec3 => (down ? [-n[0], -n[1], -n[2]] : n)
-    // Long slopes (trapezoids, or triangles for a pyramid) and the hip ends (triangles).
-    roofB.polygonFacing([P(-U, e + dy, -V), P(U, e + dy, -V), P(r, yr + dy, 0), P(-r, yr + dy, 0)], flip(N(0, -tan)))
-    roofB.polygonFacing([P(-U, e + dy, V), P(U, e + dy, V), P(r, yr + dy, 0), P(-r, yr + dy, 0)], flip(N(0, tan)))
-    roofB.polygonFacing([P(U, e + dy, -V), P(U, e + dy, V), P(r, yr + dy, 0)], flip(N(tan, 0)))
-    roofB.polygonFacing([P(-U, e + dy, -V), P(-U, e + dy, V), P(-r, yr + dy, 0)], flip(N(-tan, 0)))
-  }
-  // Ridge cap: a narrow tile course along the ridge, sunk so its lower edges meet the slopes.
-  if (r > 0) {
-    const cw = K.ridgeCapWidth / 2
-    const y0 = yr + th - cw * tan
-    const a0 = P(-r - cw, y0, -cw)
-    const a1 = P(r + cw, yr + th + K.ridgeCapHeight, cw)
-    roofB.box([Math.min(a0[0], a1[0]), y0, Math.min(a0[2], a1[2])], [Math.max(a0[0], a1[0]), yr + th + K.ridgeCapHeight, Math.max(a0[2], a1[2])], ['-y'])
-  }
-  // Eave fascias all round.
-  const c: [number, number][] = [
-    [-U, -V],
-    [U, -V],
-    [U, V],
-    [-U, V],
-  ]
-  for (let i = 0; i < 4; i++) {
-    const [u0, v0] = c[i]
-    const [u1, v1] = c[(i + 1) % 4]
-    const out = P((u0 + u1) / 2, 0, (v0 + v1) / 2)
-    roofB.polygonFacing([P(u0, e, v0), P(u1, e, v1), P(u1, e + th, v1), P(u0, e + th, v0)], [out[0], 0, out[2]])
-  }
-}
-
-/**
- * Pent (lean-to) roof: one pitch falling from the high side to the opposite eave. The underside passes through
- * the outer wall faces at the wall top on the low side and ridgeHeight above it on the high side; the side
- * walls carry triangular infills up to the underside (omitted on open sides).
- */
-function addPentRoof(f: BuildingFeature, roofB: MeshBuilder, walls: MeshBuilder, open: Set<Side>, top: number, hx: number, hz: number, t: number) {
-  const R = f.roof!
-  const hs = R.highSide
-  if (!hs) throw new Error('pent roof without a high side')
-  const alongX = hs === 'n' || hs === 's' // slope runs across local z when the high side is n or s
-  const sgn = hs === 's' || hs === 'e' ? 1 : -1 // high side at +v or -v
-  const hu = alongX ? hx : hz
-  const hv = alongX ? hz : hx
-  const rh = R.ridgeHeight.value
-  const o = R.overhang.value
-  const th = K.roofThickness
-  const tan = rh / (2 * hv)
-  // Canonical (u along the eaves, v across, +v toward the high side) to local.
-  const P = (u: number, y: number, v: number): Vec3 => (alongX ? [u, y, sgn * v] : [sgn * v, y, u])
-  const D = (du: number, dy: number, dv: number): Vec3 => (alongX ? [du, dy, sgn * dv] : [sgn * dv, dy, du])
-  const y = (v: number) => top + (v + hv) * tan
-  const U = hu + o
-  const v0 = -hv - o
-  const v1 = hv + o
-  roofB.polygonFacing([P(-U, y(v0) + th, v0), P(U, y(v0) + th, v0), P(U, y(v1) + th, v1), P(-U, y(v1) + th, v1)], D(0, 1, -tan))
-  roofB.polygonFacing([P(-U, y(v0), v0), P(U, y(v0), v0), P(U, y(v1), v1), P(-U, y(v1), v1)], D(0, -1, tan))
-  roofB.polygonFacing([P(-U, y(v0), v0), P(U, y(v0), v0), P(U, y(v0) + th, v0), P(-U, y(v0) + th, v0)], D(0, 0, -1))
-  roofB.polygonFacing([P(-U, y(v1), v1), P(U, y(v1), v1), P(U, y(v1) + th, v1), P(-U, y(v1) + th, v1)], D(0, 0, 1))
-  for (const s of [-1, 1]) roofB.polygonFacing([P(s * U, y(v0), v0), P(s * U, y(v1), v1), P(s * U, y(v1) + th, v1), P(s * U, y(v0) + th, v0)], D(s, 0, 0))
-  // High wall: raised by rh (a band above the wall top up to the underside); side walls: triangular infills.
-  const highSide = hs
-  if (!open.has(highSide))
-    for (const [vv, dir] of [
-      [hv, 1],
-      [hv - t, -1],
-    ] as const)
-      walls.polygonFacing([P(-hu, top, vv), P(hu, top, vv), P(hu, y(vv), vv), P(-hu, y(vv), vv)], D(0, 0, dir))
-  const ends: [Side, number][] = alongX ? [['w', -1], ['e', 1]] : [['n', -1], ['s', 1]]
-  for (const [side, s] of ends) {
-    if (open.has(side)) continue
-    for (const [uu, dir] of [
-      [s * hu, s],
-      [s * (hu - t), -s],
-    ] as const)
-      walls.polygonFacing([P(uu, top, -hv), P(uu, top, hv), P(uu, y(hv), hv)], D(dir, 0, 0))
   }
 }

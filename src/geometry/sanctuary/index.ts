@@ -7,7 +7,7 @@ import { Collector } from '../mesh'
 import type { GeneratorOutput, Heightfield, Tier } from '../types'
 import { mergeOutputs } from '../types'
 import { altar } from './altar'
-import { antefixMesh, building } from './building'
+import { building } from './building'
 import { cistern, cisternLoops } from './cistern'
 import { pavement } from './pavement'
 import { BASE_SIDES, votiveColumn, type SphinxSlot } from './votive'
@@ -97,21 +97,7 @@ export function buildSanctuary(doc: SanctuaryDoc, tier: Tier, palette: PaletteLi
     report.push({ id, kind: 'unmodelled', name: h.name, shown: false, phase: h.phase.label, placement: 'plan', hiddenReason: h.reason, note: h.note })
   const merged = mergeOutputs(parts.map((p) => ({ ...p, groups: [] })))
   const sphinxSlots = parts.flatMap((p) => (p.sphinxSlot ? [p.sphinxSlot] : []))
-  // Antefix plaques of all houses: one instance set (one small geometry, many matrices).
-  const fixes = parts.flatMap((p) => ('antefixes' in p && p.antefixes ? (p.antefixes as number[][]) : []))
-  const instances = [...merged.instances]
-  const spec = Object.values(doc.features).flatMap((f) => (f.kind === 'building' && f.roof?.antefixes ? [f.roof.antefixes] : []))[0]
-  if (fixes.length && spec) {
-    const matrices = new Float32Array(fixes.length * 16)
-    fixes.forEach((mm, i) => matrices.set(mm, i * 16))
-    instances.push({
-      name: 'house-antefixes',
-      geometry: antefixMesh(spec.width.value, spec.height.value).build(palette, Object.keys(palette)),
-      matrices,
-      labels: fixes.map((_, i) => `a${i}`),
-    })
-  }
-  return { output: { ...merged, instances, groups: col.build(palette) }, report, cuts, sphinxSlots }
+  return { output: { ...merged, groups: col.build(palette) }, report, cuts, sphinxSlots }
 }
 
 /** Terrain group + heightfield level, cut by the given outlines (temple krepis, sanctuary features). */
