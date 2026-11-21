@@ -28,6 +28,14 @@ export const SANCTUARY_CONVENTIONS = {
   /** Priests' houses: height (m) and outward projection (m) of the pale cornice course under the hipped eave (Ministry board). */
   corniceHeight: 0.45,
   corniceProjection: 0.2,
+  /**
+   * Coping ribs on the enclosure walls (Ministry board IMG_8187: a regular row of small cross-ribs along the top of
+   * the coping). Estimated from the drawing, which has no scale: about 34 ribs over roughly 33 m of the east wall,
+   * so a pitch of about 1 m on the board; the fine-rib variant (B) halves it. Width and height are conjectural.
+   */
+  copingRibPitch: 0.5,
+  copingRibWidth: 0.14,
+  copingRibHeight: 0.16,
   /** Ground sampling step for footprint ranges (m). */
   sampleStep: 0.25,
 } as const

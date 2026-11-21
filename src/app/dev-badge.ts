@@ -1,7 +1,7 @@
 // Dev-only build label so a reviewer can tell which iteration of the model they are looking at.
 // Bump DEV_VERSION with every visible change. Only imported behind import.meta.env.DEV, so production
 // builds contain neither this module nor the badge.
-export const DEV_VERSION = '2.5'
+export const DEV_VERSION = '3.1'
 
 export function mountDevBadge(): void {
   const el = document.createElement('div')
