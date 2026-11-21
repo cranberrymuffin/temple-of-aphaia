@@ -2857,35 +2857,35 @@
      "from": -7.982,
      "to": 7.982,
      "depth": {
-      "value": 0.3,
+      "value": 0.55,
       "unit": "m",
       "source": "published",
-      "ref": "furtwangler-1906",
+      "ref": "ministry-onsite-boards",
       "verified": false,
       "provisional": true,
-      "note": "CONJECTURAL: timber beam (p. 99)"
+      "note": "DERIVED from the Ministry board (confidence: conjectural): IMG_8191: entablature depth, conjectural"
      },
      "height": {
-      "value": 0.3,
+      "value": 0.75,
       "unit": "m",
       "source": "published",
-      "ref": "furtwangler-1906",
+      "ref": "ministry-onsite-boards",
       "verified": false,
       "provisional": true,
-      "note": "CONJECTURAL: timber beam"
+      "note": "DERIVED from the Ministry board (confidence: conjectural): IMG_8191: deep flat entablature (architrave and frieze) over the porch piers, about 0.75 m by the drawn figures"
      }
     }
    ],
    "roof": {
     "ridge": "z",
     "ridgeHeight": {
-     "value": 1.5,
+     "value": 2.0,
      "unit": "m",
      "source": "published",
-     "ref": "furtwangler-1906",
+     "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "CONJECTURAL: pitch unknown"
+     "note": "DERIVED from the Ministry board (confidence: conjectural): IMG_8191: hipped roof pitch about 19 deg over the front block's half-span"
     },
     "overhang": {
      "value": 0.35,
@@ -2998,13 +2998,13 @@
    "roof": {
     "ridge": "x",
     "ridgeHeight": {
-     "value": 1.2,
+     "value": 1.6,
      "unit": "m",
      "source": "published",
-     "ref": "furtwangler-1906",
+     "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "CONJECTURAL: pitch unknown"
+     "note": "DERIVED from the Ministry board (confidence: conjectural): IMG_8191: hipped roof pitch about 19 deg over the rear block's half-span"
     },
     "overhang": {
      "value": 0.3,
@@ -3115,13 +3115,13 @@
    "roof": {
     "ridge": "x",
     "ridgeHeight": {
-     "value": 1.2,
+     "value": 1.6,
      "unit": "m",
      "source": "published",
-     "ref": "furtwangler-1906",
+     "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "CONJECTURAL: pitch unknown"
+     "note": "DERIVED from the Ministry board (confidence: conjectural): IMG_8191: hipped roof pitch about 19 deg over the rear block's half-span"
     },
     "overhang": {
      "value": 0.3,
@@ -3232,13 +3232,13 @@
    "roof": {
     "ridge": "x",
     "ridgeHeight": {
-     "value": 1.2,
+     "value": 1.6,
      "unit": "m",
      "source": "published",
-     "ref": "furtwangler-1906",
+     "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "CONJECTURAL: pitch unknown"
+     "note": "DERIVED from the Ministry board (confidence: conjectural): IMG_8191: hipped roof pitch about 19 deg over the rear block's half-span"
     },
     "overhang": {
      "value": 0.3,
@@ -3397,246 +3397,6 @@
    "confidence": "conjectural",
    "complex": "se-houses",
    "note": "Entrance vestibule; 'Wächterzimmer' (p. 100). Borderline date."
-  },
-  "se-room-i1": {
-   "kind": "building",
-   "role": "ancillary",
-   "name": "Room I 1 beside the propylon",
-   "center": [
-    31.115,
-    22.449
-   ],
-   "rotation": 0,
-   "length": {
-    "value": 6.431,
-    "unit": "m",
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "note": "plan measurement, +/-0.96 m"
-   },
-   "width": {
-    "value": 3.132,
-    "unit": "m",
-    "source": "published",
-    "ref": "furtwangler-1906",
-    "page": "92",
-    "url": "https://archive.org/details/aeginadasheiligtunse",
-    "verified": true,
-    "note": "depth about 2.3 m inside (plus front wall)"
-   },
-   "wallThickness": {
-    "value": 0.4,
-    "unit": "m",
-    "source": "published",
-    "ref": "furtwangler-1906",
-    "verified": false,
-    "provisional": true,
-    "note": "CONJECTURAL: 'low poor wall' at the front (p. 92)"
-   },
-   "wallHeight": {
-    "value": 2.4,
-    "unit": "m",
-    "source": "published",
-    "ref": "furtwangler-1906",
-    "verified": false,
-    "provisional": true,
-    "note": "CONJECTURAL: low"
-   },
-   "doors": [
-    {
-     "wall": "s",
-     "offset": 0,
-     "width": {
-      "value": 1.3,
-      "unit": "m",
-      "source": "published",
-      "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "note": "CONJECTURAL: opening in the front wall"
-     },
-     "height": {
-      "value": 2.0,
-      "unit": "m",
-      "source": "published",
-      "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "note": "CONJECTURAL: door height"
-     }
-    }
-   ],
-   "openSides": [
-    "n",
-    "w"
-   ],
-   "roof": {
-    "form": "pent",
-    "highSide": "n",
-    "ridge": "x",
-    "ridgeHeight": {
-     "value": 0.6,
-     "unit": "m",
-     "source": "published",
-     "ref": "furtwangler-1906",
-     "verified": false,
-     "provisional": true,
-     "note": "CONJECTURAL: lean roof against the terrace wall"
-    },
-    "overhang": {
-     "value": 0.2,
-     "unit": "m",
-     "source": "published",
-     "ref": "furtwangler-1906",
-     "verified": false,
-     "provisional": true,
-     "note": "CONJECTURAL: eaves"
-    },
-    "tiled": true,
-    "confidence": "conjectural",
-    "note": "Lean roof against the terrace wall; Fiechter: perhaps an open pen for animals (p. 92)."
-   },
-   "phase": {
-    "label": "Late Archaic new layout",
-    "fromYear": -510,
-    "toYear": null,
-    "confidence": "attested",
-    "sourceIds": [
-     "furtwangler-1906"
-    ],
-    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
-   },
-   "placement": {
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "confidence": "attested",
-    "uncertaintyM": 0.957
-   },
-   "sourceIds": [
-    "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
-   ],
-   "confidence": "analogy",
-   "complex": "south-gate",
-   "note": "Rear wall is the terrace wall, west wall the propylon's side wall (both shared, so those sides are open here)."
-  },
-  "se-bath": {
-   "kind": "building",
-   "role": "bath",
-   "name": "Small bath (V)",
-   "center": [
-    35.766,
-    24.446
-   ],
-   "rotation": 12.928,
-   "length": {
-    "value": 2.784,
-    "unit": "m",
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "note": "plan measurement, +/-1.50 m; room interior plus walls"
-   },
-   "width": {
-    "value": 4.805,
-    "unit": "m",
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "note": "plan measurement, +/-1.50 m; room interior plus walls"
-   },
-   "wallThickness": {
-    "value": 0.27,
-    "unit": "m",
-    "source": "published",
-    "ref": "furtwangler-1906",
-    "verified": false,
-    "provisional": true,
-    "note": "CONJECTURAL: within the plan's wall band"
-   },
-   "wallHeight": {
-    "value": 3.0,
-    "unit": "m",
-    "source": "published",
-    "ref": "furtwangler-1906",
-    "verified": false,
-    "provisional": true,
-    "note": "CONJECTURAL: walls above the orthostates not preserved (p. 99)"
-   },
-   "doors": [
-    {
-     "wall": "w",
-     "offset": 0,
-     "width": {
-      "value": 1.0,
-      "unit": "m",
-      "source": "published",
-      "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "note": "CONJECTURAL: door width not given"
-     },
-     "height": {
-      "value": 2.1,
-      "unit": "m",
-      "source": "published",
-      "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "note": "CONJECTURAL: door height"
-     }
-    }
-   ],
-   "roof": {
-    "ridge": "z",
-    "ridgeHeight": {
-     "value": 1.2,
-     "unit": "m",
-     "source": "published",
-     "ref": "furtwangler-1906",
-     "verified": false,
-     "provisional": true,
-     "note": "CONJECTURAL: pitch unknown"
-    },
-    "overhang": {
-     "value": 0.3,
-     "unit": "m",
-     "source": "published",
-     "ref": "furtwangler-1906",
-     "verified": false,
-     "provisional": true,
-     "note": "CONJECTURAL: eaves"
-    },
-    "tiled": true,
-    "confidence": "conjectural",
-    "note": "Many tile fragments found (p. 99); form generic (Abb. 61: 'da alle Einzelheiten fehlen')."
-   },
-   "phase": {
-    "label": "c. 490-480 BC (borderline)",
-    "fromYear": -490,
-    "toYear": null,
-    "confidence": "analogy",
-    "sourceIds": [
-     "furtwangler-1906"
-    ],
-    "note": "Built about the temple's completion or a little later (p. 99)"
-   },
-   "placement": {
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "confidence": "analogy",
-    "uncertaintyM": 1.503
-   },
-   "sourceIds": [
-    "furtwangler-1906",
-    "wikimedia-plan-aphaia-sanctuary"
-   ],
-   "confidence": "conjectural",
-   "complex": "south-gate",
-   "note": "Inserted later than rooms I-IV, within about three decades (p. 99); basins not modelled. Borderline date."
   },
   "suedbau-north-wall": {
    "kind": "wall",
@@ -3880,6 +3640,42 @@
   }
  },
  "hidden": {
+  "se-room-i1": {
+   "name": "Room I 1 beside the propylon",
+   "phase": {
+    "label": "New period",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906",
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Removed from the model at the user's request (2026-11-21); previously modelled, see git history."
+  },
+  "se-bath": {
+   "name": "Small bath (V)",
+   "phase": {
+    "label": "New period",
+    "fromYear": -480,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906",
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Removed from the model at the user's request (2026-11-21); previously modelled, see git history."
+  },
   "old-altar-6th": {
    "name": "Altar of the 6th c.",
    "phase": {

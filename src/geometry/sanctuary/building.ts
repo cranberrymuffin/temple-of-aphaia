@@ -27,6 +27,9 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
   const walls = new MeshBuilder('sanctuary-building')
   const floor = new MeshBuilder('sanctuary-floor')
   const wood = new MeshBuilder('timber')
+  // Hipped-roof houses: cornice course and porch entablature are pale stone on the Ministry board, not dark timber.
+  const paleHouse = f.role === 'house' && f.roof?.form === 'hipped'
+  const cornice = new MeshBuilder('house-cornice')
   // Columns and piers are stone (the propylon's are octagonal, stuccoed, carrying timber architraves, per
   // Furtwängler); only the architraves are timber.
   const stone = new MeshBuilder(f.role === 'propylon' ? 'propylon-column' : 'porch-pier')
@@ -174,7 +177,7 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
     const u1 = Math.max(a.from, a.to)
     const min: Vec3 = a.axis === 'x' ? [u0, top - a.height.value, a.offset - d] : [a.offset - d, top - a.height.value, u0]
     const max: Vec3 = a.axis === 'x' ? [u1, top, a.offset + d] : [a.offset + d, top, u1]
-    wood.box(min, max, a.axis === 'x' ? ['+x', '-x'] : ['+z', '-z'])
+    ;(paleHouse ? cornice : wood).box(min, max, a.axis === 'x' ? ['+x', '-x'] : ['+z', '-z'])
   }
   if (f.columns) {
     // Square piers are 4-sided prisms with faces on the local axes; the diameter is across flats.
@@ -204,6 +207,23 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
     }
   }
 
+  // Priests' houses (Ministry board): a pale projecting cornice course runs round the top of every standing wall,
+  // just under the hipped eave (its top stays below the roof underside, which sits at the wall top on the face).
+  if (paleHouse) {
+    const p = K.corniceProjection
+    // The rear rooms adjoin and share a wall height, so their bands would coincide; a few mm per room keeps them apart.
+    const nudge = Math.max(0, ['se-rooms-ii-iv', 'se-room-a', 'se-room-b', 'se-room-i7'].indexOf(id)) * 0.011
+    const cy0 = top - K.corniceHeight - 0.15 - nudge
+    const cy1 = top - 0.15 - nudge
+    // The n and s runs take the full length including the corners; e and w fit between them (no overlapping faces).
+    const zn = open.has('n') ? -hz : -hz + t * 0.5
+    const zs = open.has('s') ? hz : hz - t * 0.5
+    if (!open.has('n')) cornice.box([-hx - p, cy0, -hz - p], [hx + p, cy1, -hz + t * 0.5], ['-y'])
+    if (!open.has('s')) cornice.box([-hx - p, cy0, hz - t * 0.5], [hx + p, cy1, hz + p], ['-y'])
+    if (!open.has('e')) cornice.box([hx - t * 0.5, cy0, zn], [hx + p, cy1, zs], ['-y', ...(open.has('n') ? [] : ['-z' as Face]), ...(open.has('s') ? [] : ['+z' as Face])])
+    if (!open.has('w')) cornice.box([-hx - p, cy0, zn], [-hx + t * 0.5, cy1, zs], ['-y', ...(open.has('n') ? [] : ['-z' as Face]), ...(open.has('s') ? [] : ['+z' as Face])])
+  }
+
   if (f.roof) {
     const form = f.roof.form ?? 'gabled'
     if (form === 'hipped') addHippedRoof(f, roofB, top, hx, hz)
@@ -228,6 +248,7 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
   col.get('sanctuary-building').append(walls, m)
   col.get('sanctuary-floor').append(floor, m)
   if (wood.idx.length) col.get('timber').append(wood, m)
+  if (cornice.idx.length) col.get('house-cornice').append(cornice, m)
   if (stone.idx.length) col.get(stone.name).append(stone, m)
   if (roofB.idx.length) col.get('sanctuary-roof').append(roofB, m)
   const c = transformPoint(m, [(x0 + x1) / 2, 0, (z0 + z1) / 2])

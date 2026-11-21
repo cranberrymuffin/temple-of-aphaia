@@ -25,6 +25,9 @@ export const SANCTUARY_CONVENTIONS = {
   channelCopingRatio: 0.25,
   /** Roof slab vertical thickness (m), hidden detail scale. */
   roofThickness: 0.18,
+  /** Priests' houses: height (m) and outward projection (m) of the pale cornice course under the hipped eave (Ministry board). */
+  corniceHeight: 0.45,
+  corniceProjection: 0.2,
   /** Ground sampling step for footprint ranges (m). */
   sampleStep: 0.25,
 } as const

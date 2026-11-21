@@ -644,11 +644,19 @@ for hid in ("se-rooms-ii-iv", "se-room-a", "se-room-b", "se-room-i7"):
     h["roof"]["confidence"] = "analogy"
     h["roof"]["note"] = HIP_NOTE + " Tile fragments found (p. 99)."
     h["sourceIds"] = [FW, WP, MIN]
+# Pitch read off IMG_8191: the hipped roofs rise at about 19 deg (rise/half-span ~0.35), steeper than the first guess.
+features["se-rooms-ii-iv"]["roof"]["ridgeHeight"] = board(2.0, "m", "IMG_8191: hipped roof pitch about 19 deg over the front block's half-span", "conjectural")
+for hid in ("se-room-a", "se-room-b", "se-room-i7"):
+    features[hid]["roof"]["ridgeHeight"] = board(1.6, "m", "IMG_8191: hipped roof pitch about 19 deg over the rear block's half-span", "conjectural")
 for hid in ("se-room-a", "se-room-b", "se-room-i7"):
     features[hid]["wallHeight"] = board(4.9, "m", "taller rear block: IMG_8191 eave about 4.9 m (+/-0.8) above the ground, by the drawn figures (1.7 m) beside the porch; about 1 m above the front block's", "analogy")
     features[hid]["name"] = features[hid]["name"].replace("SE houses:", "Priests' houses, taller rear block:")
 features["se-rooms-ii-iv"]["name"] = "Priests' houses, lower front block: rooms II-IV with the columned porch (Vorhalle) facing the gate side"
 features["se-rooms-ii-iv"]["wallHeight"] = board(3.9, "m", "lower front block with the columned porch: IMG_8191 eave about 3.9 m (+/-0.6) by the drawn figures beside it", "analogy")
+# The porch carries a heavy flat entablature under the eave on the board (much deeper than a bare timber beam).
+for a in features["se-rooms-ii-iv"]["architraves"]:
+    a["height"] = board(0.75, "m", "IMG_8191: deep flat entablature (architrave and frieze) over the porch piers, about 0.75 m by the drawn figures", "conjectural")
+    a["depth"] = board(0.55, "m", "IMG_8191: entablature depth, conjectural", "conjectural")
 features["se-forecourt"]["wallHeight"] = board(2.6, "m", "lower pent-roof wing", "analogy")
 features["se-forecourt"]["roof"] = {"form": "pent", "highSide": "n", "ridge": "x", "ridgeHeight": board(0.8, "m", "pent roof rising toward the taller block", "conjectural"),
                                     "overhang": conj(0.3, "m", "eaves"), "tiled": True, "confidence": "analogy", "note": "Pent-roof wing (Ministry board), high side toward the rear block (east)."}
@@ -682,6 +690,10 @@ def hide(hid, name, label, fr, to, reason, src=(FW, WP), conf="attested"):
     hidden[hid] = {"name": name, "phase": phase(label, fr, to, conf, src=src), "sourceIds": list(src), "reason": reason}
 
 
+# Removed from the model at the user's request (2026-11-21): Room I 1 and the small bath east of the propylon.
+for _hid, _name, _label, _fr in (("se-room-i1", "Room I 1 beside the propylon", "New period", -510), ("se-bath", "Small bath (V)", "New period", -480)):
+    features.pop(_hid)
+    hide(_hid, _name, _label, _fr, None, "Removed from the model at the user's request (2026-11-21); previously modelled, see git history.")
 hide("old-altar-6th", "Altar of the 6th c.", "Middle period", -580, -510, "Earlier: buried under the altar court (p. 155)")
 hide("old-altar-7th", "Altar of the 7th c. (oldest)", "Oldest period", -700, -560, "Earlier: one course on rock next to the ramp (pp. 154-155)")
 hide("old-propylon", "Older propylon", "6th c.", -580, -510, "Earlier: under the south part of the altar court (pp. 151-154)")
