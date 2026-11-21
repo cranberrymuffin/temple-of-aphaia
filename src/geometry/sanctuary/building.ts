@@ -205,7 +205,13 @@ export function building(id: string, f: BuildingFeature, ctx: SanctuaryContext, 
         )
       }
       const c = transformPoint(m, [cx, 0, cz])
-      colliders.push({ kind: 'circle', name: `${id}-column`, x: c[0], z: c[2], r: f.columns.diameter.value / 2, y0: floorY, y1: colTop })
+      const hd = f.columns.diameter.value / 2
+      // Square piers collide as the squares they are (oriented with the building); others as circles.
+      colliders.push(
+        f.columns.shape === 'square'
+          ? { kind: 'obb', name: `${id}-pier`, cx: c[0], cz: c[2], halfX: hd, halfZ: hd, rotY: deg(f.rotation), y0: floorY, y1: colTop }
+          : { kind: 'circle', name: `${id}-column`, x: c[0], z: c[2], r: hd, y0: floorY, y1: colTop },
+      )
     }
   }
 

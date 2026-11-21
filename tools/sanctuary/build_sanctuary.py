@@ -634,94 +634,107 @@ features["se-bath"] = house("se-bath", "Small bath (V)", "rect4260#0", 0.27, ph=
                             note="Inserted later than rooms I-IV, within about three decades (p. 99); basins not modelled. Borderline date.")
 features["se-bath"]["complex"] = "south-gate"
 
-# Priests' houses after the Ministry boards (IMG_8187 aerial, IMG_8191 approach; user request 2026-11-20): two large
-# simple blocks under big HIPPED tiled roofs, built against the outside of the boundary wall on the rock and reached
-# only from outside: a taller REAR block (rooms I 4/I 5 and I 7 of the plan become rooms behind interior walls), a
-# lower FRONT block (rooms II-IV with the columned porch facing the gate, west), and a low pent-roof wing toward
-# the gate (the vestibule/forecourt I 2/I 3). All laid out in the front block's frame so the blocks are parallel;
-# 0.4 m apart so no eave reaches into a neighbour's wall (DERIVED layout, conjectural gaps).
+# Priests' houses after the Ministry boards (IMG_8187 aerial, IMG_8191 approach; user requests 2026-11-20/21): two
+# large simple blocks under HIPPED tiled roofs, built against the outside of the boundary wall on the rock and reached
+# only from outside, plus a low pent-roof wing toward the gate.
+# PROPORTIONS measured on the boards (pixel extents of each block's faces, the receding side corrected for the
+# aerial's foreshortening of about 0.5; +/-25%): the REAR block, against the wall, is a long rectangle running along
+# it, length : depth about 2.1 : 1; the FRONT block is near square (about 1.1 : 1), its side about 0.85-0.9 of the
+# rear block's length, set in front of it and shifted toward the east (IMG_8187); the rear block is the taller
+# (IMG_8191). The plan's rooms (pp. 92-100) give the opposite (rear rooms in a block 1.3 : 1, rooms II-IV with the
+# Vorhalle 1.5 : 1 deep from the wall); the boards' massing is followed and the rooms kept as interior walls
+# (conflict recorded in sources.json choices.priests-houses-massing).
+# Frame: u along the terrace wall's south leg (from its corner at the SE terrace, 36.436/20.583), v toward the south;
+# the blocks are parallel to the wall, as drawn (the plan's rooms run about 12 degrees askew to it).
 HIP_NOTE = "Hipped tiled roof (Ministry boards IMG_8187/IMG_8191); pitch from the drawings, conjectural."
-FB = features["se-rooms-ii-iv"]
-FB_C, FB_R = FB["center"], FB["rotation"]
-FB_HZ = FB["width"]["value"] / 2  # front block half-depth along its local z (north face at -FB_HZ)
-FB_HX = FB["length"]["value"] / 2
+H_O = [36.436, 20.583]
+H_A = math.atan2(20.983 - 20.583, 49.271 - 36.436)  # wall direction (math angle in x/z)
+H_ROT = rot_of(math.degrees(H_A))
 GAP = 0.4
+WALL_FACE = 0.85 / 2 + 0.10 + 0.02  # the wall's south face, its coping projection, a hair
 
 
-def in_front_frame(u0, u1, z0, z1):
-    """Centre (world) and length/width of the local box u0..u1 (local x) by z0..z1 in the front block's frame."""
-    a = math.radians(FB_R)
-    cu, cz = (u0 + u1) / 2, (z0 + z1) / 2
-    return [r3(FB_C[0] + math.cos(a) * cu + math.sin(a) * cz), r3(FB_C[1] - math.sin(a) * cu + math.cos(a) * cz)], u1 - u0, z1 - z0
+def wall_frame(u0, u1, v0, v1):
+    """Centre (world), length (along u) and width (along v) of the box u0..u1 x v0..v1 in the houses' frame."""
+    cu, cv = (u0 + u1) / 2, (v0 + v1) / 2
+    c, s_ = math.cos(H_A), math.sin(H_A)
+    return [r3(H_O[0] + c * cu - s_ * cv), r3(H_O[1] + s_ * cu + c * cv)], u1 - u0, v1 - v0
 
 
-FB["name"] = "Priests' houses, lower front block: rooms II-IV with the columned porch (Vorhalle) facing the gate side"
-FB["wallHeight"] = board(3.9, "m", "lower front block with the columned porch: IMG_8191 eave about 3.9 m (+/-0.6) by the drawn figures beside it", "analogy")
-# The porch as drawn on IMG_8191: about four piers in an opening on the north part of the west front, solid wall
-# beyond. The plan's Vorhalle (4.30 m deep) still runs behind the whole row of rooms II-IV; only its front is
-# walled except at the opening (conflict recorded in sources.json choices.priests-houses-massing).
-PORCH_W = 6.4
-fb_t = FB["wallThickness"]["value"]
-porch_c = -FB_HZ + fb_t + 0.6 + PORCH_W / 2  # local z of the opening's centre (north part)
-FB["openSides"] = []
-FB["doors"] = [{"wall": "w", "offset": r3(porch_c), "width": board(PORCH_W, "m", "porch opening on the west front, about a third of it (IMG_8191; +/-1.5 m)", "analogy"),
-                "height": board(r3(FB["wallHeight"]["value"] - 0.5), "m", "the opening rises to a lintel 0.5 m below the eaves", "conjectural")}]
-FB["columns"] = {"shape": "square", "diameter": board(0.45, "m", "stout square piers of the porch as drawn (the text's small octagonal capital, shaft top 0.255 m, p. 99, would be a thin post)", "conjectural"),
-                 "positions": [[r3(-FB_HX + fb_t / 2), r3(porch_c + dz)] for dz in (-2.4, -0.8, 0.8, 2.4)]}
-FB.pop("architraves", None)
 EAVES = {
     "cornice": {"height": board(0.3, "m", "eave cornice band under the roof edge (IMG_8191, IMG_8187)", "analogy"), "projection": conj(0.12, "m", "cornice projection")},
     "antefixes": {"spacing": conj(0.6, "m", "one per cover-tile row"), "width": conj(0.2, "m", "antefix plaque"), "height": board(0.25, "m", "antefix row along the eaves (IMG_8191)", "analogy")},
 }
-FB["roof"] = {"form": "hipped", "ridge": "z", **EAVES, "ridgeHeight": board(1.4, "m", "IMG_8191: the front block's hipped roof rises about 1.4 m (+/-0.4) above its eaves", "analogy"),
-              "overhang": conj(0.35, "m", "eaves"), "tiled": True, "confidence": "analogy", "note": HIP_NOTE + " Tile fragments found (p. 99)."}
-FB["sourceIds"] = [FW, WP, MIN]
-FB["note"] = "Room II early in the new campaign; III and IV about the temple's completion (p. 99). Front block of the priests' houses on the Ministry boards: one volume under a hipped roof with an eave cornice and antefixes; the porch opens through about a third of its west front on four piers, solid wall beyond (IMG_8191), with the plan's Vorhalle behind."
+HT = 0.6  # house wall thickness (footing courses with orthostates, p. 93)
 
-# Rear block: the plan's rooms I 4/I 5 (two rooms) and the narrow room I 7 along the east, in one volume. Local
-# extents measured from those rooms in the front block's frame (u -2.21..5.67, z -16.56..-8.55); the north face is
-# kept off the terrace wall (it runs askew to the houses), so the block is 6.6 m deep.
-RB_U0, RB_U1 = -2.25, FB_HX
-RB_Z1 = -FB_HZ - GAP
-RB_Z0 = -15.15
-rb_c, rb_L, rb_W = in_front_frame(RB_U0, RB_U1, RB_Z0, RB_Z1)
-rb_t = 0.6
-rb_cu, rb_cz = (RB_U0 + RB_U1) / 2, (RB_Z0 + RB_Z1) / 2
+# Rear block: long along the wall (11.0 x 5.2 m, 2.1 : 1), from the wing's gap to the older east wall.
+RB = (1.5, 12.5, WALL_FACE, WALL_FACE + 5.2)
+rb_c, rb_L, rb_W = wall_frame(*RB)
+rhx, rhz = rb_L / 2, rb_W / 2
 features["se-rear-block"] = {
-    "kind": "building", "role": "house", "name": "Priests' houses, taller rear block (rooms I 4/I 5 and I 7)", "center": rb_c, "rotation": FB_R,
-    "length": plan(rb_L, "m", F["se_houses"]["uncertaintyM"], "the plan's rooms I 4/I 5 and I 7 in one volume (Ministry boards: one block)"),
-    "width": plan(rb_W, "m", F["se_houses"]["uncertaintyM"], "rooms plus walls, kept clear of the terrace wall (askew to the houses)"),
-    "wallThickness": conj(rb_t, "m", "footing courses with orthostates (p. 93), as the front block"),
+    "kind": "building", "role": "house", "name": "Priests' houses, taller rear block along the wall (rooms I 4, I 5, I 7)", "center": rb_c, "rotation": H_ROT,
+    "length": board(r3(rb_L), "m", "long side along the terrace wall; length : depth about 2.1 : 1 (IMG_8187, +/-25%), the length from the room group I 4/I 5 and I 7 of the plan", "analogy"),
+    "width": board(r3(rb_W), "m", "depth: length / 2.1 (IMG_8187)", "analogy"),
+    "wallThickness": conj(HT, "m", "footing courses with orthostates (p. 93), as the front block"),
     "wallHeight": board(4.9, "m", "taller rear block: IMG_8191 eave about 4.9 m (+/-0.8) above the ground, by the drawn figures (1.7 m) beside the porch; about 1 m above the front block's", "analogy"),
-    # Doors on the west front into the vestibule wing, one per room I 4/I 5 (plan doors on their west walls).
-    "doors": [{"wall": "w", "offset": r3(zc - rb_cz), "width": conj(1.0, "m", "door width not given"), "height": conj(2.2, "m", "door height")} for zc in (-10.66, -13.6)],
-    "crossWalls": [
-        {"axis": "x", "offset": r3(-12.76 - rb_cz), "from": r3(RB_U0 + rb_t - rb_cu), "to": r3(2.29 - 0.25 - rb_cu), "thickness": conj(0.5, "m", "partition between rooms I 4 and I 5 (plan wall band); ends at room I 7's wall"), "doors": []},
-        {"axis": "z", "offset": r3(2.29 - rb_cu), "from": r3(RB_Z0 + rb_t - rb_cz), "to": r3(RB_Z1 - rb_t - rb_cz), "thickness": conj(0.5, "m", "wall of the narrow room I 7 (plan)"),
-         "doors": [{"offset": r3(-10.66 - rb_cz), "width": conj(0.9, "m", "door into room I 7 (its plan door is on its north wall, toward the terrace wall; moved inside)"), "height": conj(2.1, "m", "door height")}]},
-    ],
-    "roof": {"form": "hipped", "ridge": "x", **EAVES, "ridgeHeight": board(1.2, "m", "IMG_8191: the rear block's hipped roof rises about 1.1-1.2 m (+/-0.4) above its eaves", "analogy"),
+    "doors": [{"wall": "w", "offset": 0, "width": conj(1.0, "m", "door from the vestibule wing (plan doors on the rooms' west walls)"), "height": conj(2.2, "m", "door height")}],
+    "crossWalls": [{"axis": "z", "offset": r3(off), "from": r3(-rhz + HT), "to": r3(rhz - HT), "thickness": conj(0.5, "m", "partition between the plan's rooms (I 4 / I 5 / I 7)"),
+                    "doors": [{"offset": 0, "width": conj(0.9, "m", "door between rooms"), "height": conj(2.1, "m", "door height")}]} for off in (-rhx / 3, rhx / 3)],
+    "roof": {"form": "hipped", "ridge": "x", **EAVES, "ridgeHeight": board(1.2, "m", "IMG_8191: the rear block's hipped roof rises about 1.1-1.2 m (+/-0.4) above its eaves; long ridge along the wall (IMG_8187)", "analogy"),
              "overhang": conj(0.35, "m", "eaves"), "tiled": True, "confidence": "analogy", "note": HIP_NOTE},
-    "phase": NEW, "placement": placement("se_houses", conf="analogy", note="volume around the plan's rooms I 4/I 5 and I 7 (Ministry boards: one block)"),
+    "phase": NEW, "placement": placement("se_houses", conf="analogy", note="against the boundary wall's south leg, parallel to it, east of the vestibule wing (Ministry boards); the plan's room group I 4/I 5 and I 7 lies here, about 12 degrees askew"),
     "sourceIds": [FW, WP, MIN], "confidence": "analogy", "complex": "se-houses",
-    "note": "Built against the outside of the boundary wall, reached only from outside (Ministry board). Interior walls keep the plan's rooms.",
+    "note": "Built against the outside of the boundary wall, reached only from outside (Ministry board). Interior walls keep three rooms (the plan's I 4, I 5, I 7).",
 }
 for gone in ("se-room-a", "se-room-b", "se-room-i7"):
-    del features[gone]
+    features.pop(gone, None)
 
-# Pent-roof wing toward the gate: the vestibule/forecourt I 2/I 3, west of the rear block (local u -6.81..-2.28 on
-# the plan), kept GAP clear of both blocks; its roof rises toward the rear block.
-fc_c, fc_L, fc_W = in_front_frame(-6.8, RB_U0 - GAP, -16.5, RB_Z1)
+# Front block: near square (9.6 x 9.6 m, side about 0.87 of the rear block's length), in front of it and shifted east
+# (IMG_8187), its four-pier porch opening on the north part of its west face (IMG_8191).
+FBX = (4.6, 14.2, RB[3] + GAP, RB[3] + GAP + 9.6)
+fb_c, fb_L, fb_W = wall_frame(*FBX)
+fhx, fhz = fb_L / 2, fb_W / 2
+PORCH_W = 4.75
+porch_c = -fhz + HT + 0.4 + PORCH_W / 2  # local z of the opening's centre (north part of the west face)
+front_x = -fhx + HT + 2.4 + 0.3  # room fronts behind a 2.4 m porch hall (the plan's Vorhalle, shortened)
+FB = features["se-rooms-ii-iv"]
+FB.update({
+    "name": "Priests' houses, lower front block: rooms II-IV behind the four-pier porch facing the gate side",
+    "center": fb_c, "rotation": H_ROT,
+    "length": board(r3(fb_L), "m", "near-square block, side about 0.85-0.9 of the rear block's length (IMG_8187, +/-25%)", "analogy"),
+    "width": board(r3(fb_W), "m", "near square: about 1.1 : 1 on IMG_8187 (+/-25%), built square", "analogy"),
+    "wallThickness": conj(HT, "m", "footing courses with orthostates (p. 93)"),
+    "wallHeight": board(3.9, "m", "lower front block with the columned porch: IMG_8191 eave about 3.9 m (+/-0.6) by the drawn figures beside it", "analogy"),
+    "openSides": [],
+    "doors": [{"wall": "w", "offset": r3(porch_c), "width": board(PORCH_W, "m", "porch opening on the north part of the west front, a little under half of it (IMG_8191; +/-1.5 m)", "analogy"),
+               "height": board(3.4, "m", "the opening rises to a lintel 0.5 m below the eaves", "conjectural")}],
+    "columns": {"shape": "square", "diameter": board(0.45, "m", "stout square piers of the porch as drawn (the text's small octagonal capital, shaft top 0.255 m, p. 99, would be a thin post)", "conjectural"),
+                "positions": [[r3(-fhx + HT / 2), r3(porch_c + dz)] for dz in (-2.1, -0.7, 0.7, 2.1)]},
+    "crossWalls": [
+        {"axis": "z", "offset": r3(front_x), "from": r3(-fhz + HT), "to": r3(fhz - HT), "thickness": conj(HT, "m", "room fronts (plan)"),
+         "doors": [{"offset": r3(zc), "width": conj(1.1, "m", "room door (room II's 1.36 m, p. 92-100, narrowed to fit)"), "height": conj(2.2, "m", "door height")} for zc in (-(fhz - HT) * 2 / 3, 0, (fhz - HT) * 2 / 3)]},
+        *[{"axis": "x", "offset": r3(zc), "from": r3(front_x + HT / 2), "to": r3(fhx - HT), "thickness": conj(0.5, "m", "partition between rooms II, III and IV"), "doors": []}
+          for zc in (-(fhz - HT) / 3, (fhz - HT) / 3)],
+    ],
+    "roof": {"form": "hipped", "ridge": "z", **EAVES, "ridgeHeight": board(1.6, "m", "near-pyramidal hipped roof over the square block; rise about 1.4-1.6 m (+/-0.4, IMG_8191)", "analogy"),
+             "overhang": conj(0.35, "m", "eaves"), "tiled": True, "confidence": "analogy", "note": HIP_NOTE + " Square block, so the ridge shrinks to a point. Tile fragments found (p. 99)."},
+    "sourceIds": [FW, WP, MIN],
+    "note": "Room II early in the new campaign; III and IV about the temple's completion (p. 99). The front block of the Ministry boards: near square under a near-pyramidal hipped roof with cornice and antefixes; the porch opens through the north part of its west front on four piers, solid wall beyond (IMG_8191), a porch hall behind.",
+})
+FB.pop("architraves", None)
+
+# Pent-roof wing toward the gate: the vestibule/forecourt I 2/I 3, west of the rear block, on the top approach tier.
+fc_c, fc_L, fc_W = wall_frame(-2.4, RB[0] - GAP, WALL_FACE, 5.4)
 features["se-forecourt"].update({
-    "name": "Priests' houses, pent-roof wing: vestibule and forecourt I 2/I 3", "center": fc_c, "rotation": FB_R,
-    "length": plan(fc_L, "m", F["se_houses"]["uncertaintyM"], "the plan's vestibule I 2/I 3, west of the rear block"),
-    "width": plan(fc_W, "m", F["se_houses"]["uncertaintyM"], "room interior plus walls"),
+    "name": "Priests' houses, pent-roof wing: vestibule and forecourt I 2/I 3", "center": fc_c, "rotation": H_ROT,
+    "length": board(r3(fc_L), "m", "the wing between the gate's room I 1 and the rear block (IMG_8191 draws it narrow and low)", "analogy"),
+    "width": board(r3(fc_W), "m", "about the rear block's depth", "conjectural"),
     "wallHeight": board(2.6, "m", "lower pent-roof wing (IMG_8191: eave about 2.6 m, high side about 3.3 m)", "analogy"),
-    "doors": [{"wall": "w", "offset": 0, "width": conj(1.2, "m", "entrance from outside, toward the gate"), "height": conj(2.1, "m", "door height")}],
+    "doors": [{"wall": "s", "offset": 0, "width": conj(1.2, "m", "entrance from outside, from the top approach tier"), "height": conj(2.1, "m", "door height")}],
     "roof": {"form": "pent", "highSide": "e", "ridge": "z", "ridgeHeight": board(0.7, "m", "pent roof rising toward the rear block (high side about 3.3 m, IMG_8191)", "analogy"),
              "overhang": conj(0.3, "m", "eaves"), "tiled": True, "confidence": "analogy", "note": "Pent-roof wing (Ministry board), high side toward the rear block (east)."},
     "sourceIds": [FW, WP, MIN],
-    "note": "Entrance vestibule; 'Wächterzimmer' (p. 100). Borderline date. Placed in the front block's frame beside the rear block (Ministry boards).",
+    "note": "Entrance vestibule; 'Wächterzimmer' (p. 100). Borderline date. West of the rear block, parallel to the wall (Ministry boards).",
 })
 
 # Room I 1 beside the propylon: its own walls and a small hipped roof whose eaves pass above the parapet's coping and

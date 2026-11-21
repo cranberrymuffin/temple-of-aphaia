@@ -2661,27 +2661,29 @@
   "se-rooms-ii-iv": {
    "kind": "building",
    "role": "house",
-   "name": "Priests' houses, lower front block: rooms II-IV with the columned porch (Vorhalle) facing the gate side",
+   "name": "Priests' houses, lower front block: rooms II-IV behind the four-pier porch facing the gate side",
    "center": [
-    47.506,
-    37.566
+    45.491,
+    31.815
    ],
-   "rotation": 13.58,
+   "rotation": -1.785,
    "length": {
-    "value": 11.503,
+    "value": 9.6,
     "unit": "m",
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "note": "plan measurement, +/-1.50 m; rooms plus walls plus the 4.30 m porch (p. 99)"
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: analogy): near-square block, side about 0.85-0.9 of the rear block's length (IMG_8187, +/-25%)"
    },
    "width": {
-    "value": 17.164,
+    "value": 9.6,
     "unit": "m",
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "note": "plan measurement, +/-1.50 m; three rooms plus walls"
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: analogy): near square: about 1.1 : 1 on IMG_8187 (+/-25%), built square"
    },
    "wallThickness": {
     "value": 0.6,
@@ -2704,15 +2706,15 @@
    "doors": [
     {
      "wall": "w",
-     "offset": -4.182,
+     "offset": -1.425,
      "width": {
-      "value": 6.4,
+      "value": 4.75,
       "unit": "m",
       "source": "published",
       "ref": "ministry-onsite-boards",
       "verified": false,
       "provisional": true,
-      "note": "DERIVED from the Ministry board (confidence: analogy): porch opening on the west front, about a third of it (IMG_8191; +/-1.5 m)"
+      "note": "DERIVED from the Ministry board (confidence: analogy): porch opening on the north part of the west front, a little under half of it (IMG_8191; +/-1.5 m)"
      },
      "height": {
       "value": 3.4,
@@ -2729,9 +2731,9 @@
    "crossWalls": [
     {
      "axis": "z",
-     "offset": -1.152,
-     "from": -7.982,
-     "to": 7.982,
+     "offset": -1.5,
+     "from": -4.2,
+     "to": 4.2,
      "thickness": {
       "value": 0.6,
       "unit": "m",
@@ -2739,20 +2741,19 @@
       "ref": "furtwangler-1906",
       "verified": false,
       "provisional": true,
-      "note": "CONJECTURAL: room fronts"
+      "note": "CONJECTURAL: room fronts (plan)"
      },
      "doors": [
       {
-       "offset": -5.539,
+       "offset": -2.8,
        "width": {
-        "value": 1.36,
+        "value": 1.1,
         "unit": "m",
         "source": "published",
         "ref": "furtwangler-1906",
-        "page": "92-100",
-        "url": "https://archive.org/details/aeginadasheiligtunse",
-        "verified": true,
-        "note": "door of room II (later narrowed to 1.22 m)"
+        "verified": false,
+        "provisional": true,
+        "note": "CONJECTURAL: room door (room II's 1.36 m, p. 92-100, narrowed to fit)"
        },
        "height": {
         "value": 2.2,
@@ -2765,15 +2766,15 @@
        }
       },
       {
-       "offset": 0.065,
+       "offset": 0,
        "width": {
-        "value": 1.2,
+        "value": 1.1,
         "unit": "m",
         "source": "published",
         "ref": "furtwangler-1906",
         "verified": false,
         "provisional": true,
-        "note": "CONJECTURAL: doors without bolt cuttings"
+        "note": "CONJECTURAL: room door (room II's 1.36 m, p. 92-100, narrowed to fit)"
        },
        "height": {
         "value": 2.2,
@@ -2786,15 +2787,15 @@
        }
       },
       {
-       "offset": 5.54,
+       "offset": 2.8,
        "width": {
-        "value": 1.2,
+        "value": 1.1,
         "unit": "m",
         "source": "published",
         "ref": "furtwangler-1906",
         "verified": false,
         "provisional": true,
-        "note": "CONJECTURAL: doors without bolt cuttings"
+        "note": "CONJECTURAL: room door (room II's 1.36 m, p. 92-100, narrowed to fit)"
        },
        "height": {
         "value": 2.2,
@@ -2810,33 +2811,33 @@
     },
     {
      "axis": "x",
-     "offset": -2.737,
-     "from": -0.852,
-     "to": 5.152,
+     "offset": -1.4,
+     "from": -1.2,
+     "to": 4.2,
      "thickness": {
-      "value": 0.75,
+      "value": 0.5,
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
       "verified": false,
       "provisional": true,
-      "note": "CONJECTURAL: plan wall band between rooms"
+      "note": "CONJECTURAL: partition between rooms II, III and IV"
      },
      "doors": []
     },
     {
      "axis": "x",
-     "offset": 2.802,
-     "from": -0.852,
-     "to": 5.152,
+     "offset": 1.4,
+     "from": -1.2,
+     "to": 4.2,
      "thickness": {
-      "value": 0.75,
+      "value": 0.5,
       "unit": "m",
       "source": "published",
       "ref": "furtwangler-1906",
       "verified": false,
       "provisional": true,
-      "note": "CONJECTURAL: plan wall band between rooms"
+      "note": "CONJECTURAL: partition between rooms II, III and IV"
      },
      "doors": []
     }
@@ -2854,20 +2855,20 @@
     },
     "positions": [
      [
-      -5.452,
-      -6.582
+      -4.5,
+      -3.525
      ],
      [
-      -5.452,
-      -4.982
+      -4.5,
+      -2.125
      ],
      [
-      -5.452,
-      -3.382
+      -4.5,
+      -0.725
      ],
      [
-      -5.452,
-      -1.782
+      -4.5,
+      0.675
      ]
     ]
    },
@@ -2924,13 +2925,13 @@
      }
     },
     "ridgeHeight": {
-     "value": 1.4,
+     "value": 1.6,
      "unit": "m",
      "source": "published",
      "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "DERIVED from the Ministry board (confidence: analogy): IMG_8191: the front block's hipped roof rises about 1.4 m (+/-0.4) above its eaves"
+     "note": "DERIVED from the Ministry board (confidence: analogy): near-pyramidal hipped roof over the square block; rise about 1.4-1.6 m (+/-0.4, IMG_8191)"
     },
     "overhang": {
      "value": 0.35,
@@ -2943,7 +2944,7 @@
     },
     "tiled": true,
     "confidence": "analogy",
-    "note": "Hipped tiled roof (Ministry boards IMG_8187/IMG_8191); pitch from the drawings, conjectural. Tile fragments found (p. 99)."
+    "note": "Hipped tiled roof (Ministry boards IMG_8187/IMG_8191); pitch from the drawings, conjectural. Square block, so the ridge shrinks to a point. Tile fragments found (p. 99)."
    },
    "phase": {
     "label": "Late Archaic new layout",
@@ -2970,32 +2971,34 @@
    ],
    "confidence": "analogy",
    "complex": "se-houses",
-   "note": "Room II early in the new campaign; III and IV about the temple's completion (p. 99). Front block of the priests' houses on the Ministry boards: one volume under a hipped roof with an eave cornice and antefixes; the porch opens through about a third of its west front on four piers, solid wall beyond (IMG_8191), with the plan's Vorhalle behind."
+   "note": "Room II early in the new campaign; III and IV about the temple's completion (p. 99). The front block of the Ministry boards: near square under a near-pyramidal hipped roof with cornice and antefixes; the porch opens through the north part of its west front on four piers, solid wall beyond (IMG_8191), a porch hall behind."
   },
   "se-forecourt": {
    "kind": "building",
    "role": "house",
    "name": "Priests' houses, pent-roof wing: vestibule and forecourt I 2/I 3",
    "center": [
-    39.921,
-    26.291
+    35.694,
+    23.534
    ],
-   "rotation": 13.58,
+   "rotation": -1.785,
    "length": {
-    "value": 4.15,
+    "value": 3.5,
     "unit": "m",
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "note": "plan measurement, +/-1.50 m; the plan's vestibule I 2/I 3, west of the rear block"
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: analogy): the wing between the gate's room I 1 and the rear block (IMG_8191 draws it narrow and low)"
    },
    "width": {
-    "value": 7.518,
+    "value": 4.855,
     "unit": "m",
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "note": "plan measurement, +/-1.50 m; room interior plus walls"
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: conjectural): about the rear block's depth"
    },
    "wallThickness": {
     "value": 0.27,
@@ -3017,7 +3020,7 @@
    },
    "doors": [
     {
-     "wall": "w",
+     "wall": "s",
      "offset": 0,
      "width": {
       "value": 1.2,
@@ -3026,7 +3029,7 @@
       "ref": "furtwangler-1906",
       "verified": false,
       "provisional": true,
-      "note": "CONJECTURAL: entrance from outside, toward the gate"
+      "note": "CONJECTURAL: entrance from outside, from the top approach tier"
      },
      "height": {
       "value": 2.1,
@@ -3089,7 +3092,7 @@
    ],
    "confidence": "conjectural",
    "complex": "se-houses",
-   "note": "Entrance vestibule; 'Wächterzimmer' (p. 100). Borderline date. Placed in the front block's frame beside the rear block (Ministry boards)."
+   "note": "Entrance vestibule; 'Wächterzimmer' (p. 100). Borderline date. West of the rear block, parallel to the wall (Ministry boards)."
   },
   "se-room-i1": {
    "kind": "building",
@@ -3307,27 +3310,29 @@
   "se-rear-block": {
    "kind": "building",
    "role": "house",
-   "name": "Priests' houses, taller rear block (rooms I 4/I 5 and I 7)",
+   "name": "Priests' houses, taller rear block along the wall (rooms I 4, I 5, I 7)",
    "center": [
-    46.375,
-    25.426
+    43.335,
+    23.945
    ],
-   "rotation": 13.58,
+   "rotation": -1.785,
    "length": {
-    "value": 8.002,
+    "value": 11.0,
     "unit": "m",
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "note": "plan measurement, +/-1.50 m; the plan's rooms I 4/I 5 and I 7 in one volume (Ministry boards: one block)"
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: analogy): long side along the terrace wall; length : depth about 2.1 : 1 (IMG_8187, +/-25%), the length from the room group I 4/I 5 and I 7 of the plan"
    },
    "width": {
-    "value": 6.168,
+    "value": 5.2,
     "unit": "m",
-    "source": "plan",
-    "ref": "wikimedia-plan-aphaia-sanctuary",
-    "verified": true,
-    "note": "plan measurement, +/-1.50 m; rooms plus walls, kept clear of the terrace wall (askew to the houses)"
+    "source": "published",
+    "ref": "ministry-onsite-boards",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED from the Ministry board (confidence: analogy): depth: length / 2.1 (IMG_8187)"
    },
    "wallThickness": {
     "value": 0.6,
@@ -3350,7 +3355,7 @@
    "doors": [
     {
      "wall": "w",
-     "offset": 1.406,
+     "offset": 0,
      "width": {
       "value": 1.0,
       "unit": "m",
@@ -3358,29 +3363,7 @@
       "ref": "furtwangler-1906",
       "verified": false,
       "provisional": true,
-      "note": "CONJECTURAL: door width not given"
-     },
-     "height": {
-      "value": 2.2,
-      "unit": "m",
-      "source": "published",
-      "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "note": "CONJECTURAL: door height"
-     }
-    },
-    {
-     "wall": "w",
-     "offset": -1.534,
-     "width": {
-      "value": 1.0,
-      "unit": "m",
-      "source": "published",
-      "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "note": "CONJECTURAL: door width not given"
+      "note": "CONJECTURAL: door from the vestibule wing (plan doors on the rooms' west walls)"
      },
      "height": {
       "value": 2.2,
@@ -3395,26 +3378,10 @@
    ],
    "crossWalls": [
     {
-     "axis": "x",
-     "offset": -0.694,
-     "from": -3.401,
-     "to": 0.289,
-     "thickness": {
-      "value": 0.5,
-      "unit": "m",
-      "source": "published",
-      "ref": "furtwangler-1906",
-      "verified": false,
-      "provisional": true,
-      "note": "CONJECTURAL: partition between rooms I 4 and I 5 (plan wall band); ends at room I 7's wall"
-     },
-     "doors": []
-    },
-    {
      "axis": "z",
-     "offset": 0.539,
-     "from": -2.484,
-     "to": 2.484,
+     "offset": -1.833,
+     "from": -2.0,
+     "to": 2.0,
      "thickness": {
       "value": 0.5,
       "unit": "m",
@@ -3422,11 +3389,11 @@
       "ref": "furtwangler-1906",
       "verified": false,
       "provisional": true,
-      "note": "CONJECTURAL: wall of the narrow room I 7 (plan)"
+      "note": "CONJECTURAL: partition between the plan's rooms (I 4 / I 5 / I 7)"
      },
      "doors": [
       {
-       "offset": 1.406,
+       "offset": 0,
        "width": {
         "value": 0.9,
         "unit": "m",
@@ -3434,7 +3401,45 @@
         "ref": "furtwangler-1906",
         "verified": false,
         "provisional": true,
-        "note": "CONJECTURAL: door into room I 7 (its plan door is on its north wall, toward the terrace wall; moved inside)"
+        "note": "CONJECTURAL: door between rooms"
+       },
+       "height": {
+        "value": 2.1,
+        "unit": "m",
+        "source": "published",
+        "ref": "furtwangler-1906",
+        "verified": false,
+        "provisional": true,
+        "note": "CONJECTURAL: door height"
+       }
+      }
+     ]
+    },
+    {
+     "axis": "z",
+     "offset": 1.833,
+     "from": -2.0,
+     "to": 2.0,
+     "thickness": {
+      "value": 0.5,
+      "unit": "m",
+      "source": "published",
+      "ref": "furtwangler-1906",
+      "verified": false,
+      "provisional": true,
+      "note": "CONJECTURAL: partition between the plan's rooms (I 4 / I 5 / I 7)"
+     },
+     "doors": [
+      {
+       "offset": 0,
+       "width": {
+        "value": 0.9,
+        "unit": "m",
+        "source": "published",
+        "ref": "furtwangler-1906",
+        "verified": false,
+        "provisional": true,
+        "note": "CONJECTURAL: door between rooms"
        },
        "height": {
         "value": 2.1,
@@ -3508,7 +3513,7 @@
      "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "DERIVED from the Ministry board (confidence: analogy): IMG_8191: the rear block's hipped roof rises about 1.1-1.2 m (+/-0.4) above its eaves"
+     "note": "DERIVED from the Ministry board (confidence: analogy): IMG_8191: the rear block's hipped roof rises about 1.1-1.2 m (+/-0.4) above its eaves; long ridge along the wall (IMG_8187)"
     },
     "overhang": {
      "value": 0.35,
@@ -3539,7 +3544,7 @@
     "verified": true,
     "confidence": "analogy",
     "uncertaintyM": 1.503,
-    "note": "volume around the plan's rooms I 4/I 5 and I 7 (Ministry boards: one block)"
+    "note": "against the boundary wall's south leg, parallel to it, east of the vestibule wing (Ministry boards); the plan's room group I 4/I 5 and I 7 lies here, about 12 degrees askew"
    },
    "sourceIds": [
     "furtwangler-1906",
@@ -3548,7 +3553,7 @@
    ],
    "confidence": "analogy",
    "complex": "se-houses",
-   "note": "Built against the outside of the boundary wall, reached only from outside (Ministry board). Interior walls keep the plan's rooms."
+   "note": "Built against the outside of the boundary wall, reached only from outside (Ministry board). Interior walls keep three rooms (the plan's I 4, I 5, I 7)."
   },
   "suedbau-north-wall": {
    "kind": "wall",

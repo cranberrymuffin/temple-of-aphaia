@@ -77,6 +77,10 @@ describe('sanctuary.json', () => {
     const wing = f['se-forecourt']
     if (front.kind !== 'building' || rear.kind !== 'building' || wing.kind !== 'building') throw new Error('kinds')
     expect(rear.wallHeight.value).toBeGreaterThan(front.wallHeight.value) // taller block behind
+    // Board proportions (IMG_8187): the rear block long along the wall, the front block near square.
+    expect(rear.length.value / rear.width.value).toBeGreaterThan(1.8)
+    expect(Math.max(front.length.value, front.width.value) / Math.min(front.length.value, front.width.value)).toBeLessThan(1.2)
+    expect(front.length.value / rear.length.value).toBeGreaterThan(0.75)
     expect(front.columns?.positions.length).toBeGreaterThan(1) // columned porch
     // The porch as on IMG_8191: an opening on part of the west front with about four piers, solid wall beyond.
     const porch = front.doors.find((d) => d.wall === 'w')!
