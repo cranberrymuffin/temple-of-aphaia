@@ -2939,7 +2939,7 @@
      "doors": [
       {
        "side": "-z",
-       "offset": -4.65,
+       "offset": 1.65,
        "width": {
         "value": 1.4,
         "unit": "m",

@@ -610,7 +610,7 @@ features["priests-houses"] = {
             "length": "along the wall from the end of the stretch beside the propylon to the east wall (IMG_8187)",
             "width": "depth from the wall; the block is a long rectangle along it (IMG_8187, IMG_8191)",
             "eave": "the taller block (IMG_8191), eave above the outcrop by the drawn figures (1.7 m)"},
-            doors=[{"side": "-z", "offset": -4.65, "width": board(1.4, "m", "door from the houses into the sanctuary through the wall line (IMG_8187)", "analogy"), "height": board(2.4, "m", "door height, a little over a figure (IMG_8187)", "analogy")}]),
+            doors=[{"side": "-z", "offset": 1.65, "width": board(1.4, "m", "door from the houses into the sanctuary through the wall line (IMG_8187)", "analogy"), "height": board(2.4, "m", "door height, a little over a figure (IMG_8187)", "analogy")}]),
         house_block("front", "Front block, roughly square", FRONT, FRONT_EAVE, {
             "length": "east face in line with the rear block's, west face set back from it (IMG_8187)",
             "width": "roughly square in plan (IMG_8187; near-pyramidal roof on IMG_8191)",

@@ -6,6 +6,7 @@ import type {} from '../../src/app/test-hook'
 
 type Pose = { position: [number, number, number]; target: [number, number, number]; fov?: number }
 const VIEWS: Record<string, Pose> = {
+  'i-door': { position: [38, 3, 6], target: [42, 2, 24], fov: 50 },
   'h-inside-wall': { position: [28, 7, 8], target: [42, 3, 24], fov: 50 },
   'f-statues': { position: [24, 5, -9], target: [31, 1, 0], fov: 40 },
   'g-archer': { position: [-30, 12, 4], target: [-21, 11, 0], fov: 25 },
