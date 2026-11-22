@@ -144,6 +144,35 @@ export function wallRun(id: string, f: WallFeature, ctx: SanctuaryContext, col: 
         cop.polygonFacing([P(WL[i], hi.y2), P(WL[j], hj.y2), P(L[j], hj.y2), P(L[i], hi.y2)], [0, -1, 0])
         cop.polygonFacing([P(R[i], hi.y2), P(R[j], hj.y2), P(WR[j], hj.y2), P(WR[i], hi.y2)], [0, -1, 0])
       }
+      // Cross-ribs along the coping top (board IMG_8187): boxes the full width of the coping, standing on it, spread at an
+      // even pitch with no bare stretch. The first rib of a segment sits flush at its start (so at a corner it is the
+      // corner's rib, and the previous segment stops one pitch short of it); a free end gets a rib flush at its end.
+      const len = Math.hypot(pts[j][0] - pts[i][0], pts[j][1] - pts[i][1])
+      const ux = (pts[j][0] - pts[i][0]) / len
+      const uz = (pts[j][1] - pts[i][1]) / len
+      const half = t / 2 + p.overhang
+      const rw = K.copingRibWidth
+      // Adjoining segments differ by a few mm in rib height so overlapping rib tops at a corner never coincide.
+      const rh = K.copingRibHeight - (i % 2) * 0.011
+      const freeEnd = !closed && j === nSeg
+      const span = freeEnd ? len - rw : len
+      const n = Math.max(1, Math.round(span / K.copingRibPitch))
+      const pitch = span / n
+      const count = freeEnd ? n + 1 : n
+      const at = (s: number, side: number, y: number): Vec3 => [pts[i][0] + ux * s + uz * half * side, y, pts[i][1] + uz * s - ux * half * side]
+      const yAt = (s: number) => hi.y3 + ((hj.y3 - hi.y3) * s) / len
+      for (let m = 0; m < count; m++) {
+        const s = m * pitch
+        const y0 = yAt(s)
+        const y1 = y0 + rh
+        const ya = yAt(s + rw)
+        const ya1 = ya + rh
+        cop.polygonFacing([at(s, 1, y1), at(s + rw, 1, ya1), at(s + rw, -1, ya1), at(s, -1, y1)], [0, 1, 0])
+        cop.polygonFacing([at(s, 1, y0), at(s + rw, 1, ya), at(s + rw, 1, ya1), at(s, 1, y1)], [uz, 0, -ux])
+        cop.polygonFacing([at(s, -1, y0), at(s + rw, -1, ya), at(s + rw, -1, ya1), at(s, -1, y1)], [-uz, 0, ux])
+        cop.polygonFacing([at(s, 1, y0), at(s, -1, y0), at(s, -1, y1), at(s, 1, y1)], [-ux, 0, -uz])
+        cop.polygonFacing([at(s + rw, 1, ya), at(s + rw, -1, ya), at(s + rw, -1, ya1), at(s + rw, 1, ya1)], [ux, 0, uz])
+      }
     } else (p.mudbrick > 0 ? mud : body).polygonFacing([P(L[i], hi.y2), P(L[j], hj.y2), P(R[j], hj.y2), P(R[i], hi.y2)], [0, 1, 0])
     colliders.push(segmentCollider(`${id}-${i}`, pts[i], pts[j], t, bottom, Math.max(hi.y3, hj.y3)))
   }

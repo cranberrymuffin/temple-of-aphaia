@@ -167,6 +167,9 @@ export interface CrossWall {
 }
 
 export interface Roof {
+  /** gabled (default): two pitches, gables on the end walls; hipped: four pitches; pent: one pitch, high on highSide. */
+  form?: 'gabled' | 'hipped' | 'pent'
+  highSide?: Side
   ridge: 'x' | 'z'
   ridgeOffset?: number
   ridgeHeight: Measure
@@ -188,7 +191,7 @@ export interface BuildingFeature extends FeatureBase {
   doors: Door[]
   openSides?: Side[]
   crossWalls?: CrossWall[]
-  columns?: { shape: 'octagonal' | 'round'; diameter: Measure; positions: Point2[] }
+  columns?: { shape: 'octagonal' | 'round' | 'square'; diameter: Measure; positions: Point2[] }
   architraves?: { axis: 'x' | 'z'; offset: number; from: number; to: number; depth: Measure; height: Measure }[]
   roof?: Roof
   steps?: Steps

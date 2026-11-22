@@ -1013,7 +1013,8 @@
                   "shape": {
                     "enum": [
                       "octagonal",
-                      "round"
+                      "round",
+                      "square"
                     ]
                   },
                   "diameter": {
@@ -1099,8 +1100,37 @@
                   },
                   "note": {
                     "type": "string"
+                  },
+                  "form": {
+                    "enum": [
+                      "gabled",
+                      "hipped",
+                      "pent"
+                    ]
+                  },
+                  "highSide": {
+                    "$ref": "#/definitions/side"
                   }
-                }
+                },
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "form": {
+                          "const": "pent"
+                        }
+                      },
+                      "required": [
+                        "form"
+                      ]
+                    },
+                    "then": {
+                      "required": [
+                        "highSide"
+                      ]
+                    }
+                  }
+                ]
               },
               "steps": {
                 "type": "object",

@@ -62,6 +62,8 @@ export const ELEMENT_PALETTE: Record<string, string> = {
   pavement: 'pavement',
   timber: 'timber',
   'propylon-column': 'shaft-stucco',
+  'porch-pier': 'house-stucco',
+  'house-cornice': 'step-limestone',
   'sanctuary-roof': 'roof-tile-terracotta',
   'votive-column': 'marble',
   sphinx: 'marble',

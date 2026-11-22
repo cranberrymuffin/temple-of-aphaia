@@ -3254,6 +3254,42 @@
   }
  },
  "hidden": {
+  "se-room-i1": {
+   "name": "Room I 1 beside the propylon",
+   "phase": {
+    "label": "New period",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906",
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Removed from the model at the user's request (2026-11-21); previously modelled, see git history."
+  },
+  "se-bath": {
+   "name": "Small bath (V)",
+   "phase": {
+    "label": "New period",
+    "fromYear": -480,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906",
+     "wikimedia-plan-aphaia-sanctuary"
+    ]
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary"
+   ],
+   "reason": "Removed from the model at the user's request (2026-11-21); previously modelled, see git history."
+  },
   "old-altar-6th": {
    "name": "Altar of the 6th c.",
    "phase": {

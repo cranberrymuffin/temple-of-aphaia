@@ -9,6 +9,8 @@ import { pickTier } from './app/tier'
 import { createHud } from './app/ui/hud'
 import { createViewer } from './app/viewer'
 
+if (import.meta.env.DEV) void import('./app/dev-badge').then((m) => m.mountDevBadge())
+
 async function start() {
   const app = document.querySelector<HTMLDivElement>('#app')
   if (!app) return

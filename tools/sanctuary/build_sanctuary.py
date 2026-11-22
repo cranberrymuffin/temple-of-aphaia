@@ -644,6 +644,9 @@ def hide(hid, name, label, fr, to, reason, src=(FW, WP), conf="attested"):
     hidden[hid] = {"name": name, "phase": phase(label, fr, to, conf, src=src), "sourceIds": list(src), "reason": reason}
 
 
+# Removed from the model at the user's request (2026-11-21): Room I 1 and the small bath east of the propylon.
+for _hid, _name, _label, _fr in (("se-room-i1", "Room I 1 beside the propylon", "New period", -510), ("se-bath", "Small bath (V)", "New period", -480)):
+    hide(_hid, _name, _label, _fr, None, "Removed from the model at the user's request (2026-11-21); previously modelled, see git history.")
 hide("old-altar-6th", "Altar of the 6th c.", "Middle period", -580, -510, "Earlier: buried under the altar court (p. 155)")
 hide("old-altar-7th", "Altar of the 7th c. (oldest)", "Oldest period", -700, -560, "Earlier: one course on rock next to the ramp (pp. 154-155)")
 hide("old-propylon", "Older propylon", "6th c.", -580, -510, "Earlier: under the south part of the altar court (pp. 151-154)")
