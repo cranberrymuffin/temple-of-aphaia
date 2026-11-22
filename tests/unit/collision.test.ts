@@ -132,7 +132,7 @@ describe('walk on the generated site', () => {
       if (faces) tested++
       else skipped.push(c.name)
     }
-    expect(tested).toBeGreaterThan(40)
+    expect(tested).toBeGreaterThan(30)
     // Colliders no walker can reach (buried, or fully inside other blockers) are listed for the record.
     console.log(`[collision] walls tested ${tested}; unreachable faces: ${skipped.join(', ') || 'none'}`)
   })

@@ -37,6 +37,7 @@ export const ELEMENT_PALETTE: Record<string, string> = {
   'cella-walls': 'cella-wall-upper',
   antae: 'cella-wall-upper',
   'porch-columns': 'shaft-stucco',
+  'house-porch-columns': 'shaft-stucco',
   'porch-entablature': 'architrave',
   'cella-floor': 'cella-floor-red',
   threshold: 'marble',

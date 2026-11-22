@@ -590,6 +590,7 @@
       "properties": {
         "kind": {
           "enum": [
+            "houses",
             "altar",
             "base",
             "building",
@@ -639,6 +640,97 @@
         }
       },
       "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "houses"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "blocks"
+            ],
+            "properties": {
+              "kind": true,
+              "name": true,
+              "phase": true,
+              "placement": true,
+              "sourceIds": true,
+              "confidence": true,
+              "note": true,
+              "baseLevel": true,
+              "uncertain": true,
+              "complex": true,
+              "hiddenReason": true,
+              "blocks": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "name",
+                    "center",
+                    "rotation",
+                    "length",
+                    "width",
+                    "eaveHeight",
+                    "roofRise",
+                    "overhang"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "$ref": "common.schema.json#/definitions/id"
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "center": {
+                      "$ref": "#/definitions/point"
+                    },
+                    "rotation": {
+                      "type": "number",
+                      "description": "Degrees about +y, counter-clockwise seen from above (local x turns toward north)."
+                    },
+                    "length": {
+                      "$ref": "#/definitions/positive"
+                    },
+                    "width": {
+                      "$ref": "#/definitions/positive"
+                    },
+                    "eaveHeight": {
+                      "$ref": "#/definitions/positive"
+                    },
+                    "roofRise": {
+                      "$ref": "#/definitions/positive"
+                    },
+                    "overhang": {
+                      "$ref": "#/definitions/nonNegative"
+                    },
+                    "roof": { "enum": ["hipped", "shed"] },
+                    "porch": {
+                      "type": "object",
+                      "required": ["columns", "depth", "endWall"],
+                      "additionalProperties": false,
+                      "properties": {
+                        "columns": { "type": "integer", "minimum": 1 },
+                        "depth": { "$ref": "#/definitions/positive" },
+                        "endWall": { "$ref": "#/definitions/positive" }
+                      },
+                      "description": "Open colonnade on the -x face, a solid end wall (length endWall) at +z."
+                    }
+                  },
+                  "description": "A walled block under a hipped roof (four equal pitches, ridge along the longer side)."
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
         {
           "if": {
             "properties": {

@@ -254,6 +254,7 @@ features["lower-south-wall"] = {
     "top": "level", "baseLevel": r3(S_REL_BASE - APPROACH_RISE),  # flush with the plaza, not with the highest ground under it
     "phase": NEW, "placement": placement("lower_south_wall", conf="attested"),
     "sourceIds": [FW, WP], "confidence": "attested",
+    "hiddenReason": "Not drawn on the Ministry boards; walls are shown around the temple only, none beside the priests' houses (user decision 2026-11-21).",
     "note": "About 20 m south of the propylon, about 15 m continuous (p. 101). Side gate (0.95 m) at its east end not modelled.",
 }
 features["fence-wall"] = {
@@ -261,6 +262,7 @@ features["fence-wall"] = {
     # Points at the approach tiers' edges so its top steps down with them (top 'follow').
     "polyline": [[15.07, 23.25]] + [[r3(15.07 + (15.65 - 15.07) * (z - 23.25) / (33.31 - 23.25)), r3(z)] for z in [TIER1_SOUTH + k * TIER_DEPTH for k in range(TIER_N)] if z < 33.31] + [[15.65, 33.31]],
     "thickness": text(0.30, "m", "101"), "height": text(0.7, "m", "101", "slabs about 0.7 m high"),
+    "hiddenReason": "Flanked the broad approach terraces; the stair is now only as wide as the gate building and the Ministry boards draw no fence (user decision 2026-11-21).",
     "top": "follow", "phase": NEW, "placement": placement("fence_wall", conf="analogy", note="south part dashed (reconstructed) on the plan"),
     "sourceIds": [FW, WP], "confidence": "analogy",
 }
@@ -271,7 +273,8 @@ main_poly = [
     pt(SE_CORNER), pt([wse["centreline"][1][0], ZS]), [r3(XW), r3(ZS)],
 ]
 knoll_poly = [pt(wn["centreline"][1]), [29.75, r3(ZN)], [33.3, -18.63], pt(E0), [40.8, -20.5], [34.0, -25.5], [18.0, -24.5]]
-plaza_full = [[15.0, r3(ZS)], pt([wse["centreline"][1][0], ZS]), [36.6, 30.0], [31.3, 43.0], [11.4, 41.6], [11.67, 39.71], [12.85, 36.84], [14.47, 34.65], [15.65, 33.31], [15.07, 23.25]]
+ROCK_W = 29.9  # west edge of the houses' rock: it reaches the lean-to's west face and runs back to the wall (user decision 2026-11-21)
+plaza_full = [[15.0, r3(ZS)], [ROCK_W, r3(ZS)], [ROCK_W, 30.0], [31.3, 43.0], [11.4, 41.6], [11.67, 39.71], [12.85, 36.84], [14.47, 34.65], [15.65, 33.31], [15.07, 23.25]]
 
 
 def clip_z(poly, z0, z1):
@@ -300,11 +303,28 @@ def clip_z(poly, z0, z1):
 
 
 tier_z = [ZS] + [TIER1_SOUTH + k * TIER_DEPTH for k in range(TIER_N)]  # tier k spans tier_z[k]..tier_z[k+1]
-approach_tiers = [clip_z(plaza_full, tier_z[k], tier_z[k + 1]) for k in range(TIER_N)]
+def clip_x(poly, x0, x1):
+    """Part of a polygon between x0 and x1 (clip_z on the swapped axes)."""
+    sw = lambda q: [[p[1], p[0]] for p in q]
+    return sw(clip_z(sw(poly), x0, x1))
+
+
+# The stair is only as wide as the gate building (user decision 2026-11-21); the plaza level fills either side.
+STAIR_X0, STAIR_X1 = PX0, PX1
+approach_tiers = [clip_x(clip_z(plaza_full, tier_z[k], tier_z[k + 1]), STAIR_X0, STAIR_X1) for k in range(TIER_N)]
 plaza_poly = clip_z(plaza_full, tier_z[-1], None)
-se_poly = [pt([wse["centreline"][1][0], ZS]), pt(SE_CORNER), pt(E1), [54.4, 41.5], [55.4, 47.2], [42.9, 47.2], [31.3, 43.0], [36.6, 30.0]]
+plaza_side_w = clip_x(clip_z(plaza_full, None, tier_z[-1]), None, STAIR_X0)
+plaza_side_e = clip_x(clip_z(plaza_full, None, tier_z[-1]), STAIR_X1, None)
+se_poly = [[ROCK_W, r3(ZS)], pt(SE_CORNER), pt(E1), [54.4, 41.5], [55.4, 47.2], [42.9, 47.2], [31.3, 43.0], [ROCK_W, 30.0]]
 SUED = {"x0": -5.0, "x1": 20.0, "z0": r3(ZS + 33.0), "w": 6.0}
 sued_poly = [[SUED["x0"], SUED["z0"]], [SUED["x1"], SUED["z0"]], [SUED["x1"], SUED["z0"] + SUED["w"]], [SUED["x0"], SUED["z0"] + SUED["w"]]]
+
+OUTER = {"polygon": plaza_poly, "level": board(r3(S_REL_BASE - APPROACH_RISE), "m", f"plaza at the foot of the approach terraces, {APPROACH_RISE:.1f} m below the terrace (IMG_8191: about 4 m drawn, +/-1 m, read lower once spread over the slope); the propylon floor stays at terrace height (p. 77)", "analogy"),
+                  "clampDrop": board(0, "m", "IMG_8191: the open slope west of the approach lies at about the plaza's level along the wall foot, so the ground next to the plaza is not held below it", "analogy"),
+                  "fillDrop": board(0.5, "m", "CONJECTURAL softening: next to the plaza the ground is raised to at most 0.5 m below it, feathered back to the DEM, toward the board's gentle slope south of the gate (IMG_8191)", "conjectural"),
+                  "falloff": {"edgeDrop": conj(2.0, "m", "lower south wall: three courses on rock, 1.20 m fill (p. 101)"), "slope": conj(0.35, "ratio", "rock slope to the south")},
+                  "edgeFace": "rock",
+                  "note": "Rock 'rises evenly' toward the propylon (p. 100); modelled flat south of the approach terraces, which take its northern part (Ministry approach board IMG_8191). The priests' houses stand on the rock outcrop above it (rock face on the SE terrace's edge)."}
 
 terrain = {
     "confidence": "conjectural",
@@ -320,12 +340,9 @@ terrain = {
                      # wall of the NE corner (Ministry board b); north edges: the rock face above the cave (p. 88).
                      "edgeFaces": ["ashlar", "ashlar", "ashlar", "ashlar", "ashlar", "rock", "rock"],
                      "note": "Outline beyond the plan's dashed (no-wall) north edge is conjectural. East faces ashlar (Ministry board: tall ashlar retaining wall at the NE corner), north faces natural rock (Furtwängler p. 88)."},
-        "outer-terrace": {"polygon": plaza_poly, "level": board(r3(S_REL_BASE - APPROACH_RISE), "m", f"plaza at the foot of the approach terraces, {APPROACH_RISE:.1f} m below the terrace (IMG_8191: about 4 m drawn, +/-1 m, read lower once spread over the slope); the propylon floor stays at terrace height (p. 77)", "analogy"),
-                          "clampDrop": board(0, "m", "IMG_8191: the open slope west of the approach lies at about the plaza's level along the wall foot, so the ground next to the plaza is not held below it", "analogy"),
-                          "fillDrop": board(0.5, "m", "CONJECTURAL softening: next to the plaza the ground is raised to at most 0.5 m below it, feathered back to the DEM, toward the board's gentle slope south of the gate (IMG_8191)", "conjectural"),
-                          "falloff": {"edgeDrop": conj(2.0, "m", "lower south wall: three courses on rock, 1.20 m fill (p. 101)"), "slope": conj(0.35, "ratio", "rock slope to the south")},
-                          "edgeFace": "rock",
-                          "note": "Rock 'rises evenly' toward the propylon (p. 100); modelled flat south of the approach terraces, which take its northern part (Ministry approach board IMG_8191). The priests' houses stand on the rock outcrop above it (rock face on the SE terrace's edge)."},
+        "outer-terrace": OUTER,
+        **{f"outer-terrace-{side}": dict(OUTER, polygon=poly_, note="Plaza level beside the stair (the stair is only as wide as the gate building).")
+           for side, poly_ in (("west", plaza_side_w), ("east", plaza_side_e))},
         **{f"approach-tier-{k + 1}": {
             "polygon": approach_tiers[k],
             "level": board(r3(S_REL_BASE - TIER_RISE * k), "m", f"approach terrace {k + 1} of {TIER_N}: {TIER_RISE:.2f} m below the one above (riser kept <= 0.35 m for walking; course height on IMG_8191 about 0.3-0.7 m)", "analogy"),
@@ -540,6 +557,66 @@ features["propylon"] = {
     "phase": NEW, "placement": placement("propylon", conf="attested"), "sourceIds": [FW, WP, MIN], "confidence": "analogy",
     "complex": "south-gate",
     "note": "Matches the Ministry board: the only entrance, two columns between antae on each front, a central door, the approach rising from outside (south), a small sculpture on the roof. Floor at terrace height (orthostate cover slabs at terrace level, p. 77); the approach climbs to it over broad low ashlar terraces in front of the wall (terraces approach-tier-1..8; IMG_8191), which carry its southward projection, so no separate stair. The stair-side conflict with the plan is resolved by the board (sources.json choices.propylon-stairs-south).",
+}
+
+# ---- priests' houses (Ministry boards; blockout, rebuilt from scratch 2026-11-21) ------------------------------------
+# Two blocks on the rock outcrop outside the boundary wall, under hipped tiled roofs (IMG_8187 aerial from the NE,
+# IMG_8191 approach view; the boards win over Furtwängler's plan, user decision). Frame: u along the south wall's
+# east leg from where the stretch beside the propylon ends (36.436/20.583: on IMG_8187 the wall runs 8.8 m east of
+# the propylon and stops at the rear block), v toward the south. The blocks are parallel to the wall.
+H_O = [36.436, 20.583]
+H_A = math.atan2(20.983 - 20.583, 49.271 - 36.436)  # wall direction (math angle in x/z)
+H_ROT = rot_of(math.degrees(H_A))
+WALL_FACE = 0.85 / 2 + 0.10 + 0.02  # the wall's south face, its coping projection, a hair
+H_PITCH = math.radians(17)  # common roof pitch (both boards: low tiled roofs), conjectural
+
+
+def wall_frame(u0, u1, v0, v1):
+    """Centre (world), length (along u) and width (along v) of the box u0..u1 x v0..v1 in the houses' frame."""
+    cu, cv = (u0 + u1) / 2, (v0 + v1) / 2
+    c, s_ = math.cos(H_A), math.sin(H_A)
+    return [r3(H_O[0] + c * cu - s_ * cv), r3(H_O[1] + s_ * cu + c * cv)], r3(u1 - u0), r3(v1 - v0)
+
+
+REAR = (0.0, 12.3, WALL_FACE, WALL_FACE + 6.4)  # u0, u1, v0, v1
+BURY = 0.3  # the front block's north wall runs 0.3 m into the rear block (they abut on IMG_8187; no shared face)
+FRONT = (1.5, 12.2, REAR[3] - BURY, REAR[3] + 10.0)  # east face 0.1 m inside the rear block's (no shared plane)
+REAR_EAVE, FRONT_EAVE = 4.9, 3.9
+LEAN = (-3.2, 0.3, REAR[2] + 0.03, REAR[3] - 0.03)  # low shed on the rear block's west face, its full width (IMG_8191, left of the porch); 0.3 m into the rear block
+
+
+def house_block(bid, name, box, eave, notes, porch=None, shed=None):
+    c, L, W = wall_frame(*box)
+    rise = r3(shed if shed else min(L, W) / 2 * math.tan(H_PITCH))
+    return {"id": bid, "name": name, "center": c, "rotation": H_ROT,
+            "length": board(L, "m", notes["length"], "analogy"), "width": board(W, "m", notes["width"], "analogy"),
+            "eaveHeight": board(eave, "m", notes["eave"], "analogy"),
+            "roofRise": board(rise, "m", f"hipped roof at a pitch of about {math.degrees(H_PITCH):.0f} degrees (both boards draw low tiled roofs; +/-5 degrees)", "conjectural"),
+            "overhang": conj(0.4, "m", "eaves"),
+            **({"porch": porch} if porch else {}), **({"roof": "shed"} if shed else {})}
+
+
+features["priests-houses"] = {
+    "kind": "houses", "name": "Priests' houses (later priests' houses, legend 17)",
+    "blocks": [
+        house_block("lean-to", "Lean-to with a door, on the rear block", LEAN, 2.5, {
+            "length": "lean-to projecting west from the rear block (IMG_8191, left of the porch)",
+            "width": "the full width of the rear block it leans on (IMG_8191)",
+            "eave": "low eave about 1.5 x the drawn figures; the roof rises toward the main block (IMG_8191), door in the west face"}, shed=0.5),
+        house_block("rear", "Rear block against the boundary wall", REAR, REAR_EAVE, {
+            "length": "along the wall from the end of the stretch beside the propylon to the east wall (IMG_8187)",
+            "width": "depth from the wall; the block is a long rectangle along it (IMG_8187, IMG_8191)",
+            "eave": "the taller block (IMG_8191), eave above the outcrop by the drawn figures (1.7 m)"}),
+        house_block("front", "Front block, roughly square", FRONT, FRONT_EAVE, {
+            "length": "east face in line with the rear block's, west face set back from it (IMG_8187)",
+            "width": "roughly square in plan (IMG_8187; near-pyramidal roof on IMG_8191)",
+            "eave": "the lower block (IMG_8191), eave above the outcrop by the drawn figures (1.7 m)"},
+            porch={"columns": 4, "depth": board(2.2, "m", "open porch recess on the west face (IMG_8191: columns on the face toward the gate)", "analogy"),
+                   "endWall": board(2.6, "m", "solid wall at the south end of the face (IMG_8191), the rest open between four Doric columns (user decision 2026-11-21)", "analogy")}),
+    ],
+    "phase": BORDER, "placement": placement(None, 1.5, "analogy", note="placed from the Ministry boards against the boundary wall's south leg; the plan's room groups (I, II-IV) lie here, about 12 degrees askew", ref=MIN, verified=False),
+    "sourceIds": [MIN, FW], "confidence": "analogy",
+    "note": "Blockout massing after the Ministry boards: built against the outside of the boundary wall on the rock outcrop, reached only from outside; hipped tiled roofs (many tile fragments, p. 99). Group I and room II start with the new campaign, III and IV about the temple's completion (p. 99).",
 }
 
 # ---- Südbau (off the sheet; text placement) -------------------------------------------------------------------------

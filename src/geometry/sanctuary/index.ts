@@ -10,6 +10,7 @@ import { altar } from './altar'
 import { building } from './building'
 import { cistern, cisternLoops } from './cistern'
 import { pavement } from './pavement'
+import { priestsHouses } from './priests-houses'
 import { BASE_SIDES, votiveColumn, type SphinxSlot } from './votive'
 import type { GroundFn, SanctuaryContext } from './common'
 import { sampleHeight, terrain } from './terrain'
@@ -53,6 +54,8 @@ export function buildFeature(id: string, f: SanctuaryFeature, ctx: SanctuaryCont
       return votiveColumn(id, f, ctx, col)
     case 'building':
       return building(id, f, ctx, col)
+    case 'houses':
+      return priestsHouses(id, f, ctx, col)
     case 'wall':
       return wallRun(id, f, ctx, col)
     case 'cistern':

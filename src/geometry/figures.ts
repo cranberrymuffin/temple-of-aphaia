@@ -52,13 +52,13 @@ const B = (x0: number, y0: number, z0: number, x1: number, y1: number, z1: numbe
 
 /** Torso, head and helmet shared by the upright poses (hip height h, torso top t). */
 function upper(h: number, t: number, lean: number, opts: { archer: boolean; athena: boolean }): Part[] {
-  const torso: Part['paint'] = opts.athena ? 'athena-aegis' : opts.archer ? 'archer-costume' : 'figure-armour'
+  const torso: Part['paint'] = opts.athena ? 'athena-aegis' : 'figure-armour' // the archer is plain marble too (user decision 2026-11-21)
   const parts = [
     B(-0.09, h - 0.03, -0.11 + lean, 0.09, t, 0.11 + lean, torso),
     B(-0.06, t - 0.01, -0.05 + lean * 1.3, 0.06, t + 0.13, 0.07 + lean * 1.3, 'figure-flesh'),
-    B(-0.065, t + 0.09, -0.06 + lean * 1.3, 0.065, t + 0.16, 0.075 + lean * 1.3, opts.archer ? 'archer-vest' : 'figure-hair'),
+    B(-0.065, t + 0.09, -0.06 + lean * 1.3, 0.065, t + 0.16, 0.075 + lean * 1.3, 'figure-hair'),
   ]
-  if (opts.archer) parts.push(B(-0.095, h + 0.08, -0.115 + lean, 0.095, t - 0.04, 0.115 + lean, 'archer-vest'))
+  if (opts.archer) parts.push(B(-0.095, h + 0.08, -0.115 + lean, 0.095, t - 0.04, 0.115 + lean, 'figure-armour'))
   return parts
 }
 
@@ -71,7 +71,7 @@ function legs(h: number, spread: number, paint: Part['paint']): Part[] {
 
 /** Parts for a pose, in figure heights (standing = 1). */
 export function poseParts(pose: Pose, opts: { archer: boolean; athena: boolean }): Part[] {
-  const legPaint: Part['paint'] = opts.archer ? 'archer-costume' : 'figure-flesh'
+  const legPaint: Part['paint'] = 'figure-flesh'
   switch (pose) {
     case 'standing': {
       const parts = [...legs(0.48, 0, opts.athena ? 'athena-aegis' : legPaint), ...upper(0.48, 0.82, 0, opts)]

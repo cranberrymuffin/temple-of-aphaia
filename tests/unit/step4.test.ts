@@ -80,7 +80,7 @@ describe('materials resolve for everything built', () => {
     // Merged meshes + one InstancedMesh per instance set; terrain + sea included. Budget <= 10.
     expect(keys.size + out.instances.length).toBeLessThanOrEqual(10)
     if (tier === 'low') expect([...keys].filter((k) => (PATTERN_IDS as readonly string[]).includes(k))).toEqual([])
-    else for (const p of ['hawksbeak', 'palmette', 'meander', 'diamond']) expect(keys, p).toContain(p)
+    else for (const p of ['hawksbeak', 'palmette', 'meander']) expect(keys, p).toContain(p)
   })
 
   it('ornament bands carry band UVs (v spans 0..1 across the band)', () => {
@@ -99,7 +99,7 @@ describe('materials resolve for everything built', () => {
 
 describe('pediment stand-ins', () => {
   const P = r.pediment
-  const figs = groupsNamed(high.out, 'pediment-figures', 'archer-costume')
+  const figs = groupsNamed(high.out, 'pediment-figures')
 
   it('west 13 and the displayed later east composition 11 figures, Athena central in both, the archer present', () => {
     expect(pediments.west.figures).toHaveLength(13)
@@ -112,11 +112,11 @@ describe('pediment stand-ins', () => {
       for (const f of c.figures) expect(f.confidence).toBe('interpretive')
     }
     expect(pediments.west.figures.some((f) => 'nameId' in f && f.nameId === 'trojan-archer')).toBe(true)
-    expect(groupsNamed(high.out, 'archer-costume')[0].material).toBe('diamond')
+    expect(groupsNamed(high.out, 'archer-costume')).toHaveLength(0) // plain marble like the rest (user decision 2026-11-21)
   })
 
   it('every figure vertex sits on the cornice, in front of the tympanum and under the raking soffit', () => {
-    expect(figs.length).toBe(2)
+    expect(figs.length).toBe(1)
     let n = 0
     for (const g of figs)
       for (let i = 0; i < g.positions.length; i += 3) {

@@ -266,7 +266,35 @@ export interface ColumnFeature extends FeatureBase {
   crowning?: { kind: 'sphinx'; height: Measure }
 }
 
+/** One block of the priests' houses: a walled volume under a hipped roof (four equal pitches). */
+export interface HouseBlock {
+  id: string
+  name: string
+  center: Point2
+  /** Degrees, as for buildings (positive turns local x toward north). */
+  rotation: number
+  /** Along local x and z (m). */
+  length: Measure
+  width: Measure
+  /** Eave (wall top) above the floor (m). */
+  eaveHeight: Measure
+  /** Roof rise above the eaves over the shorter half-width (m); the ridge runs along the longer side. */
+  roofRise: Measure
+  overhang: Measure
+  /** 'shed': a single pitch falling toward +z by `roofRise` (a lean-to against the wall). Default: hipped. */
+  roof?: 'hipped' | 'shed'
+  /** Open colonnade on the -x face: `columns` Doric columns (the temple's, scaled to the eave) across the face except a solid end wall at +z. */
+  porch?: { columns: number; depth: Measure; endWall: Measure }
+}
+
+/** The priests' houses outside the SE boundary wall (src/geometry/sanctuary/priests-houses.ts). */
+export interface HousesFeature extends FeatureBase {
+  kind: 'houses'
+  blocks: HouseBlock[]
+}
+
 export type SanctuaryFeature =
+  | HousesFeature
   | AltarFeature
   | BaseFeature
   | BuildingFeature
@@ -347,6 +375,10 @@ export function sanctuaryRefErrors(doc: SanctuaryDoc, sourceIds: Set<string>): s
     }
     if ((f.kind === 'wall' || f.kind === 'channel') && f.polyline.some((p, i) => i > 0 && Math.hypot(p[0] - f.polyline[i - 1][0], p[1] - f.polyline[i - 1][1]) < 1e-6))
       errs.push(`${id}: repeated polyline point`)
+    if (f.kind === 'houses')
+      for (const b of f.blocks)
+        for (const p of rotatedRect(b.center, b.length.value, b.width.value, b.rotation))
+          if (!terraces.some(([, t]) => pointInPolygon(t.polygon, p))) errs.push(`${id}.${b.id}: corner off the terraces`)
     if (['altar', 'base', 'building', 'cistern', 'column'].includes(f.kind) && f.baseLevel === undefined) {
       const c = (f as { center: Point2 }).center
       if (!terraces.some(([, t]) => pointInPolygon(t.polygon, c)) && !f.uncertain) errs.push(`${id}: not on a terrace`)
@@ -437,6 +469,8 @@ export function footprints(f: SanctuaryFeature): Point2[][] {
     }
     case 'base':
       return [rotatedRect(f.center, f.length.value, f.width.value, f.rotation)]
+    case 'houses':
+      return f.blocks.map((b) => rotatedRect(b.center, b.length.value, b.width.value, b.rotation))
     case 'building': {
       const box = rotatedRect(f.center, f.length.value, f.width.value, f.rotation)
       return f.steps && f.steps.count.value > 0 ? [box, stepsRect(f.center, f.length.value, f.width.value, f.rotation, f.steps)] : [box]
