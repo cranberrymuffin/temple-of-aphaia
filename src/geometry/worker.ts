@@ -104,6 +104,7 @@ scope.onmessage = async (e) => {
         figureSlots: temple.figureSlots,
         cultSlot: temple.cultSlot,
         sphinxSlot: site.sanctuary.sphinxSlots[0],
+        statueSlots: site.sanctuary.statueSlots,
       },
     }
     const ms = performance.now() - t0

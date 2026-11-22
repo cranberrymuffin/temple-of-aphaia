@@ -439,11 +439,11 @@ for fid, z in (("court-base-n1", -3.0), ("court-base-s1", 3.0), ("court-base-s2"
         "sourceIds": [MIN], "confidence": "analogy",
     }
 features["statue-base-front"] = {
-    "kind": "base", "name": "Tall statue base in front of the altar pavement", "center": [29.0, -5.4], "rotation": 0,
-    "length": board(1.2, "m", "base footprint", "conjectural"), "width": board(1.2, "m", "base footprint", "conjectural"),
-    "height": board(2.0, "m", "a tall base (legend 6)", "analogy"),
-    "figure": {"height": board(1.9, "m", "statue placeholder", "conjectural"), "width": board(0.6, "m", "placeholder", "conjectural"), "depth": board(0.4, "m", "placeholder", "conjectural")},
-    "phase": NEW, "placement": placement(None, 3.0, "conjectural", note="Ministry legend 6 'statue base in front of the altar pavement'; position estimated: west of the court, north of the paved way", ref=MIN, verified=False),
+    "kind": "base", "name": "Statue base in front of the altar pavement (legend 6), mirror of court-base-s2 across the way", "center": [30.5, -5.6], "rotation": 0,
+    "length": board(0.8, "m", "same base as the other court statues (user decision 2026-11-21: symmetric, same level and height)", "conjectural"), "width": board(0.8, "m", "same base as the other court statues", "conjectural"),
+    "height": board(0.6, "m", "same height as the other court bases (user decision 2026-11-21)", "analogy"),
+    "figure": {"height": board(1.7, "m", "same figure height as the other court statues", "conjectural"), "width": board(0.5, "m", "placeholder", "conjectural"), "depth": board(0.35, "m", "placeholder", "conjectural")},
+    "phase": NEW, "placement": placement(None, 3.0, "conjectural", note="Ministry legend 6 'statue base in front of the altar pavement'; placed symmetrically to court-base-s2 on the north side of the paved way", ref=MIN, verified=False),
     "sourceIds": [MIN], "confidence": "attested",
     "note": "Existence attested by the Ministry board (legend 6); position and size conjectural.",
 }
@@ -456,6 +456,7 @@ for i, z in enumerate([pc[1], -pc[1]]):
         "height": conj(0.6, "m", "only 4 cm sockets survive (p. 71)"),
         "phase": NEW, "placement": placement("plinth_way", conf="attested" if i == 0 else "analogy", note=None if i == 0 else "mirrored: the north side is symmetric (p. 71)"),
         "sourceIds": [FW, WP], "confidence": "analogy",
+        "hiddenReason": "Only 4 cm sockets survive and the Ministry board draws no statue on them; shown as bare blocks they misread as statues (user decision 2026-11-21).",
     }
 bn = F["base_north"]
 features["base-north"] = {
@@ -568,6 +569,7 @@ H_O = [36.436, 20.583]
 H_A = math.atan2(20.983 - 20.583, 49.271 - 36.436)  # wall direction (math angle in x/z)
 H_ROT = rot_of(math.degrees(H_A))
 WALL_FACE = 0.85 / 2 + 0.10 + 0.02  # the wall's south face, its coping projection, a hair
+WALL_IN = -(0.85 / 2 + 0.10 + 0.03)  # the houses' back wall: one with the boundary wall, a hair proud of its coping on the sanctuary side (Ministry boards)
 H_PITCH = math.radians(17)  # common roof pitch (both boards: low tiled roofs), conjectural
 
 
@@ -578,14 +580,14 @@ def wall_frame(u0, u1, v0, v1):
     return [r3(H_O[0] + c * cu - s_ * cv), r3(H_O[1] + s_ * cu + c * cv)], r3(u1 - u0), r3(v1 - v0)
 
 
-REAR = (0.0, 12.3, WALL_FACE, WALL_FACE + 6.4)  # u0, u1, v0, v1
+REAR = (0.2, 12.3, WALL_IN, WALL_FACE + 6.4)  # u0, u1, v0, v1
 BURY = 0.3  # the front block's north wall runs 0.3 m into the rear block (they abut on IMG_8187; no shared face)
 FRONT = (1.5, 12.2, REAR[3] - BURY, REAR[3] + 10.0)  # east face 0.1 m inside the rear block's (no shared plane)
 REAR_EAVE, FRONT_EAVE = 4.9, 3.9
-LEAN = (-3.2, 0.3, REAR[2] + 0.03, REAR[3] - 0.03)  # low shed on the rear block's west face, its full width (IMG_8191, left of the porch); 0.3 m into the rear block
+LEAN = (-3.0, 0.5, REAR[2] - 0.03, REAR[3] - 0.03)  # low shed on the rear block's west face, its full width (IMG_8191, left of the porch); 0.3 m into the rear block
 
 
-def house_block(bid, name, box, eave, notes, porch=None, shed=None):
+def house_block(bid, name, box, eave, notes, porch=None, shed=None, doors=None):
     c, L, W = wall_frame(*box)
     rise = r3(shed if shed else min(L, W) / 2 * math.tan(H_PITCH))
     return {"id": bid, "name": name, "center": c, "rotation": H_ROT,
@@ -593,7 +595,7 @@ def house_block(bid, name, box, eave, notes, porch=None, shed=None):
             "eaveHeight": board(eave, "m", notes["eave"], "analogy"),
             "roofRise": board(rise, "m", f"hipped roof at a pitch of about {math.degrees(H_PITCH):.0f} degrees (both boards draw low tiled roofs; +/-5 degrees)", "conjectural"),
             "overhang": conj(0.4, "m", "eaves"),
-            **({"porch": porch} if porch else {}), **({"roof": "shed"} if shed else {})}
+            **({"porch": porch} if porch else {}), **({"roof": "shed"} if shed else {}), **({"doors": doors} if doors else {})}
 
 
 features["priests-houses"] = {
@@ -602,11 +604,13 @@ features["priests-houses"] = {
         house_block("lean-to", "Lean-to with a door, on the rear block", LEAN, 2.5, {
             "length": "lean-to projecting west from the rear block (IMG_8191, left of the porch)",
             "width": "the full width of the rear block it leans on (IMG_8191)",
-            "eave": "low eave about 1.5 x the drawn figures; the roof rises toward the main block (IMG_8191), door in the west face"}, shed=0.5),
+            "eave": "low eave about 1.5 x the drawn figures; the roof rises toward the main block (IMG_8191), door in the west face"}, shed=0.5,
+            doors=[{"side": "-x", "offset": 0.0, "width": board(1.4, "m", "doorway in the lean-to's west face (IMG_8191)", "analogy"), "height": board(2.2, "m", "door height (IMG_8191)", "analogy")}]),
         house_block("rear", "Rear block against the boundary wall", REAR, REAR_EAVE, {
             "length": "along the wall from the end of the stretch beside the propylon to the east wall (IMG_8187)",
             "width": "depth from the wall; the block is a long rectangle along it (IMG_8187, IMG_8191)",
-            "eave": "the taller block (IMG_8191), eave above the outcrop by the drawn figures (1.7 m)"}),
+            "eave": "the taller block (IMG_8191), eave above the outcrop by the drawn figures (1.7 m)"},
+            doors=[{"side": "-z", "offset": -4.65, "width": board(1.4, "m", "door from the houses into the sanctuary through the wall line (IMG_8187)", "analogy"), "height": board(2.4, "m", "door height, a little over a figure (IMG_8187)", "analogy")}]),
         house_block("front", "Front block, roughly square", FRONT, FRONT_EAVE, {
             "length": "east face in line with the rear block's, west face set back from it (IMG_8187)",
             "width": "roughly square in plan (IMG_8187; near-pyramidal roof on IMG_8191)",

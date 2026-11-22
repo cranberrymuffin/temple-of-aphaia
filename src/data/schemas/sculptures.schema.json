@@ -86,7 +86,8 @@
                   "site": {
                     "enum": [
                       "cella-cult-statue",
-                      "sphinx-column"
+                      "sphinx-column",
+                      "votive-statue"
                     ]
                   }
                 }

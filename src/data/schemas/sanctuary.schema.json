@@ -712,6 +712,20 @@
                       "$ref": "#/definitions/nonNegative"
                     },
                     "roof": { "enum": ["hipped", "shed"] },
+                    "doors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": ["side", "offset", "width", "height"],
+                        "additionalProperties": false,
+                        "properties": {
+                          "side": { "enum": ["-x", "-z"] },
+                          "offset": { "type": "number" },
+                          "width": { "$ref": "#/definitions/positive" },
+                          "height": { "$ref": "#/definitions/positive" }
+                        }
+                      }
+                    },
                     "porch": {
                       "type": "object",
                       "required": ["columns", "depth", "endWall"],

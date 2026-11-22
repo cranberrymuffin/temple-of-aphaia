@@ -411,8 +411,8 @@
       "asset": "w-l-kneeling-archer",
       "mirror": true,
       "from": "mirrored from west L",
-      "paint": "scythian-costume",
-      "note": "The Scythian archer has no scan: the helmeted archer of slot L, mirrored, carries the attested diamond-costume colours on shirt and leggings (Harvard Gazette 2007), an imagined combination."
+      "paint": "marble",
+      "note": "The Scythian archer has no scan: the helmeted archer of slot L, mirrored, carries the attested diamond-costume colours on shirt and leggings (Harvard Gazette 2007), an imagined combination. Shown as plain marble like the other figures (user decision 2026-11-21)."
     },
     {
       "id": "w-d-mirrored",
@@ -573,6 +573,58 @@
       "label": "A comparable sphinx (cast of the Sphinx of Aegina, Copenhagen); the Aphaia original is lost",
       "licence": "CC BY-NC-SA 4.0 (\"Sphinx seated by Geoffrey Marchal is licensed under CC Attribution-NonCommercial-ShareAlike.\"); our simplified GLB is a derivative and is likewise CC BY-NC-SA 4.0.",
       "note": "Scaled to the 1.6 m crowning height in sanctuary.json; faces the temple."
+    },
+    {
+      "id": "votive-statue-court-base-n1",
+      "title": "Votive statue on a base (Archaic kore, shown as the Acropolis kore cast)",
+      "slot": {
+        "site": "votive-statue"
+      },
+      "kind": "imagined",
+      "asset": "cella-kore",
+      "mirror": false,
+      "from": "imagined from cella-kore",
+      "paint": "marble",
+      "note": "The votive statues on the Ministry board are life-size, robed, slender standing figures (legend 6 and the court's west edge); their identity is lost. The Copenhagen cast of the Acropolis kore (c. 530 BC, public domain) stands in, scaled to the figure height in sanctuary.json and turned toward the altar."
+    },
+    {
+      "id": "votive-statue-court-base-s1",
+      "title": "Votive statue on a base (Archaic kore, shown as the Acropolis kore cast)",
+      "slot": {
+        "site": "votive-statue"
+      },
+      "kind": "imagined",
+      "asset": "cella-kore",
+      "mirror": false,
+      "from": "imagined from cella-kore",
+      "paint": "marble",
+      "note": "The votive statues on the Ministry board are life-size, robed, slender standing figures (legend 6 and the court's west edge); their identity is lost. The Copenhagen cast of the Acropolis kore (c. 530 BC, public domain) stands in, scaled to the figure height in sanctuary.json and turned toward the altar."
+    },
+    {
+      "id": "votive-statue-court-base-s2",
+      "title": "Votive statue on a base (Archaic kore, shown as the Acropolis kore cast)",
+      "slot": {
+        "site": "votive-statue"
+      },
+      "kind": "imagined",
+      "asset": "cella-kore",
+      "mirror": false,
+      "from": "imagined from cella-kore",
+      "paint": "marble",
+      "note": "The votive statues on the Ministry board are life-size, robed, slender standing figures (legend 6 and the court's west edge); their identity is lost. The Copenhagen cast of the Acropolis kore (c. 530 BC, public domain) stands in, scaled to the figure height in sanctuary.json and turned toward the altar."
+    },
+    {
+      "id": "votive-statue-statue-base-front",
+      "title": "Votive statue on a base (Archaic kore, shown as the Acropolis kore cast)",
+      "slot": {
+        "site": "votive-statue"
+      },
+      "kind": "imagined",
+      "asset": "cella-kore",
+      "mirror": false,
+      "from": "imagined from cella-kore",
+      "paint": "marble",
+      "note": "The votive statues on the Ministry board are life-size, robed, slender standing figures (legend 6 and the court's west edge); their identity is lost. The Copenhagen cast of the Acropolis kore (c. 530 BC, public domain) stands in, scaled to the figure height in sanctuary.json and turned toward the altar."
     }
   ]
 }

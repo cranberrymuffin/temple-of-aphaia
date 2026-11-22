@@ -4,6 +4,7 @@ import type { FeatureReport } from './sanctuary'
 import type { TerrainMismatch } from './sanctuary/terraces'
 import type { CultSlot } from './cult'
 import type { Field, PlacedFigure } from './figures'
+import type { StatueSlot } from './sanctuary/altar'
 import type { SphinxSlot } from './sanctuary/votive'
 import type { GeneratorOutput, Tier } from './types'
 
@@ -41,7 +42,7 @@ export interface TempleMeta {
   }
   cella: { centerX: number; halfX: number; halfZ: number; floorY: number; eastWallX: [number, number]; westWallX: [number, number] }
   /** Where scanned sculptures replace stand-ins: the pediment field, each figure slot, the cult-statue base. */
-  sculpture: { field: Field; figureSlots: PlacedFigure[]; cultSlot: CultSlot; sphinxSlot?: SphinxSlot }
+  sculpture: { field: Field; figureSlots: PlacedFigure[]; cultSlot: CultSlot; sphinxSlot?: SphinxSlot; statueSlots?: StatueSlot[] }
   log: LogEntry[]
 }
 

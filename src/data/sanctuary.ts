@@ -286,6 +286,8 @@ export interface HouseBlock {
   overhang: Measure
   /** 'shed': a single pitch falling toward +z by `roofRise` (a lean-to against the wall). Default: hipped. */
   roof?: 'hipped' | 'shed'
+  /** Doors: a dark leaf standing just proud of the wall, centred `offset` m along the face from its middle, on the ground outside. */
+  doors?: { side: '-x' | '-z'; offset: number; width: Measure; height: Measure }[]
   /** Open colonnade on the -x face: `columns` Doric columns (the temple's, scaled to the eave) across the face except a solid end wall at +z. */
   porch?: { columns: number; depth: Measure; endWall: Measure }
 }

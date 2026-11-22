@@ -62,11 +62,26 @@ function block(name: string, b: HouseBlock, ctx: SanctuaryContext, col: Collecto
     col.get('house-porch-columns').append(cols, m)
   }
   const roof = new MeshBuilder('sanctuary-roof')
+  if (b.doors?.length) {
+    // Doors: a dark timber leaf just proud of the wall, standing on the ground outside the face.
+    const wood = new MeshBuilder('timber')
+    const toWorld = localToWorld(b.center, b.rotation)
+    for (const d of b.doors) {
+      const w = d.width.value / 2
+      const h = d.height.value
+      if (d.side === '-x') {
+        const [gx, gz] = toWorld(-hx - 0.5, d.offset)
+        const y = ctx.ground(gx, gz)
+        wood.box([-hx - 0.04, y, d.offset - w], [-hx, y + h, d.offset + w], ['-y', '+x'])
+      } else {
+        const [gx, gz] = toWorld(d.offset, -hz - 0.5)
+        const y = ctx.ground(gx, gz)
+        wood.box([d.offset - w, y, -hz - 0.04], [d.offset + w, y + h, -hz], ['-y', '+z'])
+      }
+    }
+    col.get('timber').append(wood, m)
+  }
   if (b.roof === 'shed') {
-    // Door in the free west face: a dark timber leaf standing just proud of the wall (the board's doorway).
-    const door = new MeshBuilder('timber')
-    door.box([-hx - 0.04, g.min, -0.7], [-hx, g.min + 2.2, 0.7], ['-y', '+x'])
-    col.get('timber').append(door, m)
     shedRoof(walls, roof, b, top, hx, hz)
   }
   else hippedRoof(roof, b, top, hx, hz)

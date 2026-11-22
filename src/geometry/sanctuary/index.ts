@@ -6,7 +6,7 @@ import type { PaletteLike } from '../mesh'
 import { Collector } from '../mesh'
 import type { GeneratorOutput, Heightfield, Tier } from '../types'
 import { mergeOutputs } from '../types'
-import { altar } from './altar'
+import { altar, type StatueSlot } from './altar'
 import { building } from './building'
 import { cistern, cisternLoops } from './cistern'
 import { pavement } from './pavement'
@@ -43,7 +43,7 @@ export function terrainCuts(f: SanctuaryFeature, tier: Tier): Point2[][] {
   return footprints(f)
 }
 
-export function buildFeature(id: string, f: SanctuaryFeature, ctx: SanctuaryContext, col: Collector): Omit<GeneratorOutput, 'groups'> & { sphinxSlot?: SphinxSlot } {
+export function buildFeature(id: string, f: SanctuaryFeature, ctx: SanctuaryContext, col: Collector): Omit<GeneratorOutput, 'groups'> & { sphinxSlot?: SphinxSlot; statueSlot?: StatueSlot } {
   switch (f.kind) {
     case 'altar':
     case 'base':
@@ -71,12 +71,14 @@ export interface SanctuaryBuild {
   cuts: Point2[][]
   /** Sphinx crowning slots (scans replace the stand-in). */
   sphinxSlots: SphinxSlot[]
+  /** Statue slots (scans replace the placeholder blocks). */
+  statueSlots: StatueSlot[]
 }
 
 export function buildSanctuary(doc: SanctuaryDoc, tier: Tier, palette: PaletteLike, ground: GroundFn, stylobateTop: number): SanctuaryBuild {
   const col = new Collector()
   const ctx: SanctuaryContext = { ground, tier, stylobateTop }
-  const parts: (Omit<GeneratorOutput, 'groups'> & { sphinxSlot?: SphinxSlot })[] = []
+  const parts: (Omit<GeneratorOutput, 'groups'> & { sphinxSlot?: SphinxSlot; statueSlot?: StatueSlot })[] = []
   const report: FeatureReport[] = []
   const cuts: Point2[][] = []
   for (const [id, f] of Object.entries(doc.features)) {
@@ -100,7 +102,8 @@ export function buildSanctuary(doc: SanctuaryDoc, tier: Tier, palette: PaletteLi
     report.push({ id, kind: 'unmodelled', name: h.name, shown: false, phase: h.phase.label, placement: 'plan', hiddenReason: h.reason, note: h.note })
   const merged = mergeOutputs(parts.map((p) => ({ ...p, groups: [] })))
   const sphinxSlots = parts.flatMap((p) => (p.sphinxSlot ? [p.sphinxSlot] : []))
-  return { output: { ...merged, groups: col.build(palette) }, report, cuts, sphinxSlots }
+  const statueSlots = parts.flatMap((p) => (p.statueSlot ? [p.statueSlot] : []))
+  return { output: { ...merged, groups: col.build(palette) }, report, cuts, sphinxSlots, statueSlots }
 }
 
 /** Terrain group + heightfield level, cut by the given outlines (temple krepis, sanctuary features). */

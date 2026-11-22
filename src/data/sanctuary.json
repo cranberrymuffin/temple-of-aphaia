@@ -1896,51 +1896,51 @@
   },
   "statue-base-front": {
    "kind": "base",
-   "name": "Tall statue base in front of the altar pavement",
+   "name": "Statue base in front of the altar pavement (legend 6), mirror of court-base-s2 across the way",
    "center": [
-    29.0,
-    -5.4
+    30.5,
+    -5.6
    ],
    "rotation": 0,
    "length": {
-    "value": 1.2,
+    "value": 0.8,
     "unit": "m",
     "source": "published",
     "ref": "ministry-onsite-boards",
     "verified": false,
     "provisional": true,
-    "note": "DERIVED from the Ministry board (confidence: conjectural): base footprint"
+    "note": "DERIVED from the Ministry board (confidence: conjectural): same base as the other court statues (user decision 2026-11-21: symmetric, same level and height)"
    },
    "width": {
-    "value": 1.2,
+    "value": 0.8,
     "unit": "m",
     "source": "published",
     "ref": "ministry-onsite-boards",
     "verified": false,
     "provisional": true,
-    "note": "DERIVED from the Ministry board (confidence: conjectural): base footprint"
+    "note": "DERIVED from the Ministry board (confidence: conjectural): same base as the other court statues"
    },
    "height": {
-    "value": 2.0,
+    "value": 0.6,
     "unit": "m",
     "source": "published",
     "ref": "ministry-onsite-boards",
     "verified": false,
     "provisional": true,
-    "note": "DERIVED from the Ministry board (confidence: analogy): a tall base (legend 6)"
+    "note": "DERIVED from the Ministry board (confidence: analogy): same height as the other court bases (user decision 2026-11-21)"
    },
    "figure": {
     "height": {
-     "value": 1.9,
+     "value": 1.7,
      "unit": "m",
      "source": "published",
      "ref": "ministry-onsite-boards",
      "verified": false,
      "provisional": true,
-     "note": "DERIVED from the Ministry board (confidence: conjectural): statue placeholder"
+     "note": "DERIVED from the Ministry board (confidence: conjectural): same figure height as the other court statues"
     },
     "width": {
-     "value": 0.6,
+     "value": 0.5,
      "unit": "m",
      "source": "published",
      "ref": "ministry-onsite-boards",
@@ -1949,7 +1949,7 @@
      "note": "DERIVED from the Ministry board (confidence: conjectural): placeholder"
     },
     "depth": {
-     "value": 0.4,
+     "value": 0.35,
      "unit": "m",
      "source": "published",
      "ref": "ministry-onsite-boards",
@@ -1974,7 +1974,7 @@
     "verified": false,
     "confidence": "conjectural",
     "uncertaintyM": 3.0,
-    "note": "Ministry legend 6 'statue base in front of the altar pavement'; position estimated: west of the court, north of the paved way"
+    "note": "Ministry legend 6 'statue base in front of the altar pavement'; placed symmetrically to court-base-s2 on the north side of the paved way"
    },
    "sourceIds": [
     "ministry-onsite-boards"
@@ -2036,7 +2036,8 @@
     "furtwangler-1906",
     "wikimedia-plan-aphaia-sanctuary"
    ],
-   "confidence": "analogy"
+   "confidence": "analogy",
+   "hiddenReason": "Only 4 cm sockets survive and the Ministry board draws no statue on them; shown as bare blocks they misread as statues (user decision 2026-11-21)."
   },
   "plinth-s": {
    "kind": "base",
@@ -2093,7 +2094,8 @@
     "furtwangler-1906",
     "wikimedia-plan-aphaia-sanctuary"
    ],
-   "confidence": "analogy"
+   "confidence": "analogy",
+   "hiddenReason": "Only 4 cm sockets survive and the Ministry board draws no statue on them; shown as bare blocks they misread as statues (user decision 2026-11-21)."
   },
   "base-north": {
    "kind": "base",
@@ -2806,8 +2808,8 @@
      "id": "lean-to",
      "name": "Lean-to with a door, on the rear block",
      "center": [
-      34.87,
-      24.281
+      35.088,
+      23.708
      ],
      "rotation": -1.785,
      "length": {
@@ -2820,7 +2822,7 @@
       "note": "DERIVED from the Ministry board (confidence: analogy): lean-to projecting west from the rear block (IMG_8191, left of the porch)"
      },
      "width": {
-      "value": 6.34,
+      "value": 7.5,
       "unit": "m",
       "source": "published",
       "ref": "ministry-onsite-boards",
@@ -2855,18 +2857,42 @@
       "provisional": true,
       "note": "CONJECTURAL: eaves"
      },
-     "roof": "shed"
+     "roof": "shed",
+     "doors": [
+      {
+       "side": "-x",
+       "offset": 0.0,
+       "width": {
+        "value": 1.4,
+        "unit": "m",
+        "source": "published",
+        "ref": "ministry-onsite-boards",
+        "verified": false,
+        "provisional": true,
+        "note": "DERIVED from the Ministry board (confidence: analogy): doorway in the lean-to's west face (IMG_8191)"
+       },
+       "height": {
+        "value": 2.2,
+        "unit": "m",
+        "source": "published",
+        "ref": "ministry-onsite-boards",
+        "verified": false,
+        "provisional": true,
+        "note": "DERIVED from the Ministry board (confidence: analogy): door height (IMG_8191)"
+       }
+      }
+     ]
     },
     {
      "id": "rear",
      "name": "Rear block against the boundary wall",
      "center": [
-      42.466,
-      24.518
+      42.583,
+      23.971
      ],
      "rotation": -1.785,
      "length": {
-      "value": 12.3,
+      "value": 12.1,
       "unit": "m",
       "source": "published",
       "ref": "ministry-onsite-boards",
@@ -2875,7 +2901,7 @@
       "note": "DERIVED from the Ministry board (confidence: analogy): along the wall from the end of the stretch beside the propylon to the east wall (IMG_8187)"
      },
      "width": {
-      "value": 6.4,
+      "value": 7.5,
       "unit": "m",
       "source": "published",
       "ref": "ministry-onsite-boards",
@@ -2893,7 +2919,7 @@
       "note": "DERIVED from the Ministry board (confidence: analogy): the taller block (IMG_8191), eave above the outcrop by the drawn figures (1.7 m)"
      },
      "roofRise": {
-      "value": 0.978,
+      "value": 1.146,
       "unit": "m",
       "source": "published",
       "ref": "ministry-onsite-boards",
@@ -2909,7 +2935,31 @@
       "verified": false,
       "provisional": true,
       "note": "CONJECTURAL: eaves"
-     }
+     },
+     "doors": [
+      {
+       "side": "-z",
+       "offset": -4.65,
+       "width": {
+        "value": 1.4,
+        "unit": "m",
+        "source": "published",
+        "ref": "ministry-onsite-boards",
+        "verified": false,
+        "provisional": true,
+        "note": "DERIVED from the Ministry board (confidence: analogy): door from the houses into the sanctuary through the wall line (IMG_8187)"
+       },
+       "height": {
+        "value": 2.4,
+        "unit": "m",
+        "source": "published",
+        "ref": "ministry-onsite-boards",
+        "verified": false,
+        "provisional": true,
+        "note": "DERIVED from the Ministry board (confidence: analogy): door height, a little over a figure (IMG_8187)"
+       }
+      }
+     ]
     },
     {
      "id": "front",

@@ -72,7 +72,12 @@ describe('sanctuary.json', () => {
     }
     const front6 = f['statue-base-front']
     if (front6.kind !== 'base') throw new Error('base')
-    expect(front6.height.value).toBeGreaterThan(1.5) // the tall base (legend 6)
+    // Legend 6 matches the court bases: same height, level and base (user decision 2026-11-21), mirrored across the way.
+    const s2 = f['court-base-s2']
+    if (s2.kind !== 'base') throw new Error('base')
+    expect(front6.height.value).toBe(s2.height.value)
+    expect(front6.center[0]).toBe(s2.center[0])
+    expect(front6.center[1]).toBe(-s2.center[1])
     const cis = f.cistern
     const ch = f['water-channel']
     if (cis.kind !== 'cistern' || ch.kind !== 'channel') throw new Error('kinds')

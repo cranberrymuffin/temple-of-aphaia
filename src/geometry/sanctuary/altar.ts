@@ -3,11 +3,22 @@ import type { AltarFeature, BaseFeature } from '../../data/sanctuary'
 import { footprints } from '../../data/sanctuary'
 import type { Collector, Face, Vec3 } from '../mesh'
 import { MeshBuilder, composeMatrix, transformPoint } from '../mesh'
+import type { GroupRange } from '../figures'
 import type { GeneratorOutput, Level } from '../types'
 import { SANCTUARY_CONVENTIONS as K, deg, groundRange, obb, type SanctuaryContext } from './common'
 
 /** Altar (with an optional flight of steps up to it) or a plain statue base ('base' kind). */
-export function altar(id: string, f: AltarFeature | BaseFeature, ctx: SanctuaryContext, col: Collector): Omit<GeneratorOutput, 'groups'> {
+/** Where a scanned statue replaces the placeholder block: foot centre on the base top (world), its figure height. */
+export interface StatueSlot {
+  id: string
+  x: number
+  y: number
+  z: number
+  height: number
+  ranges: GroupRange[]
+}
+
+export function altar(id: string, f: AltarFeature | BaseFeature, ctx: SanctuaryContext, col: Collector): Omit<GeneratorOutput, 'groups'> & { statueSlot?: StatueSlot } {
   const L = f.length.value
   const W = f.width.value
   const H = f.height.value
@@ -58,14 +69,18 @@ export function altar(id: string, f: AltarFeature | BaseFeature, ctx: SanctuaryC
     b.box(min, max, ['-y'])
     topY = y0 + hh
   }
+  let statueSlot: StatueSlot | undefined
   if (f.kind === 'base' && f.figure) {
     // Placeholder statue block, centred on the base top (Step 4 may replace it).
     const fw = f.figure.width.value / 2
     const fd = f.figure.depth.value / 2
     const s = new MeshBuilder('sculpture-placeholder')
     s.box([-fw, base + H, -fd], [fw, base + H + f.figure.height.value, fd], ['-y'])
-    col.get(s.name).append(s, m)
+    const sg = col.get(s.name)
+    const start = sg.idx.length
+    sg.append(s, m)
+    statueSlot = { id, x: f.center[0], y: base + H, z: f.center[1], height: f.figure.height.value, ranges: [{ group: s.name, start, count: sg.idx.length - start }] }
   }
   col.get(b.name).append(b, m)
-  return { instances: [], colliders: [obb(`${id}-${f.kind}`, f.center, hx, hz, f.rotation, bottom, topY)], levels }
+  return { instances: [], colliders: [obb(`${id}-${f.kind}`, f.center, hx, hz, f.rotation, bottom, topY)], levels, statueSlot }
 }

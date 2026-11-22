@@ -219,6 +219,22 @@ export function loadSculptures(root: Group, meta: TempleMeta, tier: Tier, onDone
       done(e, sp.ranges)
     }
 
+    // Votive statues: the kore at the base's figure height, turned toward the altar (canonical +z -> +x), each
+    // with a small deterministic turn so the row does not look stamped.
+    const bases = new Map((meta.sculpture.statueSlots ?? []).map((st) => [st.id, st]))
+    entries
+      .filter((x) => 'site' in x.slot && x.slot.site === 'votive-statue')
+      .forEach((e, i) => {
+        const st = bases.get(e.id.replace('votive-statue-', ''))
+        const s = scanFor(e)
+        if (!st || !s) return
+        let top = 0
+        for (let k = 1; k < s.positions.length; k += 3) top = Math.max(top, s.positions[k])
+        const turn = ((i % 3) - 1) * 0.12
+        marble.push(geometryOf(s, placement({ scale: st.height / top, position: [st.x, st.y, st.z], rotY: Math.PI / 2 + turn })))
+        done(e, st.ranges)
+      })
+
     for (const id of assetIds) if (!scans.has(id)) status.failed.push(id)
     if (marble.length) {
       const mesh = new Mesh(mergeGeometries(marble), new MeshStandardMaterial({ color: palette.colors.marble.color, roughness: 0.55, metalness: 0 }))
