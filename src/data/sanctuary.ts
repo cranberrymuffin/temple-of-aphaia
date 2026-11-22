@@ -269,6 +269,16 @@ export interface ColumnFeature extends FeatureBase {
   crowning?: { kind: 'sphinx'; height: Measure }
 }
 
+/** Hollow interior: shell wall thickness, door height, and partition walls (local plan: `at` is the wall's centre line across the block). */
+export interface HouseInterior {
+  wall: Measure
+  doorHeight: Measure
+  /** `from`/`to`: local extent along the axis (default: wall to wall). */
+  partitions: { axis: 'x' | 'z'; at: number; from?: number; to?: number; doors: { offset: number; width: Measure }[] }[]
+  /** Low plastered rims on the floor (bath basins, stool): local plan rectangle and height above the floor. */
+  fixtures?: { kind: 'basin' | 'stool'; x0: number; x1: number; z0: number; z1: number; height: Measure }[]
+}
+
 /** One block of the priests' houses: a walled volume under a hipped roof (four equal pitches). */
 export interface HouseBlock {
   id: string
@@ -286,8 +296,10 @@ export interface HouseBlock {
   overhang: Measure
   /** 'shed': a single pitch falling toward +z by `roofRise` (a lean-to against the wall). Default: hipped. */
   roof?: 'hipped' | 'shed'
+  /** Hollow shell with rooms (walkable); `doors` then become real openings. Without it the block is a solid volume. */
+  interior?: HouseInterior
   /** Doors: a dark leaf standing just proud of the wall, centred `offset` m along the face from its middle, on the ground outside. */
-  doors?: { side: '-x' | '-z'; offset: number; width: Measure; height: Measure }[]
+  doors?: { side: '-x' | '-z' | '+x' | '+z'; offset: number; width: Measure; height: Measure }[]
   /** Open colonnade on the -x face: `columns` Doric columns (the temple's, scaled to the eave) across the face except a solid end wall at +z. */
   porch?: { columns: number; depth: Measure; endWall: Measure }
 }

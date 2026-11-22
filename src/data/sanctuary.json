@@ -988,7 +988,7 @@
   },
   "terrace-wall-se": {
    "kind": "wall",
-   "name": "South terrace wall east of the propylon, east peribolos (north leg), NE corner and north wall east of the knoll",
+   "name": "South terrace wall east of the propylon, as far as the priests' houses",
    "role": "terrace",
    "polyline": [
     [
@@ -998,6 +998,104 @@
     [
      36.436,
      20.583
+    ]
+   ],
+   "thickness": {
+    "value": 0.85,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED: one thickness for the run: south upper wall 0.83 m (p. 91), east wall 0.70-1.0 m (p. 86); the orthostate wall is 0.40 m (p. 91)"
+   },
+   "height": {
+    "value": 0,
+    "unit": "m",
+    "source": "published",
+    "ref": "furtwangler-1906",
+    "verified": false,
+    "provisional": true,
+    "note": "DERIVED: retaining wall top flush with the terrace"
+   },
+   "top": "level",
+   "masonry": "rubble",
+   "parapets": [
+    {
+     "socle": {
+      "value": 0.7,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): natural-stone socle below the mudbrick; height not legible on the board"
+     },
+     "mudbrick": {
+      "value": 0.95,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: analogy): mudbrick superstructure; total parapet 1.80 m above the terrace so the wall hides the krepis from the approach (eye 1.6 m on ground up to 0.16 m above the terrace outside the wall)"
+     },
+     "coping": {
+      "value": 0.15,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): tiled coping course"
+     },
+     "overhang": {
+      "value": 0.1,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): coping projection beyond each face"
+     },
+     "segments": [
+      0
+     ]
+    }
+   ],
+   "phase": {
+    "label": "Late Archaic new layout",
+    "fromYear": -510,
+    "toYear": null,
+    "confidence": "attested",
+    "sourceIds": [
+     "furtwangler-1906"
+    ],
+    "note": "Fiechter: 'Wende vom VI. zum V. Jh.' (p. 160), terrace 'Anfang des 5. Jh.' (p. 472)"
+   },
+   "placement": {
+    "source": "plan",
+    "ref": "wikimedia-plan-aphaia-sanctuary",
+    "verified": true,
+    "confidence": "attested",
+    "uncertaintyM": 1.522
+   },
+   "sourceIds": [
+    "furtwangler-1906",
+    "wikimedia-plan-aphaia-sanctuary",
+    "ministry-onsite-boards"
+   ],
+   "confidence": "attested",
+   "note": "Cut out where the priests' houses stand (user decision 2026-11-21: the houses are one with the wall; the stretch behind them is not drawn). Turns 9.70 m east of the propylon (p. 91) along the east wall's line; one mitred run so the corners stay clean. South legs and the north wall: enclosure parapet as on the great wall; east leg and NE corner: tall ashlar retaining wall up to the coping, down to the sloping hillside (Ministry board IMG_8187). The text has no wall where the rock reaches terrace height at the NE (p. 85); the board's enclosure is followed."
+  },
+  "terrace-wall-ne": {
+   "kind": "wall",
+   "name": "East peribolos (north leg), NE corner and north wall east of the knoll",
+   "role": "terrace",
+   "polyline": [
+    [
+     48.531,
+     20.96
     ],
     [
      49.271,
@@ -1040,7 +1138,6 @@
    },
    "top": "level",
    "masonry": [
-    "rubble",
     "rubble",
     "ashlar",
     "ashlar",
@@ -1086,9 +1183,7 @@
       "note": "DERIVED from the Ministry board (confidence: conjectural): coping projection beyond each face"
      },
      "segments": [
-      0,
-      1,
-      4
+      0
      ]
     },
     {
@@ -1129,7 +1224,48 @@
       "note": "DERIVED from the Ministry board (confidence: conjectural): coping projection beyond each face"
      },
      "segments": [
-      2,
+      1,
+      2
+     ]
+    },
+    {
+     "socle": {
+      "value": 0.7,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): natural-stone socle below the mudbrick; height not legible on the board"
+     },
+     "mudbrick": {
+      "value": 0.95,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: analogy): mudbrick superstructure; total parapet 1.80 m above the terrace so the wall hides the krepis from the approach (eye 1.6 m on ground up to 0.16 m above the terrace outside the wall)"
+     },
+     "coping": {
+      "value": 0.15,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): tiled coping course"
+     },
+     "overhang": {
+      "value": 0.1,
+      "unit": "m",
+      "source": "published",
+      "ref": "ministry-onsite-boards",
+      "verified": false,
+      "provisional": true,
+      "note": "DERIVED from the Ministry board (confidence: conjectural): coping projection beyond each face"
+     },
+     "segments": [
       3
      ]
     },
@@ -1171,7 +1307,7 @@
       "note": "DERIVED from the Ministry board (confidence: conjectural): coping projection beyond each face"
      },
      "segments": [
-      5
+      4
      ]
     }
    ],
@@ -1198,7 +1334,7 @@
     "ministry-onsite-boards"
    ],
    "confidence": "attested",
-   "note": "Turns 9.70 m east of the propylon (p. 91) along the east wall's line; one mitred run so the corners stay clean. South legs and the north wall: enclosure parapet as on the great wall; east leg and NE corner: tall ashlar retaining wall up to the coping, down to the sloping hillside (Ministry board IMG_8187). The text has no wall where the rock reaches terrace height at the NE (p. 85); the board's enclosure is followed."
+   "note": "Starts at the priests' houses' east end (the stretch behind the houses is cut out, user decision 2026-11-21). Turns 9.70 m east of the propylon (p. 91) along the east wall's line; one mitred run so the corners stay clean. South legs and the north wall: enclosure parapet as on the great wall; east leg and NE corner: tall ashlar retaining wall up to the coping, down to the sloping hillside (Ministry board IMG_8187). The text has no wall where the rock reaches terrace height at the NE (p. 85); the board's enclosure is followed."
   },
   "terrace-wall-e": {
    "kind": "wall",
@@ -2880,19 +3016,62 @@
         "provisional": true,
         "note": "DERIVED from the Ministry board (confidence: analogy): door height (IMG_8191)"
        }
+      },
+      {
+       "side": "+x",
+       "offset": 1.8,
+       "width": {
+        "value": 1.2,
+        "unit": "m",
+        "source": "published",
+        "ref": "ministry-onsite-boards",
+        "verified": false,
+        "provisional": true,
+        "note": "DERIVED from the Ministry board (confidence: conjectural): passage from the vestibule into the bath (V 1)"
+       },
+       "height": {
+        "value": 2.2,
+        "unit": "m",
+        "source": "published",
+        "ref": "ministry-onsite-boards",
+        "verified": false,
+        "provisional": true,
+        "note": "DERIVED from the Ministry board (confidence: conjectural): door height"
+       }
       }
-     ]
+     ],
+     "interior": {
+      "wall": {
+       "value": 0.45,
+       "unit": "m",
+       "source": "published",
+       "ref": "furtwangler-1906",
+       "verified": false,
+       "provisional": true,
+       "note": "CONJECTURAL: shell and partition thickness: orthostate walls about 0.40 m, plan wall bands 0.5-0.8 m (FW pp. 92-98)"
+      },
+      "doorHeight": {
+       "value": 2.25,
+       "unit": "m",
+       "source": "published",
+       "ref": "furtwangler-1906",
+       "verified": false,
+       "provisional": true,
+       "note": "CONJECTURAL: door height of the vestibule (a different soffit height from the bath's, so the two openings never share a plane)"
+      },
+      "partitions": []
+     }
     },
     {
      "id": "rear",
      "name": "Rear block against the boundary wall",
      "center": [
-      42.583,
-      23.971
+      42.558,
+      23.97
      ],
      "rotation": -1.785,
      "length": {
-      "value": 12.1,
+      "value": 12.55,
       "unit": "m",
       "source": "published",
       "ref": "ministry-onsite-boards",
@@ -2958,8 +3137,225 @@
         "provisional": true,
         "note": "DERIVED from the Ministry board (confidence: analogy): door height, a little over a figure (IMG_8187)"
        }
+      },
+      {
+       "side": "-x",
+       "offset": 1.8,
+       "width": {
+        "value": 1.2,
+        "unit": "m",
+        "source": "published",
+        "ref": "ministry-onsite-boards",
+        "verified": false,
+        "provisional": true,
+        "note": "DERIVED from the Ministry board (confidence: conjectural): passage from the vestibule into the bath (V 1)"
+       },
+       "height": {
+        "value": 2.2,
+        "unit": "m",
+        "source": "published",
+        "ref": "ministry-onsite-boards",
+        "verified": false,
+        "provisional": true,
+        "note": "DERIVED from the Ministry board (confidence: conjectural): door height"
+       }
       }
-     ]
+     ],
+     "interior": {
+      "wall": {
+       "value": 0.5,
+       "unit": "m",
+       "source": "published",
+       "ref": "furtwangler-1906",
+       "verified": false,
+       "provisional": true,
+       "note": "CONJECTURAL: shell and partition thickness: orthostate walls about 0.40 m, plan wall bands 0.5-0.8 m (FW pp. 92-98)"
+      },
+      "doorHeight": {
+       "value": 2.2,
+       "unit": "m",
+       "source": "published",
+       "ref": "furtwangler-1906",
+       "verified": false,
+       "provisional": true,
+       "note": "CONJECTURAL: door height; no door survives (p. 92-100)"
+      },
+      "partitions": [
+       {
+        "axis": "z",
+        "at": -2.9,
+        "doors": [
+         {
+          "offset": 1.8,
+          "width": {
+           "value": 1.0,
+           "unit": "m",
+           "source": "published",
+           "ref": "ministry-onsite-boards",
+           "verified": false,
+           "provisional": true,
+           "note": "DERIVED from the Ministry board (confidence: conjectural): door V 1 / I 4 (conjectural)"
+          }
+         }
+        ]
+       },
+       {
+        "axis": "x",
+        "at": 0.3,
+        "to": -2.9,
+        "doors": [
+         {
+          "offset": -4.3,
+          "width": {
+           "value": 0.9,
+           "unit": "m",
+           "source": "published",
+           "ref": "ministry-onsite-boards",
+           "verified": false,
+           "provisional": true,
+           "note": "DERIVED from the Ministry board (confidence: conjectural): door joining the two bath chambers (p. 95)"
+          }
+         }
+        ]
+       },
+       {
+        "axis": "z",
+        "at": 0.0,
+        "doors": [
+         {
+          "offset": -1.5,
+          "width": {
+           "value": 1.0,
+           "unit": "m",
+           "source": "published",
+           "ref": "ministry-onsite-boards",
+           "verified": false,
+           "provisional": true,
+           "note": "DERIVED from the Ministry board (confidence: conjectural): door I 4 / I 5"
+          }
+         }
+        ]
+       },
+       {
+        "axis": "z",
+        "at": 2.7,
+        "doors": [
+         {
+          "offset": -1.5,
+          "width": {
+           "value": 1.0,
+           "unit": "m",
+           "source": "published",
+           "ref": "ministry-onsite-boards",
+           "verified": false,
+           "provisional": true,
+           "note": "DERIVED from the Ministry board (confidence: conjectural): door I 5 / I 6 (p. 95-96)"
+          }
+         }
+        ]
+       },
+       {
+        "axis": "z",
+        "at": 4.5,
+        "doors": [
+         {
+          "offset": 1.5,
+          "width": {
+           "value": 0.9,
+           "unit": "m",
+           "source": "published",
+           "ref": "ministry-onsite-boards",
+           "verified": false,
+           "provisional": true,
+           "note": "DERIVED from the Ministry board (confidence: conjectural): exit door beside the stair to I 7 (p. 96)"
+          }
+         }
+        ]
+       }
+      ],
+      "fixtures": [
+       {
+        "kind": "basin",
+        "x0": -5.3,
+        "x1": -4.75,
+        "z0": -3.3,
+        "z1": -2.1,
+        "height": {
+         "value": 0.3,
+         "unit": "m",
+         "source": "published",
+         "ref": "ministry-onsite-boards",
+         "verified": false,
+         "provisional": true,
+         "note": "DERIVED from the Ministry board (confidence: analogy): bath basin V 2: about 0.55 x 1.2 m, 0.3 m deep, plastered, no drain (p. 94-95; bath of two chambers east of the forecourt, V 1 front / V 2 rear (FW pp. 94-95))"
+        }
+       },
+       {
+        "kind": "basin",
+        "x0": -4.6,
+        "x1": -4.05,
+        "z0": -3.3,
+        "z1": -2.1,
+        "height": {
+         "value": 0.3,
+         "unit": "m",
+         "source": "published",
+         "ref": "ministry-onsite-boards",
+         "verified": false,
+         "provisional": true,
+         "note": "DERIVED from the Ministry board (confidence: analogy): bath basin V 2: about 0.55 x 1.2 m, 0.3 m deep, plastered, no drain (p. 94-95; bath of two chambers east of the forecourt, V 1 front / V 2 rear (FW pp. 94-95))"
+        }
+       },
+       {
+        "kind": "basin",
+        "x0": -3.9,
+        "x1": -3.3499999999999996,
+        "z0": -3.3,
+        "z1": -2.1,
+        "height": {
+         "value": 0.3,
+         "unit": "m",
+         "source": "published",
+         "ref": "ministry-onsite-boards",
+         "verified": false,
+         "provisional": true,
+         "note": "DERIVED from the Ministry board (confidence: analogy): bath basin V 2: about 0.55 x 1.2 m, 0.3 m deep, plastered, no drain (p. 94-95; bath of two chambers east of the forecourt, V 1 front / V 2 rear (FW pp. 94-95))"
+        }
+       },
+       {
+        "kind": "stool",
+        "x0": -4.6,
+        "x1": -4.2,
+        "z0": -0.9,
+        "z1": -0.5,
+        "height": {
+         "value": 0.35,
+         "unit": "m",
+         "source": "published",
+         "ref": "ministry-onsite-boards",
+         "verified": false,
+         "provisional": true,
+         "note": "DERIVED from the Ministry board (confidence: analogy): porous-stone stool of the hip bath (p. 95, Abb. 54)"
+        }
+       },
+       {
+        "kind": "basin",
+        "x0": -5.6,
+        "x1": -4.8,
+        "z0": 2.5,
+        "z1": 3.3,
+        "height": {
+         "value": 0.3,
+         "unit": "m",
+         "source": "published",
+         "ref": "ministry-onsite-boards",
+         "verified": false,
+         "provisional": true,
+         "note": "DERIVED from the Ministry board (confidence: analogy): small corner basin of V 1 with rounded plaster (p. 94)"
+        }
+       }
+      ]
+     }
     },
     {
      "id": "front",
@@ -3034,6 +3430,119 @@
        "provisional": true,
        "note": "DERIVED from the Ministry board (confidence: analogy): solid wall at the south end of the face (IMG_8191), the rest open between four Doric columns (user decision 2026-11-21)"
       }
+     },
+     "doors": [
+      {
+       "side": "-x",
+       "offset": -3.1,
+       "width": {
+        "value": 1.2,
+        "unit": "m",
+        "source": "published",
+        "ref": "ministry-onsite-boards",
+        "verified": false,
+        "provisional": true,
+        "note": "DERIVED from the Ministry board (confidence: analogy): door of room IV onto the porch (p. 96-98)"
+       },
+       "height": {
+        "value": 2.2,
+        "unit": "m",
+        "source": "published",
+        "ref": "ministry-onsite-boards",
+        "verified": false,
+        "provisional": true,
+        "note": "DERIVED from the Ministry board (confidence: conjectural): door height"
+       }
+      },
+      {
+       "side": "-x",
+       "offset": -0.3,
+       "width": {
+        "value": 1.2,
+        "unit": "m",
+        "source": "published",
+        "ref": "ministry-onsite-boards",
+        "verified": false,
+        "provisional": true,
+        "note": "DERIVED from the Ministry board (confidence: analogy): door of room III onto the porch (p. 96-98)"
+       },
+       "height": {
+        "value": 2.2,
+        "unit": "m",
+        "source": "published",
+        "ref": "ministry-onsite-boards",
+        "verified": false,
+        "provisional": true,
+        "note": "DERIVED from the Ministry board (confidence: conjectural): door height"
+       }
+      },
+      {
+       "side": "-x",
+       "offset": 1.7,
+       "width": {
+        "value": 1.36,
+        "unit": "m",
+        "source": "published",
+        "ref": "ministry-onsite-boards",
+        "verified": false,
+        "provisional": true,
+        "note": "DERIVED from the Ministry board (confidence: analogy): door of room II onto the porch (p. 96-98)"
+       },
+       "height": {
+        "value": 2.2,
+        "unit": "m",
+        "source": "published",
+        "ref": "ministry-onsite-boards",
+        "verified": false,
+        "provisional": true,
+        "note": "DERIVED from the Ministry board (confidence: conjectural): door height"
+       }
+      }
+     ],
+     "interior": {
+      "wall": {
+       "value": 0.5,
+       "unit": "m",
+       "source": "published",
+       "ref": "furtwangler-1906",
+       "verified": false,
+       "provisional": true,
+       "note": "CONJECTURAL: shell and partition thickness: orthostate walls about 0.40 m, plan wall bands 0.5-0.8 m (FW pp. 92-98)"
+      },
+      "doorHeight": {
+       "value": 2.2,
+       "unit": "m",
+       "source": "published",
+       "ref": "furtwangler-1906",
+       "verified": false,
+       "provisional": true,
+       "note": "CONJECTURAL: door height; no door survives (p. 92-100)"
+      },
+      "partitions": [
+       {
+        "axis": "x",
+        "at": -1.6,
+        "doors": [
+         {
+          "offset": 1.0,
+          "width": {
+           "value": 1.0,
+           "unit": "m",
+           "source": "published",
+           "ref": "ministry-onsite-boards",
+           "verified": false,
+           "provisional": true,
+           "note": "DERIVED from the Ministry board (confidence: conjectural): link door III / IV (p. 97)"
+          }
+         }
+        ]
+       },
+       {
+        "axis": "x",
+        "at": 1.0,
+        "doors": []
+       }
+      ]
      }
     }
    ],

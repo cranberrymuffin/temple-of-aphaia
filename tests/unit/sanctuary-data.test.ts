@@ -44,14 +44,14 @@ describe('sanctuary.json', () => {
   it('Ministry board findings: enclosure parapet, NE ashlar coping, older east stretch, houses\' outcrop, altar court, cistern well-head', () => {
     const f = doc.features
     const nws = f['terrace-wall-nws']
-    const se = f['terrace-wall-se']
+    const se = f['terrace-wall-ne'] // from the priests' houses' east end round the NE corner (the stretch behind the houses is cut out)
     const e = f['terrace-wall-e']
     if (nws.kind !== 'wall' || se.kind !== 'wall' || e.kind !== 'wall') throw new Error('kinds')
     const p = nws.parapets![0]
     expect(p.segments).toEqual([0, 1, 2])
     expect(p.socle.value + p.mudbrick.value + p.coping.value).toBeCloseTo(1.8, 6)
     expect(p.mudbrick.value).toBeGreaterThan(0)
-    expect(se.masonry).toEqual(['rubble', 'rubble', 'ashlar', 'ashlar', 'rubble', 'rubble']) // NE corner ashlar
+    expect(se.masonry).toEqual(['rubble', 'ashlar', 'ashlar', 'rubble', 'rubble']) // NE corner ashlar
     expect(doc.terrain.terraces['ne-knoll'].hiddenReason).toBeTruthy() // trimmed: the hill takes over
     expect(e.masonry).toBe('older')
     // The houses' rock outcrop stands 2-3 m above the plaza, level with the top approach tier (its way in).
@@ -275,7 +275,7 @@ describe('built site on the real DEM', async () => {
       expect(site.groundCorrection?.maxLowered ?? 0).toBeGreaterThan(0)
       console.log(`[dem ${tier}] ground correction ${JSON.stringify(site.groundCorrection)}`)
       const terraces = Object.values(doc.terrain.terraces).filter((t) => !t.hiddenReason)
-      for (const id of ['terrace-wall-nws', 'terrace-wall-se']) {
+      for (const id of ['terrace-wall-nws', 'terrace-wall-se', 'terrace-wall-ne']) {
         const w = doc.features[id]
         if (w.kind !== 'wall') throw new Error(id)
         const { left, right } = offsetPolyline(w.polyline, w.thickness.value + 1.0)

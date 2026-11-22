@@ -712,6 +712,54 @@
                       "$ref": "#/definitions/nonNegative"
                     },
                     "roof": { "enum": ["hipped", "shed"] },
+                    "interior": {
+                      "type": "object",
+                      "required": ["wall", "doorHeight", "partitions"],
+                      "additionalProperties": false,
+                      "properties": {
+                        "wall": { "$ref": "#/definitions/positive" },
+                        "doorHeight": { "$ref": "#/definitions/positive" },
+                        "fixtures": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": ["kind", "x0", "x1", "z0", "z1", "height"],
+                            "additionalProperties": false,
+                            "properties": {
+                              "kind": { "enum": ["basin", "stool"] },
+                              "x0": { "type": "number" },
+                              "x1": { "type": "number" },
+                              "z0": { "type": "number" },
+                              "z1": { "type": "number" },
+                              "height": { "$ref": "#/definitions/positive" }
+                            }
+                          }
+                        },
+                        "partitions": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": ["axis", "at", "doors"],
+                            "additionalProperties": false,
+                            "properties": {
+                              "axis": { "enum": ["x", "z"] },
+                              "at": { "type": "number" },
+                              "from": { "type": "number" },
+                              "to": { "type": "number" },
+                              "doors": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "required": ["offset", "width"],
+                                  "additionalProperties": false,
+                                  "properties": { "offset": { "type": "number" }, "width": { "$ref": "#/definitions/positive" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
                     "doors": {
                       "type": "array",
                       "items": {
@@ -719,7 +767,7 @@
                         "required": ["side", "offset", "width", "height"],
                         "additionalProperties": false,
                         "properties": {
-                          "side": { "enum": ["-x", "-z"] },
+                          "side": { "enum": ["-x", "-z", "+x", "+z"] },
                           "offset": { "type": "number" },
                           "width": { "$ref": "#/definitions/positive" },
                           "height": { "$ref": "#/definitions/positive" }

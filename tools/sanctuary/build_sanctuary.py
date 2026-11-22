@@ -219,19 +219,32 @@ features["terrace-wall-nws"] = {
     "note": "Ends inside the propylon's west side wall; the north wall stops where the rock reaches terrace height (NE knoll, p. 85). Enclosure parapet (stone socle, mudbrick, tiled coping) after the Ministry board: from outside it hides the krepis. CONFLICT between the Ministry boards: the NE aerial (IMG_8187, scaled by the column's 1.45 m base slab) gives a parapet of about 1.8 m above the terrace; the approach elevation (IMG_8191) draws it about 3.4-3.9 m above the propylon floor. User decision 2026-11-18: keep 1.8 m (the aerial).",
 }
 features["terrace-wall-se"] = {
-    "kind": "wall", "name": "South terrace wall east of the propylon, east peribolos (north leg), NE corner and north wall east of the knoll", "role": "terrace",
+    "kind": "wall", "name": "South terrace wall east of the propylon, as far as the priests' houses", "role": "terrace",
     # Continues past the NE corner along the terrace's north edge (IMG_8187: the enclosure wall runs north of the
     # cistern and the sphinx column) and ends inside the great wall's north leg (buried 0.27 m, no coplanar ends).
-    "polyline": [[PX1 - 0.35, r3(ZS)], pt([wse["centreline"][1][0], ZS]), pt(SE_CORNER), pt(E0), [33.3, -18.63], [29.75, r3(ZN)], pt(NWS_END_IN)],
+    "polyline": [[PX1 - 0.35, r3(ZS)], pt([wse["centreline"][1][0], ZS])],
     "thickness": derived(0.85, "m", "one thickness for the run: south upper wall 0.83 m (p. 91), east wall 0.70-1.0 m (p. 86); the orthostate wall is 0.40 m (p. 91)"),
     "height": derived(0, "m", "retaining wall top flush with the terrace"),
-    "top": "level", "masonry": ["rubble", "rubble", "ashlar", "ashlar", "rubble", "rubble"],
-    # The last segment's coping is 1 cm lower so its buried end never shares the great wall's coping top plane.
-    "parapets": [dict(PARAPET, segments=[0, 1, 4]), dict(NE_ASHLAR, segments=[2, 3]),
-                 dict(PARAPET, coping=board(r3(COPING - 0.01), "m", "tiled coping course; 1 cm lower where this run ends inside the great wall (no coincident faces)", "conjectural"), segments=[5])],
+    "top": "level", "masonry": "rubble",
+    "parapets": [dict(PARAPET, segments=[0])],
     "phase": NEW, "placement": placement(None, max(wse["uncertaintyM"], we["uncertaintyM"]), "attested"),
     "sourceIds": [FW, WP, MIN], "confidence": "attested",
-    "note": "Turns 9.70 m east of the propylon (p. 91) along the east wall's line; one mitred run so the corners stay clean. South legs and the north wall: enclosure parapet as on the great wall; east leg and NE corner: tall ashlar retaining wall up to the coping, down to the sloping hillside (Ministry board IMG_8187). The text has no wall where the rock reaches terrace height at the NE (p. 85); the board's enclosure is followed.",
+    "note": "Cut out where the priests' houses stand (user decision 2026-11-21: the houses are one with the wall; the stretch behind them is not drawn). Turns 9.70 m east of the propylon (p. 91) along the east wall's line; one mitred run so the corners stay clean. South legs and the north wall: enclosure parapet as on the great wall; east leg and NE corner: tall ashlar retaining wall up to the coping, down to the sloping hillside (Ministry board IMG_8187). The text has no wall where the rock reaches terrace height at the NE (p. 85); the board's enclosure is followed.",
+}
+features["terrace-wall-ne"] = {
+    "kind": "wall", "name": "East peribolos (north leg), NE corner and north wall east of the knoll", "role": "terrace",
+    # Continues past the NE corner along the terrace's north edge (IMG_8187: the enclosure wall runs north of the
+    # cistern and the sphinx column) and ends inside the great wall's north leg (buried 0.27 m, no coplanar ends).
+    "polyline": [[r3(wse["centreline"][1][0] + (SE_CORNER[0] - wse["centreline"][1][0]) * 12.1 / 12.84), r3(ZS + (SE_CORNER[1] - ZS) * 12.1 / 12.84)], pt(SE_CORNER), pt(E0), [33.3, -18.63], [29.75, r3(ZN)], pt(NWS_END_IN)],
+    "thickness": derived(0.85, "m", "one thickness for the run: south upper wall 0.83 m (p. 91), east wall 0.70-1.0 m (p. 86); the orthostate wall is 0.40 m (p. 91)"),
+    "height": derived(0, "m", "retaining wall top flush with the terrace"),
+    "top": "level", "masonry": ["rubble", "ashlar", "ashlar", "rubble", "rubble"],
+    # The last segment's coping is 1 cm lower so its buried end never shares the great wall's coping top plane.
+    "parapets": [dict(PARAPET, segments=[0]), dict(NE_ASHLAR, segments=[1, 2]), dict(PARAPET, segments=[3]),
+                 dict(PARAPET, coping=board(r3(COPING - 0.01), "m", "tiled coping course; 1 cm lower where this run ends inside the great wall (no coincident faces)", "conjectural"), segments=[4])],
+    "phase": NEW, "placement": placement(None, max(wse["uncertaintyM"], we["uncertaintyM"]), "attested"),
+    "sourceIds": [FW, WP, MIN], "confidence": "attested",
+    "note": "Starts at the priests' houses' east end (the stretch behind the houses is cut out, user decision 2026-11-21). Turns 9.70 m east of the propylon (p. 91) along the east wall's line; one mitred run so the corners stay clean. South legs and the north wall: enclosure parapet as on the great wall; east leg and NE corner: tall ashlar retaining wall up to the coping, down to the sloping hillside (Ministry board IMG_8187). The text has no wall where the rock reaches terrace height at the NE (p. 85); the board's enclosure is followed.",
 }
 se_dir = [E1[0] - SE_CORNER[0], E1[1] - SE_CORNER[1]]
 se_len = math.hypot(*se_dir)
@@ -580,14 +593,14 @@ def wall_frame(u0, u1, v0, v1):
     return [r3(H_O[0] + c * cu - s_ * cv), r3(H_O[1] + s_ * cu + c * cv)], r3(u1 - u0), r3(v1 - v0)
 
 
-REAR = (0.2, 12.3, WALL_IN, WALL_FACE + 6.4)  # u0, u1, v0, v1
+REAR = (-0.05, 12.5, WALL_IN, WALL_FACE + 6.4)  # ends buried in the wall's cut ends: the houses are one with the wall  # u0, u1, v0, v1
 BURY = 0.3  # the front block's north wall runs 0.3 m into the rear block (they abut on IMG_8187; no shared face)
 FRONT = (1.5, 12.2, REAR[3] - BURY, REAR[3] + 10.0)  # east face 0.1 m inside the rear block's (no shared plane)
 REAR_EAVE, FRONT_EAVE = 4.9, 3.9
 LEAN = (-3.0, 0.5, REAR[2] - 0.03, REAR[3] - 0.03)  # low shed on the rear block's west face, its full width (IMG_8191, left of the porch); 0.3 m into the rear block
 
 
-def house_block(bid, name, box, eave, notes, porch=None, shed=None, doors=None):
+def house_block(bid, name, box, eave, notes, porch=None, shed=None, doors=None, interior=None):
     c, L, W = wall_frame(*box)
     rise = r3(shed if shed else min(L, W) / 2 * math.tan(H_PITCH))
     return {"id": bid, "name": name, "center": c, "rotation": H_ROT,
@@ -595,7 +608,48 @@ def house_block(bid, name, box, eave, notes, porch=None, shed=None, doors=None):
             "eaveHeight": board(eave, "m", notes["eave"], "analogy"),
             "roofRise": board(rise, "m", f"hipped roof at a pitch of about {math.degrees(H_PITCH):.0f} degrees (both boards draw low tiled roofs; +/-5 degrees)", "conjectural"),
             "overhang": conj(0.4, "m", "eaves"),
-            **({"porch": porch} if porch else {}), **({"roof": "shed"} if shed else {}), **({"doors": doors} if doors else {})}
+            **({"porch": porch} if porch else {}), **({"roof": "shed"} if shed else {}), **({"doors": doors} if doors else {}), **({"interior": interior} if interior else {})}
+
+
+def door(off, w, note):
+    return {"offset": off, "width": board(w, "m", note, "conjectural")}
+
+
+def partition(axis, at, doors, frm=None, to=None):
+    return {"axis": axis, "at": at, **({"from": frm} if frm is not None else {}), **({"to": to} if to is not None else {}), "doors": doors}
+
+
+def fixture(kind, x0, x1, z0, z1, h, note):
+    return {"kind": kind, "x0": x0, "x1": x1, "z0": z0, "z1": z1, "height": board(h, "m", note, "analogy")}
+
+
+def interior(t, partitions, fixtures=None):
+    return {"wall": conj(t, "m", "shell and partition thickness: orthostate walls about 0.40 m, plan wall bands 0.5-0.8 m (FW pp. 92-98)"),
+            "doorHeight": conj(2.2, "m", "door height; no door survives (p. 92-100)"), "partitions": partitions, **({"fixtures": fixtures} if fixtures else {})}
+
+
+# Rooms after Furtwangler 1906 ch. 4 (pp. 91-100), laid out in each block's local frame (x along the wall, z toward the south):
+# the lean-to is the vestibule/forecourt I 2/3 (door framed by orthostates, the watchman's room and purification, p. 100); the
+# rear block holds, from the west, the bath V 1 (front, corner basin) and V 2 (rear, three basins of about 0.55 x 1.2 m, 0.3 m deep,
+# plus a stool), then I 4, I 5, I 6 (small poor staircase) and the narrow I 7 along the east wall; the front block is rooms II (south,
+# door 1.36 m), III and IV (linked), each opening west onto the porch (Vorhalle). Room sizes are conjectural: the text gives few.
+BATH = "bath of two chambers east of the forecourt, V 1 front / V 2 rear (FW pp. 94-95)"
+REAR_INT = interior(0.5, [
+    partition("z", -2.9, [door(1.8, 1.0, "door V 1 / I 4 (conjectural)")]),
+    partition("x", 0.3, [door(-4.3, 0.9, "door joining the two bath chambers (p. 95)")], to=-2.9),
+    partition("z", 0.0, [door(-1.5, 1.0, "door I 4 / I 5")]),
+    partition("z", 2.7, [door(-1.5, 1.0, "door I 5 / I 6 (p. 95-96)")]),
+    partition("z", 4.5, [door(1.5, 0.9, "exit door beside the stair to I 7 (p. 96)")]),
+], [
+    *[fixture("basin", x0, x0 + 0.55, -3.3, -2.1, 0.3, f"bath basin V 2: about 0.55 x 1.2 m, 0.3 m deep, plastered, no drain (p. 94-95; {BATH})") for x0 in (-5.3, -4.6, -3.9)],
+    fixture("stool", -4.6, -4.2, -0.9, -0.5, 0.35, "porous-stone stool of the hip bath (p. 95, Abb. 54)"),
+    fixture("basin", -5.6, -4.8, 2.5, 3.3, 0.3, "small corner basin of V 1 with rounded plaster (p. 94)"),
+])
+LEAN_INT = dict(interior(0.45, []), doorHeight=conj(2.25, "m", "door height of the vestibule (a different soffit height from the bath's, so the two openings never share a plane)"))
+FRONT_INT = interior(0.5, [
+    partition("x", -1.6, [door(1.0, 1.0, "link door III / IV (p. 97)")]),
+    partition("x", 1.0, []),
+])
 
 
 features["priests-houses"] = {
@@ -605,18 +659,22 @@ features["priests-houses"] = {
             "length": "lean-to projecting west from the rear block (IMG_8191, left of the porch)",
             "width": "the full width of the rear block it leans on (IMG_8191)",
             "eave": "low eave about 1.5 x the drawn figures; the roof rises toward the main block (IMG_8191), door in the west face"}, shed=0.5,
-            doors=[{"side": "-x", "offset": 0.0, "width": board(1.4, "m", "doorway in the lean-to's west face (IMG_8191)", "analogy"), "height": board(2.2, "m", "door height (IMG_8191)", "analogy")}]),
+            doors=[{"side": "-x", "offset": 0.0, "width": board(1.4, "m", "doorway in the lean-to's west face (IMG_8191)", "analogy"), "height": board(2.2, "m", "door height (IMG_8191)", "analogy")},
+                   {"side": "+x", "offset": 1.8, "width": board(1.2, "m", "passage from the vestibule into the bath (V 1)", "conjectural"), "height": board(2.2, "m", "door height", "conjectural")}], interior=LEAN_INT),
         house_block("rear", "Rear block against the boundary wall", REAR, REAR_EAVE, {
             "length": "along the wall from the end of the stretch beside the propylon to the east wall (IMG_8187)",
             "width": "depth from the wall; the block is a long rectangle along it (IMG_8187, IMG_8191)",
             "eave": "the taller block (IMG_8191), eave above the outcrop by the drawn figures (1.7 m)"},
-            doors=[{"side": "-z", "offset": 1.65, "width": board(1.4, "m", "door from the houses into the sanctuary through the wall line (IMG_8187)", "analogy"), "height": board(2.4, "m", "door height, a little over a figure (IMG_8187)", "analogy")}]),
+            doors=[{"side": "-z", "offset": 1.65, "width": board(1.4, "m", "door from the houses into the sanctuary through the wall line (IMG_8187)", "analogy"), "height": board(2.4, "m", "door height, a little over a figure (IMG_8187)", "analogy")},
+                   {"side": "-x", "offset": 1.8, "width": board(1.2, "m", "passage from the vestibule into the bath (V 1)", "conjectural"), "height": board(2.2, "m", "door height", "conjectural")}], interior=REAR_INT),
         house_block("front", "Front block, roughly square", FRONT, FRONT_EAVE, {
             "length": "east face in line with the rear block's, west face set back from it (IMG_8187)",
             "width": "roughly square in plan (IMG_8187; near-pyramidal roof on IMG_8191)",
             "eave": "the lower block (IMG_8191), eave above the outcrop by the drawn figures (1.7 m)"},
             porch={"columns": 4, "depth": board(2.2, "m", "open porch recess on the west face (IMG_8191: columns on the face toward the gate)", "analogy"),
-                   "endWall": board(2.6, "m", "solid wall at the south end of the face (IMG_8191), the rest open between four Doric columns (user decision 2026-11-21)", "analogy")}),
+                   "endWall": board(2.6, "m", "solid wall at the south end of the face (IMG_8191), the rest open between four Doric columns (user decision 2026-11-21)", "analogy")},
+            doors=[{"side": "-x", "offset": o, "width": board(w, "m", f"door of room {r} onto the porch (p. 96-98)", "analogy"), "height": board(2.2, "m", "door height", "conjectural")} for r, o, w in (("IV", -3.1, 1.2), ("III", -0.3, 1.2), ("II", 1.7, 1.36))],
+            interior=FRONT_INT),
     ],
     "phase": BORDER, "placement": placement(None, 1.5, "analogy", note="placed from the Ministry boards against the boundary wall's south leg; the plan's room groups (I, II-IV) lie here, about 12 degrees askew", ref=MIN, verified=False),
     "sourceIds": [MIN, FW], "confidence": "analogy",
